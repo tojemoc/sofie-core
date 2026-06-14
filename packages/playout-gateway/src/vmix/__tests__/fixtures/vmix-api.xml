@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vmix>
+	<version>26.0.0.45</version>
+	<inputs>
+		<input
+			key="abc-123"
+			number="1"
+			type="Camera"
+			shortTitle="Camera 1"
+			title="Camera 1 Sony"
+			state="Running"
+		/>
+		<input
+			key="def-456"
+			number="2"
+			type="Video"
+			shortTitle="VT_A"
+			title="VT_A"
+			duration="3600"
+			state="Paused"
+		/>
+		<input key="ghi-789" number="3" type="GT" shortTitle="LOWER_THIRD" title="LOWER_THIRD" state="Completed" />
+		<input key="jkl-012" number="4" type="NDI" shortTitle="NDI 1" title="Remote NDI" state="Running" />
+	</inputs>
+</vmix>

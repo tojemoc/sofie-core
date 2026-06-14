@@ -54,6 +54,7 @@
 		"@sofie-automation/server-core-integration": "26.3.0-2",
 		"@sofie-automation/shared-lib": "26.3.0-2",
 		"debug": "^4.4.3",
+		"fast-xml-parser": "^5.5.9",
 		"influx": "^5.12.0",
 		"timeline-state-resolver": "10.0.0-nightly-main-20260601-094843-59ce43391.0",
 		"tslib": "^2.8.1",
