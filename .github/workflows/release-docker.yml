@@ -116,9 +116,16 @@ jobs:
           images: |
             ghcr.io/${{ env.REPO }}-server-core
           tags: |
-            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=build-${{ github.run_number }},enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Note main build tags
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "**Main build published**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`ghcr.io/${{ env.REPO }}-server-core:latest\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`ghcr.io/${{ env.REPO }}-server-core:build-${{ github.run_number }}\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Log in to GitHub Container Registry
         if: steps.ghcr-tag.outputs.tags != ''
@@ -188,9 +195,9 @@ jobs:
           images: |
             ghcr.io/${{ env.REPO }}-${{ matrix.gateway-name }}
           tags: |
-            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=build-${{ github.run_number }},enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Log in to GitHub Container Registry
         if: steps.ghcr-tag.outputs.tags != ''
@@ -243,3 +250,5 @@ jobs:
             docker pull ghcr.io/${{ env.REPO }}-mos-gateway:${{ github.ref_name }}
             docker pull ghcr.io/${{ env.REPO }}-live-status-gateway:${{ github.ref_name }}
             ```
+
+            `latest` continues to track the most recent `main` build.
