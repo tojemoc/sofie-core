@@ -59,6 +59,7 @@ import {
 	playoutCommandsSentCounter,
 	playoutPlaybackCallbacksCounter,
 } from './playoutMetrics.js'
+import { getVmixPollerConfig, VmixInputPollerManager } from './vmix/VmixInputPollerManager.js'
 
 const debug = Debug('playout-gateway')
 
@@ -98,6 +99,7 @@ export class TSRHandler {
 
 	private _debugStates: Map<string, object> = new Map()
 	private _pendingTimelineGeneratedAt: Map<string, number> = new Map()
+	private _vmixInputPollerManager = new VmixInputPollerManager()
 
 	constructor(logger: Logger) {
 		this.logger = logger
@@ -265,6 +267,8 @@ export class TSRHandler {
 		})
 
 		this.tsr.connectionManager.on('connectionRemoved', (id) => {
+			this._vmixInputPollerManager.stop(id)
+
 			const coreTsrHandler = this._coreTsrHandlers[id]
 
 			if (!coreTsrHandler) {
@@ -324,6 +328,17 @@ export class TSRHandler {
 			)
 
 			coreTsrHandler.statusChanged(status)
+
+			if (
+				(status.statusCode === StatusCode.GOOD ||
+					status.statusCode === StatusCode.WARNING_MINOR ||
+					status.statusCode === StatusCode.WARNING_MAJOR) &&
+				coreTsrHandler._device.deviceType === DeviceType.VMIX
+			) {
+				this._maybeStartVmixInputPoller(id, coreTsrHandler)
+			} else if (coreTsrHandler._device.deviceType === DeviceType.VMIX) {
+				this._vmixInputPollerManager.stop(id)
+			}
 
 			if (!coreTsrHandler._device) return
 			// When the status has changed, the deviceName might have changed:
@@ -570,6 +585,8 @@ export class TSRHandler {
 		})
 	}
 	async destroy(): Promise<void> {
+		this._vmixInputPollerManager.stopAll()
+
 		if (this._observers.length) {
 			this.logger.debug('Clearing observers..')
 			this._observers.forEach((obs) => {
@@ -1079,6 +1096,15 @@ export class TSRHandler {
 
 	public getDebugStates(): Map<string, object> {
 		return this._debugStates
+	}
+
+	private _maybeStartVmixInputPoller(id: string, coreTsrHandler: CoreTSRDeviceHandler): void {
+		if (!coreTsrHandler._device) return
+
+		const config = getVmixPollerConfig(coreTsrHandler._device)
+		if (!config) return
+
+		this._vmixInputPollerManager.start(id, coreTsrHandler, config, this.logger)
 	}
 }
 
