@@ -57,19 +57,24 @@ describe('VmixInputMediaSync helpers', () => {
 })
 
 describe('getVmixPollerConfig', () => {
-	it('reads extended polling options from vMix device options', () => {
-		const config = getVmixPollerConfig({
+	const vmixDevice = (options: Record<string, unknown>) =>
+		({
 			deviceType: 'VMIX',
 			deviceOptions: {
 				type: 'VMIX',
-				options: {
-					host: '10.0.0.5',
-					port: 8099,
-					inputPollApiPort: 8088,
-					inputPollingIntervalMs: 7000,
-				},
+				options,
 			},
-		} as any)
+		}) as any
+
+	it('reads extended polling options from vMix device options', () => {
+		const config = getVmixPollerConfig(
+			vmixDevice({
+				host: '10.0.0.5',
+				port: 8099,
+				inputPollApiPort: 8088,
+				inputPollingIntervalMs: 7000,
+			})
+		)
 
 		expect(config).toEqual({
 			host: '10.0.0.5',
@@ -77,6 +82,30 @@ describe('getVmixPollerConfig', () => {
 			pollIntervalMs: 7000,
 			disableInputPolling: false,
 		})
+	})
+
+	it('applies defaults when optional polling fields are missing', () => {
+		const config = getVmixPollerConfig(vmixDevice({ host: '10.0.0.5' }))
+
+		expect(config).toEqual({
+			host: '10.0.0.5',
+			apiPort: 8088,
+			pollIntervalMs: 5000,
+			disableInputPolling: false,
+		})
+	})
+
+	it('returns undefined for non-vMix device types', () => {
+		expect(
+			getVmixPollerConfig({
+				deviceType: 'ATEM',
+				deviceOptions: { type: 'ATEM', options: { host: '10.0.0.5' } },
+			} as any)
+		).toBeUndefined()
+	})
+
+	it('returns undefined when host is missing', () => {
+		expect(getVmixPollerConfig(vmixDevice({ port: 8099 }))).toBeUndefined()
 	})
 })
 

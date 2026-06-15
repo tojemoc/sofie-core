@@ -8,7 +8,6 @@
 			type="Camera"
 			shortTitle="Camera 1"
 			title="Camera 1 Sony"
-			state="Running"
 		/>
 		<input
 			key="def-456"
@@ -17,9 +16,8 @@
 			shortTitle="VT_A"
 			title="VT_A"
 			duration="3600"
-			state="Paused"
 		/>
-		<input key="ghi-789" number="3" type="GT" shortTitle="LOWER_THIRD" title="LOWER_THIRD" state="Completed" />
-		<input key="jkl-012" number="4" type="NDI" shortTitle="NDI 1" title="Remote NDI" state="Running" />
+		<input key="ghi-789" number="3" type="GT" shortTitle="LOWER_THIRD" title="LOWER_THIRD" />
+		<input key="jkl-012" number="4" type="NDI" shortTitle="NDI 1" title="Remote NDI" />
 	</inputs>
 </vmix>
