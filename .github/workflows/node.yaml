@@ -108,7 +108,6 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v6
@@ -177,21 +176,6 @@ jobs:
           # debug output
           echo "dockerhub-publish $DOCKERHUB_PUBLISH"
           echo "dockerhub-publish=$DOCKERHUB_PUBLISH" >> $GITHUB_OUTPUT
-      - name: Determine if images should be published to GHCR
-        id: ghcr
-        run: |
-          # push to GHCR on main, release branches, and tags for the official repo
-          if [[ "${{ github.repository_owner }}" != "Sofie-Automation" || "${{ github.event_name }}" != "push" ]]
-          then
-            GHCR_PUBLISH="0"
-          elif [[ "${{ github.ref }}" =~ ^refs/heads/release([0-9]+)$ || "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == refs/tags/* ]]
-          then
-            GHCR_PUBLISH="1"
-          else
-            GHCR_PUBLISH="0"
-          fi
-          echo "ghcr-publish $GHCR_PUBLISH"
-          echo "ghcr-publish=$GHCR_PUBLISH" >> $GITHUB_OUTPUT
       - name: Check if there is access to repo secrets (needed for DockerHub push)
         if: steps.dockerhub.outputs.dockerhub-publish == '1'
         id: check-dockerhub-secrets
@@ -203,45 +187,13 @@ jobs:
 
       # No-push build if no destination
       - name: Build without push
-        if: steps.ghcr.outputs.ghcr-publish != '1' && (steps.dockerhub.outputs.dockerhub-publish != '1' || steps.check-dockerhub-secrets.outputs.enable != 'true')
+        if: steps.dockerhub.outputs.dockerhub-publish != '1' || steps.check-dockerhub-secrets.outputs.enable != 'true'
         uses: docker/build-push-action@v7
         with:
           context: .
           file: ./meteor/Dockerfile.circle
           push: false
           provenance: false
-
-      # GHCR build
-      - name: Get the Docker tag for GHCR
-        id: ghcr-tag
-        if: steps.ghcr.outputs.ghcr-publish == '1'
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ghcr.io/${{ github.repository }}-server-core
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
-      - name: Login to GitHub Container Registry
-        if: steps.ghcr.outputs.ghcr-publish == '1' && steps.ghcr-tag.outputs.tags != ''
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push to GHCR
-        if: steps.ghcr.outputs.ghcr-publish == '1' && steps.ghcr-tag.outputs.tags != ''
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: ./meteor/Dockerfile.circle
-          push: true
-          provenance: false
-          labels: ${{ steps.ghcr-tag.outputs.labels }}
-          tags: "${{ steps.ghcr-tag.outputs.tags }}"
-          github-token: ${{ github.token }}
 
       # Dockerhub push
       - name: Get the Docker tag for DockerHub
@@ -286,7 +238,6 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v6
@@ -329,21 +280,6 @@ jobs:
           # debug output
           echo "dockerhub-publish $DOCKERHUB_PUBLISH"
           echo "dockerhub-publish=$DOCKERHUB_PUBLISH" >> $GITHUB_OUTPUT
-      - name: Determine if images should be published to GHCR
-        id: ghcr
-        run: |
-          # push to GHCR on main, release branches, and tags for the official repo
-          if [[ "${{ github.repository_owner }}" != "Sofie-Automation" || "${{ github.event_name }}" != "push" ]]
-          then
-            GHCR_PUBLISH="0"
-          elif [[ "${{ github.ref }}" =~ ^refs/heads/release([0-9]+)$ || "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == refs/tags/* ]]
-          then
-            GHCR_PUBLISH="1"
-          else
-            GHCR_PUBLISH="0"
-          fi
-          echo "ghcr-publish $GHCR_PUBLISH"
-          echo "ghcr-publish=$GHCR_PUBLISH" >> $GITHUB_OUTPUT
       - name: Check if there is access to repo secrets (needed for DockerHub push)
         if: steps.dockerhub.outputs.dockerhub-publish == '1'
         id: check-dockerhub-secrets
@@ -355,45 +291,13 @@ jobs:
 
       # No-push build if no destination
       - name: Build without push
-        if: steps.ghcr.outputs.ghcr-publish != '1' && (steps.dockerhub.outputs.dockerhub-publish != '1' || steps.check-dockerhub-secrets.outputs.enable != 'true')
+        if: steps.dockerhub.outputs.dockerhub-publish != '1' || steps.check-dockerhub-secrets.outputs.enable != 'true'
         uses: docker/build-push-action@v7
         with:
           context: ./packages
           file: ./packages/${{ matrix.gateway-name }}/Dockerfile.circle
           push: false
           provenance: false
-
-      # GHCR build
-      - name: Get the Docker tag for GHCR
-        id: ghcr-tag
-        if: steps.ghcr.outputs.ghcr-publish == '1'
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ghcr.io/${{ github.repository }}-${{ matrix.gateway-name }}
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
-      - name: Login to GitHub Container Registry
-        if: steps.ghcr.outputs.ghcr-publish == '1' && steps.ghcr-tag.outputs.tags != ''
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push to GHCR
-        if: steps.ghcr.outputs.ghcr-publish == '1' && steps.ghcr-tag.outputs.tags != ''
-        uses: docker/build-push-action@v7
-        with:
-          context: ./packages
-          file: ./packages/${{ matrix.gateway-name }}/Dockerfile.circle
-          push: true
-          provenance: false
-          labels: ${{ steps.ghcr-tag.outputs.labels }}
-          tags: "${{ steps.ghcr-tag.outputs.tags }}"
-          github-token: ${{ github.token }}
 
       # Dockerhub push
       - name: Get the Docker tag for DockerHub
