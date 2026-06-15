@@ -5143,6 +5143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nodable/entities@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@nodable/entities@npm:2.2.0"
+  checksum: 10/7f44743adb5947ea6e0c276fecc927eb47ff1a6526256aeb03098d98086c906b2ab98663330c049a55758644b1fd23478222cbc8d4f773ac737c979ff2c1c769
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -9908,6 +9915,13 @@ __metadata:
     normalize-path: "npm:^3.0.0"
     picomatch: "npm:^2.0.4"
   checksum: 10/3e044fd6d1d26545f235a9fe4d7a534e2029d8e59fa7fd9f2a6eb21230f6b5380ea1eaf55136e60cbf8e613544b3b766e7a6fa2102e2a3a117505466e3025dc2
+  languageName: node
+  linkType: hard
+
+"anynum@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "anynum@npm:1.0.0"
+  checksum: 10/5f7921dfa10fc80cc88442d6c9681203281cb68a2a7b69d2ba9c5977ef31cf0044209006eea59b22ad44ab172b2ccea38d6cab9f41e66570c76fc2470ba15c23
   languageName: node
   linkType: hard
 
@@ -15162,6 +15176,16 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"fast-xml-builder@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "fast-xml-builder@npm:1.2.0"
+  dependencies:
+    path-expression-matcher: "npm:^1.5.0"
+    xml-naming: "npm:^0.1.0"
+  checksum: 10/5948add7796879d03b6c779cbb17f2f203a41cdf23dfaaa4789c65078a36376cd0709a6586701e980e3d244ebd5fdb35db1235ccb5e4fb9e9abfd8c51e7b8813
+  languageName: node
+  linkType: hard
+
 "fast-xml-parser@npm:^5.3.0":
   version: 5.5.9
   resolution: "fast-xml-parser@npm:5.5.9"
@@ -15172,6 +15196,22 @@ asn1@evs-broadcast/node-asn1:
   bin:
     fxparser: src/cli/cli.js
   checksum: 10/5f1a1a8b524406af21e9adb24f846b0da6b629c86b1eeedb54757cc293c24ed4f79ff9570b82206265b6951d68acd2dc93e74687ea5d7da0beafa09536cee73f
+  languageName: node
+  linkType: hard
+
+"fast-xml-parser@npm:^5.9.0":
+  version: 5.9.0
+  resolution: "fast-xml-parser@npm:5.9.0"
+  dependencies:
+    "@nodable/entities": "npm:^2.2.0"
+    fast-xml-builder: "npm:^1.2.0"
+    is-unsafe: "npm:^1.0.1"
+    path-expression-matcher: "npm:^1.5.0"
+    strnum: "npm:^2.4.0"
+    xml-naming: "npm:^0.1.0"
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: 10/b01e20423a4906b7d4dd7a0ea39eda102b510c21ff3ba26bfd4d694ad2f64b95b9211060be3f28089b9754d50d852a6834684de00e29f686559229fafceb824f
   languageName: node
   linkType: hard
 
@@ -17819,6 +17859,13 @@ asn1@evs-broadcast/node-asn1:
   version: 0.1.0
   resolution: "is-unicode-supported@npm:0.1.0"
   checksum: 10/a2aab86ee7712f5c2f999180daaba5f361bdad1efadc9610ff5b8ab5495b86e4f627839d085c6530363c6d6d4ecbde340fb8e54bdb83da4ba8e0865ed5513c52
+  languageName: node
+  linkType: hard
+
+"is-unsafe@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "is-unsafe@npm:1.0.1"
+  checksum: 10/971d05c69a742f866e4f257e4008ee3a9fb84ebf81141352211698416e1cf52aa03bcda54e3a5c2f25547f4b4cbb6d9e02c048a4daef5e7baea51f33089ddc9e
   languageName: node
   linkType: hard
 
@@ -23296,6 +23343,13 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"path-expression-matcher@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "path-expression-matcher@npm:1.5.0"
+  checksum: 10/28303bb9ee6831e6df14c10cd3f3f7b2d7c8d7f788d8bdb7440136fd696064c82a3e264999a0764d28e39f698275fc03a5493bec93c57ef4a22566280367dd64
+  languageName: node
+  linkType: hard
+
 "path-is-absolute@npm:^1.0.0":
   version: 1.0.1
   resolution: "path-is-absolute@npm:1.0.1"
@@ -23575,6 +23629,7 @@ asn1@evs-broadcast/node-asn1:
     "@sofie-automation/server-core-integration": "npm:26.3.0-2"
     "@sofie-automation/shared-lib": "npm:26.3.0-2"
     debug: "npm:^4.4.3"
+    fast-xml-parser: "npm:^5.9.0"
     influx: "npm:^5.12.0"
     timeline-state-resolver: "npm:10.0.0-nightly-main-20260601-094843-59ce43391.0"
     tslib: "npm:^2.8.1"
@@ -27920,6 +27975,15 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"strnum@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "strnum@npm:2.4.0"
+  dependencies:
+    anynum: "npm:^1.0.0"
+  checksum: 10/ce603543f8c8a8f0497ab554ea99bf7c8d6bef1eeb3d73feced8a291212dc675014b160e25f527c01e8b88106cc10b102094f0b9feb3e4527a84ad446b8cbf06
+  languageName: node
+  linkType: hard
+
 "strtok3@npm:^10.3.4":
   version: 10.3.4
   resolution: "strtok3@npm:10.3.4"
@@ -30719,6 +30783,13 @@ asn1@evs-broadcast/node-asn1:
   version: 5.0.0
   resolution: "xml-name-validator@npm:5.0.0"
   checksum: 10/43f30f3f6786e406dd665acf08cd742d5f8a46486bd72517edb04b27d1bcd1599664c2a4a99fc3f1e56a3194bff588b12f178b7972bc45c8047bdc4c3ac8d4a1
+  languageName: node
+  linkType: hard
+
+"xml-naming@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "xml-naming@npm:0.1.0"
+  checksum: 10/45abd94ba64a508bda3f4d0b70e49811a3c3542596252c213caf47c858bbe9bba365ebba8eeff68e2a876e22a1bf6855d90cd2019b2f28012cebb167a4df2293
   languageName: node
   linkType: hard
 
