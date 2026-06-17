@@ -1,4 +1,4 @@
-import type { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { type RundownTTimer, getRundownTTimers } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
 import { useTiming } from '../RundownTiming/withTiming'
 import { RundownUtils } from '../../../lib/rundown.js'
 import { calculateTTimerDiff, calculateTTimerOverUnder } from '../../../lib/tTimerUtils'
@@ -8,13 +8,15 @@ import { Countdown } from './Countdown'
 import { OverUnderChip } from '../../../lib/Components/OverUnderChip'
 
 interface IProps {
-	tTimers: [RundownTTimer, RundownTTimer, RundownTTimer]
+	tTimers: [RundownTTimer, RundownTTimer, RundownTTimer] | null | undefined
 }
 
 export const RundownHeaderTimers: React.FC<IProps> = ({ tTimers }) => {
 	useTiming()
 
-	const activeTimers = tTimers.filter((t) => t.mode).slice(0, 2)
+	const activeTimers = getRundownTTimers(tTimers)
+		.filter((t) => t.mode)
+		.slice(0, 2)
 	if (activeTimers.length == 0) return null
 
 	return (
