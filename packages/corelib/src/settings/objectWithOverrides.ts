@@ -52,9 +52,11 @@ export function wrapDefaultObject<T extends object>(obj: T): ObjectWithOverrides
 		overrides: [],
 	}
 }
-export function isObjectWithOverrides<T extends object>(o: ObjectWithOverrides<T> | T): o is ObjectWithOverrides<T> {
+export function isObjectWithOverrides<T extends object>(
+	o: ObjectWithOverrides<T> | T | ReadonlyDeep<ObjectWithOverrides<T>> | undefined | null
+): o is ObjectWithOverrides<T> {
 	const oAny = o as any
-	return typeof oAny.defaults === 'object' && Array.isArray(oAny.overrides)
+	return oAny != null && typeof oAny.defaults === 'object' && oAny.defaults != null && Array.isArray(oAny.overrides)
 }
 /**
  * In some cases, an ObjectWithOverrides should have no defaults. This is common for when the user owns the object containing the ObjectWithOverrides.
@@ -194,10 +196,19 @@ function recursivelyGenerateOverrides<T extends object>(
  * Note: No validation is done to make sure the type conforms to the typescript definition. It is assumed that the definitions which drive ui ensure that they dont violate the typings, and that any changes will be backwards compatible with old overrides
  */
 export function applyAndValidateOverrides<T extends object>(
-	obj: ReadonlyDeep<ObjectWithOverrides<T>>
+	obj: ReadonlyDeep<ObjectWithOverrides<T>> | undefined | null
 ): ApplyOverridesResult<T> {
+	if (obj == null || !isObjectWithOverrides(obj)) {
+		return {
+			obj: {} as T,
+			preserve: [],
+			unused: [],
+			invalid: [],
+		}
+	}
+
 	const result: ApplyOverridesResult<T> = {
-		obj: clone(obj.defaults),
+		obj: clone(obj.defaults) as T,
 		preserve: [],
 		unused: [],
 		invalid: [],
