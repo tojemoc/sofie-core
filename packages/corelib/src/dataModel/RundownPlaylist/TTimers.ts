@@ -164,3 +164,15 @@ export interface RundownTTimer {
 	 * display: { ... } // some kind of options for how to display in the ui
 	 */
 }
+
+export const DEFAULT_RUNDOWN_T_TIMERS: [RundownTTimer, RundownTTimer, RundownTTimer] = [
+	{ index: 1, label: '', mode: null, state: null },
+	{ index: 2, label: '', mode: null, state: null },
+	{ index: 3, label: '', mode: null, state: null },
+]
+
+export function getRundownTTimers(
+	tTimers: [RundownTTimer, RundownTTimer, RundownTTimer] | null | undefined
+): [RundownTTimer, RundownTTimer, RundownTTimer] {
+	return tTimers ?? DEFAULT_RUNDOWN_T_TIMERS
+}

@@ -1,5 +1,6 @@
 import {
 	type RundownTTimer,
+	getRundownTTimers,
 	timerStateToDuration,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
 
@@ -49,6 +50,8 @@ export function calculateTTimerOverUnder(timer: RundownTTimer, now: number): num
 	return projectedDuration - duration
 }
 
-export function getDefaultTTimer(tTimers: [RundownTTimer, RundownTTimer, RundownTTimer]): RundownTTimer | undefined {
-	return tTimers.find((t) => t.mode)
+export function getDefaultTTimer(
+	tTimers: [RundownTTimer, RundownTTimer, RundownTTimer] | null | undefined
+): RundownTTimer | undefined {
+	return getRundownTTimers(tTimers).find((t) => t.mode)
 }

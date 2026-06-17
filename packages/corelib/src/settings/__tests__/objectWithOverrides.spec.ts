@@ -22,6 +22,16 @@ interface BasicType {
 }
 
 describe('applyAndValidateOverrides', () => {
+	test('undefined input', () => {
+		const res = applyAndValidateOverrides<BasicType>(undefined)
+		expect(res).toBeTruthy()
+
+		expect(res.obj).toStrictEqual({})
+		expect(res.invalid).toHaveLength(0)
+		expect(res.preserve).toHaveLength(0)
+		expect(res.unused).toHaveLength(0)
+	})
+
 	test('no overrides', () => {
 		const inputObj = {
 			abc: 'def',
