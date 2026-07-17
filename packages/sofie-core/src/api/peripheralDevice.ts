@@ -1651,11 +1651,7 @@ export class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements 
 	): Promise<void> {
 		await PackageManagerIntegration.removePackageInfo(this, deviceId, deviceToken, type, packageId, removeDelay)
 	}
-	async getContentStatusForRundown(
-		deviceId: PeripheralDeviceId,
-		deviceToken: string,
-		rundownExternalId: string
-	) {
+	async getContentStatusForRundown(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
 		return RundownContentStatusIntegration.getContentStatusForRundown(
 			this,
 			deviceId,
