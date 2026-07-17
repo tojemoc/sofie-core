@@ -16,6 +16,7 @@ import {
 } from '../../publications/pieceContentStatusUI/checkPieceContentStatus'
 import { PieceContentStatusMessageFactory } from '../../publications/pieceContentStatusUI/messageFactory'
 import { interpollateTranslation, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 
 function formatStatusReason(
 	status: Awaited<ReturnType<typeof checkPieceContentStatusAndDependencies>>[0]
@@ -75,10 +76,14 @@ export namespace RundownContentStatusIntegration {
 			invalid: { $ne: true },
 		})
 
+		const sourceLayers = showStyleBase
+			? applyAndValidateOverrides(showStyleBase.sourceLayersWithOverrides).obj
+			: undefined
+
 		const pieces: RundownPieceContentStatus[] = []
 
 		for (const pieceDoc of pieceDocs) {
-			const sourceLayer = showStyleBase?.sourceLayers?.[pieceDoc.sourceLayerId]
+			const sourceLayer = sourceLayers?.[pieceDoc.sourceLayerId]
 			if (!sourceLayer) {
 				continue
 			}
