@@ -36,6 +36,7 @@ import { triggerWriteAccess, triggerWriteAccessBecauseNoCheckNecessary } from '.
 import { checkAccessAndGetPeripheralDevice } from '../security/check'
 import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
 import { PackageManagerIntegration } from './integration/expectedPackages'
+import { RundownContentStatusIntegration } from './integration/rundownContentStatus'
 import { profiler } from './profiler'
 import { QueueStudioJob, QueueOrUpdateStudioJob } from '../worker/worker'
 import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
@@ -1433,6 +1434,18 @@ class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements NewPeri
 		removeDelay?: number
 	) {
 		await PackageManagerIntegration.removePackageInfo(this, deviceId, deviceToken, type, packageId, removeDelay)
+	}
+	async getContentStatusForRundown(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	) {
+		return RundownContentStatusIntegration.getContentStatusForRundown(
+			this,
+			deviceId,
+			deviceToken,
+			rundownExternalId
+		)
 	}
 	// --- Triggers ---
 	/**

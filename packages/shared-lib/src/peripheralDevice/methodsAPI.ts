@@ -34,6 +34,7 @@ import type {
 } from './peripheralDeviceAPI.js'
 import type { PeripheralDeviceExternalEvent } from './externalEvents.js'
 import type { MediaObject } from '../core/model/MediaObjects.js'
+import type { RundownContentStatusResponse } from './rundownContentStatus.js'
 
 export type UpdateExpectedPackageWorkStatusesChanges =
 	| {
@@ -323,6 +324,13 @@ export interface NewPeripheralDeviceAPI {
 		removeDelay?: number
 	): Promise<void>
 
+	/** Read-only piece content status for a rundown (by ingest external id). */
+	getContentStatusForRundown(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownContentStatusResponse>
+
 	/**
 	 * This method is being called by a Peripheral Device handling external triggers when it receives an external
 	 * trigger event or an external input changes it's state (a knob changes it's rotation, a joystick is moved, etc.)
@@ -432,6 +440,7 @@ export enum PeripheralDeviceAPIMethods {
 	'fetchPackageInfoMetadata' = 'peripheralDevice.packageManager.fetchPackageInfoMetadata',
 	'updatePackageInfo' = 'peripheralDevice.packageManager.updatePackageInfo',
 	'removePackageInfo' = 'peripheralDevice.packageManager.removePackageInfo',
+	'getContentStatusForRundown' = 'peripheralDevice.packageManager.getContentStatusForRundown',
 
 	'requestUserAuthToken' = 'peripheralDevice.spreadsheet.requestUserAuthToken',
 	'storeAccessToken' = 'peripheralDevice.spreadsheet.storeAccessToken',
