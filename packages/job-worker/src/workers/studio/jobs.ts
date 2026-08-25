@@ -46,11 +46,7 @@ import { handleTimelineTriggerTime, handleOnPlayoutPlaybackChanged } from '../..
 import { handleOnExternalEvents } from '../../playout/externalEvents.js'
 import { handleExecuteAdlibAction } from '../../playout/adlibAction.js'
 import { handleTakeNextPart } from '../../playout/take.js'
-import {
-	handlePauseCurrentPart,
-	handleResumeCurrentPart,
-	handleTakePreviousPart,
-} from '../../playout/pausePlayback.js'
+import { handlePauseCurrentPart, handleResumeCurrentPart, handleTakePreviousPart } from '../../playout/pausePlayback.js'
 import { handleClearQuickLoopMarkers, handleSetQuickLoopMarker } from '../../playout/quickLoopMarkers.js'
 import { handleActivateAdlibTesting } from '../../playout/adlibTesting.js'
 import { handleExecuteBucketAdLibOrAction } from '../../playout/bucketAdlibJobs.js'

@@ -2,7 +2,10 @@ import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { findPreviousPlayablePart } from '../pausePlayback.js'
 import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 
-function part(id: string, flags: { invalid?: boolean; floated?: boolean } = {}): Pick<DBPart, '_id' | 'invalid' | 'floated'> {
+function part(
+	id: string,
+	flags: { invalid?: boolean; floated?: boolean } = {}
+): Pick<DBPart, '_id' | 'invalid' | 'floated'> {
 	return {
 		_id: protectString(id),
 		invalid: flags.invalid,

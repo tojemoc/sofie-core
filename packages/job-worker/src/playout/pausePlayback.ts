@@ -18,9 +18,10 @@ import { setNextPartFromPart } from './setNext.js'
 import { performTakeToNextedPart } from './take.js'
 import { updateTimeline } from './timeline/generate.js'
 
-export function findPreviousPlayablePart<
-	T extends Pick<ReadonlyDeep<DBPart>, '_id' | 'invalid' | 'floated'>,
->(orderedParts: readonly T[], currentPartId: PartId): T | undefined {
+export function findPreviousPlayablePart<T extends Pick<ReadonlyDeep<DBPart>, '_id' | 'invalid' | 'floated'>>(
+	orderedParts: readonly T[],
+	currentPartId: PartId
+): T | undefined {
 	const currentIndex = orderedParts.findIndex((part) => part._id === currentPartId)
 	if (currentIndex <= 0) {
 		return undefined
@@ -40,7 +41,11 @@ function isVideoClipLayerType(type: SourceLayerType | undefined): boolean {
 	return type === SourceLayerType.VT || type === SourceLayerType.LIVE_SPEAK
 }
 
-async function pauseCurrentPartInner(context: JobContext, playoutModel: PlayoutModel, stopClips: boolean): Promise<void> {
+async function pauseCurrentPartInner(
+	context: JobContext,
+	playoutModel: PlayoutModel,
+	stopClips: boolean
+): Promise<void> {
 	const playlist = playoutModel.playlist
 	if (!playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
 
@@ -66,7 +71,8 @@ async function pauseCurrentPartInner(context: JobContext, playoutModel: PlayoutM
 				playoutModel,
 				showStyle.sourceLayers,
 				currentPartInstance,
-				(pieceInstance) => isVideoClipLayerType(showStyle.sourceLayers[pieceInstance.piece.sourceLayerId]?.type),
+				(pieceInstance) =>
+					isVideoClipLayerType(showStyle.sourceLayers[pieceInstance.piece.sourceLayerId]?.type),
 				undefined
 			)
 		}
@@ -83,8 +89,10 @@ export async function handlePauseCurrentPart(context: JobContext, data: PauseCur
 		context,
 		data,
 		async (playoutModel) => {
-			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.activationId)
+				throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo)
+				throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			await pauseCurrentPartInner(context, playoutModel, true)
@@ -100,8 +108,10 @@ export async function handleResumeCurrentPart(context: JobContext, data: ResumeC
 		context,
 		data,
 		async (playoutModel) => {
-			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.activationId)
+				throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo)
+				throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			const currentPartInstance = playoutModel.currentPartInstance
@@ -130,8 +140,10 @@ export async function handleTakePreviousPart(
 		context,
 		data,
 		async (playoutModel) => {
-			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.activationId)
+				throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo)
+				throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			const currentPartInstance = playoutModel.currentPartInstance

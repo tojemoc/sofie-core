@@ -39,10 +39,7 @@ import {
 const MINIMAL_NONZERO_DURATION = 1
 
 /** Wall clock used for a part's played/remaining math. Freeze when `timings.pausedAt` is set. */
-export function getPartPlaybackClock(
-	partInstance: Pick<PartInstance, 'timings'>,
-	now: number
-): number {
+export function getPartPlaybackClock(partInstance: Pick<PartInstance, 'timings'>, now: number): number {
 	const pausedAt = partInstance.timings?.pausedAt
 	if (typeof pausedAt === 'number' && Number.isFinite(pausedAt)) {
 		return Math.min(pausedAt, now)
