@@ -171,6 +171,30 @@ class RundownPlaylistOperationsService {
 		}
 	}
 
+	public executePauseCurrentPart(t: i18next.TFunction, e: EventLike): void {
+		if (this.userPermissions.studio && this.playlist.activationId) {
+			doUserAction(t, e, UserAction.PAUSE_CURRENT_PART, async (e, ts) =>
+				MeteorCall.userAction.pauseCurrentPart(e, ts, this.playlist._id)
+			)
+		}
+	}
+
+	public executeResumeCurrentPart(t: i18next.TFunction, e: EventLike): void {
+		if (this.userPermissions.studio && this.playlist.activationId) {
+			doUserAction(t, e, UserAction.RESUME_CURRENT_PART, async (e, ts) =>
+				MeteorCall.userAction.resumeCurrentPart(e, ts, this.playlist._id)
+			)
+		}
+	}
+
+	public executeTakePreviousPart(t: i18next.TFunction, e: EventLike): void {
+		if (this.userPermissions.studio && this.playlist.activationId) {
+			doUserAction(t, e, UserAction.TAKE_PREVIOUS_PART, async (e, ts) =>
+				MeteorCall.userAction.takePreviousPart(e, ts, this.playlist._id)
+			)
+		}
+	}
+
 	public executeClearQuickLoop(t: i18next.TFunction, e: EventLike) {
 		if (this.userPermissions.studio && this.playlist.activationId) {
 			doUserAction(t, e, UserAction.CLEAR_QUICK_LOOP, async (e, ts) =>
@@ -589,6 +613,9 @@ class RundownPlaylistOperationsService {
 export interface RundownPlaylistOperations {
 	take: (e: EventLike) => void
 	hold: (e: EventLike) => void
+	pauseCurrentPart: (e: EventLike) => void
+	resumeCurrentPart: (e: EventLike) => void
+	takePreviousPart: (e: EventLike) => void
 	clearQuickLoop: (e: EventLike) => void
 	activate: (e: EventLike) => void
 	activateRehearsal: (e: EventLike) => void
@@ -637,6 +664,9 @@ export function RundownPlaylistOperationsContextProvider({
 			({
 				take: (e) => service.executeTake(t, e),
 				hold: (e) => service.executeHold(t, e),
+				pauseCurrentPart: (e) => service.executePauseCurrentPart(t, e),
+				resumeCurrentPart: (e) => service.executeResumeCurrentPart(t, e),
+				takePreviousPart: (e) => service.executeTakePreviousPart(t, e),
 				clearQuickLoop: (e) => service.executeClearQuickLoop(t, e),
 				activate: (e) => service.executeActivate(t, e),
 				activateRehearsal: (e) => service.executeActivateRehearsal(t, e),

@@ -86,4 +86,9 @@ export interface PartInstanceTimings {
 	reportedStartedPlayback?: Time
 	/** Point in time the Part stopped playing (ie the time of the playout) */
 	reportedStoppedPlayback?: Time
+	/**
+	 * When set, on-air countdown (časovka) is frozen at this timestamp.
+	 * Cleared on the next Take or Resume.
+	 */
+	pausedAt?: Time
 }

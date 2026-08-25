@@ -39,6 +39,21 @@ export interface NewUserActionAPI {
 		rundownPlaylistId: RundownPlaylistId,
 		fromPartInstanceId: PartInstanceId | null
 	): Promise<ClientAPI.ClientResponse<TakeNextPartResult>>
+	pauseCurrentPart(
+		userEvent: string,
+		eventTime: Time,
+		rundownPlaylistId: RundownPlaylistId
+	): Promise<ClientAPI.ClientResponse<void>>
+	resumeCurrentPart(
+		userEvent: string,
+		eventTime: Time,
+		rundownPlaylistId: RundownPlaylistId
+	): Promise<ClientAPI.ClientResponse<void>>
+	takePreviousPart(
+		userEvent: string,
+		eventTime: Time,
+		rundownPlaylistId: RundownPlaylistId
+	): Promise<ClientAPI.ClientResponse<TakeNextPartResult>>
 	setNext(
 		userEvent: string,
 		eventTime: Time,
@@ -358,6 +373,9 @@ export interface NewUserActionAPI {
 
 export enum UserActionAPIMethods {
 	'take' = 'userAction.take',
+	'pauseCurrentPart' = 'userAction.pauseCurrentPart',
+	'resumeCurrentPart' = 'userAction.resumeCurrentPart',
+	'takePreviousPart' = 'userAction.takePreviousPart',
 	'setNext' = 'userAction.setNext',
 	'setNextSegment' = 'userAction.setNextSegment',
 	'queueNextSegment' = 'userAction.queueNextSegment',

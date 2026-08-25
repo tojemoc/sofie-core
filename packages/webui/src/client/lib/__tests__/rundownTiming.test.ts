@@ -2635,4 +2635,47 @@ describe('findPartInstancesInQuickLoop', () => {
 
 		expect(result).toEqual({})
 	})
+
+	it('Freezes remainingTimeOnCurrentPart when timings.pausedAt is set', () => {
+		const timing = new RundownTimingCalculator()
+		const playlist: DBRundownPlaylist = makeMockPlaylist()
+		playlist.timing = {
+			type: 'none' as any,
+		}
+		const rundownId1 = 'rundown1'
+		const segmentId1 = 'segment1'
+		const segmentsMap: Map<SegmentId, DBSegment> = new Map()
+		segmentsMap.set(protectString<SegmentId>(segmentId1), makeMockSegment(segmentId1, 0, rundownId1))
+		const parts: DBPart[] = [makeMockPart('part1', 0, rundownId1, segmentId1, { expectedDuration: 10000 })]
+		const partInstancesMap: Map<PartId, PartInstance> = new Map(
+			parts.map((part) => [part._id, wrapPartToTemporaryInstance(protectString('active'), part)])
+		)
+		const partInstances = Array.from(partInstancesMap.values())
+		partInstances[0].timings = {
+			take: 0,
+			plannedStartedPlayback: 0,
+			pausedAt: 2000,
+		}
+		playlist.currentPartInfo = {
+			partInstanceId: partInstances[0]._id,
+			rundownId: protectString<RundownId>(rundownId1),
+			manuallySelected: false,
+			consumesQueuedSegmentId: false,
+		}
+		const rundown = makeMockRundown(rundownId1, playlist)
+		const live = timing.updateDurations(
+			4000,
+			false,
+			playlist,
+			[rundown],
+			rundown,
+			partInstances,
+			partInstancesMap,
+			segmentsMap,
+			DEFAULT_DURATION,
+			{}
+		)
+		expect(live.remainingTimeOnCurrentPart).toBe(8000)
+		expect(live.partPlayed?.[unprotectString(parts[0]._id)]).toBe(2000)
+	})
 })

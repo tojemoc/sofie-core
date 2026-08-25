@@ -118,6 +118,51 @@ class ServerUserActionAPI
 			}
 		)
 	}
+	async pauseCurrentPart(userEvent: string, eventTime: Time, rundownPlaylistId: RundownPlaylistId) {
+		return ServerClientAPI.runUserActionInLogForPlaylistOnWorker(
+			this,
+			userEvent,
+			eventTime,
+			rundownPlaylistId,
+			() => {
+				check(rundownPlaylistId, String)
+			},
+			StudioJobs.PauseCurrentPart,
+			{
+				playlistId: rundownPlaylistId,
+			}
+		)
+	}
+	async resumeCurrentPart(userEvent: string, eventTime: Time, rundownPlaylistId: RundownPlaylistId) {
+		return ServerClientAPI.runUserActionInLogForPlaylistOnWorker(
+			this,
+			userEvent,
+			eventTime,
+			rundownPlaylistId,
+			() => {
+				check(rundownPlaylistId, String)
+			},
+			StudioJobs.ResumeCurrentPart,
+			{
+				playlistId: rundownPlaylistId,
+			}
+		)
+	}
+	async takePreviousPart(userEvent: string, eventTime: Time, rundownPlaylistId: RundownPlaylistId) {
+		return ServerClientAPI.runUserActionInLogForPlaylistOnWorker(
+			this,
+			userEvent,
+			eventTime,
+			rundownPlaylistId,
+			() => {
+				check(rundownPlaylistId, String)
+			},
+			StudioJobs.TakePreviousPart,
+			{
+				playlistId: rundownPlaylistId,
+			}
+		)
+	}
 	async setNext(
 		userEvent: string,
 		eventTime: Time,

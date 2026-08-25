@@ -194,6 +194,12 @@ export interface PlayoutPartInstanceModel {
 	setReportedStoppedPlaybackWithPieceInstances(time: Time): boolean
 
 	/**
+	 * Freeze or unfreeze the on-air clock for this PartInstance.
+	 * Pass a timestamp to pause; pass undefined to resume.
+	 */
+	setPausedPlayback(time: Time | undefined): void
+
+	/**
 	 * Set the rank of this PartInstance, to update it's position in the Segment
 	 * @param rank New rank
 	 */

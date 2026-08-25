@@ -65,6 +65,7 @@ export enum UserErrorMessage {
 	RateLimitExceeded = 49,
 	SystemSingleStudio = 50,
 	TakePartInstanceInvalid = 51,
+	TakeNoPreviousPart = 52,
 }
 
 const UserErrorMessagesTranslations: { [key in UserErrorMessage]: string } = {
@@ -128,6 +129,7 @@ const UserErrorMessagesTranslations: { [key in UserErrorMessage]: string } = {
 	[UserErrorMessage.RateLimitExceeded]: t(`Rate limit exceeded`),
 	[UserErrorMessage.SystemSingleStudio]: t(`System must have exactly one studio`),
 	[UserErrorMessage.TakePartInstanceInvalid]: t(`Part has issues and cannot be taken`),
+	[UserErrorMessage.TakeNoPreviousPart]: t(`No previous part to take`),
 }
 
 export interface SerializedUserError {
