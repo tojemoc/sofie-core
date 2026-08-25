@@ -2637,6 +2637,7 @@ describe('findPartInstancesInQuickLoop', () => {
 	})
 
 	it('Freezes remainingTimeOnCurrentPart when timings.pausedAt is set', () => {
+		// Use non-zero wall-clock times: `updateDurations` treats plannedStartedPlayback 0 as "not started".
 		const timing = new RundownTimingCalculator()
 		const playlist: DBRundownPlaylist = makeMockPlaylist()
 		playlist.timing = {
@@ -2652,9 +2653,9 @@ describe('findPartInstancesInQuickLoop', () => {
 		)
 		const partInstances = Array.from(partInstancesMap.values())
 		partInstances[0].timings = {
-			take: 0,
-			plannedStartedPlayback: 0,
-			pausedAt: 2000,
+			take: 1000,
+			plannedStartedPlayback: 1000,
+			pausedAt: 3000,
 		}
 		playlist.currentPartInfo = {
 			partInstanceId: partInstances[0]._id,
@@ -2664,7 +2665,7 @@ describe('findPartInstancesInQuickLoop', () => {
 		}
 		const rundown = makeMockRundown(rundownId1, playlist)
 		const live = timing.updateDurations(
-			4000,
+			5000,
 			false,
 			playlist,
 			[rundown],
