@@ -84,7 +84,7 @@ export async function handlePauseCurrentPart(context: JobContext, data: PauseCur
 		data,
 		async (playoutModel) => {
 			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.currentPartInstance) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			await pauseCurrentPartInner(context, playoutModel, true)
@@ -101,7 +101,7 @@ export async function handleResumeCurrentPart(context: JobContext, data: ResumeC
 		data,
 		async (playoutModel) => {
 			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.currentPartInstance) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			const currentPartInstance = playoutModel.currentPartInstance
@@ -131,7 +131,7 @@ export async function handleTakePreviousPart(
 		data,
 		async (playoutModel) => {
 			if (!playoutModel.playlist.activationId) throw UserError.create(UserErrorMessage.InactiveRundown, undefined, 412)
-			if (!playoutModel.currentPartInstance) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
+			if (!playoutModel.playlist.currentPartInfo) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
 			const currentPartInstance = playoutModel.currentPartInstance

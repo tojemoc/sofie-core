@@ -126,6 +126,12 @@ function userActionToLabel(userAction: UserAction, t: i18next.TFunction) {
 			return t('Setting as QuickLoop End')
 		case UserAction.CLEAR_QUICK_LOOP:
 			return t('Clear QuickLoop')
+		case UserAction.PAUSE_CURRENT_PART:
+			return t('Pause clock')
+		case UserAction.RESUME_CURRENT_PART:
+			return t('Resume clock')
+		case UserAction.TAKE_PREVIOUS_PART:
+			return t('Take Previous')
 		default:
 			assertNever(userAction)
 	}
