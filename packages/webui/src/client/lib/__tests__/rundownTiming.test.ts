@@ -9,7 +9,7 @@ import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { RundownTimingCalculator, type RundownTimingContext, findPartInstancesInQuickLoop } from '../rundownTiming.js'
-import { PlaylistTimingType, type SegmentTimingInfo } from '@sofie-automation/blueprints-integration'
+import { PlaylistTimingType, type SegmentTimingInfo, CountdownType } from '@sofie-automation/blueprints-integration'
 import type { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/src/playout/stateCacheResolver'
@@ -2678,5 +2678,86 @@ describe('findPartInstancesInQuickLoop', () => {
 		)
 		expect(live.remainingTimeOnCurrentPart).toBe(8000)
 		expect(live.partPlayed?.[unprotectString(parts[0]._id)]).toBe(2000)
+	})
+
+	it('Freezes segment budget duration while timings.pausedAt is set', () => {
+		const timing = new RundownTimingCalculator()
+		const playlist: DBRundownPlaylist = makeMockPlaylist()
+		playlist.activationId = protectString('activation')
+		const rundownId1 = 'rundown1'
+		const segmentId1 = 'segment1'
+		const segmentId2 = 'segment2'
+		const segmentPlayoutId1 = protectString('seg-playout-1')
+		const segmentsMap: Map<SegmentId, DBSegment> = new Map()
+		segmentsMap.set(
+			protectString<SegmentId>(segmentId1),
+			makeMockSegment(segmentId1, 0, rundownId1, {
+				budgetDuration: 5000,
+				countdownType: CountdownType.SEGMENT_BUDGET_DURATION,
+			})
+		)
+		segmentsMap.set(
+			protectString<SegmentId>(segmentId2),
+			makeMockSegment(segmentId2, 0, rundownId1, { budgetDuration: 3000 })
+		)
+		const parts: DBPart[] = [
+			makeMockPart('part1', 0, rundownId1, segmentId1, { expectedDuration: 1000 }),
+			makeMockPart('part2', 0, rundownId1, segmentId1, { expectedDuration: 1000 }),
+			makeMockPart('part3', 0, rundownId1, segmentId2, { expectedDuration: 1000 }),
+		]
+		const partInstances = parts.map((part) => wrapPartToTemporaryInstance(protectString('active'), part))
+		partInstances[0].isTemporary = false
+		partInstances[0].segmentPlayoutId = segmentPlayoutId1
+		partInstances[0].timings = {
+			take: 1000,
+			plannedStartedPlayback: 1000,
+			pausedAt: 3000,
+		}
+		partInstances[1].segmentPlayoutId = segmentPlayoutId1
+		partInstances[2].segmentPlayoutId = protectString('seg-playout-2')
+		playlist.segmentsStartedPlayback = {
+			[unprotectString(segmentPlayoutId1)]: 1000,
+		}
+		playlist.currentPartInfo = {
+			partInstanceId: partInstances[0]._id,
+			rundownId: protectString<RundownId>(rundownId1),
+			manuallySelected: false,
+			consumesQueuedSegmentId: false,
+		}
+		const rundown = makeMockRundown(rundownId1, playlist)
+		const partInstancesMap: Map<PartId, PartInstance> = new Map(
+			partInstances.map((partInstance) => [partInstance.part._id, partInstance])
+		)
+
+		const atPause = timing.updateDurations(
+			3500,
+			false,
+			playlist,
+			[rundown],
+			rundown,
+			partInstances,
+			partInstancesMap,
+			segmentsMap,
+			DEFAULT_DURATION,
+			{}
+		)
+		const wallClockLater = timing.updateDurations(
+			10000,
+			false,
+			playlist,
+			[rundown],
+			rundown,
+			partInstances,
+			partInstancesMap,
+			segmentsMap,
+			DEFAULT_DURATION,
+			{}
+		)
+
+		expect(wallClockLater.remainingPlaylistDuration).toBe(atPause.remainingPlaylistDuration)
+		expect(wallClockLater.asPlayedPlaylistDuration).toBe(atPause.asPlayedPlaylistDuration)
+		// Without the paused clock, wall-clock advancement would change these values.
+		expect(wallClockLater.asPlayedPlaylistDuration).not.toBe(12000)
+		expect(wallClockLater.remainingPlaylistDuration).not.toBe(0)
 	})
 })

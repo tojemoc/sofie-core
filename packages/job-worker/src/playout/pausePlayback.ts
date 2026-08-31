@@ -134,8 +134,6 @@ export async function handleTakePreviousPart(
 	context: JobContext,
 	data: TakePreviousPartProps
 ): Promise<TakeNextPartResult> {
-	const now = getCurrentTime()
-
 	return runJobWithPlayoutModel(
 		context,
 		data,
@@ -146,6 +144,8 @@ export async function handleTakePreviousPart(
 				throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 		},
 		async (playoutModel) => {
+			const now = getCurrentTime()
+
 			const currentPartInstance = playoutModel.currentPartInstance
 			if (!currentPartInstance) throw UserError.create(UserErrorMessage.NoCurrentPart, undefined, 412)
 
@@ -161,7 +161,7 @@ export async function handleTakePreviousPart(
 			await performTakeToNextedPart(context, playoutModel, now, undefined)
 
 			const takenPart = playoutModel.currentPartInstance
-			takenPart?.setPausedPlayback(getCurrentTime())
+			takenPart?.setPausedPlayback(now)
 			await updateTimeline(context, playoutModel)
 
 			return {

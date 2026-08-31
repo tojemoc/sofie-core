@@ -148,6 +148,7 @@ export class RundownTimingCalculator {
 
 		let nextAIndex = -1
 		let currentAIndex = -1
+		let liveClockNow = now
 
 		let lastSegmentIds: { segmentId: SegmentId; segmentPlayoutId: SegmentPlayoutId } | undefined = undefined
 		let nextRundownAnchor: number | undefined = undefined
@@ -193,9 +194,9 @@ export class RundownTimingCalculator {
 										unprotectString(liveSegmentIds.segmentPlayoutId)
 									] ??
 										lastStartedPlayback ??
-										now) +
+										liveClockNow) +
 									budgetDuration -
-									now
+									liveClockNow
 							}
 						}
 					}
@@ -219,6 +220,7 @@ export class RundownTimingCalculator {
 					this.nextSegmentId = partInstance.segmentId
 				} else if (playlist.currentPartInfo?.partInstanceId === partInstance._id) {
 					currentAIndex = aIndex
+					liveClockNow = getPartPlaybackClock(partInstance, now)
 					liveSegmentIds = {
 						segmentId: partInstance.segmentId,
 						segmentPlayoutId: partInstance.segmentPlayoutId,
@@ -620,10 +622,10 @@ export class RundownTimingCalculator {
 						playlist.segmentsStartedPlayback?.[unprotectString(liveSegmentIds.segmentPlayoutId)]
 					valToAddToRundownRemainingDuration = Math.max(
 						0,
-						segmentBudgetDuration - (startedPlayback ? now - startedPlayback : 0)
+						segmentBudgetDuration - (startedPlayback ? liveClockNow - startedPlayback : 0)
 					)
 					valToAddToRundownAsPlayedDuration = Math.max(
-						startedPlayback ? now - startedPlayback : 0,
+						startedPlayback ? liveClockNow - startedPlayback : 0,
 						segmentBudgetDuration
 					)
 				} else if (!playlist.activationId || (nextSegmentIndex >= 0 && itIndex >= nextSegmentIndex)) {
