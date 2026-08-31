@@ -38,6 +38,15 @@ import {
 // Minimum duration that a part can be assigned. Used by gap parts to allow them to "compress" to indicate time running out.
 const MINIMAL_NONZERO_DURATION = 1
 
+/** Wall clock used for a part's played/remaining math. Freeze when `timings.pausedAt` is set. */
+export function getPartPlaybackClock(partInstance: Pick<PartInstance, 'timings'>, now: number): number {
+	const pausedAt = partInstance.timings?.pausedAt
+	if (typeof pausedAt === 'number' && Number.isFinite(pausedAt)) {
+		return Math.min(pausedAt, now)
+	}
+	return now
+}
+
 interface BreakProps {
 	rundownsBeforeNextBreak: Rundown[]
 	breakIsLastRundown: boolean
@@ -139,6 +148,7 @@ export class RundownTimingCalculator {
 
 		let nextAIndex = -1
 		let currentAIndex = -1
+		let liveClockNow = now
 
 		let lastSegmentIds: { segmentId: SegmentId; segmentPlayoutId: SegmentPlayoutId } | undefined = undefined
 		let nextRundownAnchor: number | undefined = undefined
@@ -169,6 +179,7 @@ export class RundownTimingCalculator {
 					(partInstance.timings?.plannedStartedPlayback ?? 0) <= now
 						? partInstance.timings?.plannedStartedPlayback
 						: undefined
+				const clockNow = getPartPlaybackClock(partInstance, now)
 
 				if (!lastSegmentIds || partInstance.segmentId !== lastSegmentIds.segmentId) {
 					this.untimedSegments.add(partInstance.segmentId)
@@ -183,9 +194,9 @@ export class RundownTimingCalculator {
 										unprotectString(liveSegmentIds.segmentPlayoutId)
 									] ??
 										lastStartedPlayback ??
-										now) +
+										liveClockNow) +
 									budgetDuration -
-									now
+									liveClockNow
 							}
 						}
 					}
@@ -209,6 +220,7 @@ export class RundownTimingCalculator {
 					this.nextSegmentId = partInstance.segmentId
 				} else if (playlist.currentPartInfo?.partInstanceId === partInstance._id) {
 					currentAIndex = aIndex
+					liveClockNow = getPartPlaybackClock(partInstance, now)
 					liveSegmentIds = {
 						segmentId: partInstance.segmentId,
 						segmentPlayoutId: partInstance.segmentPlayoutId,
@@ -293,7 +305,7 @@ export class RundownTimingCalculator {
 					partDuration =
 						Math.max(
 							duration || calculatePartInstanceExpectedDurationWithTransition(partInstance) || 0,
-							now - lastStartedPlayback
+							clockNow - lastStartedPlayback
 						) - playOffset
 					// because displayDurationGroups have no actual timing on them, we need to have a copy of the
 					// partDisplayDuration, but calculated as if it's not playing, so that the countdown can be
@@ -304,8 +316,8 @@ export class RundownTimingCalculator {
 							? displayDurationFromGroup
 							: calculatePartInstanceExpectedDurationWithTransition(partInstance)) ||
 						defaultDuration
-					partDisplayDuration = Math.max(partDisplayDurationNoPlayback, now - lastStartedPlayback)
-					this.partPlayed[partInstanceOrPartId] = now - lastStartedPlayback
+					partDisplayDuration = Math.max(partDisplayDurationNoPlayback, clockNow - lastStartedPlayback)
+					this.partPlayed[partInstanceOrPartId] = clockNow - lastStartedPlayback
 					const segmentStartedPlayback =
 						playlist.segmentsStartedPlayback?.[unprotectString(partInstance.segmentPlayoutId)] ??
 						lastStartedPlayback
@@ -314,7 +326,7 @@ export class RundownTimingCalculator {
 					if (segmentUsesBudget) {
 						currentRemaining = Math.max(
 							0,
-							segmentBudget - segmentDisplayDuration - (now - segmentStartedPlayback)
+							segmentBudget - segmentDisplayDuration - (clockNow - segmentStartedPlayback)
 						)
 						segmentBudgetDurationLeft = 0
 					} else {
@@ -325,7 +337,7 @@ export class RundownTimingCalculator {
 									? displayDurationFromGroup
 									: calculatePartInstanceExpectedDurationWithTransition(partInstance)) ||
 								0) -
-								(now - lastStartedPlayback)
+								(clockNow - lastStartedPlayback)
 						)
 					}
 				} else {
@@ -357,7 +369,7 @@ export class RundownTimingCalculator {
 						let valToAddToAsPlayedDuration = 0
 
 						if (lastStartedPlayback && !partInstance.timings?.duration) {
-							valToAddToAsPlayedDuration = Math.max(partExpectedDuration, now - lastStartedPlayback)
+							valToAddToAsPlayedDuration = Math.max(partExpectedDuration, clockNow - lastStartedPlayback)
 						} else if (partInstance.timings?.duration) {
 							valToAddToAsPlayedDuration = partInstance.timings.duration
 						} else if (partCounts) {
@@ -402,7 +414,7 @@ export class RundownTimingCalculator {
 									calculatePartInstanceExpectedDurationWithTransition(partInstance) || 0
 								)
 							: calculatePartInstanceExpectedDurationWithTransition(partInstance) || 0,
-						now - lastStartedPlayback
+						clockNow - lastStartedPlayback
 					)
 				} else {
 					asDisplayedRundownDuration +=
@@ -489,10 +501,10 @@ export class RundownTimingCalculator {
 						lastStartedPlayback &&
 						!partInstance.timings?.duration &&
 						playlist.currentPartInfo?.partInstanceId === partInstance._id &&
-						lastStartedPlayback + partExpectedDuration > now &&
+						lastStartedPlayback + partExpectedDuration > clockNow &&
 						!partIsUntimed
 					) {
-						remainingRundownDuration += Math.max(0, partExpectedDuration - (now - lastStartedPlayback))
+						remainingRundownDuration += Math.max(0, partExpectedDuration - (clockNow - lastStartedPlayback))
 					}
 				}
 
@@ -610,10 +622,10 @@ export class RundownTimingCalculator {
 						playlist.segmentsStartedPlayback?.[unprotectString(liveSegmentIds.segmentPlayoutId)]
 					valToAddToRundownRemainingDuration = Math.max(
 						0,
-						segmentBudgetDuration - (startedPlayback ? now - startedPlayback : 0)
+						segmentBudgetDuration - (startedPlayback ? liveClockNow - startedPlayback : 0)
 					)
 					valToAddToRundownAsPlayedDuration = Math.max(
-						startedPlayback ? now - startedPlayback : 0,
+						startedPlayback ? liveClockNow - startedPlayback : 0,
 						segmentBudgetDuration
 					)
 				} else if (!playlist.activationId || (nextSegmentIndex >= 0 && itIndex >= nextSegmentIndex)) {
@@ -638,6 +650,7 @@ export class RundownTimingCalculator {
 			const currentLivePart = currentLivePartInstance.part
 
 			const lastStartedPlayback = currentLivePartInstance.timings?.plannedStartedPlayback
+			const clockNow = getPartPlaybackClock(currentLivePartInstance, now)
 
 			let onAirPartDuration =
 				currentLivePartInstance.timings?.duration ||
@@ -654,7 +667,7 @@ export class RundownTimingCalculator {
 
 			remainingTimeOnCurrentPart =
 				typeof lastStartedPlayback === 'number'
-					? Math.min(lastStartedPlayback, now) + onAirPartDuration - now
+					? Math.min(lastStartedPlayback, clockNow) + onAirPartDuration - clockNow
 					: onAirPartDuration
 
 			currentPartWillAutoNext = !!(currentLivePart.autoNext && currentLivePart.expectedDuration)

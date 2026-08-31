@@ -505,6 +505,16 @@ export class PlayoutPartInstanceModelImpl implements PlayoutPartInstanceModel {
 		return setOnAll
 	}
 
+	setPausedPlayback(time: Time | undefined): void {
+		const timings = { ...this.partInstanceImpl.timings }
+		if (time === undefined) {
+			delete timings.pausedAt
+		} else {
+			timings.pausedAt = time
+		}
+		this.#compareAndSetPartInstanceValue('timings', timings, true)
+	}
+
 	setRank(rank: number): void {
 		this.#compareAndSetPartValue('_rank', rank)
 	}
@@ -515,6 +525,7 @@ export class PlayoutPartInstanceModelImpl implements PlayoutPartInstanceModel {
 		const timings = { ...this.partInstanceImpl.timings }
 		timings.take = takeTime
 		timings.playOffset = playOffset ?? 0
+		delete timings.pausedAt
 
 		if (playOffset !== null) {
 			// Shift the startedPlayback into the past, to cause playout to start a while into the Part:

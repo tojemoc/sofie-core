@@ -107,6 +107,18 @@ export enum StudioJobs {
 	 */
 	TakeNextPart = 'takeNextPart',
 	/**
+	 * Freeze the current part clock (časovka) and stop rolling VT/VO clips
+	 */
+	PauseCurrentPart = 'pauseCurrentPart',
+	/**
+	 * Resume a frozen current-part clock
+	 */
+	ResumeCurrentPart = 'resumeCurrentPart',
+	/**
+	 * Take the previous playable Part and freeze its clock
+	 */
+	TakePreviousPart = 'takePreviousPart',
+	/**
 	 * Disable the next Piece which allows being disabled
 	 */
 	DisableNextPiece = 'disableNextPiece',
@@ -342,6 +354,9 @@ export interface ExecuteActionResult {
 export interface TakeNextPartProps extends RundownPlayoutPropsBase {
 	fromPartInstanceId: PartInstanceId | null
 }
+export type PauseCurrentPartProps = RundownPlayoutPropsBase
+export type ResumeCurrentPartProps = RundownPlayoutPropsBase
+export type TakePreviousPartProps = RundownPlayoutPropsBase
 export interface DisableNextPieceProps extends RundownPlayoutPropsBase {
 	undo: boolean
 }
@@ -514,6 +529,9 @@ export type StudioJobFunc = {
 	[StudioJobs.ExecuteAction]: (data: ExecuteActionProps) => ExecuteActionResult
 	[StudioJobs.ExecuteBucketAdLibOrAction]: (data: ExecuteBucketAdLibOrActionProps) => ExecuteActionResult
 	[StudioJobs.TakeNextPart]: (data: TakeNextPartProps) => TakeNextPartResult
+	[StudioJobs.PauseCurrentPart]: (data: PauseCurrentPartProps) => void
+	[StudioJobs.ResumeCurrentPart]: (data: ResumeCurrentPartProps) => void
+	[StudioJobs.TakePreviousPart]: (data: TakePreviousPartProps) => TakeNextPartResult
 	[StudioJobs.DisableNextPiece]: (data: DisableNextPieceProps) => void
 	[StudioJobs.RemovePlaylist]: (data: RemovePlaylistProps) => void
 	[StudioJobs.RegeneratePlaylist]: (data: RegeneratePlaylistProps) => void

@@ -113,6 +113,9 @@ export function RundownContextMenu({
 							<>
 								<MenuItem divider />
 								<MenuItem onClick={operations.take}>{t('Take')}</MenuItem>
+								<MenuItem onClick={operations.takePreviousPart}>{t('Take Previous')}</MenuItem>
+								<MenuItem onClick={operations.pauseCurrentPart}>{t('Pause clock')}</MenuItem>
+								<MenuItem onClick={operations.resumeCurrentPart}>{t('Resume clock')}</MenuItem>
 							</>
 						) : null}
 						{studio.settings.allowHold && playlist.activationId ? (
