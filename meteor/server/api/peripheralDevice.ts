@@ -37,6 +37,7 @@ import { checkAccessAndGetPeripheralDevice } from '../security/check'
 import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
 import { PackageManagerIntegration } from './integration/expectedPackages'
 import { RundownContentStatusIntegration } from './integration/rundownContentStatus'
+import { RundownPlayoutStateIntegration } from './integration/rundownPlayoutState'
 import { profiler } from './profiler'
 import { QueueStudioJob, QueueOrUpdateStudioJob } from '../worker/worker'
 import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
@@ -1442,6 +1443,9 @@ class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements NewPeri
 			deviceToken,
 			rundownExternalId
 		)
+	}
+	async getRundownPlayoutState(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+		return RundownPlayoutStateIntegration.getRundownPlayoutState(this, deviceId, deviceToken, rundownExternalId)
 	}
 	// --- Triggers ---
 	/**
