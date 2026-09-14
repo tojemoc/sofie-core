@@ -11304,6 +11304,16 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"casparcg-connection@patch:casparcg-connection@npm%3A7.0.0-0-nightly-main-20260323-110534-d8f740e6#./.yarn/patches/casparcg-connection-npm-7.0.0-0-nightly-main-20260323-110534-d8f740e6-28da74eecd.patch::locator=packages%40workspace%3A.":
+  version: 7.0.0-0-nightly-main-20260323-110534-d8f740e6
+  resolution: "casparcg-connection@patch:casparcg-connection@npm%3A7.0.0-0-nightly-main-20260323-110534-d8f740e6#./.yarn/patches/casparcg-connection-npm-7.0.0-0-nightly-main-20260323-110534-d8f740e6-28da74eecd.patch::version=7.0.0-0-nightly-main-20260323-110534-d8f740e6&hash=9af4c2&locator=packages%40workspace%3A."
+  dependencies:
+    tslib: "npm:^2.8.1"
+    xml2js: "npm:^0.6.2"
+  checksum: 10/3277d527213b63c7b98e1918badbd6f443a5389377bdfb197be676b1e651a528354495b07edaa5ee2f26bcf442ab4f18e52fc34d9f80f9a7b152c2e6b9d76061
+  languageName: node
+  linkType: hard
+
 "casparcg-state@npm:4.0.0-0-nightly-main-20260325-112946-587df8a":
   version: 4.0.0-0-nightly-main-20260325-112946-587df8a
   resolution: "casparcg-state@npm:4.0.0-0-nightly-main-20260325-112946-587df8a"
