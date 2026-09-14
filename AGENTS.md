@@ -70,3 +70,7 @@ Use a **tmux session** for `yarn dev` — it is long-running and starts multiple
 - `NODE_ENV` must **not** be `production` during install.
 - `yarn dev --ui-only` reduces CPU/memory if you only edit WebUI/Meteor code.
 - Pre-commit hook runs `yarn lint-staged` (via husky).
+- **DeckLink AMCP `DEVICE`:** `packages/.yarn/patches/casparcg-connection-*.patch` forces
+  PlayDecklink/LoadbgDecklink to emit `DECKLINK DEVICE <n>` (upstream omitted `DEVICE`).
+  Covered by `playout-gateway` `decklinkAmcp.spec.ts`. Rebuild/restart playout-gateway after
+  pulling; blueprint re-upload alone does not apply this fix.
