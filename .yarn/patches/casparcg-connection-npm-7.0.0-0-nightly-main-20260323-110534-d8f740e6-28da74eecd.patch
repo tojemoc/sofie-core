@@ -1,0 +1,13 @@
+diff --git a/dist/serializers.js b/dist/serializers.js
+index f0aca4468f4136bf53e2f0e8b0b0c9caf36cc16b..1c1f6686355dba0d4de124e0671ca3a55c319b90 100644
+--- a/dist/serializers.js
++++ b/dist/serializers.js
+@@ -15,7 +15,7 @@ const clipCommandSerializer = (_command, { clip, loop, inPoint, seek, length, cl
+     (seek !== undefined ? ' SEEK ' + seek : '') +
+     (length !== undefined ? ' LENGTH ' + length : '') +
+     (clearOn404 === true ? ' CLEAR_ON_404' : '');
+-const decklinkCommandSerializer = (_, { device, format }) => 'DECKLINK ' + device + (format ? ' FORMAT ' + format : '');
++const decklinkCommandSerializer = (_, { device, format }) => 'DECKLINK DEVICE ' + device + (format ? ' FORMAT ' + format : '');
+ const htmlCommandSerializerr = (_, { url }) => '[html] ' + url;
+ const routeCommandSerializer = (_, { route, mode, framesDelay }) => 'route://' +
+     route.channel +
