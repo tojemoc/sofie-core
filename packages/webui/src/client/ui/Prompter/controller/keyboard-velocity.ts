@@ -5,16 +5,22 @@
  * Matches QPrompt defaults: baseSpeed=1.0, curvature=1.15, default step=3, fast step=35.
  */
 
-export const KEYBOARD_VELOCITY_DEFAULTS = {
+export const KEYBOARD_VELOCITY_DEFAULTS: {
+	baseSpeed: number
+	curvature: number
+	/** Suggested step used when resuming after a full stop with no prior memory */
+	defaultStep: number
+	/** Absolute velocity step used while holding R / F */
+	fastStep: number
+	/** Max |step| (QPrompt velocity slider tops out at 20) */
+	maxStep: number
+} = {
 	baseSpeed: 1.0,
 	curvature: 1.15,
-	/** Suggested step used when resuming after a full stop with no prior memory */
 	defaultStep: 3,
-	/** Absolute velocity step used while holding R / F */
 	fastStep: 35,
-	/** Max |step| (QPrompt velocity slider tops out at 20) */
 	maxStep: 20,
-} as const
+}
 
 /** Pixels-per-frame scroll speed for a discrete velocity step. */
 export function velocityStepToSpeed(

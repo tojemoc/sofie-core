@@ -36,7 +36,7 @@ export class KeyboardController extends ControllerAbstract {
 
 	// --- SPEED mode (QPrompt-like) ---
 	private _velocityStep = 0
-	private _rememberedStep = KEYBOARD_VELOCITY_DEFAULTS.defaultStep
+	private _rememberedStep: number = KEYBOARD_VELOCITY_DEFAULTS.defaultStep
 	private _playing = true
 	private _winding = false
 	private _windingKey: string | null = null
@@ -215,7 +215,8 @@ export class KeyboardController extends ControllerAbstract {
 		if (this._winding) return
 		const atTop = window.scrollY <= 0
 		const atBottom =
-			window.scrollY + window.innerHeight >= (document.documentElement?.scrollHeight ?? document.body.scrollHeight) - 2
+			window.scrollY + window.innerHeight >=
+			(document.documentElement?.scrollHeight ?? document.body.scrollHeight) - 2
 		if (direction < 0 && atTop) {
 			this._velocityStep = 0
 			this._startSpeedScrolling()
