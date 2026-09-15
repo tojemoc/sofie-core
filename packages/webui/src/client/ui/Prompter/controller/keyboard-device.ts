@@ -10,6 +10,24 @@ import {
 const LOCALSTORAGE_MODE = 'prompter-controller-arrowkeys'
 const LOCALSTORAGE_VELOCITY = 'prompter-controller-keyboard-velocity'
 
+/** Read localStorage; returns null on SecurityError / quota / unavailable storage. */
+function safeLocalStorageGet(key: string): string | null {
+	try {
+		return localStorage.getItem(key)
+	} catch {
+		return null
+	}
+}
+
+/** Write localStorage; no-ops on SecurityError / quota / unavailable storage. */
+function safeLocalStorageSet(key: string, value: string): void {
+	try {
+		localStorage.setItem(key, value)
+	} catch {
+		// Keep in-memory controller state; persistence is best-effort.
+	}
+}
+
 /**
  * Keyboard control of the prompter.
  *
@@ -73,12 +91,12 @@ export class KeyboardController extends ControllerAbstract {
 		if (controlMode === Mode.NORMAL || controlMode === Mode.SPEED) {
 			this._mode = controlMode
 		} else {
-			const recalledMode = localStorage.getItem(LOCALSTORAGE_MODE)
+			const recalledMode = safeLocalStorageGet(LOCALSTORAGE_MODE)
 			this._mode = recalledMode === Mode.NORMAL ? Mode.NORMAL : Mode.SPEED
 		}
-		localStorage.setItem(LOCALSTORAGE_MODE, this._mode)
+		safeLocalStorageSet(LOCALSTORAGE_MODE, this._mode)
 
-		const recalledVelocity = localStorage.getItem(LOCALSTORAGE_VELOCITY)
+		const recalledVelocity = safeLocalStorageGet(LOCALSTORAGE_VELOCITY)
 		if (recalledVelocity !== null) {
 			const parsed = Number.parseInt(recalledVelocity, 10)
 			if (!Number.isNaN(parsed) && parsed !== 0) {
@@ -91,6 +109,13 @@ export class KeyboardController extends ControllerAbstract {
 		}
 	}
 	public destroy(): void {
+		// If destroyed mid-wind, restore the pre-wind velocity and persist that — never the fastStep.
+		if (this._winding) {
+			this._velocityStep = this._velocityBackup
+			this._winding = false
+			this._windingKey = null
+			this._persistVelocity()
+		}
 		this._destroyed = true
 	}
 	public onKeyDown(e: KeyboardEvent): void {
@@ -147,9 +172,11 @@ export class KeyboardController extends ControllerAbstract {
 	}
 
 	private _persistVelocity(): void {
+		// Never persist the temporary R/F wind speed — only the operator's dialed velocity.
+		if (this._winding) return
 		this._rememberedStep = rememberVelocityStep(this._velocityStep, this._rememberedStep)
 		if (this._rememberedStep !== 0) {
-			localStorage.setItem(LOCALSTORAGE_VELOCITY, String(this._rememberedStep))
+			safeLocalStorageSet(LOCALSTORAGE_VELOCITY, String(this._rememberedStep))
 		}
 	}
 
@@ -213,22 +240,25 @@ export class KeyboardController extends ControllerAbstract {
 
 	private _dial(direction: 1 | -1): void {
 		if (this._winding) return
+
+		const next = dialVelocityStep(this._velocityStep, this._playing, direction, this._maxStep)
 		const atTop = window.scrollY <= 0
 		const atBottom =
 			window.scrollY + window.innerHeight >=
 			(document.documentElement?.scrollHeight ?? document.body.scrollHeight) - 2
-		if (direction < 0 && atTop) {
+
+		// Only stop when the *resulting* velocity would continue past the document edge.
+		// Opposite-direction taps (slowing / reversing away from the edge) still apply.
+		const continuesPastTop = atTop && next.step < 0
+		const continuesPastBottom = atBottom && next.step > 0
+		const adjustingAwayFromEdge = (atTop && direction > 0) || (atBottom && direction < 0)
+		if ((continuesPastTop || continuesPastBottom) && !adjustingAwayFromEdge) {
 			this._velocityStep = 0
-			this._startSpeedScrolling()
-			return
-		}
-		if (direction > 0 && atBottom) {
-			this._velocityStep = 0
+			this._playing = true
 			this._startSpeedScrolling()
 			return
 		}
 
-		const next = dialVelocityStep(this._velocityStep, this._playing, direction, this._maxStep)
 		this._velocityStep = next.step
 		this._playing = next.playing
 		this._startSpeedScrolling()

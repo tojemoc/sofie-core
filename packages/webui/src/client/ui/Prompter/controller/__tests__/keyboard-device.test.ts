@@ -242,4 +242,77 @@ describe('KeyboardController SPEED mode', () => {
 		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(1))
 		controller.destroy()
 	})
+
+	it('at top edge, ArrowUp stops continuing past but ArrowDown can still slow/reverse', () => {
+		scrollY = 0
+		const view = makeView('speed')
+		const controller = new KeyboardController(view)
+
+		// Build up positive speed, then sit at top
+		keyDown(controller, 'ArrowDown')
+		keyDown(controller, 'ArrowDown')
+		keyDown(controller, 'ArrowDown') // step 3
+		flushFrames(3)
+		scrollY = 0
+		view.DEBUG_controllerSpeed.mockClear()
+
+		// Opposite direction at top: slow 3 → 2 (must not zero just because atTop)
+		keyDown(controller, 'ArrowUp')
+		flushFrames(3)
+		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(2))
+
+		view.DEBUG_controllerSpeed.mockClear()
+		// From step 2, dial through 1, 0, then past-edge attempt (-1) → stop at 0
+		keyDown(controller, 'ArrowUp') // 1
+		keyDown(controller, 'ArrowUp') // 0
+		flushFrames(3)
+		keyDown(controller, 'ArrowUp') // would be -1 at top → clamp to 0
+		flushFrames(3)
+		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(0)
+
+		controller.destroy()
+	})
+
+	it('does not persist R/F fastStep; destroy mid-wind restores backup', () => {
+		const view = makeView('speed')
+		const controller = new KeyboardController(view)
+
+		keyDown(controller, 'ArrowDown')
+		keyDown(controller, 'ArrowDown')
+		keyDown(controller, 'ArrowDown') // step 3
+		flushFrames(1)
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('3')
+
+		keyDown(controller, 'KeyF')
+		flushFrames(2)
+		// Wind speed must not overwrite remembered dialed speed
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('3')
+
+		controller.destroy()
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('3')
+
+		const view2 = makeView('speed')
+		const c2 = new KeyboardController(view2)
+		keyDown(c2, 'Space')
+		flushFrames(2)
+		expect(view2.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(3))
+		c2.destroy()
+	})
+
+	it('survives localStorage SecurityError on construct and persist', () => {
+		const boom = () => {
+			throw new DOMException('blocked', 'SecurityError')
+		}
+		const getSpy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(boom)
+		const setSpy = jest.spyOn(Storage.prototype, 'setItem').mockImplementation(boom)
+
+		expect(() => new KeyboardController(makeView('speed'))).not.toThrow()
+		const controller = new KeyboardController(makeView('speed'))
+		expect(() => keyDown(controller, 'ArrowDown')).not.toThrow()
+		flushFrames(1)
+		controller.destroy()
+
+		getSpy.mockRestore()
+		setSpy.mockRestore()
+	})
 })
