@@ -62,7 +62,29 @@ has several operating modes, described further below. All modes are intended to 
 
 #### Control using keyboard
 
-Keyboard control is intended to be used when having a "keyboard"-device, such as a presenter tool.
+Keyboard control is intended to be used when having a "keyboard"-device, such as a presenter tool. By default the keyboard uses a **QPrompt-style velocity dial**: arrow keys gradually change continuous scroll speed, and the last speed is remembered (including across page reloads).
+
+| Query parameter       | Description                                                                                          |
+| :-------------------- | :--------------------------------------------------------------------------------------------------- |
+| `?controlmode=speed`  | Velocity dial \(default for keyboard\). Continuous smooth scrolling; arrows adjust speed.          |
+| `?controlmode=normal` | Legacy behaviour: arrow / page / space keys jump by roughly two thirds of the viewport with inertia. |
+
+##### Speed mode \(default, QPrompt-like\)
+
+| Key                         | Function                                                                                          |
+| :-------------------------- | :------------------------------------------------------------------------------------------------ |
+| `Arrow Up` / `Arrow Left`   | Decrease velocity \(tap repeatedly to scroll up faster / slow down / reverse\)                    |
+| `Arrow Down` / `Arrow Right`| Increase velocity \(tap repeatedly to scroll down faster\)                                        |
+| `Space`                     | Pause / resume at the current \(remembered\) speed                                                |
+| `Ctrl` `Space`              | Stop \(velocity = 0\); remembered reading speed is kept for the next resume                       |
+| `R` \(hold\)                | Rewind — scroll up fast while held; previous velocity restored on release                         |
+| `F` \(hold\)                | Fast-forward — scroll down fast while held; previous velocity restored on release                 |
+| `Page Up`                   | Jump to previous segment and pause                                                                |
+| `Page Down`                 | Jump to following segment and pause                                                               |
+
+Use `?debug=1` to see the live scroll speed while dialing.
+
+##### Normal mode \(legacy\)
 
 | Scroll up    | Scroll down   |
 | :----------- | :------------ |
