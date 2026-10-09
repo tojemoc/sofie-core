@@ -11326,6 +11326,18 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"casparcg-state@patch:casparcg-state@npm%3A4.0.0-0-nightly-main-20260325-112946-587df8a#./.yarn/patches/casparcg-state-npm-4.0.0-0-nightly-main-20260325-112946-587df8a-d6d46c507a.patch::locator=packages%40workspace%3A.":
+  version: 4.0.0-0-nightly-main-20260325-112946-587df8a
+  resolution: "casparcg-state@patch:casparcg-state@npm%3A4.0.0-0-nightly-main-20260325-112946-587df8a#./.yarn/patches/casparcg-state-npm-4.0.0-0-nightly-main-20260325-112946-587df8a-d6d46c507a.patch::version=4.0.0-0-nightly-main-20260325-112946-587df8a&hash=8e5f0e&locator=packages%40workspace%3A."
+  dependencies:
+    casparcg-connection: "npm:7.0.0-0-nightly-main-20260323-110534-d8f740e6"
+    rfdc: "npm:^1.4.1"
+    tslib: "npm:^2.8.1"
+    underscore: "npm:^1.13.8"
+  checksum: 10/fc7c75674f273947a6fb38c213cbe1dfe684eb121c4ba0fcc5e34b7fa0ef314e372b1edffd881d16edee1c09267b1cfc663ab9e93bd7f80911dbb4c14ac0675d
+  languageName: node
+  linkType: hard
+
 "ccount@npm:^2.0.0":
   version: 2.0.1
   resolution: "ccount@npm:2.0.1"

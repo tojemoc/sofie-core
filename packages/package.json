@@ -79,7 +79,8 @@
 		"@hyperjump/json-pointer@^0.9.4": "patch:@hyperjump/json-pointer@npm%3A0.9.8#./.yarn/patches/@hyperjump-json-pointer-npm-0.9.8-edc0d22296.patch",
 		"@hyperjump/json-pointer@^0.9.2": "patch:@hyperjump/json-pointer@npm%3A0.9.8#./.yarn/patches/@hyperjump-json-pointer-npm-0.9.8-edc0d22296.patch",
 		"@hyperjump/pact@^0.2.3": "patch:@hyperjump/pact@npm%3A0.2.5#./.yarn/patches/@hyperjump-pact-npm-0.2.5-a816d03fba.patch",
-		"casparcg-connection@npm:7.0.0-0-nightly-main-20260323-110534-d8f740e6": "patch:casparcg-connection@npm%3A7.0.0-0-nightly-main-20260323-110534-d8f740e6#./.yarn/patches/casparcg-connection-npm-7.0.0-0-nightly-main-20260323-110534-d8f740e6-28da74eecd.patch"
+		"casparcg-connection@npm:7.0.0-0-nightly-main-20260323-110534-d8f740e6": "patch:casparcg-connection@npm%3A7.0.0-0-nightly-main-20260323-110534-d8f740e6#./.yarn/patches/casparcg-connection-npm-7.0.0-0-nightly-main-20260323-110534-d8f740e6-28da74eecd.patch",
+		"casparcg-state@npm:4.0.0-0-nightly-main-20260325-112946-587df8a": "patch:casparcg-state@npm%3A4.0.0-0-nightly-main-20260325-112946-587df8a#./.yarn/patches/casparcg-state-npm-4.0.0-0-nightly-main-20260325-112946-587df8a-d6d46c507a.patch"
 	},
 	"dependenciesMeta": {
 		"esbuild": {
