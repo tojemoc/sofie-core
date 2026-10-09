@@ -1,0 +1,13 @@
+diff --git a/dist/lib/transitionObject.js b/dist/lib/transitionObject.js
+index ebe19f9976c221010615445ae48e138debfaf031..aa965eef38625e2344fe527151c8097e1d95111b 100644
+--- a/dist/lib/transitionObject.js
++++ b/dist/lib/transitionObject.js
+@@ -97,6 +97,8 @@ export class Transition {
+             const stingProperties = {
+                 maskFile: this.maskFile,
+             };
++            if (this.overlayFile)
++                stingProperties.overlayFile = this.overlayFile;
+             if (this.delay)
+                 stingProperties.delay = this.time2Frames(this.delay, fps);
+             if (this.audioFadeStart) {
