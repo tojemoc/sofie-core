@@ -122,6 +122,9 @@ describe('test peripheralDevice general API methods', () => {
 			segmentId: segmentID,
 			rundownId: rundownID,
 			title: 'Part 000',
+			autoNext: true,
+			expectedDuration: 8000,
+			publicData: { autoNextSource: 'blueprint' },
 			expectedDurationWithTransition: undefined,
 		})
 		await Pieces.mutableCollection.insertAsync({
@@ -149,6 +152,8 @@ describe('test peripheralDevice general API methods', () => {
 			segmentId: segmentID,
 			rundownId: rundownID,
 			title: 'Part 001',
+			autoNext: false,
+			expectedDuration: 0,
 			expectedDurationWithTransition: undefined,
 		})
 		await Segments.mutableCollection.insertAsync({
@@ -194,6 +199,27 @@ describe('test peripheralDevice general API methods', () => {
 		expect(initDevice.lastSeen).toBeGreaterThan(getCurrentTime() - 100)
 		expect(initDevice.lastConnected).toBeGreaterThan(getCurrentTime() - 100)
 		expect(initDevice.subType).toBe(options.subType)
+	})
+
+	test('getRundownPartSettings returns stored part settings and blueprint force markers', async () => {
+		const response = await MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'rundown0')
+
+		expect(response).toEqual({
+			rundownExternalId: 'rundown0',
+			parts: [
+				{
+					partExternalId: 'part000',
+					autoNext: true,
+					expectedDuration: 8000,
+					autoNextSource: 'blueprint',
+				},
+				{
+					partExternalId: 'part001',
+					autoNext: false,
+					expectedDuration: null,
+				},
+			],
+		})
 	})
 
 	test('setStatus', async () => {
