@@ -36,6 +36,7 @@ import type { PeripheralDeviceExternalEvent } from './externalEvents.js'
 import type { MediaObject } from '../core/model/MediaObjects.js'
 import type { RundownContentStatusResponse } from './rundownContentStatus.js'
 import type { RundownPlayoutStateResponse } from './rundownPlayoutState.js'
+import type { RundownPartAutoNextResponse } from './rundownPartAutoNext.js'
 import type { RundownPartSettingsResponse } from './rundownPartSettings.js'
 
 export type UpdateExpectedPackageWorkStatusesChanges =
@@ -340,6 +341,13 @@ export interface NewPeripheralDeviceAPI {
 		rundownExternalId: string
 	): Promise<RundownPlayoutStateResponse>
 
+	/** Read-only autoNext / autoNextOverlap / expectedDuration per Part externalId; empty for unknown rundowns. */
+	getRundownPartAutoNext(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownPartAutoNextResponse>
+
 	/** Read-only autoNext / expectedDuration for each Part in a rundown (by ingest external id). */
 	getRundownPartSettings(
 		deviceId: PeripheralDeviceId,
@@ -458,6 +466,7 @@ export enum PeripheralDeviceAPIMethods {
 	'removePackageInfo' = 'peripheralDevice.packageManager.removePackageInfo',
 	'getContentStatusForRundown' = 'peripheralDevice.packageManager.getContentStatusForRundown',
 	'getRundownPlayoutState' = 'peripheralDevice.ingest.getRundownPlayoutState',
+	'getRundownPartAutoNext' = 'peripheralDevice.ingest.getRundownPartAutoNext',
 	'getRundownPartSettings' = 'peripheralDevice.ingest.getRundownPartSettings',
 
 	'requestUserAuthToken' = 'peripheralDevice.spreadsheet.requestUserAuthToken',

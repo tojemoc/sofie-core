@@ -222,6 +222,40 @@ describe('test peripheralDevice general API methods', () => {
 		})
 	})
 
+	test('getRundownPartAutoNext returns per-part autoNext keyed by externalId', async () => {
+		const response = await MeteorCall.peripheralDevice.getRundownPartAutoNext(device._id, device.token, 'rundown0')
+		expect(response.rundownExternalId).toBe('rundown0')
+		expect(response.parts['part000']).toMatchObject({ autoNext: true, expectedDuration: 8000 })
+		expect(response.parts['part001']).toEqual({ autoNext: false })
+	})
+
+	test('getRundownPartAutoNext returns empty for unknown rundown', async () => {
+		expect(await MeteorCall.peripheralDevice.getRundownPartAutoNext(device._id, device.token, 'nope')).toEqual({
+			rundownExternalId: 'nope',
+			parts: {},
+		})
+	})
+
+	test('getRundownPartAutoNext returns empty for a device in another studio', async () => {
+		const original = device.studioAndConfigId
+		await PeripheralDevices.updateAsync(device._id, {
+			$set: { studioAndConfigId: { studioId: protectString('otherStudio'), configId: 'cfg' } },
+		} as any)
+		try {
+			expect(
+				await MeteorCall.peripheralDevice.getRundownPartAutoNext(device._id, device.token, 'rundown0')
+			).toEqual({ rundownExternalId: 'rundown0', parts: {} })
+		} finally {
+			await PeripheralDevices.updateAsync(device._id, { $set: { studioAndConfigId: original } } as any)
+		}
+	})
+
+	test('getRundownPartAutoNext rejects a bad token', async () => {
+		await expect(
+			MeteorCall.peripheralDevice.getRundownPartAutoNext(device._id, 'wrong', 'rundown0')
+		).rejects.toThrow()
+	})
+
 	test('getRundownPartSettings rejects a nonexistent rundown', async () => {
 		await expect(
 			MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'nonexistent')
