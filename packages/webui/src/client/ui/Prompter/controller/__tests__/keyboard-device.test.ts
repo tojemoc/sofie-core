@@ -135,7 +135,7 @@ describe('KeyboardController SPEED mode', () => {
 		controller.destroy()
 	})
 
-	it('Space pauses and resumes at the same speed', () => {
+	it('Space stops scrolling and resets the velocity', () => {
 		const view = makeView('speed')
 		const controller = new KeyboardController(view)
 
@@ -145,14 +145,15 @@ describe('KeyboardController SPEED mode', () => {
 		flushFrames(2)
 		scrollByMock.mockClear()
 
-		keyDown(controller, 'Space') // pause
+		keyDown(controller, 'Space') // stop and reset
 		flushFrames(3)
-		const callsAfterPause = scrollByMock.mock.calls.length
+		expect(scrollByMock).not.toHaveBeenCalled()
+		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(0)
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('0')
 
-		keyDown(controller, 'Space') // resume
-		flushFrames(3)
-		expect(scrollByMock.mock.calls.length).toBeGreaterThan(callsAfterPause)
-		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(3))
+		keyDown(controller, 'ArrowDown') // start again from zero
+		flushFrames(2)
+		expect(view.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(1))
 
 		controller.destroy()
 	})
@@ -199,7 +200,7 @@ describe('KeyboardController SPEED mode', () => {
 		controller.destroy()
 	})
 
-	it('remembers velocity across controller instances via localStorage', () => {
+	it('Space clears the remembered velocity across controller instances', () => {
 		const view1 = makeView('speed')
 		const c1 = new KeyboardController(view1)
 		keyDown(c1, 'ArrowDown')
@@ -213,11 +214,19 @@ describe('KeyboardController SPEED mode', () => {
 
 		const view2 = makeView('speed')
 		const c2 = new KeyboardController(view2)
-		// Starts paused at remembered speed; Space resumes
+		// Starts paused at remembered speed; Space resets it
 		keyDown(c2, 'Space')
 		flushFrames(2)
-		expect(view2.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(4))
+		expect(view2.DEBUG_controllerSpeed).toHaveBeenCalledWith(0)
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('0')
 		c2.destroy()
+
+		const view3 = makeView('speed')
+		const c3 = new KeyboardController(view3)
+		keyDown(c3, 'ArrowDown')
+		flushFrames(2)
+		expect(view3.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(1))
+		c3.destroy()
 	})
 
 	it('reports KEYBOARD as debug source', () => {
@@ -295,7 +304,8 @@ describe('KeyboardController SPEED mode', () => {
 		const c2 = new KeyboardController(view2)
 		keyDown(c2, 'Space')
 		flushFrames(2)
-		expect(view2.DEBUG_controllerSpeed).toHaveBeenCalledWith(velocityStepToSpeed(3))
+		expect(view2.DEBUG_controllerSpeed).toHaveBeenCalledWith(0)
+		expect(localStorage.getItem('prompter-controller-keyboard-velocity')).toBe('0')
 		c2.destroy()
 	})
 

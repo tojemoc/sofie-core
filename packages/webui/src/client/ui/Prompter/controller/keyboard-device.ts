@@ -36,11 +36,11 @@ function safeLocalStorageSet(key: string, value: string): void {
  * - **speed** (default): QPrompt-style velocity dial.
  *   - Arrow Up / Left: decrease velocity (tap repeatedly to speed up scrolling up)
  *   - Arrow Down / Right: increase velocity (tap repeatedly to speed up scrolling down)
- *   - Space: pause / resume at the current velocity
+ *   - Space: stop scrolling and reset the velocity to zero
  *   - R (hold): rewind — scroll up fast, restore previous velocity on release
  *   - F (hold): fast-forward — scroll down fast, restore previous velocity on release
  *   - Page Up / Page Down: jump to previous / following segment and pause
- *   - Velocity is remembered across sessions (localStorage)
+ *   - Non-zero velocity is remembered across sessions until Space resets it
  *
  * - **normal**: legacy page-jump with inertial scrolling (previous Sofie behaviour)
  */
@@ -101,8 +101,8 @@ export class KeyboardController extends ControllerAbstract {
 			const parsed = Number.parseInt(recalledVelocity, 10)
 			if (!Number.isNaN(parsed) && parsed !== 0) {
 				this._rememberedStep = Math.max(-this._maxStep, Math.min(this._maxStep, parsed))
-				// Start paused at the remembered speed so the operator can Space/resume
-				// or tap an arrow to start dialing from that speed.
+				// Start paused at the remembered speed so the operator can tap an arrow
+				// to start dialing from that speed, or Space to clear it.
 				this._velocityStep = this._rememberedStep
 				this._playing = false
 			}
@@ -199,11 +199,7 @@ export class KeyboardController extends ControllerAbstract {
 				break
 			case 'Space':
 				e.preventDefault()
-				if (e.ctrlKey) {
-					this._stop()
-				} else {
-					this._pauseToggle()
-				}
+				this._stop()
 				break
 			case 'KeyR':
 				e.preventDefault()
@@ -264,21 +260,12 @@ export class KeyboardController extends ControllerAbstract {
 		this._startSpeedScrolling()
 	}
 
-	private _pauseToggle(): void {
-		if (this._winding) return
-		if (this._velocityStep === 0) {
-			// Nothing to pause — start at the remembered reading speed
-			this._velocityStep = this._rememberedStep || KEYBOARD_VELOCITY_DEFAULTS.defaultStep
-			this._playing = true
-		} else {
-			this._playing = !this._playing
-		}
-		this._startSpeedScrolling()
-	}
-
 	private _stop(): void {
 		this._playing = true
 		this._velocityStep = 0
+		this._velocityBackup = 0
+		this._rememberedStep = 0
+		safeLocalStorageSet(LOCALSTORAGE_VELOCITY, '0')
 		this._winding = false
 		this._windingKey = null
 		this._startSpeedScrolling()
