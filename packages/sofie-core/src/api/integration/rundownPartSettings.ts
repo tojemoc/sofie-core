@@ -4,7 +4,8 @@ import { MethodContext } from '../../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
-import { Parts, Rundowns } from '../../../collections'
+import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
+import { Parts, Rundowns, Segments } from '../../../collections'
 
 export namespace RundownPartSettingsIntegration {
 	/**
@@ -26,20 +27,32 @@ export namespace RundownPartSettingsIntegration {
 
 		const studioId = peripheralDevice.studioAndConfigId.studioId
 
-		const empty: RundownPartSettingsResponse = {
-			rundownExternalId,
-			parts: [],
-		}
-
 		const rundown = await Rundowns.findOneAsync({
 			studioId,
 			externalId: rundownExternalId,
 		})
 		if (!rundown) {
-			return empty
+			throw new Meteor.Error(404, `Rundown "${rundownExternalId}" not found`)
 		}
 
-		const parts = await Parts.findFetchAsync({ rundownId: rundown._id }, { sort: { _rank: 1 } })
+		const [segments, unsortedParts] = await Promise.all([
+			Segments.findFetchAsync({ rundownId: rundown._id }, { sort: { _rank: 1 }, projection: { _id: 1 } }),
+			Parts.findFetchAsync(
+				{ rundownId: rundown._id },
+				{
+					projection: {
+						_id: 1,
+						segmentId: 1,
+						externalId: 1,
+						autoNext: 1,
+						expectedDuration: 1,
+						publicData: 1,
+						_rank: 1,
+					},
+				}
+			),
+		])
+		const parts = sortPartsInSortedSegments(unsortedParts, segments)
 
 		return {
 			rundownExternalId,
