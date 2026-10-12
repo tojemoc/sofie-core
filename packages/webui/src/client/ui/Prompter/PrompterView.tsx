@@ -173,7 +173,7 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 			mirrorv: firstIfArray(queryParams['mirrorv']) === '1',
 			mode: asArray(queryParams['mode']),
 			controlMode: firstIfArray(queryParams['controlmode']) || undefined,
-			followTake: queryParams['followtake'] === undefined ? true : queryParams['followtake'] === '1',
+			followTake: queryParams['followtake'] === '1',
 			fontSize: parseInt(firstIfArray(queryParams['fontsize']) as string, 10) || undefined,
 			margin: parseInt(firstIfArray(queryParams['margin']) as string, 10) || undefined,
 			joycon_invertJoystick:

@@ -199,11 +199,7 @@ export class KeyboardController extends ControllerAbstract {
 				break
 			case 'Space':
 				e.preventDefault()
-				if (e.ctrlKey) {
-					this._stop()
-				} else {
-					this._pauseToggle()
-				}
+				this._stop()
 				break
 			case 'KeyR':
 				e.preventDefault()
@@ -264,21 +260,12 @@ export class KeyboardController extends ControllerAbstract {
 		this._startSpeedScrolling()
 	}
 
-	private _pauseToggle(): void {
-		if (this._winding) return
-		if (this._velocityStep === 0) {
-			// Nothing to pause — start at the remembered reading speed
-			this._velocityStep = this._rememberedStep || KEYBOARD_VELOCITY_DEFAULTS.defaultStep
-			this._playing = true
-		} else {
-			this._playing = !this._playing
-		}
-		this._startSpeedScrolling()
-	}
-
 	private _stop(): void {
 		this._playing = true
 		this._velocityStep = 0
+		this._velocityBackup = 0
+		this._rememberedStep = 0
+		safeLocalStorageSet(LOCALSTORAGE_VELOCITY, '0')
 		this._winding = false
 		this._windingKey = null
 		this._startSpeedScrolling()
