@@ -222,6 +222,38 @@ describe('test peripheralDevice general API methods', () => {
 		})
 	})
 
+	test('getRundownPartSettings rejects a nonexistent rundown', async () => {
+		await expect(
+			MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'nonexistent')
+		).rejects.toThrow(/not found/)
+	})
+
+	test('getRundownPartSettings does not expose rundowns of other studios', async () => {
+		const original = device.studioAndConfigId
+		await PeripheralDevices.updateAsync(device._id, {
+			$set: { studioAndConfigId: { studioId: protectString('otherStudio'), configId: 'cfg' } },
+		} as any)
+		try {
+			await expect(
+				MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'rundown0')
+			).rejects.toThrow(/not found/)
+		} finally {
+			await PeripheralDevices.updateAsync(device._id, { $set: { studioAndConfigId: original } } as any)
+		}
+	})
+
+	test('getRundownPartSettings rejects a device without a studio', async () => {
+		const original = device.studioAndConfigId
+		await PeripheralDevices.updateAsync(device._id, { $unset: { studioAndConfigId: 1 } } as any)
+		try {
+			await expect(
+				MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'rundown0')
+			).rejects.toThrow(/no studio/)
+		} finally {
+			await PeripheralDevices.updateAsync(device._id, { $set: { studioAndConfigId: original } } as any)
+		}
+	})
+
 	test('setStatus', async () => {
 		expect(await PeripheralDevices.findOneAsync(device._id)).toBeTruthy()
 		expect(((await PeripheralDevices.findOneAsync(device._id)) as PeripheralDevice).status).toMatchObject({
