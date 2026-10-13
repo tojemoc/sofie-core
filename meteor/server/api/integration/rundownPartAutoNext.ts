@@ -45,7 +45,8 @@ export namespace RundownPartAutoNextIntegration {
 		for (const part of parts) {
 			const item: RundownPartAutoNextItem = { autoNext: Boolean(part.autoNext) }
 			if (typeof part.autoNextOverlap === 'number') item.autoNextOverlap = part.autoNextOverlap
-			if (typeof part.expectedDuration === 'number') item.expectedDuration = part.expectedDuration
+			if (typeof part.expectedDuration === 'number' && part.expectedDuration > 0)
+				item.expectedDuration = part.expectedDuration
 			result[part.externalId] = item
 		}
 

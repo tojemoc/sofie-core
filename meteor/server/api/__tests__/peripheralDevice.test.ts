@@ -253,13 +253,13 @@ describe('test peripheralDevice general API methods', () => {
 	test('getRundownPartAutoNext rejects a bad token', async () => {
 		await expect(
 			MeteorCall.peripheralDevice.getRundownPartAutoNext(device._id, 'wrong', 'rundown0')
-		).rejects.toThrow()
+		).rejects.toMatchToString(/Not allowed access/)
 	})
 
 	test('getRundownPartSettings rejects a nonexistent rundown', async () => {
 		await expect(
 			MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'nonexistent')
-		).rejects.toThrow(/not found/)
+		).rejects.toMatchToString(/not found/)
 	})
 
 	test('getRundownPartSettings does not expose rundowns of other studios', async () => {
@@ -270,7 +270,7 @@ describe('test peripheralDevice general API methods', () => {
 		try {
 			await expect(
 				MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'rundown0')
-			).rejects.toThrow(/not found/)
+			).rejects.toMatchToString(/not found/)
 		} finally {
 			await PeripheralDevices.updateAsync(device._id, { $set: { studioAndConfigId: original } } as any)
 		}
@@ -282,7 +282,7 @@ describe('test peripheralDevice general API methods', () => {
 		try {
 			await expect(
 				MeteorCall.peripheralDevice.getRundownPartSettings(device._id, device.token, 'rundown0')
-			).rejects.toThrow(/no studio/)
+			).rejects.toMatchToString(/no studio/)
 		} finally {
 			await PeripheralDevices.updateAsync(device._id, { $set: { studioAndConfigId: original } } as any)
 		}
