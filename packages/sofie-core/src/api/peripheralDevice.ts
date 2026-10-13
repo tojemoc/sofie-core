@@ -38,6 +38,7 @@ import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collection
 import { PackageManagerIntegration } from './integration/expectedPackages'
 import { RundownContentStatusIntegration } from './integration/rundownContentStatus'
 import { RundownPlayoutStateIntegration } from './integration/rundownPlayoutState'
+import { RundownPartAutoNextIntegration } from './integration/rundownPartAutoNext'
 import { RundownPartSettingsIntegration } from './integration/rundownPartSettings'
 import { profiler } from './profiler'
 import { QueueStudioJob, QueueOrUpdateStudioJob } from '../worker/worker'
@@ -1663,6 +1664,9 @@ export class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements 
 	}
 	async getRundownPlayoutState(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
 		return RundownPlayoutStateIntegration.getRundownPlayoutState(this, deviceId, deviceToken, rundownExternalId)
+	}
+	async getRundownPartAutoNext(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+		return RundownPartAutoNextIntegration.getRundownPartAutoNext(this, deviceId, deviceToken, rundownExternalId)
 	}
 	async getRundownPartSettings(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
 		return RundownPartSettingsIntegration.getRundownPartSettings(this, deviceId, deviceToken, rundownExternalId)
