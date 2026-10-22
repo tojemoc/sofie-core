@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
-import { SofieError } from '../../error'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {

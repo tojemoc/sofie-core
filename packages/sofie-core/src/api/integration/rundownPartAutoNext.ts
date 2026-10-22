@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
 	RundownPartAutoNextItem,
@@ -25,7 +26,7 @@ export namespace RundownPartAutoNextIntegration {
 
 		const peripheralDevice = await checkAccessAndGetPeripheralDevice(deviceId, deviceToken, context)
 		if (!peripheralDevice.studioAndConfigId) {
-			throw new Meteor.Error(400, `Device "${peripheralDevice._id}" has no studio`)
+			throw new SofieError(400, `Device "${peripheralDevice._id}" has no studio`)
 		}
 
 		const rundown = await Rundowns.findOneAsync(

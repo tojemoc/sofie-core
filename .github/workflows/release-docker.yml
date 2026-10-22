@@ -69,42 +69,29 @@ jobs:
         with:
           node-version-file: ".node-version"
 
-      - uses: ./.github/actions/setup-meteor
-
       - name: Prepare Environment
         run: |
           corepack enable
           yarn install
-          yarn meteor lint
 
-      - name: Build libs
-        run: yarn build:packages
+      - name: Build libs and server
+        run: |
+          yarn build
 
       - name: Build webui
         run: |
-          cd packages/webui
-          yarn build
+          yarn workspace @sofie-automation/webui build
+          rm -Rf packages/webui/dist/dev # Remove some dev only assets
 
       - name: Persist Built Version information
         run: |
-          cd meteor
-          yarn inject-git-hash
+          yarn workspace @sofie-automation/sofie-core inject-git-hash
 
-      - name: Prepare webui for meteor build
+      - name: Purge dev-dependencies
+        # Everything is built by this point, so the build tooling does not need to ship in the image.
+        # Focusing on the server keeps the workspaces it depends on.
         run: |
-          rm -Rf meteor/public
-          cp -R packages/webui/dist meteor/public
-
-      - name: Meteor Build
-        run: |
-          cd meteor
-          NODE_OPTIONS="--max-old-space-size=4096" METEOR_DEBUG_BUILD=1 meteor build --allow-superuser --directory .
-          mv bundle/programs/web.browser/assets/ bundle/programs/web.browser/app/assets/ || true
-
-      - name: Meteor Bundle NPM Build
-        run: |
-          cd meteor/bundle/programs/server
-          meteor npm install
+          yarn workspaces focus --production @sofie-automation/sofie-core
 
       - name: Lowercase repository name for GHCR
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
@@ -150,7 +137,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./meteor/Dockerfile.circle
+          file: ./packages/sofie-core/Dockerfile.circle
           push: true
           provenance: false
           labels: ${{ steps.ghcr-tag.outputs.labels }}
@@ -189,9 +176,9 @@ jobs:
       - name: Build
         run: |
           corepack enable
-          cd packages
+
           yarn install
-          yarn build:single ${{ matrix.gateway-name }}/tsconfig.build.json
+          yarn build:single packages/${{ matrix.gateway-name }}/tsconfig.build.json
           yarn run pinst --disable
           yarn workspaces focus ${{ matrix.gateway-name }} --production
 
@@ -231,7 +218,7 @@ jobs:
         if: steps.ghcr-tag.outputs.tags != ''
         uses: docker/build-push-action@v7
         with:
-          context: ./packages
+          context: .
           file: ./packages/${{ matrix.gateway-name }}/Dockerfile.circle
           push: true
           provenance: false

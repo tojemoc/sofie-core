@@ -40,6 +40,10 @@ import { RundownContentStatusIntegration } from './integration/rundownContentSta
 import { RundownPlayoutStateIntegration } from './integration/rundownPlayoutState'
 import { RundownPartAutoNextIntegration } from './integration/rundownPartAutoNext'
 import { RundownPartSettingsIntegration } from './integration/rundownPartSettings'
+import type { RundownContentStatusResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownContentStatus'
+import type { RundownPlayoutStateResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPlayoutState'
+import type { RundownPartAutoNextResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartAutoNext'
+import type { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
 import { profiler } from './profiler'
 import { QueueStudioJob, QueueOrUpdateStudioJob } from '../worker/worker'
 import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
@@ -1654,7 +1658,11 @@ export class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements 
 	): Promise<void> {
 		await PackageManagerIntegration.removePackageInfo(this, deviceId, deviceToken, type, packageId, removeDelay)
 	}
-	async getContentStatusForRundown(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+	async getContentStatusForRundown(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownContentStatusResponse> {
 		return RundownContentStatusIntegration.getContentStatusForRundown(
 			this,
 			deviceId,
@@ -1662,13 +1670,25 @@ export class ServerPeripheralDeviceAPIClass extends MethodContextAPI implements 
 			rundownExternalId
 		)
 	}
-	async getRundownPlayoutState(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+	async getRundownPlayoutState(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownPlayoutStateResponse> {
 		return RundownPlayoutStateIntegration.getRundownPlayoutState(this, deviceId, deviceToken, rundownExternalId)
 	}
-	async getRundownPartAutoNext(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+	async getRundownPartAutoNext(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownPartAutoNextResponse> {
 		return RundownPartAutoNextIntegration.getRundownPartAutoNext(this, deviceId, deviceToken, rundownExternalId)
 	}
-	async getRundownPartSettings(deviceId: PeripheralDeviceId, deviceToken: string, rundownExternalId: string) {
+	async getRundownPartSettings(
+		deviceId: PeripheralDeviceId,
+		deviceToken: string,
+		rundownExternalId: string
+	): Promise<RundownPartSettingsResponse> {
 		return RundownPartSettingsIntegration.getRundownPartSettings(this, deviceId, deviceToken, rundownExternalId)
 	}
 	// --- Triggers ---
