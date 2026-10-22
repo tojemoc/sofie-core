@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor'
-import { check } from '../../../lib/check'
-import { MethodContext } from '../../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
+import { check } from '../../lib/check'
+import { MethodContext } from '../methodContext'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
 	RundownPartAutoNextItem,
 	RundownPartAutoNextResponse,
 } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartAutoNext'
-import { Parts, Rundowns } from '../../../collections'
+import { Parts, Rundowns } from '../../collections'
 
 export namespace RundownPartAutoNextIntegration {
 	/**

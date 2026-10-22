@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor'
-import { check } from '../../../lib/check'
-import { MethodContext } from '../../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
+import { check } from '../../lib/check'
+import { MethodContext } from '../methodContext'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
 import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
-import { Parts, Rundowns, Segments } from '../../../collections'
+import { Parts, Rundowns, Segments } from '../../collections'
 
 export namespace RundownPartSettingsIntegration {
 	/**
@@ -47,7 +47,6 @@ export namespace RundownPartSettingsIntegration {
 						autoNext: 1,
 						expectedDuration: 1,
 						publicData: 1,
-						_rank: 1,
 					},
 				}
 			),

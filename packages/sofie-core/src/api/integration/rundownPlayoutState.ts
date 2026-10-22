@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor'
-import { check } from '../../../lib/check'
-import { MethodContext } from '../../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
+import { check } from '../../lib/check'
+import { MethodContext } from '../methodContext'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
 import { PartInstanceId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { RundownPlayoutStateResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPlayoutState'
-import { PartInstances, RundownPlaylists, Rundowns } from '../../../collections'
+import { PartInstances, RundownPlaylists, Rundowns } from '../../collections'
 import { SelectedPartInstance } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 
 async function resolvePartExternalId(partInstanceId: PartInstanceId | undefined): Promise<string | null> {

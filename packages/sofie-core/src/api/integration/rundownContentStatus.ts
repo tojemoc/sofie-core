@@ -1,20 +1,20 @@
 import { Meteor } from 'meteor/meteor'
-import { check } from '../../../lib/check'
-import { MethodContext } from '../../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
+import { check } from '../../lib/check'
+import { MethodContext } from '../methodContext'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
 	RundownContentStatusResponse,
 	RundownPieceContentStatus,
 } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownContentStatus'
-import { Blueprints, Parts, Pieces, Rundowns, ShowStyleBases } from '../../../collections'
-import { fetchStudio } from '../../../publications/pieceContentStatusUI/common'
+import { Blueprints, Parts, Pieces, Rundowns, ShowStyleBases } from '../../collections'
+import { fetchStudio } from '../../publications/pieceContentStatusUI/common'
 import {
 	checkPieceContentStatusAndDependencies,
 	PieceContentStatusPiece,
-} from '../../../publications/pieceContentStatusUI/checkPieceContentStatus'
-import { PieceContentStatusMessageFactory } from '../../../publications/pieceContentStatusUI/messageFactory'
+} from '../../publications/pieceContentStatusUI/checkPieceContentStatus'
+import { PieceContentStatusMessageFactory } from '../../publications/pieceContentStatusUI/messageFactory'
 import { interpollateTranslation, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 
