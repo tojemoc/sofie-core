@@ -1,7 +1,8 @@
-import { Meteor } from 'meteor/meteor'
+import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { SofieError } from '../../error'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
 import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
@@ -18,11 +19,11 @@ export namespace RundownPartSettingsIntegration {
 		deviceToken: string,
 		rundownExternalId: string
 	): Promise<RundownPartSettingsResponse> {
-		check(rundownExternalId, String)
+		check(rundownExternalId, z.string())
 
 		const peripheralDevice = await checkAccessAndGetPeripheralDevice(deviceId, deviceToken, context)
 		if (!peripheralDevice.studioAndConfigId) {
-			throw new Meteor.Error(400, `Device "${peripheralDevice._id}" has no studio`)
+			throw new SofieError(400, `Device "${peripheralDevice._id}" has no studio`)
 		}
 
 		const studioId = peripheralDevice.studioAndConfigId.studioId
@@ -32,7 +33,7 @@ export namespace RundownPartSettingsIntegration {
 			externalId: rundownExternalId,
 		})
 		if (!rundown) {
-			throw new Meteor.Error(404, `Rundown "${rundownExternalId}" not found`)
+			throw new SofieError(404, `Rundown "${rundownExternalId}" not found`)
 		}
 
 		const [segments, unsortedParts] = await Promise.all([

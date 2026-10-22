@@ -1,7 +1,8 @@
-import { Meteor } from 'meteor/meteor'
+import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { SofieError } from '../../error'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
@@ -40,17 +41,17 @@ export namespace RundownContentStatusIntegration {
 		deviceToken: string,
 		rundownExternalId: string
 	): Promise<RundownContentStatusResponse> {
-		check(rundownExternalId, String)
+		check(rundownExternalId, z.string())
 
 		const peripheralDevice = await checkAccessAndGetPeripheralDevice(deviceId, deviceToken, context)
 		if (!peripheralDevice.studioAndConfigId) {
-			throw new Meteor.Error(400, 'Device "' + peripheralDevice._id + '" has no studio')
+			throw new SofieError(400, `Device "${peripheralDevice._id}" has no studio`)
 		}
 
 		const studioId = peripheralDevice.studioAndConfigId.studioId
 		const studio = await fetchStudio(studioId)
 		if (!studio) {
-			throw new Meteor.Error(404, `Studio "${studioId}" not found`)
+			throw new SofieError(404, `Studio "${studioId}" not found`)
 		}
 
 		const rundown = await Rundowns.findOneAsync({

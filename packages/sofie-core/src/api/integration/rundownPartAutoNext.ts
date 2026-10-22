@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor'
+import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
@@ -21,7 +21,7 @@ export namespace RundownPartAutoNextIntegration {
 		deviceToken: string,
 		rundownExternalId: string
 	): Promise<RundownPartAutoNextResponse> {
-		check(rundownExternalId, String)
+		check(rundownExternalId, z.string())
 
 		const peripheralDevice = await checkAccessAndGetPeripheralDevice(deviceId, deviceToken, context)
 		if (!peripheralDevice.studioAndConfigId) {

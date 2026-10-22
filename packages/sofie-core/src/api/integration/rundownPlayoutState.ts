@@ -1,7 +1,8 @@
-import { Meteor } from 'meteor/meteor'
+import { z } from 'zod'
 import { check } from '../../lib/check'
 import { MethodContext } from '../methodContext'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { SofieError } from '../../error'
 import { PartInstanceId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { RundownPlayoutStateResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPlayoutState'
 import { PartInstances, RundownPlaylists, Rundowns } from '../../collections'
@@ -38,11 +39,11 @@ export namespace RundownPlayoutStateIntegration {
 		deviceToken: string,
 		rundownExternalId: string
 	): Promise<RundownPlayoutStateResponse> {
-		check(rundownExternalId, String)
+		check(rundownExternalId, z.string())
 
 		const peripheralDevice = await checkAccessAndGetPeripheralDevice(deviceId, deviceToken, context)
 		if (!peripheralDevice.studioAndConfigId) {
-			throw new Meteor.Error(400, `Device "${peripheralDevice._id}" has no studio`)
+			throw new SofieError(400, `Device "${peripheralDevice._id}" has no studio`)
 		}
 
 		const studioId = peripheralDevice.studioAndConfigId.studioId
@@ -70,7 +71,7 @@ export namespace RundownPlayoutStateIntegration {
 		}
 
 		const [previousPartExternalId, currentPartExternalId, nextPartExternalId] = await Promise.all([
-			resolveSelectedPartExternalId(playlist.previousPartInfo),
+			resolveSelectedPartExternalId(playlist.previousPartsInfo?.[0]),
 			resolveSelectedPartExternalId(playlist.currentPartInfo),
 			resolveSelectedPartExternalId(playlist.nextPartInfo),
 		])
