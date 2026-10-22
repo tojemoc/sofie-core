@@ -47,6 +47,7 @@ export namespace RundownPartSettingsIntegration {
 						autoNext: 1,
 						expectedDuration: 1,
 						publicData: 1,
+						_rank: 1,
 					},
 				}
 			),
