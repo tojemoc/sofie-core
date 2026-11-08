@@ -2014,9 +2014,7 @@ describe('Test blueprint api context', () => {
 					// infinites to continue into the following PartInstances.
 					expect(nextPartInstance.partInstance.isTaken).toBeFalsy()
 
-					const newPieceInstanceId = (
-						await service.insertPiece('next', { externalId: 'input1' } as any)
-					)._id
+					const newPieceInstanceId = (await service.insertPiece('next', { externalId: 'input1' } as any))._id
 					expect(postProcessPiecesMock).toHaveBeenCalledTimes(1)
 
 					const newPieceInstance = playoutModel.findPieceInstance(protectString(newPieceInstanceId))
