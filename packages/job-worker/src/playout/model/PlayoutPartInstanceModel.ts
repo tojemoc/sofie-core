@@ -75,11 +75,13 @@ export interface PlayoutPartInstanceModel {
 	 * Insert a Piece into this PartInstance as an adlibbed PieceInstance
 	 * @param piece Piece to insert
 	 * @param fromAdlibId Id of the source Adlib, if any
+	 * @param forceDynamicInsertion Mark the PieceInstance as dynamicallyInserted even when the PartInstance has not been taken yet (eg a piece inserted into the next PartInstance during onTake/onSetAsNext is still a runtime insertion, not part of the scripted Part)
 	 * @returns The inserted PlayoutPieceInstanceModel
 	 */
 	insertAdlibbedPiece(
 		piece: Omit<PieceInstancePiece, 'startPartId'>,
-		fromAdlibId: PieceId | BucketAdLibId | undefined
+		fromAdlibId: PieceId | BucketAdLibId | undefined,
+		forceDynamicInsertion?: boolean
 	): PlayoutPieceInstanceModel
 
 	/**

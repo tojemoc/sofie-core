@@ -1981,6 +1981,41 @@ describe('Test blueprint api context', () => {
 					expect(newPieceInstance.pieceInstance.partInstanceId).toEqual(partInstance.partInstance._id)
 				})
 			})
+
+			test('insert into not-yet-taken next part is still dynamicallyInserted', async () => {
+				const { jobContext, playlistId, allPartInstances } = await setupMyDefaultRundown()
+
+				await setPartInstances(jobContext, playlistId, allPartInstances[0], allPartInstances[1])
+
+				await wrapWithPlayoutModel(jobContext, playlistId, async (playoutModel) => {
+					const { service } = await getTestee(jobContext, playoutModel)
+
+					postProcessPiecesMock.mockImplementationOnce(() => [
+						{
+							_id: 'fake5', // Should be ignored
+							timelineObjectsString: EmptyPieceTimelineObjectsBlob,
+						} as any,
+					])
+
+					const nextPartInstance = playoutModel.nextPartInstance!
+					expect(nextPartInstance).toBeTruthy()
+					// The next part has not been taken yet, but a context api insert is a runtime
+					// insertion, so it must be marked as dynamicallyInserted for its on-End
+					// infinites to continue into the following PartInstances.
+					expect(nextPartInstance.partInstance.isTaken).toBeFalsy()
+
+					const newPieceInstanceId = (
+						await service.insertPiece('next', { externalId: 'input1' } as any)
+					)._id
+					expect(postProcessPiecesMock).toHaveBeenCalledTimes(1)
+
+					const newPieceInstance = playoutModel.findPieceInstance(protectString(newPieceInstanceId))
+						?.pieceInstance as PlayoutPieceInstanceModel
+					expect(newPieceInstance).toBeTruthy()
+					expect(newPieceInstance.pieceInstance.dynamicallyInserted).toBeTruthy()
+					expect(newPieceInstance.pieceInstance.partInstanceId).toEqual(nextPartInstance.partInstance._id)
+				})
+			})
 		})
 
 		describe('updatePieceInstance', () => {

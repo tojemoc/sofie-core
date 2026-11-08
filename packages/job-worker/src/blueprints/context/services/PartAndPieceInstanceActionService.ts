@@ -330,7 +330,10 @@ export class PartAndPieceInstanceActionService {
 		piece._id = getRandomId() // Make id random, as postProcessPieces is too predictable (for ingest)
 
 		// Do the work
-		const newPieceInstance = partInstance.insertAdlibbedPiece(piece, undefined)
+		// Insertions through this api are always dynamic, even when the target PartInstance has not
+		// been taken yet (eg 'next' during onTake/onSetAsNext), so that their on-End infinites
+		// continue into the following PartInstances.
+		const newPieceInstance = partInstance.insertAdlibbedPiece(piece, undefined, true)
 
 		this.#trackStateChange(part, ActionPartChange.SAFE_CHANGE)
 
