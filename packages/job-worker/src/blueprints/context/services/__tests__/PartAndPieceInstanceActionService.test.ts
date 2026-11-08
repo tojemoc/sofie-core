@@ -31,6 +31,7 @@ import {
 	serializePieceTimelineObjectsBlob,
 } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PlayoutPartInstanceModel } from '../../../../playout/model/PlayoutPartInstanceModel.js'
+import { syncPlayheadInfinitesForNextPartInstance } from '../../../../playout/infinites.js'
 import { convertPartInstanceToBlueprints, convertPieceInstanceToBlueprints } from '../../lib.js'
 import { TimelineObjRundown, TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { PlayoutPartInstanceModelImpl } from '../../../../playout/model/implementation/PlayoutPartInstanceModelImpl.js'
@@ -1979,6 +1980,75 @@ describe('Test blueprint api context', () => {
 					expect(newPieceInstance).toBeTruthy()
 					expect(newPieceInstance.pieceInstance.dynamicallyInserted).toBeTruthy()
 					expect(newPieceInstance.pieceInstance.partInstanceId).toEqual(partInstance.partInstance._id)
+				})
+			})
+
+			test('insert into not-yet-taken next part is still dynamicallyInserted', async () => {
+				const { jobContext, playlistId, allPartInstances } = await setupMyDefaultRundown()
+
+				await setPartInstances(jobContext, playlistId, allPartInstances[0], allPartInstances[1])
+
+				await wrapWithPlayoutModel(jobContext, playlistId, async (playoutModel) => {
+					const { service } = await getTestee(jobContext, playoutModel)
+
+					postProcessPiecesMock.mockImplementationOnce(() => [
+						{
+							_id: 'fake5', // Should be ignored
+							externalId: 'input1',
+							enable: { start: 0 },
+							lifespan: PieceLifespan.OutOnRundownEnd,
+							sourceLayerId: 'recording0',
+							outputLayerId: '',
+							pieceType: IBlueprintPieceType.Normal,
+							invalid: false,
+							name: 'test piece',
+							content: {},
+							timelineObjectsString: EmptyPieceTimelineObjectsBlob,
+						} as any,
+					])
+
+					const nextPartInstance = playoutModel.nextPartInstance!
+					expect(nextPartInstance).toBeTruthy()
+					// The next part has not been taken yet, but a context api insert is a runtime
+					// insertion, so it must be marked as dynamicallyInserted for its on-End
+					// infinites to continue into the following PartInstances.
+					expect(nextPartInstance.partInstance.isTaken).toBeFalsy()
+
+					const newPieceInstanceId = (await service.insertPiece('next', { externalId: 'input1' } as any))._id
+					expect(postProcessPiecesMock).toHaveBeenCalledTimes(1)
+
+					const newPieceInstance = playoutModel.findPieceInstance(protectString(newPieceInstanceId))
+						?.pieceInstance as PlayoutPieceInstanceModel
+					expect(newPieceInstance).toBeTruthy()
+					expect(newPieceInstance.pieceInstance.dynamicallyInserted).toBeTruthy()
+					expect(newPieceInstance.pieceInstance.partInstanceId).toEqual(nextPartInstance.partInstance._id)
+
+					// The on-End infinite must actually continue: when the following
+					// PartInstance is prepared as next, it receives a continuation of the
+					// piece — even across the segment boundary, for OutOnRundownEnd
+					const followingPartInstance = allPartInstances.find(
+						(partInstance) => partInstance.partInstance.part.externalId === 'MOCK_PART_1_0'
+					)!
+					expect(followingPartInstance).toBeTruthy()
+					expect(followingPartInstance.partInstance.segmentId).not.toEqual(
+						nextPartInstance.partInstance.segmentId
+					)
+					await syncPlayheadInfinitesForNextPartInstance(
+						jobContext,
+						playoutModel,
+						undefined,
+						nextPartInstance,
+						followingPartInstance
+					)
+
+					const continuation = followingPartInstance.pieceInstances.find(
+						(pieceInstance) =>
+							pieceInstance.pieceInstance.infinite?.infiniteInstanceId ===
+							newPieceInstance.pieceInstance.infinite?.infiniteInstanceId
+					)
+					expect(continuation).toBeTruthy()
+					expect(continuation?.pieceInstance.infinite?.fromPreviousPlayhead).toBeTruthy()
+					expect(continuation?.pieceInstance.piece.sourceLayerId).toEqual('recording0')
 				})
 			})
 		})

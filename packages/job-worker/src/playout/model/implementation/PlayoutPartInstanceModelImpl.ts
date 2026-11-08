@@ -227,7 +227,8 @@ export class PlayoutPartInstanceModelImpl implements PlayoutPartInstanceModel {
 
 	insertAdlibbedPiece(
 		piece: Omit<PieceInstancePiece, 'startPartId'>,
-		fromAdlibId: PieceId | undefined
+		fromAdlibId: PieceId | undefined,
+		forceDynamicInsertion?: boolean
 	): PlayoutPieceInstanceModel {
 		const pieceInstance: PieceInstance = {
 			_id: protectString(`${this.partInstance._id}_${piece._id}`),
@@ -247,7 +248,7 @@ export class PlayoutPartInstanceModelImpl implements PlayoutPartInstanceModel {
 		pieceInstance.piece.startPartId = this.partInstance.part._id
 		pieceInstance.adLibSourceId = fromAdlibId
 
-		if (this.partInstance.isTaken) pieceInstance.dynamicallyInserted = getCurrentTime()
+		if (forceDynamicInsertion || this.partInstance.isTaken) pieceInstance.dynamicallyInserted = getCurrentTime()
 
 		setupPieceInstanceInfiniteProperties(pieceInstance)
 
