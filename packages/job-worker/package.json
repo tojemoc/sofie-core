@@ -39,7 +39,7 @@
 		"@sofie-automation/blueprints-integration": "26.9.2",
 		"@sofie-automation/corelib": "26.9.2",
 		"@sofie-automation/shared-lib": "26.9.2",
-		"amqplib": "0.10.5",
+		"amqplib": "0.10.9",
 		"chrono-node": "^2.9.1",
 		"deepmerge": "^4.3.1",
 		"elastic-apm-node": "^4.18.0",
@@ -53,7 +53,7 @@
 		"underscore": "^1.13.8"
 	},
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
-	"packageManager": "yarn@4.17.0",
+	"packageManager": "yarn@4.18.1",
 	"devDependencies": {
 		"jest": "^30.4.2",
 		"jest-mock-extended": "^4.0.1",
