@@ -49,9 +49,9 @@
 		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\""
 	},
 	"devDependencies": {
-		"@babel/core": "^7.29.7",
-		"@babel/plugin-transform-export-namespace-from": "^7.27.1",
-		"@babel/plugin-transform-modules-commonjs": "^7.29.7",
+		"@babel/core": "^8.0.0",
+		"@babel/plugin-transform-export-namespace-from": "^8.0.0",
+		"@babel/plugin-transform-modules-commonjs": "^8.0.0",
 		"@sofie-automation/code-standard-preset": "^3.2.2",
 		"@types/amqplib": "0.10.8",
 		"@types/debug": "^4.1.13",
