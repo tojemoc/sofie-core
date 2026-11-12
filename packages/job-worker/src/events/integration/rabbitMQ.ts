@@ -54,7 +54,7 @@ abstract class Manager {
 	}
 }
 class ConnectionManager extends Manager {
-	private connection: AMQP.Connection | undefined
+	private connection: AMQP.ChannelModel | undefined
 	public channelManager: ChannelManager | undefined
 
 	/** https://www.rabbitmq.com/connection-blocked.html */
@@ -82,7 +82,7 @@ class ConnectionManager extends Manager {
 		this.channelManager = new ChannelManager(this.connection, this.hostURL)
 	}
 
-	private async initConnection(): Promise<AMQP.Connection> {
+	private async initConnection(): Promise<AMQP.ChannelModel> {
 		try {
 			const connection = await AMQP.connect(this.hostURL, {
 				// socketOptions
@@ -118,14 +118,14 @@ class ConnectionManager extends Manager {
 	}
 }
 class ChannelManager extends Manager {
-	private readonly connection: AMQP.Connection
+	private readonly connection: AMQP.ChannelModel
 	private readonly hostURL: string
 	private channel: AMQP.ConfirmChannel | undefined
 
 	private outgoingQueue: Array<Message> = []
 	private handleOutgoingQueueTimeout: NodeJS.Timer | null = null
 
-	constructor(connection: AMQP.Connection, hostURL: string) {
+	constructor(connection: AMQP.ChannelModel, hostURL: string) {
 		super()
 
 		this.connection = connection
@@ -141,7 +141,7 @@ class ChannelManager extends Manager {
 
 		this.channel = await this.initChannel(this.connection)
 	}
-	private async initChannel(connection: AMQP.Connection): Promise<AMQP.ConfirmChannel> {
+	private async initChannel(connection: AMQP.ChannelModel): Promise<AMQP.ConfirmChannel> {
 		try {
 			const channel = await connection.createConfirmChannel()
 
