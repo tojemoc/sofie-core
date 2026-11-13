@@ -7902,7 +7902,7 @@ __metadata:
     ejson: "npm:^2.2.3"
     elastic-apm-node: "npm:^4.18.0"
     fast-clone: "npm:^1.5.13"
-    glob: "npm:^13.0.6"
+    glob: "npm:^14.0.0"
     i18next: "npm:^26.3.6"
     i18next-cli: "npm:^1.66.2"
     i18next-conv: "npm:^16.0.0"
@@ -17873,7 +17873,7 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
-"glob@npm:^14.0.3":
+"glob@npm:^14.0.0, glob@npm:^14.0.3":
   version: 14.0.4
   resolution: "glob@npm:14.0.4"
   dependencies:
