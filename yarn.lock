@@ -7964,7 +7964,7 @@ __metadata:
     "@types/sha.js": "npm:^2.4.4"
     "@types/xml2js": "npm:^0.4.14"
     "@vitejs/plugin-react": "npm:^5.2.0"
-    "@welldone-software/why-did-you-render": "npm:^4.3.2"
+    "@welldone-software/why-did-you-render": "npm:^10.0.0"
     "@xmldom/xmldom": "npm:^0.9.10"
     babel-jest: "npm:^30.4.1"
     bootstrap: "npm:^5.3.8"
@@ -10610,14 +10610,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@welldone-software/why-did-you-render@npm:^4.3.2":
-  version: 4.3.2
-  resolution: "@welldone-software/why-did-you-render@npm:4.3.2"
+"@welldone-software/why-did-you-render@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "@welldone-software/why-did-you-render@npm:10.0.1"
   dependencies:
     lodash: "npm:^4"
   peerDependencies:
-    react: ">=16.13"
-  checksum: 10/7edfb8a045fbf8c938bbc6cd2e9ac63341b054b79a04f0c33abd540fac6035e3cbfbdc9e5bf22bad6c1ce8a051db84f8746e075486bb255567b53d8360080387
+    react: ^19
+  checksum: 10/da37a677b7e275bf5b4b615cd45bd23c83125d04c9a292b8af5920837d5c65ebf63c8229ff963feb038787938e024dc6d3cfa6c3277e68e24b8b066292453117
   languageName: node
   linkType: hard
 
