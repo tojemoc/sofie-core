@@ -63,7 +63,7 @@
 		"babel-jest": "^30.4.1",
 		"commit-and-tag-version": "^13.1.0",
 		"concurrently": "^10.0.3",
-		"eslint": "^9.39.5",
+		"eslint": "^10.0.0",
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-yml": "^3.4.0",
 		"husky": "^9.1.7",
