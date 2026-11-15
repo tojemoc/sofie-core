@@ -53,6 +53,11 @@ export interface PlayoutPartInstanceModel {
 	snapshotRestore(snapshot: PlayoutPartInstanceModelSnapshot): void
 
 	/**
+	 * Whether this PartInstance or any of its PieceInstances have unsaved changes
+	 */
+	hasAnyChanges(): boolean
+
+	/**
 	 * Block a take out of this PartInstance from happening until the specified timestamp
 	 * This can be necessary when an uninteruptable Piece is being played out
 	 * @param timestamp Timestampt to block until

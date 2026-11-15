@@ -102,6 +102,7 @@ describe('SyncChangesToPartInstancesWorker', () => {
 					previousPartInstance: null,
 
 					clearAllNotifications: jest.fn(),
+					markTimelineNeedsUpdate: jest.fn(),
 					// setPartInstanceAsNext: jest.fn(),
 					// removeUntakenPartInstances: jest.fn(),
 				},
@@ -138,21 +139,31 @@ describe('SyncChangesToPartInstancesWorker', () => {
 		}
 
 		function createMockPartInstance(id: string): PlayoutPartInstanceModel {
+			let hasChanges = false
+			const partInstance = {
+				_id: protectString(id),
+				part: createMockPart(id),
+				segmentId: protectString('mockSegmentId'),
+				rundownId: protectString('mockRundownId'),
+				takeCount: 0,
+				brandingId: null,
+				rehearsal: false,
+				playlistActivationId: protectString('mockPlaylistActivationId'),
+				segmentPlayoutId: protectString('mockSegmentPlayoutId'),
+			} satisfies PlayoutPartInstanceModel['partInstance']
+
 			return mock<PlayoutPartInstanceModel>(
 				{
-					partInstance: {
-						_id: protectString(id),
-						part: createMockPart(id),
-						segmentId: protectString('mockSegmentId'),
-						rundownId: protectString('mockRundownId'),
-						takeCount: 0,
-						brandingId: null,
-						rehearsal: false,
-						playlistActivationId: protectString('mockPlaylistActivationId'),
-						segmentPlayoutId: protectString('mockSegmentPlayoutId'),
-					} satisfies PlayoutPartInstanceModel['partInstance'],
+					partInstance,
 					pieceInstances: [] satisfies PlayoutPartInstanceModel['pieceInstances'],
 
+					hasAnyChanges: jest.fn(() => hasChanges),
+					updatePartProps: jest.fn((props) => {
+						Object.assign(partInstance.part, props)
+						hasChanges = true
+						return true
+					}),
+					setInvalidReason: jest.fn(),
 					recalculateExpectedDurationWithTransition: jest.fn(),
 					snapshotMakeCopy: jest.fn(() => Date.now() as any),
 					snapshotRestore: jest.fn(() => {
@@ -208,6 +219,7 @@ describe('SyncChangesToPartInstancesWorker', () => {
 			expect(partInstance.snapshotRestore).toHaveBeenCalledTimes(0)
 			expect(syncIngestUpdateToPartInstanceFn).toHaveBeenCalledTimes(1)
 			expect(validateAdlibTestingPartInstanceProperties).toHaveBeenCalledTimes(1)
+			expect(playoutModel.markTimelineNeedsUpdate).toHaveBeenCalledTimes(0)
 
 			// An unchanged Part must report partChanged: false to the blueprint
 			const newData = syncIngestUpdateToPartInstanceFn.mock.calls[0][2] as BlueprintSyncIngestNewData
@@ -254,6 +266,52 @@ describe('SyncChangesToPartInstancesWorker', () => {
 			expect(syncIngestUpdateToPartInstanceFn).toHaveBeenCalledTimes(1)
 			const newData = syncIngestUpdateToPartInstanceFn.mock.calls[0][2] as BlueprintSyncIngestNewData
 			expect(newData.partChanged).toBe(true)
+		})
+
+		test('marks timeline for update when the blueprint updates the PartInstance', async () => {
+			const context = setupDefaultJobEnvironment()
+			const showStyleCompound = await setupMockShowStyleCompound(context)
+
+			const syncIngestUpdateToPartInstanceFn: jest.MockedFunction<
+				Required<ShowStyleBlueprintManifest>['syncIngestUpdateToPartInstance']
+			> = jest.fn()
+			syncIngestUpdateToPartInstanceFn.mockImplementation((context) => {
+				context.updatePartInstance({ autoNext: true, expectedDuration: 15000 })
+			})
+			context.updateShowStyleBlueprint({
+				syncIngestUpdateToPartInstance: syncIngestUpdateToPartInstanceFn,
+			})
+			const blueprint = await context.getShowStyleBlueprint(showStyleCompound._id)
+
+			const playoutModel = createMockPlayoutModel()
+			const ingestModel = createMockIngestModelReadonly()
+			const rundownModel = createMockPlayoutRundownModel()
+
+			const worker = new SyncChangesToPartInstancesWorker(
+				context,
+				playoutModel,
+				ingestModel,
+				showStyleCompound,
+				blueprint
+			)
+
+			const partInstance = createMockPartInstance('mockPartInstanceId')
+			const part = createMockPart('mockPartId')
+
+			await worker.syncChangesToPartInstance({
+				playoutRundownModel: rundownModel,
+				existingPartInstance: partInstance,
+				previousPartInstance: null,
+				playStatus: 'current',
+				newPart: part,
+				newPartChanged: true,
+				proposedPieceInstances: Promise.resolve([]),
+			})
+
+			expect(partInstance.updatePartProps).toHaveBeenCalledWith(
+				expect.objectContaining({ autoNext: true, expectedDuration: 15000 })
+			)
+			expect(playoutModel.markTimelineNeedsUpdate).toHaveBeenCalledTimes(1)
 		})
 
 		test('removePartInstance for next calls recreateNextPartInstance', async () => {
@@ -309,6 +367,7 @@ describe('SyncChangesToPartInstancesWorker', () => {
 			expect(validateAdlibTestingPartInstanceProperties).toHaveBeenCalledTimes(0)
 			expect(worker.recreateNextPartInstance).toHaveBeenCalledTimes(1)
 			expect(worker.recreateNextPartInstance).toHaveBeenCalledWith(part)
+			expect(playoutModel.markTimelineNeedsUpdate).toHaveBeenCalledTimes(1)
 		})
 	})
 

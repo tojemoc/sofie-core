@@ -193,6 +193,7 @@ export class SyncChangesToPartInstancesWorker {
 		if (instanceToSync.playStatus === 'next' && syncContext.hasRemovedPartInstance) {
 			// PartInstance was removed, so we need to remove it and re-select the next part
 			await this.recreateNextPartInstance(instanceToSync.newPart)
+			this.#playoutModel.markTimelineNeedsUpdate()
 
 			// We don't need to continue syncing this partInstance, as it's been replaced
 			return
@@ -217,6 +218,10 @@ export class SyncChangesToPartInstancesWorker {
 				this.#playoutModel.currentPartInstance,
 				this.#playoutModel.nextPartInstance
 			)
+		}
+
+		if (existingPartInstance.hasAnyChanges()) {
+			this.#playoutModel.markTimelineNeedsUpdate()
 		}
 	}
 
