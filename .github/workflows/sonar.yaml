@@ -16,12 +16,12 @@ name: SonarCloud analysis
 jobs:
   sonarqube:
     name: SonarQube
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     if: ${{ github.repository_owner == 'Sofie-Automation' && !github.event.pull_request.head.repo.fork }}
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: useblacksmith/checkout@v1
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0

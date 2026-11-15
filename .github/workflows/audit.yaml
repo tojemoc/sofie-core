@@ -10,11 +10,11 @@ permissions:
 jobs:
   validate-prod-core-dependencies:
     name: Validate Core production dependencies
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     continue-on-error: true
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: useblacksmith/checkout@v1
         with:
           persist-credentials: false
       - name: Use Node.js
@@ -39,11 +39,11 @@ jobs:
 
   validate-all-core-dependencies:
     name: Validate all Core dependencies
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     continue-on-error: true
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: useblacksmith/checkout@v1
         with:
           persist-credentials: false
       - name: Use Node.js
@@ -68,7 +68,7 @@ jobs:
 
   validate-prod-packages-dependencies:
     name: Validate Package production dependencies
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     continue-on-error: true
     timeout-minutes: 15
 
@@ -85,7 +85,7 @@ jobs:
           - live-status-gateway
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: useblacksmith/checkout@v1
         with:
           persist-credentials: false
       - name: Use Node.js
@@ -112,12 +112,12 @@ jobs:
 
   validate-all-package-dependencies:
     name: Validate all Package dependencies
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     continue-on-error: true
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: useblacksmith/checkout@v1
         with:
           persist-credentials: false
       - name: Use Node.js
