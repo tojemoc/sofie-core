@@ -314,6 +314,48 @@ describe('SyncChangesToPartInstancesWorker', () => {
 			expect(playoutModel.markTimelineNeedsUpdate).toHaveBeenCalledTimes(1)
 		})
 
+		test('marks timeline for update when only the nextPartInstance has changes', async () => {
+			const context = setupDefaultJobEnvironment()
+			const showStyleCompound = await setupMockShowStyleCompound(context)
+
+			const syncIngestUpdateToPartInstanceFn = jest.fn()
+			context.updateShowStyleBlueprint({
+				syncIngestUpdateToPartInstance: syncIngestUpdateToPartInstanceFn,
+			})
+			const blueprint = await context.getShowStyleBlueprint(showStyleCompound._id)
+
+			const nextPartInstance = createMockPartInstance('mockNextPartInstanceId')
+			const playoutModel = createMockPlayoutModel({ nextPartInstance })
+			const ingestModel = createMockIngestModelReadonly()
+			const rundownModel = createMockPlayoutRundownModel()
+
+			const worker = new SyncChangesToPartInstancesWorker(
+				context,
+				playoutModel,
+				ingestModel,
+				showStyleCompound,
+				blueprint
+			)
+
+			const partInstance = createMockPartInstance('mockPartInstanceId')
+			const part = createMockPart('mockPartId')
+
+			jest.mocked(nextPartInstance.hasAnyChanges).mockReturnValue(true)
+
+			await worker.syncChangesToPartInstance({
+				playoutRundownModel: rundownModel,
+				existingPartInstance: partInstance,
+				previousPartInstance: null,
+				playStatus: 'current',
+				newPart: part,
+				newPartChanged: true,
+				proposedPieceInstances: Promise.resolve([]),
+			})
+
+			expect(partInstance.hasAnyChanges).toHaveBeenCalledTimes(1)
+			expect(playoutModel.markTimelineNeedsUpdate).toHaveBeenCalledTimes(1)
+		})
+
 		test('removePartInstance for next calls recreateNextPartInstance', async () => {
 			const context = setupDefaultJobEnvironment()
 			const showStyleCompound = await setupMockShowStyleCompound(context)

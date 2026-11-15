@@ -220,7 +220,7 @@ export class SyncChangesToPartInstancesWorker {
 			)
 		}
 
-		if (existingPartInstance.hasAnyChanges()) {
+		if (existingPartInstance.hasAnyChanges() || this.#playoutModel.nextPartInstance?.hasAnyChanges()) {
 			this.#playoutModel.markTimelineNeedsUpdate()
 		}
 	}
