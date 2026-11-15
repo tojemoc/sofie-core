@@ -1,5 +1,5 @@
-import type * as React from 'react'
 import _ from 'underscore'
+import type * as React from 'react'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function makeTableOfObject(o: any): React.ReactNode {
@@ -13,7 +13,7 @@ export function makeTableOfObject(o: any): React.ReactNode {
 				{Object.keys(o).map((key) => {
 					const val = o[key]
 
-					let content: any = null
+					let content: any
 					if (_.isObject(val)) {
 						content = makeTableOfObject(val)
 					} else {

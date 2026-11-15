@@ -1,9 +1,10 @@
-import { SegmentsTopic } from '../segmentsTopic.js'
-import { protectString, unprotectString } from '@sofie-automation/server-core-integration'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { makeMockHandlers, makeMockLogger, makeMockSubscriber, makeTestPlaylist } from './utils.js'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { SegmentsEvent } from '@sofie-automation/live-status-gateway-api'
+import { protectString, unprotectString } from '@sofie-automation/server-core-integration'
+
+import { SegmentsTopic } from '../segmentsTopic.js'
+import { makeMockHandlers, makeMockLogger, makeMockSubscriber, makeTestPlaylist } from './utils.js'
 
 const RUNDOWN_1_ID = 'RUNDOWN_1'
 const RUNDOWN_2_ID = 'RUNDOWN_2'

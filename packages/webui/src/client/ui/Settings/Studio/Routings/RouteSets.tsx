@@ -1,57 +1,55 @@
+import { faCheck, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ClassNames from 'classnames'
 import * as React from 'react'
-import {
-	type StudioRouteSet,
-	StudioRouteBehavior,
-	type RouteMapping,
-	type StudioRouteSetExclusivityGroup,
-	StudioRouteType,
-	type MappingsExt,
-	type MappingExt,
-	type DBStudio,
-} from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPencilAlt, faCheck, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
+import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
-import { TSR } from '@sofie-automation/blueprints-integration'
 import type { ReadonlyDeep } from 'type-fest'
-import type { MappingsSettingsManifest, MappingsSettingsManifests } from '../Mappings.js'
+
+import { TSR } from '@sofie-automation/blueprints-integration'
+import { StudioRouteBehavior, StudioRouteType } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { literal } from '@sofie-automation/corelib/dist/lib'
-import {
-	DropdownInputControl,
-	type DropdownInputOption,
-	getDropdownInputOptions,
-} from '../../../../lib/Components/DropdownInput.js'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type {
+	DBStudio,
+	MappingExt,
+	MappingsExt,
+	RouteMapping,
+	StudioRouteSet,
+	StudioRouteSetExclusivityGroup,
+} from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { Studios } from '../../../../collections/index.js'
+import { CheckboxControl } from '../../../../lib/Components/Checkbox.js'
+import { DropdownInputControl, getDropdownInputOptions } from '../../../../lib/Components/DropdownInput.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
 	LabelAndOverridesForCheckbox,
 	LabelAndOverridesForDropdown,
 } from '../../../../lib/Components/LabelAndOverrides.js'
-import {
-	type OverrideOpHelper,
-	type OverrideOpHelperForItemContents,
-	useOverrideOpHelper,
-	type WrappedOverridableItem,
-	type WrappedOverridableItemDeleted,
-	type WrappedOverridableItemNormal,
-} from '../../util/OverrideOpHelper.js'
 import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import { CheckboxControl } from '../../../../lib/Components/Checkbox.js'
-import { OverrideOpHelperArrayTable } from '../../../../lib/forms/SchemaFormTable/ArrayTableOpHelper.js'
 import { hasOpWithPath } from '../../../../lib/Components/util.js'
+import { OverrideOpHelperArrayTable } from '../../../../lib/forms/SchemaFormTable/ArrayTableOpHelper.js'
 import { SchemaFormWithOverrides } from '../../../../lib/forms/SchemaFormWithOverrides.js'
-import {
-	applyAndValidateOverrides,
-	type ObjectOverrideSetOp,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { Studios } from '../../../../collections/index.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
 import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
+import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
 import { RouteSetAbPlayers } from './RouteSetAbPlayers.js'
-import Button from 'react-bootstrap/esm/Button'
+import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
+import type {
+	OverrideOpHelper,
+	OverrideOpHelperForItemContents,
+	WrappedOverridableItem,
+	WrappedOverridableItemDeleted,
+	WrappedOverridableItemNormal,
+} from '../../util/OverrideOpHelper.js'
+import type { MappingsSettingsManifest, MappingsSettingsManifests } from '../Mappings.js'
 
 interface RouteSetsTable {
 	studio: DBStudio
@@ -146,7 +144,11 @@ export function RouteSetsTable({
 									exclusivityGroupsFromOverrides={exclusivityGroupsFromOverrides}
 								/>
 							) : (
-								<RouteSetDeletedRow key={routeSet.id} routeSet={routeSet} overrideHelper={overrideHelper} />
+								<RouteSetDeletedRow
+									key={routeSet.id}
+									routeSet={routeSet}
+									overrideHelper={overrideHelper}
+								/>
 							)
 						)
 					)}
@@ -294,7 +296,11 @@ function RouteSetRow({
 						<div className="properties-grid">
 							<label className="field">
 								<LabelActual label={t('Route Set ID')} />
-								<TextInputControl value={routeSet.id} handleUpdate={updateRouteSetId} disabled={!!routeSet.defaults} />
+								<TextInputControl
+									value={routeSet.id}
+									handleUpdate={updateRouteSetId}
+									disabled={!!routeSet.defaults}
+								/>
 							</label>
 							<LabelAndOverridesForDropdown
 								label={t('Default State')}
@@ -314,7 +320,9 @@ function RouteSetRow({
 								itemKey={'active'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverrides
 								label={t('Route Set Name')}
@@ -322,7 +330,9 @@ function RouteSetRow({
 								itemKey={'name'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 
 							<LabelAndOverridesForDropdown
@@ -418,7 +428,9 @@ function RouteSetDeletedRow({ routeSet, overrideHelper }: Readonly<RouteSetDelet
 
 	return (
 		<tr>
-			<th className="settings-studio-device__name c3 notifications-s notifications-text">{routeSet.defaults.name}</th>
+			<th className="settings-studio-device__name c3 notifications-s notifications-text">
+				{routeSet.defaults.name}
+			</th>
 			<td className="settings-studio-device__id c2 deleted">{routeSet.defaults.name}</td>
 			<td className="settings-studio-device__id c2 deleted">{routeSet.id}</td>
 			<td className="settings-studio-output-table__actions table-item-actions c3">
@@ -466,10 +478,13 @@ function RenderRoutes({
 				message: (
 					<>
 						<p>
-							{t('Are you sure you want to remove the Route from "{{sourceLayerId}}" to "{{newLayerId}}"?', {
-								sourceLayerId: route.computed.mappedLayer,
-								newLayerId: route.computed.outputMappedLayer,
-							})}
+							{t(
+								'Are you sure you want to remove the Route from "{{sourceLayerId}}" to "{{newLayerId}}"?',
+								{
+									sourceLayerId: route.computed.mappedLayer,
+									newLayerId: route.computed.outputMappedLayer,
+								}
+							)}
 						</p>
 						<p>{t('Please note: This action is irreversible!')}</p>
 					</>

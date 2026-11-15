@@ -1,9 +1,11 @@
 import semver from 'semver'
-import { ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { parseVersion } from '../systemStatus/semverUtils'
-import { logger } from '../logging'
-import { CoreSystem } from '../collections'
+
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { CoreSystem } from '../collections'
+import { logger } from '../logging'
+import { parseVersion } from '../systemStatus/semverUtils'
 
 // The CoreSystem collection will contain one (exactly 1) object.
 // This represents the "system"

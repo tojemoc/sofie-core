@@ -1,10 +1,11 @@
 import type { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import { RundownUtils } from '../../lib/rundown.js'
-import { calculateTTimerDiff, calculateTTimerOverUnder } from '../../lib/tTimerUtils.js'
-import { useTiming } from '../RundownView/RundownTiming/withTiming.js'
+
 import { OverUnderChip } from '../../lib/Components/OverUnderChip.js'
-import { Countdown } from '../RundownView/RundownHeader/Countdown.js'
+import { RundownUtils } from '../../lib/rundown.js'
 import { getCurrentTime } from '../../lib/systemTime.js'
+import { calculateTTimerDiff, calculateTTimerOverUnder } from '../../lib/tTimerUtils.js'
+import { Countdown } from '../RundownView/RundownHeader/Countdown.js'
+import { useTiming } from '../RundownView/RundownTiming/withTiming.js'
 
 interface TTimerDisplayProps {
 	timer: RundownTTimer

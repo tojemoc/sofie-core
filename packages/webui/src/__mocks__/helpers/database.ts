@@ -1,31 +1,16 @@
 import _ from 'underscore'
-import type { DBStudio, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	PieceLifespan,
-	type IOutputLayer,
-	type ISourceLayer,
-	SourceLayerType,
-	IBlueprintPieceType,
-} from '@sofie-automation/blueprints-integration'
-import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { type ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { literal, getRandomId, type Complete, normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { EmptyPieceTimelineObjectsBlob, type Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { restartRandomId } from '../random.js'
-import { MongoMock } from '../mongo.js'
-import { defaultRundownPlaylist, defaultStudio } from '../defaultCollectionObjects.js'
+
+import { IBlueprintPieceType, PieceLifespan, SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { getRandomId, literal, normalizeArray } from '@sofie-automation/corelib/dist/lib'
 import {
 	applyAndValidateOverrides,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import type {
 	BlueprintId,
 	RundownId,
@@ -33,6 +18,18 @@ import type {
 	ShowStyleBaseId,
 	ShowStyleVariantId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { DBStudio, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { Complete } from '@sofie-automation/corelib/dist/lib'
+import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
 import {
 	AdLibPieces,
 	CoreSystem,
@@ -46,6 +43,9 @@ import {
 	Studios,
 } from '../../client/collections/index.js'
 import { UIParts } from '../../client/ui/Collections.js'
+import { defaultRundownPlaylist, defaultStudio } from '../defaultCollectionObjects.js'
+import { MongoMock } from '../mongo.js'
+import { restartRandomId } from '../random.js'
 
 export enum LAYER_IDS {
 	SOURCE_CAM0 = 'cam0',

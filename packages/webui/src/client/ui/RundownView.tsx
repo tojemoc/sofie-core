@@ -1,77 +1,23 @@
-import { Meteor } from 'meteor/meteor'
-import React, { useContext, useMemo } from 'react'
-import { type ParsedQuery, parse as queryStringParse } from 'query-string'
-import { type Translated, translateWithTracker, useTracker } from '../lib/ReactMeteorData/react-meteor-data.js'
-import { type VTContent, NoteSeverity, type ISourceLayer } from '@sofie-automation/blueprints-integration'
-import { Spinner } from '../lib/Spinner.js'
 import classNames from 'classnames'
-import * as _ from 'underscore'
+import { Meteor } from 'meteor/meteor'
+import { AnimatePresence } from 'motion/react'
+import { parse as queryStringParse } from 'query-string'
+import React, { useContext, useMemo } from 'react'
 import { Prompt } from 'react-router-dom'
-import type { QuickLoopMarker } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { RUNDOWN_VIEW_PLAYLIST_OMITTED_FIELDS, type RundownViewPlaylist } from '../lib/rundownPlaylistProjection.js'
-import type { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { type DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { StudioRouteSet, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { SegmentTimelineContainer, type PartUi, type SegmentUi } from './SegmentTimeline/SegmentTimelineContainer.js'
-import { SegmentContextMenu } from './SegmentTimeline/SegmentContextMenu.js'
-import { Shelf, ShelfTabs } from './Shelf/Shelf.js'
-import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../lib/systemTime.js'
-import { RundownUtils } from '../lib/rundown.js'
-import { ErrorBoundary } from '../lib/ErrorBoundary.js'
-import { ModalDialog, doModalDialog } from '../lib/ModalDialog.js'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import {
-	scrollToPosition,
-	scrollToSegment,
-	maintainFocusOnPartInstance,
-	scrollToPartInstance,
-	getHeaderHeight,
-	clearViewportLifecycleState,
-} from '../lib/viewPort.js'
-import { AfterBroadcastForm } from './AfterBroadcastForm.js'
-import { RundownRightHandControls } from './RundownView/RundownRightHandControls.js'
-import { PeripheralDevicesAPI } from '../lib/clientAPI.js'
-import {
-	type RONotificationEvent,
-	onRONotificationClick as rundownNotificationHandler,
-	RundownNotifier,
-} from './RundownView/RundownNotifier.js'
-import { NotificationCenterPanel } from '../lib/notifications/NotificationCenterPanel.js'
-import { NotificationCenter, NoticeLevel, Notification } from '../lib/notifications/notifications.js'
-import { SupportPopUp } from './SupportPopUp.js'
-import { KeyboardFocusIndicator } from '../lib/KeyboardFocusIndicator.js'
+import * as _ from 'underscore'
+import type { ParsedQuery } from 'query-string'
+
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
 import { PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { doUserAction, UserAction } from '../lib/clientUserAction.js'
-import { hashSingleUseToken } from '../lib/lib.js'
-import { ClipTrimDialog } from './ClipTrimPanel/ClipTrimDialog.js'
-import {
-	RundownLayoutType,
-	type RundownLayoutBase,
-	type RundownViewLayout,
-	type RundownLayoutShelfBase,
-	type RundownLayoutFilterBase,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { VirtualElement } from '../lib/VirtualElement.js'
-import { SEGMENT_TIMELINE_ELEMENT_ID } from './SegmentTimeline/SegmentTimeline.js'
-import type { OffsetPosition } from '../utils/positions.js'
-import { MeteorCall } from '../lib/meteorApi.js'
-import { PointerLockCursor } from '../lib/PointerLockCursor.js'
-import { documentTitle } from '../lib/DocumentTitleProvider.js'
-import { RundownDividerHeader } from './RundownView/RundownDividerHeader.js'
-import { PlaylistLoopingHeader } from './RundownView/PlaylistLoopingHeader.js'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { isEntirePlaylistLooping } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { RundownLayoutType } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
 import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { RundownLayoutsAPI } from '../lib/rundownLayouts.js'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant.js'
-import { SegmentStoryboardContainer } from './SegmentStoryboard/SegmentStoryboardContainer.js'
-import { SegmentViewMode } from './SegmentContainer/SegmentViewModes.js'
-import { UIStateStorage } from '../lib/UIStateStorage.js'
-import type { AdLibPieceUi, AdlibSegmentUi } from '../lib/shelf.js'
-import { SegmentListContainer } from './SegmentList/SegmentListContainer.js'
-import { getNextMode as getNextSegmentViewMode } from './SegmentContainer/SwitchViewModeButton.js'
-import type { IResolvedSegmentProps } from './SegmentContainer/withResolvedSegment.js'
-import { UIParts, UIShowStyleBases, UIStudios } from './Collections.js'
+import { DEFAULT_TIME_SCALE } from '@sofie-automation/shared-lib/dist/core/constants'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ISourceLayer, VTContent } from '@sofie-automation/blueprints-integration'
 import type {
 	RundownId,
 	RundownLayoutId,
@@ -79,6 +25,22 @@ import type {
 	SegmentId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { DBPartInstance, PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance.js'
+import type { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { QuickLoopMarker } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant.js'
+import type { StudioRouteSet, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type {
+	RundownLayoutBase,
+	RundownLayoutFilterBase,
+	RundownLayoutShelfBase,
+	RundownViewLayout,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import {
 	PeripheralDevices,
 	RundownLayouts,
@@ -87,30 +49,74 @@ import {
 	ShowStyleVariants,
 } from '../collections/index.js'
 import { RundownPlaylistCollectionUtil } from '../collections/rundownPlaylistUtil.js'
-import { SegmentAdlibTestingContainer } from './SegmentAdlibTesting/SegmentAdlibTestingContainer.js'
+import { PeripheralDevicesAPI } from '../lib/clientAPI.js'
+import { doUserAction, UserAction } from '../lib/clientUserAction.js'
 import { PromiseButton } from '../lib/Components/PromiseButton.js'
+import { documentTitle } from '../lib/DocumentTitleProvider.js'
+import { ErrorBoundary } from '../lib/ErrorBoundary.js'
+import { KeyboardFocusIndicator } from '../lib/KeyboardFocusIndicator.js'
+import { hashSingleUseToken } from '../lib/lib.js'
 import { logger } from '../lib/logging.js'
+import { MeteorCall } from '../lib/meteorApi.js'
+import { doModalDialog, ModalDialog } from '../lib/ModalDialog.js'
+import { NotificationCenterPanel } from '../lib/notifications/NotificationCenterPanel.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../lib/notifications/notifications.js'
+import { PointerLockCursor } from '../lib/PointerLockCursor.js'
+import { translateWithTracker, useTracker } from '../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownUtils } from '../lib/rundown.js'
+import { RundownLayoutsAPI } from '../lib/rundownLayouts.js'
+import { RUNDOWN_VIEW_PLAYLIST_OMITTED_FIELDS } from '../lib/rundownPlaylistProjection.js'
 import { RundownPlaylistClientUtil } from '../lib/rundownPlaylistUtil.js'
-import { UserPermissionsContext, type UserPermissions } from './UserPermissions.js'
-import { MAGIC_TIME_SCALE_FACTOR } from './SegmentTimeline/Constants.js'
-import { DEFAULT_TIME_SCALE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { SelectedElementsContext } from './RundownView/SelectedElementsContext.js'
-import { PropertiesPanel } from './UserEditOperations/PropertiesPanel.js'
-import { RundownHeader } from './RundownView/RundownHeader/RundownHeader.js'
-import { RundownDataMissing } from './RundownView/DataMissing.js'
+import { Spinner } from '../lib/Spinner.js'
+import { getCurrentTime } from '../lib/systemTime.js'
+import { UIStateStorage } from '../lib/UIStateStorage.js'
+import {
+	clearViewportLifecycleState,
+	getHeaderHeight,
+	maintainFocusOnPartInstance,
+	scrollToPartInstance,
+	scrollToPosition,
+	scrollToSegment,
+} from '../lib/viewPort.js'
+import { VirtualElement } from '../lib/VirtualElement.js'
+import { AfterBroadcastForm } from './AfterBroadcastForm.js'
+import { ClipTrimDialog } from './ClipTrimPanel/ClipTrimDialog.js'
+import { UIParts, UIShowStyleBases, UIStudios } from './Collections.js'
 import { CasparCGRestartButtons } from './RundownView/CasparCGRestartButtons.js'
-import { RundownSorensenContext } from './RundownView/RundownSorensenContext.js'
-import { RundownDetachedShelf } from './RundownView/RundownDetachedShelf.js'
-import { useRundownViewSubscriptions } from './RundownView/RundownViewSubscriptions.js'
-import { useMiniShelfAdlibsData } from './RundownView/useQueueMiniShelfAdlib.js'
-import { RundownViewContextProviders } from './RundownView/RundownViewContextProviders.js'
-import { AnimatePresence } from 'motion/react'
-import { UserError } from '@sofie-automation/corelib/dist/error'
+import { RundownDataMissing } from './RundownView/DataMissing.js'
 import { DragContextProvider } from './RundownView/DragContextProvider.js'
-import type { DBPartInstance, PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance.js'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import { isEntirePlaylistLooping } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { PlaylistLoopingHeader } from './RundownView/PlaylistLoopingHeader.js'
+import { RundownDetachedShelf } from './RundownView/RundownDetachedShelf.js'
+import { RundownDividerHeader } from './RundownView/RundownDividerHeader.js'
+import { RundownHeader } from './RundownView/RundownHeader/RundownHeader.js'
+import { onRONotificationClick as rundownNotificationHandler, RundownNotifier } from './RundownView/RundownNotifier.js'
+import { RundownRightHandControls } from './RundownView/RundownRightHandControls.js'
+import { RundownSorensenContext } from './RundownView/RundownSorensenContext.js'
+import { RundownViewContextProviders } from './RundownView/RundownViewContextProviders.js'
+import { useRundownViewSubscriptions } from './RundownView/RundownViewSubscriptions.js'
+import { SelectedElementsContext } from './RundownView/SelectedElementsContext.js'
+import { useMiniShelfAdlibsData } from './RundownView/useQueueMiniShelfAdlib.js'
+import { SegmentAdlibTestingContainer } from './SegmentAdlibTesting/SegmentAdlibTestingContainer.js'
+import { SegmentViewMode } from './SegmentContainer/SegmentViewModes.js'
+import { getNextMode as getNextSegmentViewMode } from './SegmentContainer/SwitchViewModeButton.js'
+import { SegmentListContainer } from './SegmentList/SegmentListContainer.js'
+import { SegmentStoryboardContainer } from './SegmentStoryboard/SegmentStoryboardContainer.js'
+import { MAGIC_TIME_SCALE_FACTOR } from './SegmentTimeline/Constants.js'
+import { SegmentContextMenu } from './SegmentTimeline/SegmentContextMenu.js'
+import { SEGMENT_TIMELINE_ELEMENT_ID } from './SegmentTimeline/SegmentTimeline.js'
+import { SegmentTimelineContainer } from './SegmentTimeline/SegmentTimelineContainer.js'
+import { Shelf, ShelfTabs } from './Shelf/Shelf.js'
+import { SupportPopUp } from './SupportPopUp.js'
+import { PropertiesPanel } from './UserEditOperations/PropertiesPanel.js'
+import { UserPermissionsContext } from './UserPermissions.js'
+import type { Translated } from '../lib/ReactMeteorData/react-meteor-data.js'
+import type { RundownViewPlaylist } from '../lib/rundownPlaylistProjection.js'
+import type { AdLibPieceUi, AdlibSegmentUi } from '../lib/shelf.js'
+import type { OffsetPosition } from '../utils/positions.js'
+import type { RONotificationEvent } from './RundownView/RundownNotifier.js'
+import type { IResolvedSegmentProps } from './SegmentContainer/withResolvedSegment.js'
+import type { PartUi, SegmentUi } from './SegmentTimeline/SegmentTimelineContainer.js'
+import type { UserPermissions } from './UserPermissions.js'
 
 const HIDE_NOTIFICATIONS_AFTER_MOUNT: number | undefined = 5000
 
@@ -193,8 +199,7 @@ export function RundownView(props: Readonly<IProps>): JSX.Element {
 	const playlist = useTracker(
 		() =>
 			RundownPlaylists.findOne(props.playlistId, { projection: RUNDOWN_VIEW_PLAYLIST_OMITTED_FIELDS }) as
-				| RundownViewPlaylist
-				| undefined,
+				RundownViewPlaylist | undefined,
 		[props.playlistId]
 	)
 	const studio = useTracker(() => playlist && UIStudios.findOne({ _id: playlist.studioId }), [playlist?.studioId])
@@ -271,7 +276,9 @@ export function RundownView(props: Readonly<IProps>): JSX.Element {
 						(_segment, segmentIndex, segmentArray) =>
 							new Set<SegmentId>([
 								..._.flatten(
-									rundownArray.slice(0, rundownIndex).map((match) => match.segments.map((segment) => segment._id))
+									rundownArray
+										.slice(0, rundownIndex)
+										.map((match) => match.segments.map((segment) => segment._id))
 								),
 								...segmentArray.slice(0, segmentIndex).map((segment) => segment._id),
 							])
@@ -353,7 +360,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 			const isInspectorShelfExpanded = this.props.selectedShelfLayout?.openByDefault ?? false
 
 			this.state = {
-				timeScale: MAGIC_TIME_SCALE_FACTOR * (this.props.studio?.settings.defaultTimeScale ?? DEFAULT_TIME_SCALE),
+				timeScale:
+					MAGIC_TIME_SCALE_FACTOR * (this.props.studio?.settings.defaultTimeScale ?? DEFAULT_TIME_SCALE),
 				contextMenuContext: null,
 				bottomMargin: '',
 				followLiveSegments: true,
@@ -482,7 +490,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 			if (
 				this.props.playlist &&
 				prevProps.playlist &&
-				prevProps.playlist.currentPartInfo?.partInstanceId !== this.props.playlist.currentPartInfo?.partInstanceId &&
+				prevProps.playlist.currentPartInfo?.partInstanceId !==
+					this.props.playlist.currentPartInfo?.partInstanceId &&
 				prevProps.playlist.nextPartInfo?.manuallySelected
 			) {
 				// reset followLiveSegments after a manual set as next
@@ -532,7 +541,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				// after take
 				this.props.playlist &&
 				prevProps.playlist &&
-				this.props.playlist.currentPartInfo?.partInstanceId !== prevProps.playlist.currentPartInfo?.partInstanceId &&
+				this.props.playlist.currentPartInfo?.partInstanceId !==
+					prevProps.playlist.currentPartInfo?.partInstanceId &&
 				this.props.playlist.currentPartInfo &&
 				this.state.followLiveSegments
 			) {
@@ -547,7 +557,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				this.props.playlist &&
 				prevProps.playlist &&
 				this.props.playlist.nextPartInfo?.partInstanceId !== prevProps.playlist.nextPartInfo?.partInstanceId &&
-				this.props.playlist.currentPartInfo?.partInstanceId === prevProps.playlist.currentPartInfo?.partInstanceId &&
+				this.props.playlist.currentPartInfo?.partInstanceId ===
+					prevProps.playlist.currentPartInfo?.partInstanceId &&
 				this.props.playlist.nextPartInfo &&
 				this.props.playlist.nextPartInfo.manuallySelected
 			) {
@@ -575,7 +586,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				)
 			} else if (
 				this.props.playlist &&
-				this.props.playlist.currentPartInfo?.partInstanceId === prevProps.playlist?.currentPartInfo?.partInstanceId &&
+				this.props.playlist.currentPartInfo?.partInstanceId ===
+					prevProps.playlist?.currentPartInfo?.partInstanceId &&
 				this.props.playlist.nextPartInfo?.partInstanceId === prevProps.playlist?.nextPartInfo?.partInstanceId &&
 				this.props.matchedSegments !== prevProps.matchedSegments &&
 				this.state.followLiveSegments &&
@@ -622,7 +634,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				if (
 					vtContent &&
 					vtContent.editable &&
-					(vtContent.editable.editorialDuration !== undefined || vtContent.editable.editorialStart !== undefined)
+					(vtContent.editable.editorialDuration !== undefined ||
+						vtContent.editable.editorialStart !== undefined)
 				) {
 					this.setState({
 						isClipTrimmerOpen: true,
@@ -1012,7 +1025,11 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				() => {
 					if (!this.props.playlist?._id) return
 					UIStateStorage.setItem(`rundownView.${this.props.playlist._id}`, `segmentViewModes`, {})
-					UIStateStorage.setItem(`rundownView.${this.props.playlist._id}`, 'rundownDefaultSegmentViewMode', nextMode)
+					UIStateStorage.setItem(
+						`rundownView.${this.props.playlist._id}`,
+						'rundownDefaultSegmentViewMode',
+						nextMode
+					)
 				}
 			)
 		}
@@ -1064,19 +1081,21 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				const rundownIdsBefore = rundowns.slice(0, rundownIndex)
 				return (
 					<React.Fragment key={unprotectString(rundownAndSegments.rundown._id)}>
-						{this.props.matchedSegments.length > 1 && !this.props.selectedViewLayout?.hideRundownDivider && (
-							<RundownDividerHeader
-								key={`rundown_${rundownAndSegments.rundown._id}`}
-								rundown={rundownAndSegments.rundown}
-								playlist={this.props.playlist!}
-							/>
-						)}
+						{this.props.matchedSegments.length > 1 &&
+							!this.props.selectedViewLayout?.hideRundownDivider && (
+								<RundownDividerHeader
+									key={`rundown_${rundownAndSegments.rundown._id}`}
+									rundown={rundownAndSegments.rundown}
+									playlist={this.props.playlist!}
+								/>
+							)}
 						{rundownAndSegments.segments.map((segment, segmentIndex, segmentArray) => {
 							if (this.props.studio && this.props.playlist && this.props.showStyleBase) {
 								const ownCurrentPartInstance =
 									// feed the currentPartInstance into the SegmentTimelineContainer component, if the currentPartInstance
 									// is a part of the segment
-									(this.props.currentPartInstance && this.props.currentPartInstance.segmentId === segment._id) ||
+									(this.props.currentPartInstance &&
+										this.props.currentPartInstance.segmentId === segment._id) ||
 									// or the nextPartInstance is a part of this segment, and the currentPartInstance is autoNext
 									(this.props.nextPartInstance &&
 										this.props.nextPartInstance.segmentId === segment._id &&
@@ -1115,7 +1134,9 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 									}
 
 									// Normal segment: base timeline height + optional dashboard panel
-									return showMiniShelf ? BASE_SEGMENT_HEIGHT + DASHBOARD_PANEL_HEIGHT : BASE_SEGMENT_HEIGHT
+									return showMiniShelf
+										? BASE_SEGMENT_HEIGHT + DASHBOARD_PANEL_HEIGHT
+										: BASE_SEGMENT_HEIGHT
 								}
 
 								const segmentPlaceholderHeight = calculatePlaceholderHeight(segment)
@@ -1173,8 +1194,7 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 			rundownIdsBefore: RundownId[]
 		) {
 			const userSegmentViewMode = this.state.segmentViewModes[unprotectString(segment._id)] as
-				| SegmentViewMode
-				| undefined
+				SegmentViewMode | undefined
 			const userRundownSegmentViewMode = this.state.rundownDefaultSegmentViewMode
 			const displayMode =
 				userSegmentViewMode ?? userRundownSegmentViewMode ?? segment.displayAs ?? DEFAULT_SEGMENT_VIEW_MODE
@@ -1223,7 +1243,12 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 				case SegmentViewMode.Storyboard:
 					return <SegmentStoryboardContainer {...resolvedSegmentProps} />
 				case SegmentViewMode.List:
-					return <SegmentListContainer {...resolvedSegmentProps} hideRundownHeader={this.props.hideRundownHeader} />
+					return (
+						<SegmentListContainer
+							{...resolvedSegmentProps}
+							hideRundownHeader={this.props.hideRundownHeader}
+						/>
+					)
 				case SegmentViewMode.Timeline:
 				default:
 					return <SegmentTimelineContainer {...resolvedSegmentProps} />
@@ -1386,7 +1411,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 					async (e, ts) => {
 						const tokenResponse = await MeteorCall.system.generateSingleUseToken()
 
-						if (ClientAPI.isClientResponseError(tokenResponse)) throw UserError.fromSerialized(tokenResponse.error)
+						if (ClientAPI.isClientResponseError(tokenResponse))
+							throw UserError.fromSerialized(tokenResponse.error)
 						if (!tokenResponse.result) throw new Meteor.Error(500, 'Failed to generate token')
 
 						return MeteorCall.userAction.storeRundownSnapshot(
@@ -1400,10 +1426,14 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 					},
 					(err: any) => {
 						if (err) {
-							NotificationCenter.push(new Notification(undefined, NoticeLevel.WARNING, errorMessage, 'userAction'))
+							NotificationCenter.push(
+								new Notification(undefined, NoticeLevel.WARNING, errorMessage, 'userAction')
+							)
 							resolve(false)
 						} else {
-							NotificationCenter.push(new Notification(undefined, NoticeLevel.NOTIFICATION, doneMessage, 'userAction'))
+							NotificationCenter.push(
+								new Notification(undefined, NoticeLevel.NOTIFICATION, doneMessage, 'userAction')
+							)
 							resolve(true)
 						}
 
@@ -1464,7 +1494,8 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 								return (
 									<div
 										className={classNames('rundown-view', {
-											'notification-center-open': this.state.isNotificationsCenterOpen !== undefined,
+											'notification-center-open':
+												this.state.isNotificationsCenterOpen !== undefined,
 											'rundown-view--studio-mode': this.props.userPermissions.studio,
 											'properties-panel-open': selectionContext.listSelectedElements().length > 0,
 										})}
@@ -1477,7 +1508,9 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 											{this.props.matchedSegments &&
 												this.props.matchedSegments.length > 0 &&
 												this.props.userPermissions.studio &&
-												studio.settings.enableEvaluationForm && <AfterBroadcastForm playlist={playlist} />}
+												studio.settings.enableEvaluationForm && (
+													<AfterBroadcastForm playlist={playlist} />
+												)}
 										</ErrorBoundary>
 										{!this.props.hideRundownHeader && (
 											<ErrorBoundary>
@@ -1495,7 +1528,10 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 											<Shelf
 												isExpanded={
 													this.state.isInspectorShelfExpanded ||
-													!!(!this.state.wasShelfResizedByUser && this.props.selectedShelfLayout?.openByDefault)
+													!!(
+														!this.state.wasShelfResizedByUser &&
+														this.props.selectedShelfLayout?.openByDefault
+													)
 												}
 												onChangeExpanded={this.onShelfChangeExpanded}
 												playlist={playlist}
@@ -1512,15 +1548,19 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 											/>
 										</ErrorBoundary>
 										<ErrorBoundary>
-											{this.props.userPermissions.studio && !this.props.studio?.settings.disableBlurBorder && (
-												<KeyboardFocusIndicator userPermissions={this.props.userPermissions}>
-													<div
-														className={classNames('rundown-view__focus-lost-frame', {
-															'rundown-view__focus-lost-frame--reduce-animation': import.meta.env.DEV,
-														})}
-													></div>
-												</KeyboardFocusIndicator>
-											)}
+											{this.props.userPermissions.studio &&
+												!this.props.studio?.settings.disableBlurBorder && (
+													<KeyboardFocusIndicator
+														userPermissions={this.props.userPermissions}
+													>
+														<div
+															className={classNames('rundown-view__focus-lost-frame', {
+																'rundown-view__focus-lost-frame--reduce-animation':
+																	import.meta.env.DEV,
+															})}
+														></div>
+													</KeyboardFocusIndicator>
+												)}
 										</ErrorBoundary>
 										<ErrorBoundary>
 											<RundownRightHandControls
@@ -1533,7 +1573,9 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 												isSupportPanelOpen={this.state.isSupportPanelOpen}
 												onToggleSupportPanel={this.onToggleSupportPanel}
 												isStudioMode={this.props.userPermissions.studio}
-												isUserEditsEnabled={this.props.studio?.settings.enableUserEdits ?? false}
+												isUserEditsEnabled={
+													this.props.studio?.settings.enableUserEdits ?? false
+												}
 												onTake={this.onTake}
 												studioRouteSets={studio.routeSets}
 												studioRouteSetExclusivityGroups={studio.routeSetExclusivityGroups}
@@ -1571,7 +1613,10 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 												{this.state.isSupportPanelOpen && (
 													<SupportPopUp>
 														<hr />
-														<button className="btn btn-secondary" onClick={this.onToggleHotkeys}>
+														<button
+															className="btn btn-secondary"
+															onClick={this.onToggleHotkeys}
+														>
 															{t('Show Hotkeys')}
 														</button>
 														<hr />
@@ -1585,13 +1630,18 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 														<hr />
 														{this.props.userPermissions.studio && (
 															<>
-																<button className="btn btn-secondary" onClick={this.onRestartPlayout}>
+																<button
+																	className="btn btn-secondary"
+																	onClick={this.onRestartPlayout}
+																>
 																	{t('Restart Playout')}
 																</button>
 																<hr />
 															</>
 														)}
-														{this.props.userPermissions.studio && <CasparCGRestartButtons studioId={studio._id} />}
+														{this.props.userPermissions.studio && (
+															<CasparCGRestartButtons studioId={studio._id} />
+														)}
 													</SupportPopUp>
 												)}
 											</AnimatePresence>
@@ -1600,7 +1650,9 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 											{this.props.userPermissions.studio && (
 												<Prompt
 													when={!!playlist.activationId && !this.props.lockView}
-													message={t('This rundown is now active. Are you sure you want to exit this screen?')}
+													message={t(
+														'This rundown is now active. Are you sure you want to exit this screen?'
+													)}
 												/>
 											)}
 										</ErrorBoundary>
@@ -1652,7 +1704,10 @@ const RundownViewContent = translateWithTracker<IPropsWithReady & ITrackedProps,
 										</ErrorBoundary>
 										<ErrorBoundary>
 											{this.props.playlist && this.props.studio && this.props.showStyleBase && (
-												<RundownNotifier playlistId={this.props.playlist._id} studio={this.props.studio} />
+												<RundownNotifier
+													playlistId={this.props.playlist._id}
+													studio={this.props.studio}
+												/>
 											)}
 										</ErrorBoundary>
 									</div>
@@ -1741,7 +1796,9 @@ function findRundownLayouts(rundownLayouts: RundownLayoutBase[] | undefined, par
 	const selectedViewLayout = useMemo(() => {
 		if (!rundownLayouts) return undefined
 
-		const possibleRundownViewLayouts = rundownLayouts.filter((layout) => RundownLayoutsAPI.isRundownViewLayout(layout))
+		const possibleRundownViewLayouts = rundownLayouts.filter((layout) =>
+			RundownLayoutsAPI.isRundownViewLayout(layout)
+		)
 
 		let selectedViewLayout: RundownViewLayout | undefined = undefined
 
@@ -1750,7 +1807,9 @@ function findRundownLayouts(rundownLayouts: RundownLayoutBase[] | undefined, par
 		}
 
 		if (rundownViewLayoutId && !selectedViewLayout) {
-			selectedViewLayout = possibleRundownViewLayouts.find((i) => i.name.includes(unprotectString(rundownViewLayoutId)))
+			selectedViewLayout = possibleRundownViewLayouts.find((i) =>
+				i.name.includes(unprotectString(rundownViewLayoutId))
+			)
 		}
 
 		if (!selectedViewLayout) {
@@ -1763,7 +1822,9 @@ function findRundownLayouts(rundownLayouts: RundownLayoutBase[] | undefined, par
 	const selectedMiniShelfLayout = useMemo(() => {
 		if (!rundownLayouts) return undefined
 
-		const possibleMiniShelfLayouts = rundownLayouts.filter((layout) => RundownLayoutsAPI.isLayoutForMiniShelf(layout))
+		const possibleMiniShelfLayouts = rundownLayouts.filter((layout) =>
+			RundownLayoutsAPI.isLayoutForMiniShelf(layout)
+		)
 
 		// first try to use the one selected by the user
 		let selectedMiniShelfLayout = possibleMiniShelfLayouts.find((i) => i._id === miniShelfLayoutId)
@@ -1778,14 +1839,18 @@ function findRundownLayouts(rundownLayouts: RundownLayoutBase[] | undefined, par
 		// Try to load defaults from rundown view layouts
 		if (selectedViewLayout && RundownLayoutsAPI.isLayoutForRundownView(selectedViewLayout)) {
 			if (!selectedMiniShelfLayout && selectedViewLayout.miniShelfLayout) {
-				selectedMiniShelfLayout = possibleMiniShelfLayouts.find((i) => i._id === selectedViewLayout.miniShelfLayout)
+				selectedMiniShelfLayout = possibleMiniShelfLayouts.find(
+					(i) => i._id === selectedViewLayout.miniShelfLayout
+				)
 			}
 		}
 
 		// if still not found, use the first one - this is a fallback functionality reserved for Shelf layouts
 		// To be removed once Rundown View Layouts/Shelf layouts are refactored
 		if (!selectedMiniShelfLayout) {
-			selectedMiniShelfLayout = possibleMiniShelfLayouts.find((layout) => RundownLayoutsAPI.isDefaultLayout(layout))
+			selectedMiniShelfLayout = possibleMiniShelfLayouts.find((layout) =>
+				RundownLayoutsAPI.isDefaultLayout(layout)
+			)
 		}
 
 		return selectedMiniShelfLayout

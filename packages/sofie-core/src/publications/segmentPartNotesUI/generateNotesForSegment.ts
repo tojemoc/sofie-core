@@ -2,14 +2,13 @@ import { ITranslatableMessage, NoteSeverity } from '@sofie-automation/blueprints
 import { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { literal } from '@sofie-automation/corelib/dist/lib'
+import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { generateTranslation, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { assertNever } from '@sofie-automation/shared-lib/dist/lib/lib'
 import { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
-import { SegmentFields, PartFields, PartInstanceFields } from './reactiveContentCache'
+import { assertNever } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { PartFields, PartInstanceFields, SegmentFields } from './reactiveContentCache'
 
 export function generateNotesForSegment(
 	playlistId: RundownPlaylistId,

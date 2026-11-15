@@ -1,24 +1,25 @@
-import { logger } from '../../logging'
-import { Blueprints, CoreSystem } from '../../collections'
 import {
 	BlueprintManifestType,
 	BlueprintResultApplySystemConfig,
 	IBlueprintTriggeredActions,
 	SystemBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
-import { evalBlueprint } from '../../api/blueprints/cache'
-import { CoreSystemApplyConfigContext } from './context'
-import { updateTriggeredActionsForShowStyleBaseId } from './lib'
 import { CoreSystemId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DEFAULT_CORE_TRIGGERS } from './defaultSystemActionTriggers'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
 import {
-	DEFAULT_MAXIMUM_DATA_AGE,
 	DEFAULT_CONFIRM_KEY_CODE,
+	DEFAULT_MAXIMUM_DATA_AGE,
 	DEFAULT_POISON_KEY,
 } from '@sofie-automation/shared-lib/dist/core/constants'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
+
+import { evalBlueprint } from '../../api/blueprints/cache'
+import { Blueprints, CoreSystem } from '../../collections'
+import { logger } from '../../logging'
+import { CoreSystemApplyConfigContext } from './context'
+import { DEFAULT_CORE_TRIGGERS } from './defaultSystemActionTriggers'
+import { updateTriggeredActionsForShowStyleBaseId } from './lib'
 
 export async function runUpgradeForCoreSystem(coreSystemId: CoreSystemId): Promise<void> {
 	logger.info(`Running upgrade for CoreSystem`)

@@ -1,10 +1,11 @@
-import { protectString, unprotectString } from '@sofie-automation/server-core-integration'
-import { makeMockHandlers, makeMockLogger, makeMockSubscriber } from './utils.js'
-import { PackagesTopic } from '../packagesTopic.js'
-import { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { PackagesEvent, PackageStatus } from '@sofie-automation/live-status-gateway-api'
+import { protectString, unprotectString } from '@sofie-automation/server-core-integration'
+
+import { PackagesTopic } from '../packagesTopic.js'
+import { makeMockHandlers, makeMockLogger, makeMockSubscriber } from './utils.js'
 
 function makeTestUIPieceContentStatuses(): UIPieceContentStatus[] {
 	return [

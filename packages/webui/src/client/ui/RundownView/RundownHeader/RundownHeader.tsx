@@ -1,24 +1,27 @@
-import { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ClassNames from 'classnames'
-import { NavLink } from 'react-router-dom'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { useCallback, useState } from 'react'
 import Navbar from 'react-bootstrap/Navbar'
-import { RundownContextMenu, RundownHeaderContextMenuTrigger, RundownHamburgerButton } from './RundownContextMenu'
-import { TimeOfDay } from '../RundownTiming/TimeOfDay'
-import { RundownHeaderPartRemaining, RundownHeaderSegmentBudget } from '../RundownHeader/CurrentPartOrSegmentRemaining'
-import { RundownHeaderTimers } from './RundownHeaderTimers'
+import { useTranslation } from 'react-i18next'
+import { NavLink } from 'react-router-dom'
 
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownHeaderPartRemaining, RundownHeaderSegmentBudget } from '../RundownHeader/CurrentPartOrSegmentRemaining'
+import { TimeOfDay } from '../RundownTiming/TimeOfDay'
 import { useTiming } from '../RundownTiming/withTiming'
-import { RundownHeaderTimingDisplay } from './RundownHeaderTimingDisplay'
-import { RundownHeaderPlannedStart } from './RundownHeaderPlannedStart'
+import { HeaderFreezeFrameIcon } from './HeaderFreezeFrameIcon'
+import { RundownContextMenu, RundownHamburgerButton, RundownHeaderContextMenuTrigger } from './RundownContextMenu'
 import { RundownHeaderDurations } from './RundownHeaderDurations'
 import { RundownHeaderExpectedEnd } from './RundownHeaderExpectedEnd'
-import { HeaderFreezeFrameIcon } from './HeaderFreezeFrameIcon'
+import { RundownHeaderPlannedStart } from './RundownHeaderPlannedStart'
+import { RundownHeaderTimers } from './RundownHeaderTimers'
+import { RundownHeaderTimingDisplay } from './RundownHeaderTimingDisplay'
+
 import './RundownHeader.scss'
+
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
 
 interface IRundownHeaderProps {
@@ -117,12 +120,16 @@ export function RundownHeader({
 												label={t('Seg. Budg.')}
 											/>
 											<span className="rundown-header__timers-onair-remaining">
-												<span className="rundown-header__timers-onair-remaining__label">{t('On Air')}</span>
+												<span className="rundown-header__timers-onair-remaining__label">
+													{t('On Air')}
+												</span>
 												<RundownHeaderPartRemaining
 													currentPartInstanceId={playlist.currentPartInfo.partInstanceId}
 													heavyClassName="overtime"
 												/>
-												<HeaderFreezeFrameIcon partInstanceId={playlist.currentPartInfo.partInstanceId} />
+												<HeaderFreezeFrameIcon
+													partInstanceId={playlist.currentPartInfo.partInstanceId}
+												/>
 											</span>
 										</div>
 									)}
@@ -161,11 +168,19 @@ export function RundownHeader({
 								<RundownHeaderExpectedEnd playlist={playlist} simplified={simplified} />
 							</button>
 							{lockView ? (
-								<span className="rundown-header__close-btn rundown-header__close-btn--placeholder" aria-hidden="true">
+								<span
+									className="rundown-header__close-btn rundown-header__close-btn--placeholder"
+									aria-hidden="true"
+								>
 									<FontAwesomeIcon icon="close" size="xl" />
 								</span>
 							) : (
-								<NavLink to="/" title={t('Exit')} aria-label={t('Exit')} className="rundown-header__close-btn">
+								<NavLink
+									to="/"
+									title={t('Exit')}
+									aria-label={t('Exit')}
+									className="rundown-header__close-btn"
+								>
 									<FontAwesomeIcon icon="close" size="xl" />
 								</NavLink>
 							)}

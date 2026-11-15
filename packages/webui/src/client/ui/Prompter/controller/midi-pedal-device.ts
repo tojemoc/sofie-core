@@ -1,9 +1,11 @@
-import { ControllerAbstract } from './lib.js'
-import { type PrompterViewContent, PrompterConfigMode } from '../PrompterView.js'
 import Spline from 'cubic-spline'
+import webmidi from 'webmidi'
+import type { Input, InputEventControlchange } from 'webmidi'
 
-import webmidi, { type Input, type InputEventControlchange } from 'webmidi'
 import { logger } from '../../../lib/logging.js'
+import { PrompterConfigMode } from '../PrompterView.js'
+import { ControllerAbstract } from './lib.js'
+import type { PrompterViewContent } from '../PrompterView.js'
 
 /**
  * This class handles control of the prompter using

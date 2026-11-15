@@ -1,20 +1,22 @@
 import { useMemo } from 'react'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import { AdLibPanel } from './AdLibPanel.js'
-import type { BucketAdLibActionUi, BucketAdLibUi } from './RundownViewBuckets.js'
+import { useTranslation } from 'react-i18next'
+
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import {
 	PieceDisplayStyle,
 	RundownLayoutElementType,
-	type RundownLayoutFilter,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { ShelfTabs } from './Shelf.js'
-import { useTranslation } from 'react-i18next'
-import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { RundownLayoutFilter } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { AdLibPanel } from './AdLibPanel.js'
+import { ShelfTabs } from './Shelf.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibActionUi, BucketAdLibUi } from './RundownViewBuckets.js'
 
 interface IProps {
 	playlist: DBRundownPlaylist

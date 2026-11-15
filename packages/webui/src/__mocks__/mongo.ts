@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import _ from 'underscore'
-import { getRandomString } from '@sofie-automation/corelib/dist/lib'
-import {
-	type ProtectedString,
-	unprotectString,
-	protectString,
-} from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { RandomMock } from './random.js'
-import { MeteorMock } from './meteor.js'
+import clone from 'fast-clone'
 import { Meteor } from 'meteor/meteor'
+import _ from 'underscore'
+import type { Mongo } from 'meteor/mongo'
 import type { AnyBulkWriteOperation } from 'mongodb'
+
+import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+import { mongoFindOptions, mongoModify, mongoWhere } from '@sofie-automation/corelib/dist/mongo'
+import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { MongoModifier, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import type { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { MeteorMock } from './meteor.js'
+import { RandomMock } from './random.js'
 import type {
 	FindOneOptions,
 	FindOptions,
@@ -18,16 +22,6 @@ import type {
 	UpsertOptions,
 	WrappedMongoCollection,
 } from '../client/collections/lib.js'
-import {
-	mongoWhere,
-	mongoFindOptions,
-	mongoModify,
-	type MongoQuery,
-	type MongoModifier,
-} from '@sofie-automation/corelib/dist/mongo'
-import type { Mongo } from 'meteor/mongo'
-import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
-import clone from 'fast-clone'
 
 export namespace MongoMock {
 	export interface MockCollections<T extends CollectionObject> {

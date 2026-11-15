@@ -1,26 +1,28 @@
-import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { Spinner } from '../../lib/Spinner.js'
-import RundownLayoutEditor from './RundownLayoutEditor.js'
-import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { TriggeredActionsEditor } from './components/triggeredActions/TriggeredActionsEditor.js'
-import { SourceLayerSettings } from './ShowStyle/SourceLayer.js'
-import { OutputLayerSettings } from './ShowStyle/OutputLayer.js'
-import { HotkeyLegendSettings } from './ShowStyle/HotkeyLegend.js'
-import { ShowStyleVariantsSettings } from './ShowStyle/VariantSettings.js'
-import { ShowStyleGenericProperties } from './ShowStyle/Generic.js'
-import { AbChannelDisplaySettings } from './ShowStyle/AbChannelDisplay.js'
-import { ShowStyleBrandingSettings } from './ShowStyle/Branding.js'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Blueprints, ShowStyleBases, ShowStyleVariants, Studios } from '../../collections/index.js'
-import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import { ShowStyleBaseBlueprintConfigurationSettings } from './ShowStyle/BlueprintConfiguration/index.js'
-import { useTranslation } from 'react-i18next'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Redirect, Route, Switch } from 'react-router-dom'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { Blueprints, ShowStyleBases, ShowStyleVariants, Studios } from '../../collections/index.js'
+import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
+import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { Spinner } from '../../lib/Spinner.js'
+import { TriggeredActionsEditor } from './components/triggeredActions/TriggeredActionsEditor.js'
+import RundownLayoutEditor from './RundownLayoutEditor.js'
+import { AbChannelDisplaySettings } from './ShowStyle/AbChannelDisplay.js'
+import { ShowStyleBaseBlueprintConfigurationSettings } from './ShowStyle/BlueprintConfiguration/index.js'
+import { ShowStyleBrandingSettings } from './ShowStyle/Branding.js'
+import { ShowStyleGenericProperties } from './ShowStyle/Generic.js'
+import { HotkeyLegendSettings } from './ShowStyle/HotkeyLegend.js'
+import { OutputLayerSettings } from './ShowStyle/OutputLayer.js'
+import { SourceLayerSettings } from './ShowStyle/SourceLayer.js'
+import { ShowStyleVariantsSettings } from './ShowStyle/VariantSettings.js'
 
 interface IProps {
 	match: {
@@ -120,7 +122,10 @@ export default function ShowStyleBaseSettings({ match }: IProps): JSX.Element {
 			<ErrorBoundary>
 				<Switch>
 					<Route path={`${match.path}/generic`}>
-						<ShowStyleGenericProperties showStyleBase={showStyleBase} compatibleStudios={compatibleStudios} />
+						<ShowStyleGenericProperties
+							showStyleBase={showStyleBase}
+							compatibleStudios={compatibleStudios}
+						/>
 					</Route>
 					<Route path={`${match.path}/layers`}>
 						<>

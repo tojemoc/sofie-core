@@ -1,14 +1,16 @@
-import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import * as vm from 'vm'
+
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	ShowStyleBlueprintManifest,
 	SomeBlueprintManifest,
 	StudioBlueprintManifest,
 	SystemBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
-import * as vm from 'vm'
-import { ReadonlyDeep } from 'type-fest'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 export interface WrappedSystemBlueprint {
 	blueprintId: BlueprintId
@@ -77,7 +79,7 @@ __run_result || blueprint`,
 			const entry = script.runInContext(context)
 			manifest = entry.default
 		} catch (e) {
-			throw new Error(`Syntax error in blueprint "${blueprint._id}": ${stringifyError(e)}`)
+			throw new Error(`Syntax error in blueprint "${blueprint._id}": ${stringifyError(e)}`, { cause: e })
 		}
 		if (manifest.blueprintType !== blueprint.blueprintType) {
 			throw new Error(

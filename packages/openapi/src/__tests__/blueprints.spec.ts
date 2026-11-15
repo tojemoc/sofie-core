@@ -1,4 +1,4 @@
-import { Configuration, BlueprintsApi } from '../../client/ts/index.js'
+import { BlueprintsApi, Configuration } from '../../client/ts/index.js'
 import { checkServer } from '../checkServer.js'
 import Logging from '../httpLogging.js'
 

@@ -1,5 +1,5 @@
-import type { LiveQueryHandleSync } from '../lib/lib'
 import { logger } from '../logging'
+import type { LiveQueryHandleSync } from '../lib/lib'
 
 export enum FastTrackObservers {
 	TIMELINE = 'timeline',

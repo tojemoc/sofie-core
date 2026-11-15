@@ -1,5 +1,5 @@
-import { protectString, ProtectedString } from '../protectedString.js'
 import { diffObject } from '../diffObject.js'
+import { ProtectedString, protectString } from '../protectedString.js'
 
 interface Thing {
 	_id: ProtectedString<'ThingId'>

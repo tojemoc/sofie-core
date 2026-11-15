@@ -1,17 +1,20 @@
-import { useMemo, useRef, useState, type CSSProperties } from 'react'
-import { SmallPartFlag } from '../../../lib/ui/icons/segment.js'
-import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
-import { SegmentTimelineSmallPartFlagIcon } from './SegmentTimelineSmallPartFlagIcon.js'
-import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
-import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
-import { SegmentTimelinePartHoverPreview } from './SegmentTimelinePartHoverPreview.js'
+import { useMemo, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
+
 import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { getPartInstanceTimingId } from '../../../lib/rundownTiming.js'
+import { SmallPartFlag } from '../../../lib/ui/icons/segment.js'
 import { TimingDataResolution, TimingTickResolution, useTiming } from '../../RundownView/RundownTiming/withTiming.js'
 import { SegmentTimelinePartClass } from '../Parts/SegmentTimelinePart.js'
-import { getPartInstanceTimingId } from '../../../lib/rundownTiming.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import { SegmentTimelinePartHoverPreview } from './SegmentTimelinePartHoverPreview.js'
+import { SegmentTimelineSmallPartFlagIcon } from './SegmentTimelineSmallPartFlagIcon.js'
+import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
+import type { PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
 
 interface ISegmentTimelineSmallPartFlagProps {
 	parts: [PartUi, number, number][]

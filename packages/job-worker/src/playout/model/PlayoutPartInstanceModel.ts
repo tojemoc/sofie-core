@@ -1,17 +1,19 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { IBlueprintMutatablePart, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
 import {
 	BucketAdLibId,
 	PieceId,
 	PieceInstanceId,
 	RundownPlaylistActivationId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ReadonlyDeep } from 'type-fest'
+import { PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { IBlueprintMutatablePart, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
-import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
-import { PlayoutPieceInstanceModel } from './PlayoutPieceInstanceModel.js'
 import { CoreUserEditingDefinition } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
-import { PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+
+import { PlayoutPieceInstanceModel } from './PlayoutPieceInstanceModel.js'
 
 /**
  * Token returned when making a backup copy of a PlayoutPartInstanceModel

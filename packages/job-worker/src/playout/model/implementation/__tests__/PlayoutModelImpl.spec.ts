@@ -1,6 +1,8 @@
-import { JSONBlobStringify, PieceLifespan, StatusCode } from '@sofie-automation/blueprints-integration'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
 import { mock } from 'jest-mock-extended'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { JSONBlobStringify, PieceLifespan, StatusCode } from '@sofie-automation/blueprints-integration'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import {
 	PartInstanceId,
@@ -18,16 +20,17 @@ import {
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import {
 	QuickLoopMarkerType,
 	SelectedPartInstance,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { ReadonlyDeep } from 'type-fest'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../../../__mocks__/context.js'
 import {
 	defaultAdLibPiece,
@@ -44,7 +47,6 @@ import { runWithPlaylistLock } from '../../../lock.js'
 import { PlayoutModelImpl } from '../PlayoutModelImpl.js'
 import { PlayoutRundownModelImpl } from '../PlayoutRundownModelImpl.js'
 import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
-import _ from 'underscore'
 
 const TIME_FAR_PAST = 1000
 const TIME_CONNECTED = 2000

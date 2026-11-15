@@ -1,58 +1,46 @@
-import React from 'react'
-import _ from 'underscore'
-import { withTranslation, type WithTranslation } from 'react-i18next'
-import type { TFunction } from 'i18next'
 import ClassNames from 'classnames'
-import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
-import type { SegmentUi, PartUi, IOutputLayerUi } from '../SegmentTimelineContainer.js'
-import {
-	TimingDataResolution,
-	TimingTickResolution,
-	type WithTiming,
-	withTiming,
-} from '../../RundownView/RundownTiming/withTiming.js'
-import type { RundownTiming } from '../../RundownView/RundownTiming/RundownTiming.js'
+import React from 'react'
+import { withTranslation } from 'react-i18next'
+import _ from 'underscore'
+import type { TFunction } from 'i18next'
+import type { WithTranslation } from 'react-i18next'
 
-import { RundownUtils } from '../../../lib/rundown.js'
-import { getCurrentTime } from '../../../lib/systemTime.js'
-
-import { DEBUG_MODE } from '../SegmentTimelineDebugMode.js'
-import type { Translated } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-
-import type { IContextMenuContext } from '../../RundownView.js'
-import type { CSSProperties } from '../../../styles/_cssVariables.js'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type HighlightEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { LoopingIcon } from '../../../lib/ui/icons/looping.js'
-import { SegmentEnd } from '../../../lib/ui/icons/segment.js'
-import { getShowHiddenSourceLayers } from '../../../lib/localStorage.js'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DefaultUserOperationsTypes, UserEditingType } from '@sofie-automation/blueprints-integration'
 import {
-	getPartInstanceTimingId,
-	getPartInstanceTimingValue,
-	type RundownTimingContext,
-} from '../../../lib/rundownTiming.js'
-import { OutputGroup } from './OutputGroup.js'
-import { InvalidPartCover } from './InvalidPartCover.js'
-import {
-	DefaultUserOperationsTypes,
-	type ISourceLayer,
-	UserEditingType,
-} from '@sofie-automation/blueprints-integration'
-import { LIVE_LINE_TIME_PADDING } from '../Constants.js'
-import { Events as MOSEvents } from '../../../lib/data/mos/plugin-support.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import {
-	isLoopRunning as getIsLoopRunning,
-	isQuickLoopStart as getIsQuickLoopStart,
-	isQuickLoopEnd as getIsQuickLoopEnd,
 	isEndOfLoopingShow as getIsEndOfLoopingShow,
 	isEntirePlaylistLooping as getIsEntirePlaylistLooping,
+	isLoopRunning as getIsLoopRunning,
+	isQuickLoopEnd as getIsQuickLoopEnd,
+	isQuickLoopStart as getIsQuickLoopStart,
 } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { HighlightEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { Events as MOSEvents } from '../../../lib/data/mos/plugin-support.js'
+import { getShowHiddenSourceLayers } from '../../../lib/localStorage.js'
 import { getEffectiveInvalidReason, isPartInstanceInvalid } from '../../../lib/partInstanceUtil.js'
+import { RundownUtils } from '../../../lib/rundown.js'
+import { getPartInstanceTimingId, getPartInstanceTimingValue } from '../../../lib/rundownTiming.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { LoopingIcon } from '../../../lib/ui/icons/looping.js'
+import { SegmentEnd } from '../../../lib/ui/icons/segment.js'
+import { TimingDataResolution, TimingTickResolution, withTiming } from '../../RundownView/RundownTiming/withTiming.js'
+import { LIVE_LINE_TIME_PADDING } from '../Constants.js'
+import { DEBUG_MODE } from '../SegmentTimelineDebugMode.js'
+import { InvalidPartCover } from './InvalidPartCover.js'
+import { OutputGroup } from './OutputGroup.js'
+import type { Translated } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
+import type { RundownTimingContext } from '../../../lib/rundownTiming.js'
+import type { CSSProperties } from '../../../styles/_cssVariables.js'
+import type { IContextMenuContext } from '../../RundownView.js'
+import type { RundownTiming } from '../../RundownView/RundownTiming/RundownTiming.js'
+import type { WithTiming } from '../../RundownView/RundownTiming/withTiming.js'
+import type { IOutputLayerUi, PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
 
 export const SegmentTimelineLineElementId = 'rundown__segment__line__'
 export const SegmentTimelinePartElementId = 'rundown__segment__part__'
@@ -320,7 +308,11 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 		}
 	}
 
-	componentDidUpdate(prevProps: Readonly<Translated<WithTiming<IProps>>>, prevState: IState, snapshot?: unknown): void {
+	componentDidUpdate(
+		prevProps: Readonly<Translated<WithTiming<IProps>>>,
+		prevState: IState,
+		snapshot?: unknown
+	): void {
 		super.componentDidUpdate?.(prevProps, prevState, snapshot)
 		const tooSmallState = this.state.isTooSmallForDisplay || this.state.isTooSmallForText
 		const prevTooSmallState = prevState.isTooSmallForDisplay || prevState.isTooSmallForText
@@ -355,7 +347,9 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 		}
 
 		const futureShadeDuration =
-			this.state.isLive || (this.props.isBudgetGap && this.props.isLiveSegment) ? this.getFutureShadePaddingTime() : 0
+			this.state.isLive || (this.props.isBudgetGap && this.props.isLiveSegment)
+				? this.getFutureShadePaddingTime()
+				: 0
 		const partDurationWithFutureShadeAccountedFor = this.props.isBudgetGap
 			? partDuration - futureShadeDuration
 			: partDuration + futureShadeDuration
@@ -420,12 +414,18 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 				0,
 				(props.lastPartInSegment &&
 					props.firstPartInSegment &&
-					(getPartInstanceTimingValue(props.timingDurations.partDisplayStartsAt, props.lastPartInSegment.instance) ??
-						0) -
-						(getPartInstanceTimingValue(props.timingDurations.partDisplayStartsAt, props.firstPartInSegment.instance) ??
-							0) +
-						(getPartInstanceTimingValue(props.timingDurations.partDisplayDurations, props.lastPartInSegment.instance) ??
-							0)) ||
+					(getPartInstanceTimingValue(
+						props.timingDurations.partDisplayStartsAt,
+						props.lastPartInSegment.instance
+					) ?? 0) -
+						(getPartInstanceTimingValue(
+							props.timingDurations.partDisplayStartsAt,
+							props.firstPartInSegment.instance
+						) ?? 0) +
+						(getPartInstanceTimingValue(
+							props.timingDurations.partDisplayDurations,
+							props.lastPartInSegment.instance
+						) ?? 0)) ||
 					0
 			)
 		}
@@ -433,8 +433,10 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 			0,
 			(props.firstPartInSegment &&
 				(getPartInstanceTimingValue(props.timingDurations.partDisplayStartsAt, props.part.instance) ?? 0) -
-					(getPartInstanceTimingValue(props.timingDurations.partDisplayStartsAt, props.firstPartInSegment.instance) ??
-						0)) ||
+					(getPartInstanceTimingValue(
+						props.timingDurations.partDisplayStartsAt,
+						props.firstPartInSegment.instance
+					) ?? 0)) ||
 				0
 		)
 	}
@@ -496,7 +498,11 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 								segment={this.props.segment}
 								part={part}
 								studio={this.props.studio}
-								startsAt={SegmentTimelinePartClass.getPartStartsAt(this.props) || this.props.part.startsAt || 0}
+								startsAt={
+									SegmentTimelinePartClass.getPartStartsAt(this.props) ||
+									this.props.part.startsAt ||
+									0
+								}
 								duration={
 									this.props.cropDuration
 										? Math.min(
@@ -524,7 +530,9 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 								isTooSmallForText={this.state.isTooSmallForText}
 								timeScale={this.props.timeToPixelRatio}
 								autoNextPart={this.props.autoNextPart}
-								liveLinePadding={SegmentTimelinePartClass.getLiveLineTimePadding(this.props.timeToPixelRatio)}
+								liveLinePadding={SegmentTimelinePartClass.getLiveLineTimePadding(
+									this.props.timeToPixelRatio
+								)}
 								indexOffset={currentIndex}
 								isPreview={this.props.isPreview || false}
 								showDurationSourceLayers={this.props.showDurationSourceLayers}
@@ -593,15 +601,20 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 			>
 				{this.props.isLastInSegment && !this.props.isBudgetGap && (
 					<div
-						className={ClassNames('segment-timeline__part__nextline', 'segment-timeline__part__nextline--endline', {
-							'auto-next': innerPart.autoNext,
-							'is-next': isNext,
-							'show-end': isEndOfShow,
-						})}
+						className={ClassNames(
+							'segment-timeline__part__nextline',
+							'segment-timeline__part__nextline--endline',
+							{
+								'auto-next': innerPart.autoNext,
+								'is-next': isNext,
+								'show-end': isEndOfShow,
+							}
+						)}
 					>
 						<div
 							className={ClassNames('segment-timeline__part__nextline__label', {
-								'segment-timeline__part__nextline__label--thin': innerPart.autoNext && !this.state.isLive,
+								'segment-timeline__part__nextline__label--thin':
+									innerPart.autoNext && !this.state.isLive,
 							})}
 						>
 							{innerPart.autoNext ? t('Auto') : this.state.isLive ? t('Next') : null}
@@ -781,13 +794,16 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 									floated: innerPart.floated,
 								})}
 								style={{
-									left: Math.round(this.props.playlist.nextTimeOffset * this.props.timeToPixelRatio) + 'px',
+									left:
+										Math.round(this.props.playlist.nextTimeOffset * this.props.timeToPixelRatio) +
+										'px',
 								}}
 							>
 								<div
 									className={ClassNames('segment-timeline__part__nextline__label', {
 										'segment-timeline__part__nextline__label--thin':
-											(this.props.autoNextPart || this.props.part.willProbablyAutoNext) && !this.state.isNext,
+											(this.props.autoNextPart || this.props.part.willProbablyAutoNext) &&
+											!this.state.isNext,
 									})}
 								>
 									{isInvalid && !innerPart.gap ? null : (
@@ -821,7 +837,8 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 							<div
 								className={ClassNames('segment-timeline__part__nextline__label', {
 									'segment-timeline__part__nextline__label--thin':
-										(this.props.autoNextPart || this.props.part.willProbablyAutoNext) && !this.state.isNext,
+										(this.props.autoNextPart || this.props.part.willProbablyAutoNext) &&
+										!this.state.isNext,
 								})}
 							>
 								{isInvalid && !innerPart.gap ? null : (
@@ -838,9 +855,13 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 								{this.props.isAfterLastValidInSegmentAndItsLive && isPlaylistLooping && <LoopingIcon />}
 							</div>
 							<div className="segment-timeline__part__bottom-line">
-								{this.state.isInQuickLoop && <div className="segment-timeline__part__quickloop-background"></div>}
+								{this.state.isInQuickLoop && (
+									<div className="segment-timeline__part__quickloop-background"></div>
+								)}
 								{!this.props.isPreview && this.props.part.instance.part.identifier && (
-									<div className="segment-timeline__identifier">{this.props.part.instance.part.identifier}</div>
+									<div className="segment-timeline__identifier">
+										{this.props.part.instance.part.identifier}
+									</div>
 								)}
 								{isQuickLoopStart ? (
 									<div className="segment-timeline__part__quickloop-start">

@@ -1,18 +1,20 @@
-import * as React from 'react'
-import type { StudioRouteSet, StudioAbPlayerDisabling } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as React from 'react'
 import { useTranslation } from 'react-i18next'
+
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import type { StudioAbPlayerDisabling, StudioRouteSet } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { LabelAndOverrides } from '../../../../lib/Components/LabelAndOverrides.js'
+import { TextInputControl } from '../../../../lib/Components/TextInput.js'
+import { OverrideOpHelperArrayTable } from '../../../../lib/forms/SchemaFormTable/ArrayTableOpHelper.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
 import type {
 	OverrideOpHelper,
 	OverrideOpHelperForItemContents,
 	WrappedOverridableItemNormal,
 } from '../../util/OverrideOpHelper.js'
-import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import { OverrideOpHelperArrayTable } from '../../../../lib/forms/SchemaFormTable/ArrayTableOpHelper.js'
 
 interface RouteSetAbPlayersProps {
 	routeSet: WrappedOverridableItemNormal<StudioRouteSet>

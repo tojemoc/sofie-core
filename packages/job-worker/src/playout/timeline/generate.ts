@@ -1,51 +1,53 @@
-import { BlueprintId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { JobContext, JobStudio } from '../../jobs/index.js'
+import { validateTimeline } from 'superfly-timeline'
 import { ReadonlyDeep } from 'type-fest'
+
 import { BlueprintResultBaseline, OnGenerateTimelineObj, Time, TSR } from '@sofie-automation/blueprints-integration'
+import { ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
+import { BlueprintId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { deserializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
+import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import {
 	deserializeTimelineBlob,
 	OnGenerateTimelineObjExt,
 	TimelineCompleteGenerationVersions,
 	TimelineEnableExt,
 	TimelineObjGeneric,
+	TimelineObjRegenerateTrigger,
 	TimelineObjRundown,
 	TimelineObjType,
-	TimelineObjRegenerateTrigger,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
 import { applyToArray, clone, getHash, literal, normalizeArray, omit } from '@sofie-automation/corelib/dist/lib'
-import { PlayoutModel } from '../model/PlayoutModel.js'
-import { logger } from '../../logging.js'
-import { getCurrentTime, getSystemVersion } from '../../lib/index.js'
-import { getResolvedPiecesForPartInstancesOnTimeline } from '../resolvedPieces.js'
 import {
-	processAndPrunePieceInstanceTimings,
-	PieceInstanceWithTimings,
 	createPartCurrentTimes,
 	PartCurrentTimes,
+	PieceInstanceWithTimings,
+	processAndPrunePieceInstanceTimings,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { StudioPlayoutModel, StudioPlayoutModelBase } from '../../studio/model/StudioPlayoutModel.js'
-import { getLookeaheadObjects } from '../lookahead/index.js'
-import { StudioBaselineContext, OnTimelineGenerateContext } from '../../blueprints/context/index.js'
-import { ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
+import { getPartTimingsOrDefaults, PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
+import { OnTimelineGenerateContext, StudioBaselineContext } from '../../blueprints/context/index.js'
+import { convertResolvedPieceInstanceToBlueprints } from '../../blueprints/context/lib.js'
+import { PersistentPlayoutStateStore } from '../../blueprints/context/services/PersistantStateStore.js'
 import { WatchedPackagesHelper } from '../../blueprints/context/watchedPackages.js'
 import { postProcessStudioBaselineObjects } from '../../blueprints/postProcess.js'
 import { updateBaselineExpectedPackagesOnStudio } from '../../ingest/expectedPackages.js'
-import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
-import { deserializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { convertResolvedPieceInstanceToBlueprints } from '../../blueprints/context/lib.js'
-import { buildTimelineObjsForRundown, RundownTimelineTimingContext } from './rundown.js'
-import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { validateTimeline } from 'superfly-timeline'
-import { getPartTimingsOrDefaults, PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { JobContext, JobStudio } from '../../jobs/index.js'
+import { getCurrentTime, getSystemVersion } from '../../lib/index.js'
+import { logger } from '../../logging.js'
+import { StudioPlayoutModel, StudioPlayoutModelBase } from '../../studio/model/StudioPlayoutModel.js'
 import { applyAbPlaybackForTimeline } from '../abPlayback/index.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
-import { PersistentPlayoutStateStore } from '../../blueprints/context/services/PersistantStateStore.js'
-import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { resolvePartInstanceForBranding, resolvePieceInstancesForBranding } from '../branding.js'
+import { getLookeaheadObjects } from '../lookahead/index.js'
+import { PlayoutModel } from '../model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
+import { getResolvedPiecesForPartInstancesOnTimeline } from '../resolvedPieces.js'
+import { buildTimelineObjsForRundown, RundownTimelineTimingContext } from './rundown.js'
 
 const DEFAULT_ABSOLUTE_PIECE_PREPARE_TIME = 30000
 
@@ -574,7 +576,7 @@ export function flattenAndProcessTimelineObjects(context: JobContext, timelineOb
 		// Do a validation of the timeline, to ensure that it doesn't contain any nastiness that can crash the Timeline-resolving later.
 		validateTimeline(timelineObjs, true)
 	} catch (err) {
-		throw new Error(`Error in generated timeline: Validation failed: ${err}`)
+		throw new Error(`Error in generated timeline: Validation failed: ${err}`, { cause: err })
 	}
 
 	if (span) span.end()

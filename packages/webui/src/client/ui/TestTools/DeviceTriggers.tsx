@@ -1,20 +1,23 @@
-import { Fragment, useState, type FunctionComponent } from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { Fragment, useState } from 'react'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
+import type { FunctionComponent } from 'react'
+
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
 import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type {
 	DeviceTriggerMountedAction,
 	PreviewWrappedAdLib,
 } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
+
 import { PeripheralDevices } from '../../collections/index.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
 import { MountedTriggers, MountedTriggersPreviews } from './collections'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
 
 interface DeviceTriggersViewRouteParams {
 	peripheralDeviceId: string
@@ -30,7 +33,9 @@ const DeviceTriggersView: FunctionComponent = function TimelineDatastoreView() {
 				<h1>{t('Device Triggers')}</h1>
 			</header>
 			<div className="my-5">
-				{peripheralDeviceId && <DeviceTriggersControls peripheralDeviceId={protectString(peripheralDeviceId)} />}
+				{peripheralDeviceId && (
+					<DeviceTriggersControls peripheralDeviceId={protectString(peripheralDeviceId)} />
+				)}
 			</div>
 		</div>
 	)
@@ -107,9 +112,11 @@ function DeviceTriggersControls({ peripheralDeviceId }: Readonly<IDatastoreContr
 												.filter((preview) => preview.actionId === entry.actionId)
 												.map((preview) => (
 													<li key={unprotectString(preview._id)}>
-														{JSON.stringify(preview.label)}: {String(preview.type)} {preview.sourceLayerType}{' '}
-														{preview.sourceLayerName?.name}{' '}
-														{preview.sourceLayerName?.abbreviation ? `(${preview.sourceLayerName.abbreviation})` : null}
+														{JSON.stringify(preview.label)}: {String(preview.type)}{' '}
+														{preview.sourceLayerType} {preview.sourceLayerName?.name}{' '}
+														{preview.sourceLayerName?.abbreviation
+															? `(${preview.sourceLayerName.abbreviation})`
+															: null}
 													</li>
 												))}
 										</ul>

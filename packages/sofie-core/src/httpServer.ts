@@ -1,5 +1,8 @@
+import http from 'http'
+
+import type { Server as HttpServer } from 'http'
 import type Koa from 'koa'
-import http, { type Server as HttpServer } from 'http'
+
 import { logger } from './logging'
 
 /** Port the HTTP server listens on, when `SOFIE_PORT` is not set. */

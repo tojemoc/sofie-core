@@ -1,15 +1,17 @@
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { JobContext } from '../../../jobs/index.js'
 import { ReadonlyDeep } from 'type-fest'
-import { RundownLock } from '../../../jobs/lock.js'
-import { IngestDatabasePersistedModel, IngestModel } from '../IngestModel.js'
-import { getRundownId } from '../../lib.js'
+
 import { ExpectedPlayoutItemRundown } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { IngestModelImpl, IngestModelImplExistingData } from './IngestModelImpl.js'
 import { clone } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobContext } from '../../../jobs/index.js'
+import { RundownLock } from '../../../jobs/lock.js'
+import { getRundownId } from '../../lib.js'
+import { IngestDatabasePersistedModel, IngestModel } from '../IngestModel.js'
+import { IngestModelImpl, IngestModelImplExistingData } from './IngestModelImpl.js'
 
 /**
  * Load an IngestModel for the given Rundown

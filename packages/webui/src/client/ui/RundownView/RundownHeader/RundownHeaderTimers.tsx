@@ -1,11 +1,14 @@
-import { type RundownTTimer, getRundownTTimers } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import { useTiming } from '../RundownTiming/withTiming'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { calculateTTimerDiff, calculateTTimerOverUnder } from '../../../lib/tTimerUtils'
 import classNames from 'classnames'
-import { getCurrentTime } from '../../../lib/systemTime'
-import { Countdown } from './Countdown'
+
+import { getRundownTTimers } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import type { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
 import { OverUnderChip } from '../../../lib/Components/OverUnderChip'
+import { RundownUtils } from '../../../lib/rundown.js'
+import { getCurrentTime } from '../../../lib/systemTime'
+import { calculateTTimerDiff, calculateTTimerOverUnder } from '../../../lib/tTimerUtils'
+import { useTiming } from '../RundownTiming/withTiming'
+import { Countdown } from './Countdown'
 
 interface IProps {
 	tTimers: [RundownTTimer, RundownTTimer, RundownTTimer] | null | undefined

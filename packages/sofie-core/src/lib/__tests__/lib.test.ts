@@ -1,15 +1,17 @@
 import '../../__mocks__/_extendJest'
+
 import { TSR } from '@sofie-automation/blueprints-integration'
 import {
-	TimelineObjGeneric,
-	TimelineObjType,
-	TimelineComplete,
 	deserializeTimelineBlob,
 	serializeTimelineBlob,
+	TimelineComplete,
+	TimelineObjGeneric,
+	TimelineObjType,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { Timeline } from '../../collections'
-import { SaveIntoDbHooks, saveIntoDb, sumChanges, anythingChanged } from '../database'
+import { anythingChanged, saveIntoDb, SaveIntoDbHooks, sumChanges } from '../database'
 
 describe('server/lib', () => {
 	test('saveIntoDb', async () => {

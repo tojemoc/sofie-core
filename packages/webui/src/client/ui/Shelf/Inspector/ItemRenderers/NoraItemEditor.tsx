@@ -1,10 +1,13 @@
 import * as React from 'react'
-import { createMosObjectXmlStringNoraBluePrintPiece } from '../../../../lib/data/nora/browser-plugin-data.js'
-import { parseMosPluginMessageXml, type MosPluginMessage } from '../../../../lib/parsers/mos/mosXml2Js.js'
-import type { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { createMosAppInfoXmlString } from '../../../../lib/data/mos/plugin-support.js'
-import { logger } from '../../../../lib/logging.js'
 import type { ReadonlyDeep } from 'type-fest'
+
+import type { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
+
+import { createMosAppInfoXmlString } from '../../../../lib/data/mos/plugin-support.js'
+import { createMosObjectXmlStringNoraBluePrintPiece } from '../../../../lib/data/nora/browser-plugin-data.js'
+import { logger } from '../../../../lib/logging.js'
+import { parseMosPluginMessageXml } from '../../../../lib/parsers/mos/mosXml2Js.js'
+import type { MosPluginMessage } from '../../../../lib/parsers/mos/mosXml2Js.js'
 
 //TODO: figure out what the origin should be
 const LOCAL_ORIGIN = `${window.location.protocol}//${window.location.host}`

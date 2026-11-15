@@ -1,24 +1,26 @@
 import _ from 'underscore'
-import { NewBlueprintAPI, BlueprintAPIMethods } from './blueprint.js'
-import { NewClientAPI, ClientAPIMethods } from './client.js'
-import { NewExternalMessageQueueAPI, ExternalMessageQueueAPIMethods } from './ExternalMessageQueue.js'
-import { NewMigrationAPI, MigrationAPIMethods } from './migration.js'
-import { NewPlayoutAPI, PlayoutAPIMethods } from './playout.js'
-import { NewRundownAPI, RundownAPIMethods } from './rundown.js'
-import { NewRundownLayoutsAPI, RundownLayoutsAPIMethods } from './rundownLayouts.js'
-import { NewShowStylesAPI, ShowStylesAPIMethods } from './showStyles.js'
-import { NewSnapshotAPI, SnapshotAPIMethods } from './shapshot.js'
-import { NewSystemStatusAPI, SystemStatusAPIMethods } from './systemStatus.js'
-import { NewUserActionAPI, UserActionAPIMethods } from './userActions.js'
-import { StudiosAPIMethods, NewStudiosAPI } from './studios.js'
-import { NewUserAPI, UserAPIMethods } from './user.js'
-import { SystemAPIMethods, SystemAPI } from './system.js'
-import { NewTriggeredActionsAPI, TriggeredActionsAPIMethods } from './triggeredActions.js'
+
 import {
 	NewPeripheralDeviceAPI,
 	PeripheralDeviceAPIMethods,
 } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
+
+import { BlueprintAPIMethods, NewBlueprintAPI } from './blueprint.js'
+import { ClientAPIMethods, NewClientAPI } from './client.js'
+import { ExternalMessageQueueAPIMethods, NewExternalMessageQueueAPI } from './ExternalMessageQueue.js'
+import { MigrationAPIMethods, NewMigrationAPI } from './migration.js'
 import { MongoAPI, MongoAPIMethods } from './mongo.js'
+import { NewPlayoutAPI, PlayoutAPIMethods } from './playout.js'
+import { NewRundownAPI, RundownAPIMethods } from './rundown.js'
+import { NewRundownLayoutsAPI, RundownLayoutsAPIMethods } from './rundownLayouts.js'
+import { NewSnapshotAPI, SnapshotAPIMethods } from './shapshot.js'
+import { NewShowStylesAPI, ShowStylesAPIMethods } from './showStyles.js'
+import { NewStudiosAPI, StudiosAPIMethods } from './studios.js'
+import { SystemAPI, SystemAPIMethods } from './system.js'
+import { NewSystemStatusAPI, SystemStatusAPIMethods } from './systemStatus.js'
+import { NewTriggeredActionsAPI, TriggeredActionsAPIMethods } from './triggeredActions.js'
+import { NewUserAPI, UserAPIMethods } from './user.js'
+import { NewUserActionAPI, UserActionAPIMethods } from './userActions.js'
 
 /** All methods typings are defined here, the actual implementation is defined in other places */
 export interface IMeteorCall {

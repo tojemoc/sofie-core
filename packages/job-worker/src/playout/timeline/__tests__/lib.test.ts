@@ -1,7 +1,11 @@
-import { TimelineObjHoldMode, TimelineObjOnAirMode } from '@sofie-automation/blueprints-integration'
-import { shouldIncludeObjectOnTimeline, TimelinePlayoutState } from '../lib.js'
+import {
+	TimelineObjectCoreExt,
+	TimelineObjHoldMode,
+	TimelineObjOnAirMode,
+} from '@sofie-automation/blueprints-integration'
 import { literal } from '@sofie-automation/corelib/dist/lib'
-import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
+
+import { shouldIncludeObjectOnTimeline, TimelinePlayoutState } from '../lib.js'
 
 describe('shouldIncludeObjectOnTimeline', () => {
 	describe('holdMode filtering', () => {

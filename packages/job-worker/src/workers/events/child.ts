@@ -1,8 +1,17 @@
-import { eventJobHandlers } from './jobs.js'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { MongoClient } from 'mongodb'
-import { createMongoConnection, getMongoCollections, IDirectCollections } from '../../db/index.js'
+
+import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
+import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { getEventsQueueName } from '@sofie-automation/corelib/dist/worker/events'
+
+import { createMongoConnection, getMongoCollections, IDirectCollections } from '../../db/index.js'
+import { ExternalMessageQueueRunner } from '../../events/ExternalMessageQueue.js'
+import { setupInfluxDb } from '../../influx.js'
+import { interceptLogging, logger } from '../../logging.js'
+import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../../main.js'
 import { setupApmAgent, startTransaction } from '../../profiler.js'
 import {
 	InvalidateWorkerDataCache,
@@ -14,15 +23,8 @@ import {
 import { JobContextImpl } from '../context/JobContextImpl.js'
 import { QueueJobFunc } from '../context/util.js'
 import { AnyLockEvent, LocksManager } from '../locks.js'
-import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../../main.js'
-import { interceptLogging, logger } from '../../logging.js'
-import { setupInfluxDb } from '../../influx.js'
-import { getEventsQueueName } from '@sofie-automation/corelib/dist/worker/events'
-import { ExternalMessageQueueRunner } from '../../events/ExternalMessageQueue.js'
 import { WorkerJobResult } from '../parent-base.js'
-import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
-import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
-import { UserError } from '@sofie-automation/corelib/dist/error'
+import { eventJobHandlers } from './jobs.js'
 
 interface StaticData {
 	readonly mongoClient: MongoClient

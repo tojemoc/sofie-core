@@ -1,5 +1,6 @@
-import { stringifyError } from '@sofie-automation/server-core-integration'
 import * as Winston from 'winston'
+
+import { stringifyError } from '@sofie-automation/server-core-integration'
 
 export function getVersions(logger: Winston.Logger): { [packageName: string]: string } {
 	const versions: { [packageName: string]: string } = {}

@@ -1,13 +1,15 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import type { FilterType, IGUIContextFilterLink } from '@sofie-automation/blueprints-integration'
-import classNames from 'classnames'
-import { usePopper } from 'react-popper'
-import { sameWidth } from '../../../../../../lib/popperUtils.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { catchError } from '../../../../../../lib/lib.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+import { usePopper } from 'react-popper'
+
+import type { FilterType, IGUIContextFilterLink } from '@sofie-automation/blueprints-integration'
+
+import { catchError } from '../../../../../../lib/lib.js'
+import { sameWidth } from '../../../../../../lib/popperUtils.js'
 import { SwitchFilterType } from './SwitchFilterType.js'
 
 interface IProps {
@@ -105,7 +107,9 @@ export const ViewFilter: React.FC<IProps> = function ViewFilter({
 						onChangeType={(newType) => onChangeType(index, newType)}
 					/>
 
-					<p className="m-0">{t('Executes within the currently open Rundown, requires a Client-side trigger.')}</p>
+					<p className="m-0">
+						{t('Executes within the currently open Rundown, requires a Client-side trigger.')}
+					</p>
 
 					<div className="grid-buttons-right">
 						<div>

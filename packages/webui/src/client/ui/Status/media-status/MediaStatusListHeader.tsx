@@ -1,6 +1,7 @@
-import type { JSX } from 'react'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import type { JSX } from 'react'
+
 import { SortOrderButton } from '../../MediaStatus/SortOrderButton.js'
 
 export function MediaStatusListHeader({
@@ -27,7 +28,9 @@ export function MediaStatusListHeader({
 			<tr>
 				<th className="media-status-item__rundown">
 					<button
-						className={classNames('media-status-list-header__sort-button', { disabled: sortBy !== 'rundown' })}
+						className={classNames('media-status-list-header__sort-button', {
+							disabled: sortBy !== 'rundown',
+						})}
 						onClick={() => changeSortOrder('rundown', 'asc')}
 					>
 						{t('Rundown')}

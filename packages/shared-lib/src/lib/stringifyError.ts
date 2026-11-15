@@ -1,6 +1,6 @@
 /** Make a string out of an error (or other equivalents), including any additional data such as stack trace if available */
 export function stringifyError(error: unknown, noStack = false): string {
-	let str: string | undefined = undefined
+	let str: string | undefined
 
 	if (error && typeof error === 'object') {
 		if (Array.isArray(error)) {

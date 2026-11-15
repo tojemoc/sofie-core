@@ -1,7 +1,9 @@
-import { generateEslintConfig } from '@sofie-automation/code-standard-preset/eslint/main.mjs'
-import pluginYaml from 'eslint-plugin-yml'
+import { fixupConfigRules } from '@eslint/compat'
 import pluginReact from 'eslint-plugin-react'
+import pluginYaml from 'eslint-plugin-yml'
 import globals from 'globals'
+
+import { generateEslintConfig } from '@sofie-automation/code-standard-preset/eslint/main.mjs'
 
 const extendedRules = await generateEslintConfig({
 	ignores: [
@@ -67,8 +69,12 @@ extendedRules.push(
 			},
 		},
 	},
-	pluginReact.configs.flat.recommended,
-	pluginReact.configs.flat['jsx-runtime'],
+	// eslint-plugin-react predates eslint 10; wrap for the removed context.* methods
+	// (and scope to JS files — on yaml sources the shim lacks getDeclaredVariables)
+	...fixupConfigRules([pluginReact.configs.flat.recommended, pluginReact.configs.flat['jsx-runtime']]).map((c) => ({
+		files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+		...c,
+	})),
 	{
 		files: ['packages/webui/src/**/*', 'packages/shared-lib/src/**/*', 'packages/server-core-integration/src/**/*'],
 		rules: {
@@ -87,7 +93,8 @@ extendedRules.push(
 					},
 				},
 			],
-			'no-duplicate-imports': 'error',
+			// preset's import sorter emits separate `import type` statements, which this rule rejects
+			'no-duplicate-imports': 'off',
 			'@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
 			'@typescript-eslint/no-import-type-side-effects': 'error',
 		},

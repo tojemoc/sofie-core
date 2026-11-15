@@ -1,7 +1,9 @@
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { ReadonlyDeep } from 'type-fest'
+
 import {
+	BrandingChangeTarget,
 	IActionExecutionContext,
-	IDataStoreActionExecutionContext,
+	IBlueprintBrandingInfo,
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
 	IBlueprintPart,
@@ -9,43 +11,43 @@ import {
 	IBlueprintPiece,
 	IBlueprintPieceDB,
 	IBlueprintPieceInstance,
+	IBlueprintPlayoutDevice,
 	IBlueprintResolvedPieceInstance,
+	IBlueprintSegmentDB,
+	IDataStoreActionExecutionContext,
 	IEventContext,
 	OmitId,
+	QueuePartTarget,
+	StudioRouteSet,
 	Time,
 	TSR,
-	IBlueprintPlayoutDevice,
-	StudioRouteSet,
-	IBlueprintSegmentDB,
-	QueuePartTarget,
-	IBlueprintBrandingInfo,
-	BrandingChangeTarget,
 } from '@sofie-automation/blueprints-integration'
+import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
+import { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
 import { PartInstanceId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ReadonlyDeep } from 'type-fest'
-import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
-import { ContextInfo } from './CommonContext.js'
-import { ShowStyleUserContext } from './ShowStyleUserContext.js'
-import { WatchedPackagesHelper } from './watchedPackages.js'
-import { getCurrentTime } from '../../lib/index.js'
-import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { selectNewPartWithOffsets } from '../../playout/moveNextPart.js'
-import { ProcessedShowStyleConfig } from '../config.js'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import { DatastorePersistenceMode } from '@sofie-automation/shared-lib/dist/core/model/TimelineDatastore'
-import { removeTimelineDatastoreValue, setTimelineDatastoreValue } from '../../playout/datastore.js'
+import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
+import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
 import { executePeripheralDeviceAction, listPlayoutDevices } from '../../peripheralDevice.js'
+import { removeTimelineDatastoreValue, setTimelineDatastoreValue } from '../../playout/datastore.js'
+import { getOrderedPartsAfterPlayhead } from '../../playout/lookahead/util.js'
+import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
+import { selectNewPartWithOffsets } from '../../playout/moveNextPart.js'
+import { setNextPartFromPart } from '../../playout/setNext.js'
+import { ProcessedShowStyleConfig } from '../config.js'
+import { ContextInfo } from './CommonContext.js'
+import { convertPartToBlueprints, emitIngestOperation, resolveSelectedBranding } from './lib.js'
 import {
 	ActionPartChange,
 	PartAndPieceInstanceActionService,
 	QueueablePartAndPieces,
 } from './services/PartAndPieceInstanceActionService.js'
-import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
-import { setNextPartFromPart } from '../../playout/setNext.js'
-import { getOrderedPartsAfterPlayhead } from '../../playout/lookahead/util.js'
-import { convertPartToBlueprints, emitIngestOperation, resolveSelectedBranding } from './lib.js'
-import { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
 import { TTimersService } from './services/TTimersService.js'
-import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { ShowStyleUserContext } from './ShowStyleUserContext.js'
+import { WatchedPackagesHelper } from './watchedPackages.js'
 
 export class DatastoreActionExecutionContext
 	extends ShowStyleUserContext

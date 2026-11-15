@@ -1,25 +1,29 @@
-import { renderHook, act, render, screen, waitFor, type RenderOptions } from '@testing-library/react'
+import { act, render, renderHook, screen, waitFor } from '@testing-library/react'
+import type { RenderOptions } from '@testing-library/react'
+
 import '@testing-library/jest-dom'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import type { TFunction } from 'i18next'
 
 import userEvent from '@testing-library/user-event'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { UIParts } from '../../Collections.js'
-import { AdLibActions, Segments } from '../../../../client/collections/index.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { TFunction } from 'i18next'
+
 import { UserEditingType } from '@sofie-automation/blueprints-integration'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { AdLibAction } from '@sofie-automation/corelib/src/dataModel/AdlibAction.js'
+
+import { MongoMock } from '../../../../__mocks__/mongo.js'
+import { AdLibActions, Segments } from '../../../../client/collections/index.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { UIParts } from '../../Collections.js'
 import {
 	SelectedElementProvider,
 	SelectedElementsContext,
-	type SelectionContextType,
 	useSelectedElementsContext,
 } from '../../RundownView/SelectedElementsContext.js'
-import { MongoMock } from '../../../../__mocks__/mongo.js'
 import { PropertiesPanel } from '../PropertiesPanel.js'
 import type { UserAction } from '../../../lib/clientUserAction.js'
-import type { AdLibAction } from '@sofie-automation/corelib/src/dataModel/AdlibAction.js'
+import type { SelectionContextType } from '../../RundownView/SelectedElementsContext.js'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 jest.mock('meteor/tracker', (...args) => require('../../../../__mocks__/tracker').setup(args), { virtual: true })

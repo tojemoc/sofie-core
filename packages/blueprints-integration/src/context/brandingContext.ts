@@ -1,4 +1,5 @@
 import type { ReadonlyDeep } from 'type-fest'
+
 import type { IBlueprintBrandingInfo } from '../showStyle.js'
 
 /** Which of the selected PartInstances a Branding change should be applied to */

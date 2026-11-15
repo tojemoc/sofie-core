@@ -1,10 +1,10 @@
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 
 export type RundownFields = '_id' | 'playlistId' | 'source'
 export const rundownFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<Rundown, RundownFields>>>({

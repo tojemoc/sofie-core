@@ -1,14 +1,16 @@
-import { z } from 'zod'
-import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { ReadonlyDeep } from 'type-fest'
-import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { z } from 'zod'
+
+import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBShowStyleBase, UIShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
-import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../lib/customPublication'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
 import { ShowStyleBases } from '../collections'
 import { check } from '../lib/check'
+import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../lib/customPublication'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 
@@ -23,12 +25,7 @@ interface UIShowStyleBaseUpdateProps {
 }
 
 type ShowStyleBaseFields =
-	| '_id'
-	| 'name'
-	| 'outputLayersWithOverrides'
-	| 'sourceLayersWithOverrides'
-	| 'hotkeyLegend'
-	| 'abChannelDisplay'
+	'_id' | 'name' | 'outputLayersWithOverrides' | 'sourceLayersWithOverrides' | 'hotkeyLegend' | 'abChannelDisplay'
 const fieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<DBShowStyleBase, ShowStyleBaseFields>>>({
 	_id: 1,
 	name: 1,
@@ -67,8 +64,7 @@ async function manipulateUIShowStyleBasePublicationData(
 	// Ignore _updateProps, as we arent caching anything so we have to rerun from scratch no matter what
 
 	const showStyleBase = (await ShowStyleBases.findOneAsync(args.showStyleBaseId, { projection: fieldSpecifier })) as
-		| Pick<DBShowStyleBase, ShowStyleBaseFields>
-		| undefined
+		Pick<DBShowStyleBase, ShowStyleBaseFields> | undefined
 	if (!showStyleBase) return []
 
 	const resolvedOutputLayers = applyAndValidateOverrides(showStyleBase.outputLayersWithOverrides).obj

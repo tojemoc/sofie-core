@@ -1,16 +1,18 @@
-import { useMemo } from 'react'
-import { useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { Blueprints, Studios } from '../../../../collections/index.js'
-import { useTranslation } from 'react-i18next'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { EditAttribute } from '../../../../lib/EditAttribute.js'
-import { RedirectToBlueprintButton } from '../../../../lib/SettingsNavigation.js'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { Blueprints, Studios } from '../../../../collections/index.js'
 import { LabelActual } from '../../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import { useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
+import { RedirectToBlueprintButton } from '../../../../lib/SettingsNavigation.js'
 
 interface SelectBlueprintProps {
 	studio: DBStudio

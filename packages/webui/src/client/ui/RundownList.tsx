@@ -1,29 +1,31 @@
 import Tooltip from 'rc-tooltip'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import Container from 'react-bootstrap/esm/Container'
+import { useTranslation } from 'react-i18next'
+
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { GENESIS_SYSTEM_VERSION } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getHelpMode } from '../lib/localStorage.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { RundownPlaylistTiming } from '@sofie-automation/blueprints-integration'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { getCoreSystem, RundownLayouts, RundownPlaylists, Rundowns } from '../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../collections/rundownPlaylistUtil.js'
+import { getHelpMode } from '../lib/localStorage.js'
 import { useSubscription, useTracker } from '../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownLayoutsAPI } from '../lib/rundownLayouts.js'
 import { Spinner } from '../lib/Spinner.js'
+import { CreateAdlibTestingRundownPanel } from './RundownList/CreateAdlibTestingRundownPanel.js'
 import { GettingStarted } from './RundownList/GettingStarted.js'
 import { RegisterHelp } from './RundownList/RegisterHelp.js'
 import { RundownDropZone } from './RundownList/RundownDropZone.js'
 import { RundownListFooter } from './RundownList/RundownListFooter.js'
 import RundownPlaylistDragLayer from './RundownList/RundownPlaylistDragLayer.js'
 import { RundownPlaylistUi } from './RundownList/RundownPlaylistUi.js'
-import { RundownLayoutsAPI } from '../lib/rundownLayouts.js'
-import { getCoreSystem, RundownLayouts, RundownPlaylists, Rundowns } from '../collections/index.js'
-import { RundownPlaylistCollectionUtil } from '../collections/rundownPlaylistUtil.js'
-import { useEffect, useMemo, useState, useContext } from 'react'
-import { useTranslation } from 'react-i18next'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CreateAdlibTestingRundownPanel } from './RundownList/CreateAdlibTestingRundownPanel.js'
 import { UserPermissionsContext } from './UserPermissions.js'
-import Container from 'react-bootstrap/esm/Container'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import type { RundownPlaylistTiming } from '@sofie-automation/blueprints-integration'
 
 export enum ToolTipStep {
 	TOOLTIP_START_HERE = 'TOOLTIP_START_HERE',
@@ -175,7 +177,11 @@ export function RundownList(): JSX.Element {
 		return (
 			<ul className="rundown-playlists">
 				{sortedPlaylists.map((playlist) => (
-					<RundownPlaylistUi key={unprotectString(playlist._id)} playlist={playlist} rundownLayouts={rundownLayouts} />
+					<RundownPlaylistUi
+						key={unprotectString(playlist._id)}
+						playlist={playlist}
+						rundownLayouts={rundownLayouts}
+					/>
 				))}
 			</ul>
 		)

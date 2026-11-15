@@ -1,9 +1,9 @@
-import { addMigrationSteps } from './databaseMigration'
+import { JSONBlobStringify } from '@sofie-automation/blueprints-integration'
+import { PeripheralDeviceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { RundownOrphanedReason, RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 
 import { PieceInstances, Pieces, Rundowns } from '../collections'
-import { RundownOrphanedReason, RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { PeripheralDeviceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { JSONBlobStringify } from '@sofie-automation/blueprints-integration'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 51
 

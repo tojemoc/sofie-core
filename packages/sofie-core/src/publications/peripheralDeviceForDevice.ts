@@ -1,27 +1,29 @@
-import { z } from 'zod'
-import { PeripheralDevice, PeripheralDeviceCategory } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDevices, Studios } from '../collections'
-import { SetupObserversResult, TriggerUpdate, setUpOptimizedObserverArray } from '../lib/customPublication'
-import type { PublicationRegistry } from '../publicationRegistry'
-import { PeripheralDeviceForDevice } from '@sofie-automation/shared-lib/dist/core/model/peripheralDevice'
 import { ReadonlyDeep } from 'type-fest'
-import { ReactiveMongoObserverGroup } from './lib/observerGroup'
-import { Complete, assertNever, literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { z } from 'zod'
+
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PeripheralDevice, PeripheralDeviceCategory } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import {
 	DBStudio,
 	StudioIngestDevice,
 	StudioInputDevice,
 	StudioPlayoutDevice,
 } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { assertNever, Complete, literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { check } from '../lib/check'
+import { PeripheralDeviceForDevice } from '@sofie-automation/shared-lib/dist/core/model/peripheralDevice'
 import {
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollectionsNames,
 } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { PeripheralDevices, Studios } from '../collections'
+import { check } from '../lib/check'
+import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../lib/customPublication'
 import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { ReactiveMongoObserverGroup } from './lib/observerGroup'
+import type { PublicationRegistry } from '../publicationRegistry'
 
 interface PeripheralDeviceForDeviceArgs {
 	readonly deviceId: PeripheralDeviceId
@@ -203,8 +205,7 @@ async function manipulatePeripheralDevicePublicationData(
 	const studio =
 		studioId &&
 		((await Studios.findOneAsync(studioId, { projection: studioFieldsSpecifier })) as
-			| Pick<DBStudio, StudioFields>
-			| undefined)
+			Pick<DBStudio, StudioFields> | undefined)
 
 	return [convertPeripheralDeviceForGateway(peripheralDevice, studio)]
 }

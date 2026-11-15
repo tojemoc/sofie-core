@@ -1,12 +1,14 @@
-import { useState, useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import { useCallback, useMemo, useState } from 'react'
 import Form from 'react-bootstrap/esm/Form'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { RundownLayouts } from '../../collections/index.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import { FullscreenLink } from './FullscreenLink.js'
 
@@ -85,7 +87,13 @@ export function PresenterConfigForm({ studioId }: Readonly<{ studioId: StudioId 
 					<Form.Label>
 						<strong>{t('Generated URL')}:</strong>
 					</Form.Label>
-					<Form.Control type="text" size="sm" readOnly value={generatedUrl} onClick={(e) => e.currentTarget.select()} />
+					<Form.Control
+						type="text"
+						size="sm"
+						readOnly
+						value={generatedUrl}
+						onClick={(e) => e.currentTarget.select()}
+					/>
 				</Form.Group>
 				<Link to={generatedUrl} className="btn btn-primary me-2">
 					{t('Open Presenter Screen')}

@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useState } from 'react'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Meteor } from 'meteor/meteor'
 import Tooltip from 'rc-tooltip'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import { getHelpMode } from '../../../lib/localStorage.js'
-import { useTranslation } from 'react-i18next'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
-import { logger } from '../../../lib/logging.js'
+import { useCallback, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
+import { getHelpMode } from '../../../lib/localStorage.js'
+import { logger } from '../../../lib/logging.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
 
 interface IStudioBaselineStatusProps {
 	studioId: StudioId

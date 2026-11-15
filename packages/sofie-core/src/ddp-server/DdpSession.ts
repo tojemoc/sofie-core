@@ -1,10 +1,7 @@
-import { WebSocket, RawData } from 'ws'
+import { RawData, WebSocket } from 'ws'
 import type { IncomingMessage } from 'http'
-import { logger } from '../logging'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { SofieError } from '@sofie-automation/corelib/dist/error'
-import { MethodRegistry } from '../methodRegistry'
-import { PublicationRegistry } from '../publicationRegistry'
 import {
 	AddedMessage,
 	ChangedMessage,
@@ -14,17 +11,22 @@ import {
 	ServerMessage,
 	SubMessage,
 } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
-import { decodeMessage, encodeMessage } from './wireCodec'
-import { Heartbeat } from './Heartbeat'
-import { makeDdpConnection } from './DdpConnection'
-import { DdpConnectionRegistry, DdpSessionDebugData, TrackedDdpSession } from './ConnectionRegistry'
-import { handleMethodMessage, wrapError } from './methodDispatch'
-import { isCursorLike } from './subscriptionDispatch'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from '../logging'
+import { MethodRegistry } from '../methodRegistry'
+import { PublicationRegistry } from '../publicationRegistry'
 import { driveSubscriptionFromCursor } from '../publications/lib/lib'
-import type { MinimalMongoCursor } from '../collections/collection'
 import { SUPPORTED_DDP_VERSIONS } from './config'
-import { SessionCollectionView } from './SessionCollectionView'
+import { DdpConnectionRegistry, DdpSessionDebugData, TrackedDdpSession } from './ConnectionRegistry'
+import { makeDdpConnection } from './DdpConnection'
 import { DdpPublicationContext, SessionPublicationApi } from './DdpPublicationContext'
+import { Heartbeat } from './Heartbeat'
+import { handleMethodMessage, wrapError } from './methodDispatch'
+import { SessionCollectionView } from './SessionCollectionView'
+import { isCursorLike } from './subscriptionDispatch'
+import { decodeMessage, encodeMessage } from './wireCodec'
+import type { MinimalMongoCursor } from '../collections/collection'
 import type { DDPClientConnection } from './types'
 
 export interface DdpSessionOptions {

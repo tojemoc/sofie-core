@@ -584,7 +584,7 @@ export class MosHandler {
 			return mosDevice
 		} catch (e) {
 			// something went wrong during init:
-			if (!this.mos) throw Error('mos is undefined!')
+			if (!this.mos) throw Error('mos is undefined!', { cause: e })
 
 			this.mos.disposeMosDevice(mosDevice).catch((e2) => {
 				this._logger.error(stringifyError(e2))

@@ -1,17 +1,22 @@
-import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ContextMenu, ContextMenuTrigger, MenuItem } from '@jstarpl/react-contextmenu'
 import ClassNames from 'classnames'
-import { motion, AnimatePresence, type HTMLMotionProps } from 'motion/react'
-import { translateWithTracker, type Translated, useTracker } from '../ReactMeteorData/ReactMeteorData.js'
-import { NotificationCenter, Notification, NoticeLevel, type NotificationAction } from './notifications.js'
-import { ContextMenuTrigger, ContextMenu, MenuItem } from '@jstarpl/react-contextmenu'
-import { translateMessage, isTranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { CriticalIcon, WarningIcon, CollapseChevrons, InformationIcon } from '../ui/icons/notifications.js'
 import update from 'immutability-helper'
-import { i18nTranslator } from '../../ui/i18n.js'
-import type { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { AnimatePresence, motion } from 'motion/react'
+import * as React from 'react'
 import { useTranslation } from 'react-i18next'
+import type { HTMLMotionProps } from 'motion/react'
+
+import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { i18nTranslator } from '../../ui/i18n.js'
 import { PopUpPanel } from '../../ui/RundownView/PopUpPanel.js'
+import { translateWithTracker, useTracker } from '../ReactMeteorData/ReactMeteorData.js'
+import { CollapseChevrons, CriticalIcon, InformationIcon, WarningIcon } from '../ui/icons/notifications.js'
+import { NoticeLevel, Notification, NotificationCenter } from './notifications.js'
+import type { Translated } from '../ReactMeteorData/ReactMeteorData.js'
+import type { NotificationAction } from './notifications.js'
 
 interface IPopUpProps {
 	id?: string
@@ -46,7 +51,9 @@ class NotificationPopUp extends React.Component<IPopUpProps> {
 		const defaultAction: NotificationAction | undefined =
 			defaultActions.length === 1 && allActions.length === 1 ? defaultActions[0] : undefined
 
-		const message = isTranslatableMessage(item.message) ? translateMessage(item.message, i18nTranslator) : item.message
+		const message = isTranslatableMessage(item.message)
+			? translateMessage(item.message, i18nTranslator)
+			: item.message
 
 		return (
 			<NotificationCenterElement
@@ -100,7 +107,9 @@ class NotificationPopUp extends React.Component<IPopUpProps> {
 												key={i}
 												className={ClassNames(
 													'btn',
-													['default', 'primary'].indexOf(action.type) ? 'btn-primary' : 'btn-default',
+													['default', 'primary'].indexOf(action.type)
+														? 'btn-primary'
+														: 'btn-default',
 													'ms-1'
 												)}
 												onClick={(e) => this.triggerEvent(action, e)}
@@ -115,7 +124,10 @@ class NotificationPopUp extends React.Component<IPopUpProps> {
 					) : null}
 				</div>
 				{this.props.showDismiss && (
-					<ContextMenuTrigger id="context-menu-dissmiss-all" attributes={{ className: 'notification-pop-up__dismiss' }}>
+					<ContextMenuTrigger
+						id="context-menu-dissmiss-all"
+						attributes={{ className: 'notification-pop-up__dismiss' }}
+					>
 						<button
 							className={
 								'notification-pop-up__dismiss__button ' +
@@ -246,7 +258,9 @@ export const NotificationCenterPopUps = translateWithTracker<IProps, IState, ITr
 					$push: notificationsToDismiss,
 				}),
 				dismissingTransform: update(this.state.dismissingTransform, {
-					$push: notificationsToDismiss.map((key) => this.createDismissTransform(`notification-pop-up_${key}`) || ''),
+					$push: notificationsToDismiss.map(
+						(key) => this.createDismissTransform(`notification-pop-up_${key}`) || ''
+					),
 				}),
 			})
 
@@ -273,12 +287,14 @@ export const NotificationCenterPopUps = translateWithTracker<IProps, IState, ITr
 		}
 
 		UNSAFE_componentWillUpdate() {
-			Array.from(document.querySelectorAll('.notification-pop-up.is-highlighted')).forEach((element0: Element) => {
-				const element = element0 as HTMLElement
-				if ('style' in element) {
-					element.style.animationName = ''
+			Array.from(document.querySelectorAll('.notification-pop-up.is-highlighted')).forEach(
+				(element0: Element) => {
+					const element = element0 as HTMLElement
+					if ('style' in element) {
+						element.style.animationName = ''
+					}
 				}
-			})
+			)
 		}
 
 		componentDidUpdate(prevProps: Readonly<Translated<IProps & ITrackedProps>>, prevState: IState, snapshot: any) {
@@ -404,7 +420,9 @@ export const NotificationCenterPopUps = translateWithTracker<IProps, IState, ITr
 						className={index >= 0 ? 'notification-pop-up--dismiss' : undefined}
 						showDismiss={!item.persistent || !this.props.showSnoozed}
 						isHighlighted={item.source === highlightedSource && item.status === highlightedLevel}
-						style={index >= 0 ? { transform: this.state.dismissingTransform[index], opacity: 0 } : undefined}
+						style={
+							index >= 0 ? { transform: this.state.dismissingTransform[index], opacity: 0 } : undefined
+						}
 					/>
 				)
 			})
@@ -415,7 +433,10 @@ export const NotificationCenterPopUps = translateWithTracker<IProps, IState, ITr
 						'notification-pop-ups--empty': displayList.length === 0,
 					})}
 				>
-					<AnimatePresence initial={this.props.initialAnimation ?? true} onExitComplete={this.checkKeepDisplaying}>
+					<AnimatePresence
+						initial={this.props.initialAnimation ?? true}
+						onExitComplete={this.checkKeepDisplaying}
+					>
 						{displayList}
 						{this.props.showEmptyListLabel && displayList.length === 0 && (
 							<NotificationCenterElement className="notification-pop-ups__empty-list">
@@ -581,7 +602,10 @@ export function NotificationCenterPanelToggle({
 							<WarningIcon />
 						)}
 						{count > 0 && (
-							<span className="notifications__toggle-button__count" aria-label={t('{{count}} items', { count })}>
+							<span
+								className="notifications__toggle-button__count"
+								aria-label={t('{{count}} items', { count })}
+							>
 								{count > 99 ? '99+' : count}
 							</span>
 						)}

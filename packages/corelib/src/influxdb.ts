@@ -1,5 +1,6 @@
-import * as Influx from 'influx'
 import * as os from 'os'
+
+import * as Influx from 'influx'
 
 export interface InfluxConfig {
 	host: string | undefined

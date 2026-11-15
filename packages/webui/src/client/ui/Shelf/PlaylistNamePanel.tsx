@@ -1,15 +1,17 @@
 import ClassNames from 'classnames'
+
+import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutPlaylistName,
 	RundownLayoutBase,
 	RundownLayoutPlaylistName,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
 import { Rundowns } from '../../collections/index.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IPlaylistNamePanelProps {
 	layout: RundownLayoutBase

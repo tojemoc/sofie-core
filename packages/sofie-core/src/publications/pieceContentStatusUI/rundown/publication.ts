@@ -1,5 +1,8 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PackageInfo } from '@sofie-automation/blueprints-integration'
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import {
 	AdLibActionId,
 	ExpectedPackageId,
@@ -13,10 +16,13 @@ import {
 	RundownPlaylistId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { ReadonlyDeep } from 'type-fest'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
 import {
 	MediaObjects,
 	PackageContainerPackageStatuses,
@@ -24,18 +30,17 @@ import {
 	RundownPlaylists,
 	Studios,
 } from '../../../collections'
-import { literal } from '@sofie-automation/corelib/dist/lib'
+import { check } from '../../../lib/check'
 import {
 	CustomPublishCollection,
 	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
 } from '../../../lib/customPublication'
-import type { PublicationRegistry } from '../../../publicationRegistry'
 import { logger } from '../../../logging'
-import { ContentCache, PartInstanceFields, createReactiveContentCache } from './reactiveContentCache'
-import { RundownContentObserver } from './rundownContentObserver'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../../../security/securityVerify'
 import { RundownsObserver } from '../../lib/rundownsObserver'
+import { PieceContentStatusStudio } from '../checkPieceContentStatus'
 import {
 	addItemsWithDependenciesChangesToChangedSet,
 	fetchStudio,
@@ -46,6 +51,8 @@ import {
 	PieceDependencies,
 	studioFieldSpecifier,
 } from '../common'
+import { PieceContentStatusMessageFactory } from '../messageFactory'
+import { ContentCache, createReactiveContentCache, PartInstanceFields } from './reactiveContentCache'
 import {
 	regenerateForAdLibActionIds,
 	regenerateForAdLibPieceIds,
@@ -54,13 +61,8 @@ import {
 	regenerateForPieceIds,
 	regenerateForPieceInstanceIds,
 } from './regenerateItems'
-import { PieceContentStatusStudio } from '../checkPieceContentStatus'
-import { check } from '../../../lib/check'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../../../security/securityVerify'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { PieceContentStatusMessageFactory } from '../messageFactory'
+import { RundownContentObserver } from './rundownContentObserver'
+import type { PublicationRegistry } from '../../../publicationRegistry'
 
 interface UIPieceContentStatusesArgs {
 	readonly rundownPlaylistId: RundownPlaylistId

@@ -7,11 +7,13 @@
  * side via change streams, so each is flushed with `waitFor`. We compare the final, id-sorted set of events
  * after both have reached the expected counts (delivery order across documents is not guaranteed).
  */
-import { MongoClient, Collection } from 'mongodb'
+import { Collection, MongoClient } from 'mongodb'
+
 import { MongoFieldSpecifier, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { createMockCollection } from '../../../collections/implementations/mock'
+
 import { connectSharedMongoClient, freshCollection } from '../_integrationDb'
-import { TestDoc, id, waitFor, newSink, Sink, makeMultiplexer, subscribeChanges } from '../_observeHelpers'
+import { id, makeMultiplexer, newSink, Sink, subscribeChanges, TestDoc, waitFor } from '../_observeHelpers'
+import { createMockCollection } from '../../../collections/implementations/mock'
 
 type Step =
 	| { op: 'insert'; doc: TestDoc }

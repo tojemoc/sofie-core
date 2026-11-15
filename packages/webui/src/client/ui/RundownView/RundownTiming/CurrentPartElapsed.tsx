@@ -1,7 +1,8 @@
-import { TimingDataResolution, TimingTickResolution, useTiming } from './withTiming.js'
-import { RundownUtils } from '../../../lib/rundown.js'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from './withTiming.js'
 
 interface IPartElapsedProps {
 	currentPartId: PartId | undefined
@@ -15,7 +16,9 @@ export function CurrentPartElapsed({ currentPartId, className }: IPartElapsedPro
 	const timingDurations = useTiming(TimingTickResolution.High, TimingDataResolution.High)
 
 	const displayTimecode =
-		currentPartId && timingDurations.partPlayed ? timingDurations.partPlayed[unprotectString(currentPartId)] || 0 : 0
+		currentPartId && timingDurations.partPlayed
+			? timingDurations.partPlayed[unprotectString(currentPartId)] || 0
+			: 0
 
 	return (
 		<span className={className} role="timer">

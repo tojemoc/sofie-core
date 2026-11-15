@@ -1,20 +1,23 @@
 import ClassNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type {
 	DashboardLayoutPartName,
 	RundownLayoutBase,
 	RundownLayoutPartName,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { findPieceInstanceToShowFromInstances, type IFoundPieceInstance } from '../PieceIcons/utils.js'
-import { pieceIconSupportedLayers } from '../PieceIcons/PieceIcon.js'
+
 import { PieceInstances } from '../../collections/index.js'
-import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import { useTranslation } from 'react-i18next'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import { RundownUtils } from '../../lib/rundown.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
+import { pieceIconSupportedLayers } from '../PieceIcons/PieceIcon.js'
+import { findPieceInstanceToShowFromInstances } from '../PieceIcons/utils.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
+import type { IFoundPieceInstance } from '../PieceIcons/utils.js'
 
 interface IPartNamePanelProps {
 	layout: RundownLayoutBase

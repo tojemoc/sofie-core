@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { AB_MEDIA_PLAYER_AUTO } from '@sofie-automation/blueprints-integration'
 import { PartId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
@@ -7,7 +9,6 @@ import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataMod
 import { getRandomString, omit } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unpartialString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { TimelineObjectAbSessionInfo } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
-import { ReadonlyDeep } from 'type-fest'
 
 interface ABSessionInfoExt extends ABSessionInfo {
 	/** Whether to store this session on the playlist (ie, whether it is still valid) */

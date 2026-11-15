@@ -1,8 +1,10 @@
-import { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { ReadonlyDeep } from 'type-fest'
+
+import { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
+
 import { PlayoutSegmentModel } from './PlayoutSegmentModel.js'
 
 /**

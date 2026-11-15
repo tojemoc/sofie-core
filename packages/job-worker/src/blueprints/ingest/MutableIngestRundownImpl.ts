@@ -1,22 +1,24 @@
-import type {
-	MutableIngestRundown,
-	MutableIngestSegment,
-	MutableIngestPart,
-	IngestSegment,
-	SofieIngestSegment,
-} from '@sofie-automation/blueprints-integration'
-import { Complete, clone, omit } from '@sofie-automation/corelib/dist/lib'
 import { ReadonlyDeep } from 'type-fest'
 import _ from 'underscore'
-import { MutableIngestSegmentImpl } from './MutableIngestSegmentImpl.js'
+
 import { SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { SofieIngestRundownDataCacheGenerator } from '../../ingest/sofieIngestCache.js'
+import { RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
 	SofieIngestDataCacheObj,
 	SofieIngestRundownWithSource,
 } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { clone, Complete, omit } from '@sofie-automation/corelib/dist/lib'
+import type {
+	IngestSegment,
+	MutableIngestPart,
+	MutableIngestRundown,
+	MutableIngestSegment,
+	SofieIngestSegment,
+} from '@sofie-automation/blueprints-integration'
+
+import { SofieIngestRundownDataCacheGenerator } from '../../ingest/sofieIngestCache.js'
+import { MutableIngestSegmentImpl } from './MutableIngestSegmentImpl.js'
 import type { ComputedIngestChangeObject } from '../../ingest/runOperation.js'
-import { RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 
 export interface MutableIngestRundownChanges {
 	// define what needs regenerating

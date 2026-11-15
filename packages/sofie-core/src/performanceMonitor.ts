@@ -1,4 +1,5 @@
 import _ from 'underscore'
+
 import { getCoreSystemAsync } from './coreSystem/collection'
 import { logger } from './logging'
 import { getRunningMethods, resetRunningMethods } from './methods'

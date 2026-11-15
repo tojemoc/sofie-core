@@ -1,27 +1,28 @@
-import React, { useCallback, useMemo } from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { NavLink, useLocation } from 'react-router-dom'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	type PeripheralDevice,
-	PERIPHERAL_SUBTYPE_PROCESS,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
-import { faPlus, faTrash, faExclamationTriangle, faCaretRight, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretRight, faExclamationTriangle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import type { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import { type IOutputLayer, StatusCode } from '@sofie-automation/blueprints-integration'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { NavLink, useLocation } from 'react-router-dom'
 import type { TFunction } from 'i18next'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { Blueprints, PeripheralDevices, ShowStyleBases, Studios } from '../../collections/index.js'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { catchError } from '../../lib/lib.js'
+
+import { StatusCode } from '@sofie-automation/blueprints-integration'
+import { PERIPHERAL_SUBTYPE_PROCESS } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IOutputLayer } from '@sofie-automation/blueprints-integration'
+import type { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { Blueprints, PeripheralDevices, ShowStyleBases, Studios } from '../../collections/index.js'
+import { catchError } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 
 export function SettingsMenu(): JSX.Element {
 	const { t } = useTranslation()
@@ -135,7 +136,9 @@ function SettingsMenuBlueprints() {
 
 	const onAddBlueprint = useCallback(() => {
 		MeteorCall.blueprint.insertBlueprint().catch((error) => {
-			NotificationCenter.push(new Notification(undefined, NoticeLevel.WARNING, error.reason, 'Create New Blueprint'))
+			NotificationCenter.push(
+				new Notification(undefined, NoticeLevel.WARNING, error.reason, 'Create New Blueprint')
+			)
 		})
 	}, [])
 
@@ -265,7 +268,9 @@ function SettingsMenuStudio({ studio, canDelete }: Readonly<SettingsMenuStudioPr
 				no: t('Cancel'),
 				message: (
 					<React.Fragment>
-						<p>{t('Are you sure you want to delete the studio "{{studioId}}"?', { studioId: studio.name })}</p>
+						<p>
+							{t('Are you sure you want to delete the studio "{{studioId}}"?', { studioId: studio.name })}
+						</p>
 						<p>{t('Please note: This action is irreversible!')}</p>
 					</React.Fragment>
 				),
@@ -495,9 +500,12 @@ function SettingsMenuPeripheralDevice({ device }: Readonly<SettingsMenuPeriphera
 				message: (
 					<React.Fragment>
 						<p>
-							{t('Are you sure you want to remove the device "{{deviceName}}" and all of it\'s sub-devices?', {
-								deviceName: device?.name,
-							})}
+							{t(
+								'Are you sure you want to remove the device "{{deviceName}}" and all of it\'s sub-devices?',
+								{
+									deviceName: device?.name,
+								}
+							)}
 						</p>
 						<p>{t('Please note: This action is irreversible!')}</p>
 					</React.Fragment>

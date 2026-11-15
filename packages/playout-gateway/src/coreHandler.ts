@@ -1,33 +1,34 @@
+import { MemUsageReport as ThreadMemUsageReport } from 'threadedclass'
+import { ActionExecutionResult, DeviceOptionsAny, DeviceStatus, MediaObject } from 'timeline-state-resolver'
+import { BaseRemoteDeviceIntegration } from 'timeline-state-resolver/dist/service/remoteDeviceInstance'
+import _ from 'underscore'
+import { Logger } from 'winston'
+
 import {
 	CoreConnection,
+	CoreConnectionChild,
 	CoreOptions,
 	DDPConnectorOptions,
 	DDPTLSOptions,
+	ICoreHandler,
+	KubernetesRestarter,
+	Observer,
 	PeripheralDeviceAPI,
 	PeripheralDeviceCommand,
 	PeripheralDeviceId,
-	protectString,
-	StatusCode,
-	Observer,
-	stringifyError,
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollectionsNames,
-	ICoreHandler,
-	CoreConnectionChild,
-	KubernetesRestarter,
+	protectString,
+	StatusCode,
+	stringifyError,
 } from '@sofie-automation/server-core-integration'
-import { MediaObject, DeviceOptionsAny, ActionExecutionResult, DeviceStatus } from 'timeline-state-resolver'
-import _ from 'underscore'
+import { PeripheralDeviceCommandId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+import { PlayoutGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/PlayoutGatewayConfigTypes'
+
+import { compilePlayoutGatewayConfigManifest } from './configManifest.js'
 import { DeviceConfig } from './connector.js'
 import { TSRHandler } from './tsrHandler.js'
-import { Logger } from 'winston'
-
-import { MemUsageReport as ThreadMemUsageReport } from 'threadedclass'
-import { compilePlayoutGatewayConfigManifest } from './configManifest.js'
-import { BaseRemoteDeviceIntegration } from 'timeline-state-resolver/dist/service/remoteDeviceInstance'
 import { getVersions } from './versions.js'
-import { PlayoutGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/PlayoutGatewayConfigTypes'
-import { PeripheralDeviceCommandId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
 
 export interface CoreConfig {
 	host: string

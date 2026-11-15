@@ -1,7 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { ReadonlyDeep } from 'type-fest'
+
 import { RundownActivationContext } from '../blueprints/context/RundownActivationContext.js'
 import { JobContext } from '../jobs/index.js'
 import { getCurrentTime } from '../lib/index.js'

@@ -1,7 +1,5 @@
-import { CoreHandler, CoreConfig } from './coreHandler.js'
 import { Logger } from 'winston'
-import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { LiveStatusServer } from './liveStatusServer.js'
+
 import {
 	CertificatesConfig,
 	HealthConfig,
@@ -10,6 +8,10 @@ import {
 	loadDDPTLSOptions,
 	stringifyError,
 } from '@sofie-automation/server-core-integration'
+import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+
+import { CoreConfig, CoreHandler } from './coreHandler.js'
+import { LiveStatusServer } from './liveStatusServer.js'
 
 export interface Config {
 	certificates: CertificatesConfig

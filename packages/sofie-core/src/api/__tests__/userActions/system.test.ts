@@ -1,29 +1,32 @@
-import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
-import { ServerUserActionAPI } from '../../userActions'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDevice,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
 import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../../../lib/lib'
+
 import {
 	DefaultEnvironment,
 	setupDefaultStudioEnvironment,
 	setupMockPeripheralDevice,
 } from '../../../__mocks__/helpers/database'
+import { getCurrentTime } from '../../../lib/lib'
+import { ServerUserActionAPI } from '../../userActions'
+
 import '../../../__mocks__/_extendJest'
-import { Studios } from '../../../collections'
-import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+
+import { DBStudio, StudioPlayoutDevice } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import {
 	applyAndValidateOverrides,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
 import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { StudioPlayoutDevice } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { makeMeteorCallForTest } from '../../../__mocks__/helpers/methods'
+import { Studios } from '../../../collections'
 
 const MeteorCall = makeMeteorCallForTest({ methods: UserActionAPIMethods, class: ServerUserActionAPI })
 

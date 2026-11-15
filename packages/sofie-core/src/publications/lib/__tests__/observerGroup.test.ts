@@ -1,7 +1,7 @@
 import '../../../__mocks__/_extendJest'
 
-import { ReactiveMongoObserverGroup } from '../observerGroup'
 import { LiveQueryHandle, sleep } from '../../../lib/lib'
+import { ReactiveMongoObserverGroup } from '../observerGroup'
 
 describe('ReactiveMongoObserverGroup', () => {
 	beforeEach(() => {

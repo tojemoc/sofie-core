@@ -1,6 +1,6 @@
 import {
-	KEYBOARD_VELOCITY_DEFAULTS,
 	dialVelocityStep,
+	KEYBOARD_VELOCITY_DEFAULTS,
 	rememberVelocityStep,
 	velocityStepToSpeed,
 } from '../keyboard-velocity'

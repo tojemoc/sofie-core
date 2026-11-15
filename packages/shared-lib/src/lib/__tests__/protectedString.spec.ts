@@ -1,11 +1,11 @@
 import {
-	type ProtectedString,
 	protectString,
 	protectStringArray,
 	unprotectObject,
 	unprotectString,
 	unprotectStringArray,
 } from '../protectedString.js'
+import type { ProtectedString } from '../protectedString.js'
 
 describe('ProtectedString', () => {
 	test('stringifies properly', async () => {

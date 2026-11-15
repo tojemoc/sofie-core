@@ -1,12 +1,13 @@
 import { MOS } from '@sofie-automation/corelib'
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+
 import { logger } from '../../../logging'
-import { fetchStudioIdFromDevice, generateRundownSource, runIngestOperation } from '../lib'
-import { parseMosString } from './lib'
+import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
 import { MethodContext } from '../../methodContext'
 import { profiler } from '../../profiler'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
+import { fetchStudioIdFromDevice, generateRundownSource, runIngestOperation } from '../lib'
+import { parseMosString } from './lib'
 
 const apmNamespace = 'mosIntegration'
 

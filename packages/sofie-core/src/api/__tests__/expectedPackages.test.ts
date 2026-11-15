@@ -1,8 +1,9 @@
-import { PackageInfo, StatusCode, ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getPackageContainerId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
+import { ExpectedPackageStatusAPI, PackageInfo, StatusCode } from '@sofie-automation/blueprints-integration'
 import { getPackageContainerPackageId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
+import { getPackageContainerId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
 import { getPackageInfoId } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { setupDefaultStudioEnvironment } from '../../__mocks__/helpers/database'
 import { getMethodContext } from '../../__mocks__/helpers/methods'
 import {

@@ -1,29 +1,28 @@
-import React, { useMemo, useState } from 'react'
 import { Meteor } from 'meteor/meteor'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import type { EvaluationBase } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
-import { doUserAction, UserAction } from '../lib/clientUserAction.js'
-import { MeteorCall } from '../lib/meteorApi.js'
-import type { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { hashSingleUseToken } from '../lib/lib.js'
-import {
-	DropdownInputControl,
-	type DropdownInputOption,
-	getDropdownInputOptions,
-} from '../lib/Components/DropdownInput.js'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import type { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { EvaluationBase } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
+
+import { CoreSystem } from '../collections/index.js'
+import { doUserAction, UserAction } from '../lib/clientUserAction.js'
+import { DropdownInputControl, getDropdownInputOptions } from '../lib/Components/DropdownInput.js'
 import { MultiLineTextInputControl } from '../lib/Components/MultiLineTextInput.js'
 import { TextInputControl } from '../lib/Components/TextInput.js'
-import { Spinner } from '../lib/Spinner.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../lib/notifications/notifications.js'
+import { hashSingleUseToken } from '../lib/lib.js'
+import { MeteorCall } from '../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../lib/notifications/notifications.js'
 import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
-import { CoreSystem } from '../collections/index.js'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { UserError } from '@sofie-automation/corelib/dist/error'
-import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { Spinner } from '../lib/Spinner.js'
+import type { DropdownInputOption } from '../lib/Components/DropdownInput.js'
 
 type ProblemType = 'nothing' | 'minor' | 'major'
 
@@ -69,7 +68,9 @@ export function AfterBroadcastForm({ playlist }: Readonly<{ playlist: DBRundownP
 			}
 			if (snapshotId && evaluation.snapshots) evaluation.snapshots.push(snapshotId)
 
-			doUserAction(t, e, UserAction.SAVE_EVALUATION, (e, ts) => MeteorCall.userAction.saveEvaluation(e, ts, evaluation))
+			doUserAction(t, e, UserAction.SAVE_EVALUATION, (e, ts) =>
+				MeteorCall.userAction.saveEvaluation(e, ts, evaluation)
+			)
 
 			if (shouldDeactivateRundown) {
 				doUserAction(t, e, UserAction.DEACTIVATE_RUNDOWN_PLAYLIST, (e, ts) =>
@@ -87,7 +88,8 @@ export function AfterBroadcastForm({ playlist }: Readonly<{ playlist: DBRundownP
 				UserAction.CREATE_SNAPSHOT_FOR_DEBUG,
 				async (e, ts) =>
 					MeteorCall.system.generateSingleUseToken().then((tokenResult) => {
-						if (ClientAPI.isClientResponseError(tokenResult)) throw UserError.fromSerialized(tokenResult.error)
+						if (ClientAPI.isClientResponseError(tokenResult))
+							throw UserError.fromSerialized(tokenResult.error)
 						if (!tokenResult.result) throw new Error('Failed to generate token')
 						return MeteorCall.userAction.storeRundownSnapshot(
 							e,
@@ -155,7 +157,11 @@ export function AfterBroadcastForm({ playlist }: Readonly<{ playlist: DBRundownP
 									'(what happened and when, what should have happened, what could have triggered the problems, etcetera...)'
 								)}
 							</span>
-							<MultiLineTextInputControl value={description} handleUpdate={setDescription} disabled={busy} />
+							<MultiLineTextInputControl
+								value={description}
+								handleUpdate={setDescription}
+								disabled={busy}
+							/>
 						</label>
 					</div>
 					<div className="question q2">

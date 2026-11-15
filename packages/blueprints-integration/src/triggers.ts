@@ -1,11 +1,12 @@
+import {
+	ClientActions,
+	DeviceActions,
+	PlayoutActions,
+	SomeActionIdentifier,
+} from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
+
 import { SourceLayerType } from './content.js'
 import { ITranslatableMessage } from './translations.js'
-import {
-	SomeActionIdentifier,
-	ClientActions,
-	PlayoutActions,
-	DeviceActions,
-} from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
 
 export enum TriggerType {
 	hotkey = 'hotkey',

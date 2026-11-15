@@ -1,17 +1,18 @@
+import { AnimatePresence } from 'motion/react'
 import React, { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { NotificationCenterPanelToggle, NotificationCenterPanel } from '../lib/notifications/NotificationCenterPanel.js'
-import { NotificationCenter, NoticeLevel } from '../lib/notifications/notifications.js'
-import { ErrorBoundary } from '../lib/ErrorBoundary.js'
-import { SupportPopUpToggle, SupportPopUp } from './SupportPopUp.js'
-import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
-import { CoreSystem } from '../collections/index.js'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import { useTranslation } from 'react-i18next'
 import { LinkContainer } from 'react-router-bootstrap'
-import { AnimatePresence } from 'motion/react'
+import { Link } from 'react-router-dom'
+
+import { CoreSystem } from '../collections/index.js'
+import { ErrorBoundary } from '../lib/ErrorBoundary.js'
+import { NotificationCenterPanel, NotificationCenterPanelToggle } from '../lib/notifications/NotificationCenterPanel.js'
+import { NoticeLevel, NotificationCenter } from '../lib/notifications/notifications.js'
+import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
+import { SupportPopUp, SupportPopUpToggle } from './SupportPopUp.js'
 
 interface IPropsHeader {
 	allowConfigure?: boolean
@@ -74,7 +75,9 @@ export default function Header({ allowConfigure, allowTesting }: IPropsHeader): 
 					/>
 					<NotificationCenterPanelToggle
 						onClick={(e) => onToggleNotifications(e, NoticeLevel.NOTIFICATION | NoticeLevel.TIP)}
-						isOpen={isNotificationCenterOpen === ((NoticeLevel.NOTIFICATION | NoticeLevel.TIP) as NoticeLevel)}
+						isOpen={
+							isNotificationCenterOpen === ((NoticeLevel.NOTIFICATION | NoticeLevel.TIP) as NoticeLevel)
+						}
 						filter={NoticeLevel.NOTIFICATION | NoticeLevel.TIP}
 						className="type-notification"
 						title={t('Notes')}

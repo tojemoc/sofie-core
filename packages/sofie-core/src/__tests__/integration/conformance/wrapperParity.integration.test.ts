@@ -8,14 +8,16 @@
  * layer above both backends: option translation, selector normalization, update `multi` routing, replace
  * upsert semantics, return-value shapes and reject-on-error behaviour.
  */
-import { MongoClient } from 'mongodb'
 import { randomBytes } from 'crypto'
-import { createMockCollection } from '../../../collections/implementations/mock'
-import { WrappedAsyncMongoCollection } from '../../../collections/implementations/asyncCollection'
-import { AsyncOnlyMongoCollection } from '../../../collections/collection'
-import { getMongoClient } from '../../../collections/mongoConnection'
+
+import { MongoClient } from 'mongodb'
+
 import { connectSharedMongoClient } from '../_integrationDb'
 import { waitFor } from '../_observeHelpers'
+import { AsyncOnlyMongoCollection } from '../../../collections/collection'
+import { WrappedAsyncMongoCollection } from '../../../collections/implementations/asyncCollection'
+import { createMockCollection } from '../../../collections/implementations/mock'
+import { getMongoClient } from '../../../collections/mongoConnection'
 
 interface Doc {
 	_id: string

@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 import { Tracker } from 'meteor/tracker'
-import { withTranslation, type WithTranslation } from 'react-i18next'
-import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { meteorSubscribe } from '../meteorApi.js'
-import { stringifyObjects } from '@sofie-automation/corelib/dist/lib'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { withTranslation } from 'react-i18next'
 import _ from 'underscore'
+import type { WithTranslation } from 'react-i18next'
+
+import { stringifyObjects } from '@sofie-automation/corelib/dist/lib'
+import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { meteorSubscribe } from '../meteorApi.js'
 
 const globalTrackerQueue: Array<() => void> = []
 let globalTrackerTimestamp: number | undefined = undefined
@@ -289,7 +292,13 @@ export function withTracker<IProps, IState, TrackedProps>(
 			// This is potentially very dangerous, so use with caution.
 			shouldComponentUpdate(nextProps: IProps, nextState: IState): boolean {
 				if (typeof expandedOptions.shouldComponentUpdate === 'function') {
-					return expandedOptions.shouldComponentUpdate(this.data, this.props, nextProps, this.state, nextState)
+					return expandedOptions.shouldComponentUpdate(
+						this.data,
+						this.props,
+						nextProps,
+						this.state,
+						nextState
+					)
 				}
 				return true
 			}
@@ -589,9 +598,13 @@ export function useSubscriptions<K extends keyof AllPubSubTypes>(
 	const [ready, setReady] = useState<boolean>(false)
 
 	useEffect(() => {
-		const subscriptions = Tracker.nonreactive(() => _.compact(argsArray).map((args) => meteorSubscribe(sub, ...args)))
+		const subscriptions = Tracker.nonreactive(() =>
+			_.compact(argsArray).map((args) => meteorSubscribe(sub, ...args))
+		)
 		const isReadyComp = Tracker.nonreactive(() =>
-			Tracker.autorun(() => setReady(subscriptions.reduce((memo, subscription) => memo && subscription.ready(), true)))
+			Tracker.autorun(() =>
+				setReady(subscriptions.reduce((memo, subscription) => memo && subscription.ready(), true))
+			)
 		)
 		return () => {
 			isReadyComp.stop()

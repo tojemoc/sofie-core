@@ -1,5 +1,5 @@
-import { PublicationContext } from '../publications/lib/lib'
 import { MeteorPublicationsGauge } from '../publicationRegistry'
+import { PublicationContext } from '../publications/lib/lib'
 import type { DDPClientConnection } from './types'
 
 /** The slice of the session a publication context needs, to route its data through the merge box. */

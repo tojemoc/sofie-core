@@ -1,19 +1,22 @@
-import Koa from 'koa'
+import fs from 'fs/promises'
+
 import cors from '@koa/cors'
 import KoaRouter from '@koa/router'
+import Koa from 'koa'
 import KoaMount from 'koa-mount'
+import staticServe from 'koa-static'
+
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { IExtendedSettings } from '@sofie-automation/meteor-lib/dist/Settings'
+
+import { PackageInfo } from '../../coreSystem'
+import { STANDALONE_DDP_SERVER_PATH } from '../../ddp-server/config'
 import { getRootSubpath, isInDevelopmentMode, public_dir } from '../../lib'
 import { getClientAddress } from '../../lib/clientAddress'
-import { STANDALONE_DDP_SERVER_PATH } from '../../ddp-server/config'
-import staticServe from 'koa-static'
 import { logger } from '../../logging'
-import { PackageInfo } from '../../coreSystem'
-import { profiler } from '../profiler'
-import fs from 'fs/promises'
-import type { IExtendedSettings } from '@sofie-automation/meteor-lib/dist/Settings'
 import { ENABLE_HEADER_AUTH } from '../../security/auth'
+import { profiler } from '../profiler'
 import type { DDPClientConnection } from '../../ddp-server/types'
 
 const rootRouter = new KoaRouter()

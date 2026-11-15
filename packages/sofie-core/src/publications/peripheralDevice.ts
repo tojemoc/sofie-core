@@ -1,13 +1,14 @@
-import { check, zAnyArray } from '../lib/check'
-import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { MongoFieldSpecifierZeroes, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDeviceCommands, PeripheralDevices } from '../collections'
+import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierZeroes, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
+
+import { PeripheralDeviceCommands, PeripheralDevices } from '../collections'
+import { check, zAnyArray } from '../lib/check'
 import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 
 /*

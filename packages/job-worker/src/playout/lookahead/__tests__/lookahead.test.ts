@@ -1,32 +1,35 @@
-import { LOOKAHEAD_DEFAULT_SEARCH_DISTANCE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { RundownPlaylistId, PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBStudio, MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { clone, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../../../lib/index.js'
-import { SelectedPartInstancesTimelineInfo } from '../../timeline/generate.js'
-import { getLookeaheadObjects } from '../index.js'
 import { LookaheadMode, PlaylistTimingType, TSR } from '@sofie-automation/blueprints-integration'
-import { setupDefaultJobEnvironment, MockJobContext } from '../../../__mocks__/context.js'
-import { runJobWithPlayoutModel } from '../../../playout/lock.js'
-import { defaultRundownPlaylist } from '../../../__mocks__/defaultCollectionObjects.js'
+import { PartId, RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import {
 	DBRundownPlaylist,
 	RundownHoldState,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBStudio, MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { clone, getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { createPartCurrentTimes } from '@sofie-automation/corelib/dist/playout/processAndPrune'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { LOOKAHEAD_DEFAULT_SEARCH_DISTANCE } from '@sofie-automation/shared-lib/dist/core/constants'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
+import { defaultRundownPlaylist } from '../../../__mocks__/defaultCollectionObjects.js'
+import { getCurrentTime } from '../../../lib/index.js'
+import { runJobWithPlayoutModel } from '../../../playout/lock.js'
+import { SelectedPartInstancesTimelineInfo } from '../../timeline/generate.js'
+import { findLookaheadForLayer, PartInstanceAndPieceInstancesInfos } from '../findForLayer.js'
+import { LookaheadTimelineObject } from '../findObjects.js'
+import { getLookeaheadObjects } from '../index.js'
+import { getOrderedPartsAfterPlayhead, PartAndPieces } from '../util.js'
 
 jest.mock('../findForLayer')
 type TfindLookaheadForLayer = jest.MockedFunction<typeof findLookaheadForLayer>
-import { findLookaheadForLayer, PartInstanceAndPieceInstancesInfos } from '../findForLayer.js'
+
 const findLookaheadForLayerMock = findLookaheadForLayer as TfindLookaheadForLayer
 
 jest.mock('../util')
 type TgetOrderedPartsAfterPlayhead = jest.MockedFunction<typeof getOrderedPartsAfterPlayhead>
-import { getOrderedPartsAfterPlayhead, PartAndPieces } from '../util.js'
-import { LookaheadTimelineObject } from '../findObjects.js'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { createPartCurrentTimes } from '@sofie-automation/corelib/dist/playout/processAndPrune'
+
 const getOrderedPartsAfterPlayheadMock = getOrderedPartsAfterPlayhead as TgetOrderedPartsAfterPlayhead
 
 const DEFAULT_PLAYOUT_STATE = { isInHold: false, isRehearsal: false }

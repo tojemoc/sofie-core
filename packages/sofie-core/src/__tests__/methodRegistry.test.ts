@@ -1,5 +1,5 @@
-import { MethodApiRegistration, MethodRegistry } from '../methodRegistry'
 import { METHOD_REGISTRATIONS, registerAllApiMethods } from '../methodRegistrations'
+import { MethodApiRegistration, MethodRegistry } from '../methodRegistry'
 
 describe('MethodRegistry', () => {
 	test('registers all API methods without error', () => {

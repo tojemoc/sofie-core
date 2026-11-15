@@ -1,24 +1,27 @@
-import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
-import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { IngestReplacePartType, IngestSegmentModel } from '../IngestSegmentModel.js'
 import _ from 'underscore'
-import { IngestPartModelImpl } from './IngestPartModelImpl.js'
-import { IngestPartModel } from '../IngestPartModel.js'
+
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { calculatePartExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
-import { clone, deleteAllUndefinedProperties } from '@sofie-automation/corelib/dist/lib'
-import { getPartId } from '../../lib.js'
 import {
 	ExpectedPackageDBType,
 	ExpectedPackageIngestSourceAdlibAction,
 	ExpectedPackageIngestSourcePart,
 	ExpectedPackageIngestSourcePiece,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { ExpectedPackageCollector, type IngestExpectedPackage } from '../IngestExpectedPackage.js'
+import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { clone, deleteAllUndefinedProperties } from '@sofie-automation/corelib/dist/lib'
+import { calculatePartExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
+
+import { getPartId } from '../../lib.js'
+import { ExpectedPackageCollector } from '../IngestExpectedPackage.js'
+import { IngestPartModel } from '../IngestPartModel.js'
+import { IngestReplacePartType, IngestSegmentModel } from '../IngestSegmentModel.js'
+import { IngestPartModelImpl } from './IngestPartModelImpl.js'
+import type { IngestExpectedPackage } from '../IngestExpectedPackage.js'
 
 /**
  * A light wrapper around the IngestPartModel, so that we can track the deletions while still accessing the contents

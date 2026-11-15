@@ -1,9 +1,10 @@
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
 import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { resolveAdLibActionForBranding, resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+
 import { getProjectedBrandingId } from '../../publications/lib/branding'
 import { AdLibActionFields, AdLibPieceFields, ContentCache } from './reactiveContentCache'
 

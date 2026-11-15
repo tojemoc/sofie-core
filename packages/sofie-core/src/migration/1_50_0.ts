@@ -1,4 +1,39 @@
-import { addMigrationSteps } from './databaseMigration'
+import _ from 'underscore'
+
+import { JSONBlobStringify, JSONSchema, TSR } from '@sofie-automation/blueprints-integration'
+import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import {
+	AdLibActionId,
+	BucketAdLibActionId,
+	BucketAdLibId,
+	PieceId,
+	RundownBaselineAdLibActionId,
+} from '@sofie-automation/corelib/dist/dataModel/Ids'
+import * as PackagesPreR53 from '@sofie-automation/corelib/dist/dataModel/Old/ExpectedPackagesR52'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import {
+	DBStudio,
+	MappingExt,
+	StudioIngestDevice,
+	StudioInputDevice,
+	StudioPlayoutDevice,
+	StudioRouteSet,
+} from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { assertNever, clone, literal } from '@sofie-automation/corelib/dist/lib'
+import {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+	wrapDefaultObject,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
+import { PartId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import {
+	PeripheralDeviceCategory,
+	PeripheralDeviceType,
+} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -10,40 +45,7 @@ import {
 	RundownPlaylists,
 	Studios,
 } from '../collections'
-import { assertNever, clone, literal } from '@sofie-automation/corelib/dist/lib'
-import {
-	MappingExt,
-	StudioIngestDevice,
-	StudioInputDevice,
-	StudioPlayoutDevice,
-	StudioRouteSet,
-} from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	PeripheralDeviceCategory,
-	PeripheralDeviceType,
-} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import _ from 'underscore'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	wrapDefaultObject,
-	ObjectOverrideSetOp,
-	SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { JSONBlobStringify, JSONSchema, TSR } from '@sofie-automation/blueprints-integration'
-import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
-import { PartId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import {
-	AdLibActionId,
-	BucketAdLibActionId,
-	BucketAdLibId,
-	PieceId,
-	RundownBaselineAdLibActionId,
-} from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import * as PackagesPreR53 from '@sofie-automation/corelib/dist/dataModel/Old/ExpectedPackagesR52'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 50
 

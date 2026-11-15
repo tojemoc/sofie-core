@@ -1,4 +1,5 @@
 import type { Logger } from 'winston'
+
 import { parseVmixInputsFromXml, serializeVmixInputRecords } from './parseVmixInputsXml.js'
 import { VmixInputRecord } from './types.js'
 

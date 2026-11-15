@@ -1,11 +1,14 @@
-import * as Winston from 'winston'
 import * as fs from 'fs'
 import * as path from 'path'
-import { getDevDataPath, isInDevelopmentMode, isInProductionMode, isInTestMode } from './lib'
+
+import _ from 'underscore'
+import * as Winston from 'winston'
+
+import { LoggerInstanceFixed } from '@sofie-automation/corelib/dist/logging'
 import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import _ from 'underscore'
-import { LoggerInstanceFixed } from '@sofie-automation/corelib/dist/logging'
+
+import { getDevDataPath, isInDevelopmentMode, isInProductionMode, isInTestMode } from './lib'
 
 export function getLogLevel(): LogLevel {
 	return logger.level as LogLevel

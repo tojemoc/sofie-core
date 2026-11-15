@@ -1,4 +1,5 @@
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import {
 	createResolvedPlaylistConversionContext,
 	findCurrentPartInstance,

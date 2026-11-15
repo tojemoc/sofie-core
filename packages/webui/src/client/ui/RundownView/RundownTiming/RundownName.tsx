@@ -1,12 +1,14 @@
-import { useTranslation } from 'react-i18next'
 import ClassNames from 'classnames'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { LoopingIcon } from '../../../lib/ui/icons/looping.js'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { getCurrentTime } from '../../../lib/systemTime.js'
+import { useTranslation } from 'react-i18next'
+
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import { isLoopDefined } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { LoopingIcon } from '../../../lib/ui/icons/looping.js'
 
 interface IRundownNameProps {
 	rundownPlaylist: DBRundownPlaylist
@@ -76,7 +78,8 @@ export function RundownName({
 				</h1>
 			)}
 			{!hideDiff && rundownPlaylist.startedPlayback && rundownPlaylist.activationId && !rundownPlaylist.rehearsal
-				? expectedStart && RundownUtils.formatDiffToTimecodeOverUnder(rundownPlaylist.startedPlayback - expectedStart)
+				? expectedStart &&
+					RundownUtils.formatDiffToTimecodeOverUnder(rundownPlaylist.startedPlayback - expectedStart)
 				: expectedStart && RundownUtils.formatDiffToTimecodeOverUnder(getCurrentTime() - expectedStart)}
 		</div>
 	)

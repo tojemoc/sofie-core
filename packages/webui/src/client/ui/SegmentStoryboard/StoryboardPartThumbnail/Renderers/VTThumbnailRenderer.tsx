@@ -1,18 +1,20 @@
 import classNames from 'classnames'
-import type { VTContent } from '@sofie-automation/blueprints-integration'
-import { getNoticeLevelForPieceStatus } from '../../../../lib/notifications/notifications.js'
-import { RundownUtils } from '../../../../lib/rundown.js'
-import type { IProps } from './ThumbnailRendererFactory.js'
+
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { FreezeFrameIcon } from '../../../../lib/ui/icons/freezeFrame.js'
-import { PieceStatusIcon } from '../../../../lib/ui/PieceStatusIcon.js'
-import { FREEZE_FRAME_FLASH } from '../../../SegmentContainer/withResolvedSegment.js'
-import { LoopingPieceIcon } from '../../../../lib/ui/icons/looping.js'
-import { useContentStatusForPieceInstance } from '../../../SegmentTimeline/withMediaObjectStatus.js'
-import { useTiming } from '../../../RundownView/RundownTiming/withTiming.js'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
 import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids.js'
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus.js'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { getNoticeLevelForPieceStatus } from '../../../../lib/notifications/notifications.js'
+import { RundownUtils } from '../../../../lib/rundown.js'
+import { FreezeFrameIcon } from '../../../../lib/ui/icons/freezeFrame.js'
+import { LoopingPieceIcon } from '../../../../lib/ui/icons/looping.js'
+import { PieceStatusIcon } from '../../../../lib/ui/PieceStatusIcon.js'
+import { useTiming } from '../../../RundownView/RundownTiming/withTiming.js'
+import { FREEZE_FRAME_FLASH } from '../../../SegmentContainer/withResolvedSegment.js'
+import { useContentStatusForPieceInstance } from '../../../SegmentTimeline/withMediaObjectStatus.js'
+import type { IProps } from './ThumbnailRendererFactory.js'
 
 export function VTThumbnailRenderer(props: Readonly<IProps>): JSX.Element {
 	const contentStatus = useContentStatusForPieceInstance(props.pieceInstance.instance)
@@ -24,7 +26,10 @@ export function VTThumbnailRenderer(props: Readonly<IProps>): JSX.Element {
 			<VTThumbnailRendererWithTiming {...props} contentStatus={contentStatus} />
 			{props.pieceInstance.instance.piece.content?.loop && (
 				<div className="segment-storyboard__thumbnail__countdown">
-					<LoopingPieceIcon className="segment-storyboard__thumbnail__countdown-icon" playing={props.hovering} />
+					<LoopingPieceIcon
+						className="segment-storyboard__thumbnail__countdown-icon"
+						playing={props.hovering}
+					/>
 				</div>
 			)}
 			<div className="segment-storyboard__thumbnail__label">

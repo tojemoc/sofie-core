@@ -1,9 +1,9 @@
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
 
 export type CoreSystemFields =

@@ -1,16 +1,11 @@
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { type Piece, EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { clone } from '@sofie-automation/corelib/dist/lib'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import type {
 	PartId,
 	PartInstanceId,
@@ -26,7 +21,13 @@ import type {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance'
 
 export function defaultRundownPlaylist(_id: RundownPlaylistId, studioId: StudioId): DBRundownPlaylist {

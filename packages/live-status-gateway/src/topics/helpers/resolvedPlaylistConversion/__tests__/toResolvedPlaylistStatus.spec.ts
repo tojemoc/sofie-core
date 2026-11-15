@@ -1,6 +1,7 @@
 import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
-import { PlaylistActivationStatus, ResolvedPlaylistTimingType } from '@sofie-automation/live-status-gateway-api'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { PlaylistActivationStatus, ResolvedPlaylistTimingType } from '@sofie-automation/live-status-gateway-api'
+
 import { toResolvedPlaylistStatus } from '../events/toResolvedPlaylistStatus.js'
 import {
 	makePart,

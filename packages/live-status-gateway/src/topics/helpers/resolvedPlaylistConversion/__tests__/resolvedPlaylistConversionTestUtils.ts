@@ -1,7 +1,8 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
-import { ShowStyleBaseExt } from '../../../../collections/showStyleBaseHandler.js'
 import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { ShowStyleBaseExt } from '../../../../collections/showStyleBaseHandler.js'
 
 export function makeTestShowStyleBaseExt(): ShowStyleBaseExt {
 	return {

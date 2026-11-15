@@ -1,12 +1,13 @@
+import { MediaObjId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+import { MediaObjectRevision } from '@sofie-automation/shared-lib/dist/peripheralDevice/mediaManager'
+
+import { MediaObjects } from '../../collections'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
 import { MethodContext } from '../methodContext'
-import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
-import { MediaObjId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MediaObjectRevision } from '@sofie-automation/shared-lib/dist/peripheralDevice/mediaManager'
-import { MediaObjects } from '../../collections'
 import { getStudioIdFromDevice } from '../studio/lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export namespace MediaScannerIntegration {
 	export async function getMediaObjectRevisions(

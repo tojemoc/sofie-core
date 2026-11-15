@@ -1,10 +1,12 @@
-import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import React from 'react'
-import { getShowHiddenSourceLayers } from '../../../lib/localStorage.js'
-import type { IOutputLayerUi } from '../../SegmentContainer/withResolvedSegment.js'
-import { StoryboardSourceLayer } from './StoryboardSourceLayer.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import { getShowHiddenSourceLayers } from '../../../lib/localStorage.js'
+import { StoryboardSourceLayer } from './StoryboardSourceLayer.js'
+import type { IOutputLayerUi } from '../../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	part: PartExtended
@@ -35,7 +37,9 @@ export const StoryboardPartSecondaryPieces = React.memo(function StoryboardPartS
 	return (
 		<div className="segment-storyboard__part__secondary-pieces">
 			{filterSecondaryOutputLayers(Object.values<IOutputLayerUi>(outputLayers)).map((outputLayer) => {
-				const sourceLayers = filterSecondarySourceLayers(Object.values<ISourceLayerExtended>(outputLayer.sourceLayers))
+				const sourceLayers = filterSecondarySourceLayers(
+					Object.values<ISourceLayerExtended>(outputLayer.sourceLayers)
+				)
 
 				if (sourceLayers.length === 0) return null
 
@@ -48,7 +52,12 @@ export const StoryboardPartSecondaryPieces = React.memo(function StoryboardPartS
 						aria-live="assertive"
 					>
 						{sourceLayers.map((sourceLayer) => (
-							<StoryboardSourceLayer key={sourceLayer._id} sourceLayer={sourceLayer} pieces={part.pieces} part={part} />
+							<StoryboardSourceLayer
+								key={sourceLayer._id}
+								sourceLayer={sourceLayer}
+								pieces={part.pieces}
+								part={part}
+							/>
 						))}
 					</div>
 				)

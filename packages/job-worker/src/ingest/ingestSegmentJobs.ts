@@ -1,6 +1,9 @@
-import { JobContext } from '../jobs/index.js'
-import { regenerateSegmentsFromIngestData } from './generationSegment.js'
-import { CommitIngestData } from './lock.js'
+import {
+	IngestChangeType,
+	NrcsIngestSegmentChangeDetailsEnum,
+	SofieIngestRundown,
+} from '@sofie-automation/blueprints-integration'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
 import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import {
@@ -10,14 +13,12 @@ import {
 	IngestUpdateSegmentRanksProps,
 	RemoveOrphanedSegmentsProps,
 } from '@sofie-automation/corelib/dist/worker/ingest'
-import { IngestUpdateOperationFunction, UpdateIngestRundownChange, UpdateIngestRundownResult } from './runOperation.js'
-import {
-	IngestChangeType,
-	NrcsIngestSegmentChangeDetailsEnum,
-	SofieIngestRundown,
-} from '@sofie-automation/blueprints-integration'
+
+import { JobContext } from '../jobs/index.js'
+import { regenerateSegmentsFromIngestData } from './generationSegment.js'
+import { CommitIngestData } from './lock.js'
 import { IngestModel } from './model/IngestModel.js'
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { IngestUpdateOperationFunction, UpdateIngestRundownChange, UpdateIngestRundownResult } from './runOperation.js'
 
 /**
  * Regnerate a Segment from the cached IngestSegment

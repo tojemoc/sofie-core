@@ -1,9 +1,10 @@
 import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { Blueprints, ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { Blueprints, ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
 import { ObserveChangesHelper } from '../collections/lib'
 
 const ObserveChangeBufferTimeout = 100

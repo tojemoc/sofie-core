@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useLocation } from 'react-router-dom'
-import { parse as queryStringParse } from 'query-string'
-import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { parse as queryStringParse } from 'query-string'
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+
 import { catchError } from '../../lib/lib.js'
 
 import './FullscreenOverlay.scss'

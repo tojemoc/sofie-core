@@ -1,9 +1,10 @@
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { UIBlueprintUpgradeStatus } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+
+import { isInTestMode } from '../../lib'
 import { CustomPublish, CustomPublishChanges } from '../../lib/customPublication'
 import { createBlueprintUpgradeStatusSubscriptionHandle } from './publication'
-import { isInTestMode } from '../../lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 class CustomPublishToMap<DBObj extends { _id: ProtectedString<any> }> implements CustomPublish<DBObj> {
 	#isReady = false

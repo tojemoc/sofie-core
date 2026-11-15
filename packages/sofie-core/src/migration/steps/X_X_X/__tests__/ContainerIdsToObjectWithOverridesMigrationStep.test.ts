@@ -1,5 +1,6 @@
-import { setupEmptyEnvironment, setupMockStudio } from '../../../../__mocks__/helpers/database'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupEmptyEnvironment, setupMockStudio } from '../../../../__mocks__/helpers/database'
 import { Studios } from '../../../../collections'
 import { ContainerIdsToObjectWithOverridesMigrationStep } from '../ContainerIdsToObjectWithOverridesMigrationStep'
 

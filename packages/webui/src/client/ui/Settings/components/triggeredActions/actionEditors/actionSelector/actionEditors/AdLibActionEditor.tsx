@@ -1,10 +1,14 @@
-import _ from 'underscore'
 import { useTranslation } from 'react-i18next'
-import { PlayoutActions, type SomeAction } from '@sofie-automation/blueprints-integration'
-import { useTracker } from '../../../../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import _ from 'underscore'
+
+import { PlayoutActions } from '@sofie-automation/blueprints-integration'
+import type { SomeAction } from '@sofie-automation/blueprints-integration'
+
 import { AdLibActions, RundownBaselineAdLibActions } from '../../../../../../../collections/index.js'
+import { TextInputControl } from '../../../../../../../lib/Components/TextInput.js'
 import { ToggleSwitchControl } from '../../../../../../../lib/Components/ToggleSwitch.js'
-import { TextInputControl, type TextInputSuggestion } from '../../../../../../../lib/Components/TextInput.js'
+import { useTracker } from '../../../../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { TextInputSuggestion } from '../../../../../../../lib/Components/TextInput.js'
 
 export function AdLibActionEditor({
 	action,
@@ -28,7 +32,11 @@ export function AdLibActionEditor({
 				.sort()
 				.value()
 
-			return triggerModes.map((triggerMode, i): TextInputSuggestion => ({ name: triggerMode, value: triggerMode, i }))
+			return triggerModes.map((triggerMode, i): TextInputSuggestion => ({
+				name: triggerMode,
+				value: triggerMode,
+				i,
+			}))
 		},
 		[],
 		[]

@@ -1,11 +1,11 @@
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
 import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import { BlueprintId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 
 export interface SourceLayersDoc {
 	_id: ShowStyleBaseId
@@ -14,14 +14,7 @@ export interface SourceLayersDoc {
 }
 
 export type BucketAdLibFields =
-	| '_id'
-	| 'bucketId'
-	| 'studioId'
-	| 'showStyleBaseId'
-	| 'name'
-	| 'sourceLayerId'
-	| 'content'
-	| 'expectedPackages'
+	'_id' | 'bucketId' | 'studioId' | 'showStyleBaseId' | 'name' | 'sourceLayerId' | 'content' | 'expectedPackages'
 export const bucketAdlibFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<BucketAdLib, BucketAdLibFields>>>({
 	_id: 1,
 	bucketId: 1,

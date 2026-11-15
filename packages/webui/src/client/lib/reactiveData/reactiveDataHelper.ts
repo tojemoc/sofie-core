@@ -1,7 +1,9 @@
-import { Tracker } from 'meteor/tracker'
-import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { meteorSubscribe } from '../meteorApi.js'
 import { Meteor } from 'meteor/meteor'
+import { Tracker } from 'meteor/tracker'
+
+import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { meteorSubscribe } from '../meteorApi.js'
 
 /**
  * Slow down the reactivity of the inner function `fnc` to the outer computation.

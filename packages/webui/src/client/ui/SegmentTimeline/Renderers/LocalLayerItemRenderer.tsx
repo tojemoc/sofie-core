@@ -1,7 +1,9 @@
-import { getElementWidth } from '../../../utils/dimensions.js'
 import type { EvsContent } from '@sofie-automation/blueprints-integration'
 
-import { CustomLayerItemRenderer, type ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { CustomLayerItemRenderer } from './CustomLayerItemRenderer.js'
+import type { ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
+
 type IProps = ICustomLayerItemProps
 interface IState {}
 
@@ -58,7 +60,9 @@ export class LocalLayerItemRenderer extends CustomLayerItemRenderer<IProps, ISta
 										className="segment-timeline__piece__label segment-timeline__piece__label__colored-mark"
 									></span>
 								)}
-								<span className="segment-timeline__piece__label">{this.props.piece.instance.piece.name}</span>
+								<span className="segment-timeline__piece__label">
+									{this.props.piece.instance.piece.name}
+								</span>
 							</span>
 						</span>
 					) : null}

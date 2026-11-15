@@ -1,16 +1,18 @@
 import * as React from 'react'
-import DefaultItemRenderer from './DefaultItemRenderer.js'
-import { NoraItemRenderer, isNoraItem } from './NoraItemRenderer.js'
-import ActionItemRenderer, { isActionItem } from './ActionItemRenderer.js'
-import type { BucketAdLibItem } from '../../RundownViewBuckets.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { IAdLibListItem } from '../../AdLibListItem.js'
-import type { AdLibPieceUi } from '../../../../lib/shelf.js'
 import type { ReadonlyDeep } from 'type-fest'
+
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import ActionItemRenderer, { isActionItem } from './ActionItemRenderer.js'
+import DefaultItemRenderer from './DefaultItemRenderer.js'
+import { isNoraItem, NoraItemRenderer } from './NoraItemRenderer.js'
+import type { AdLibPieceUi } from '../../../../lib/shelf.js'
+import type { IAdLibListItem } from '../../AdLibListItem.js'
+import type { BucketAdLibItem } from '../../RundownViewBuckets.js'
 
 export default function renderItem(
 	piece: BucketAdLibItem | IAdLibListItem | PieceUi,

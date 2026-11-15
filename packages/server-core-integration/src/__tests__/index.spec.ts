@@ -404,7 +404,7 @@ describe('coreConnection', () => {
 		const parentOnConnectionChanged = jest.fn()
 		coreParent.onConnectionChanged(parentOnConnectionChanged)
 
-		let id = await coreParent.init({
+		await coreParent.init({
 			host: coreHost,
 			port: corePort,
 		})
@@ -442,7 +442,7 @@ describe('coreConnection', () => {
 
 		// Uninitialize:
 
-		id = await coreChild.unInitialize()
+		const id = await coreChild.unInitialize()
 
 		expect(id).toEqual(coreChild.deviceId)
 

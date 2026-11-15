@@ -1,4 +1,6 @@
 import { EventEmitter } from 'events'
+
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
 import {
 	BucketId,
 	PartId,
@@ -9,11 +11,11 @@ import {
 	SegmentId,
 	TriggeredActionId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { ShelfTabs } from '../uiTypes/ShelfTabs.js'
+import { PieceUi } from '@sofie-automation/corelib/dist/dataModel/Piece'
+
 import type { IAdLibListItem } from '../uiTypes/Adlib.js'
 import type { BucketAdLibItem } from '../uiTypes/Bucket.js'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { PieceUi } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { ShelfTabs } from '../uiTypes/ShelfTabs.js'
 
 export enum RundownViewEvents {
 	ACTIVATE_RUNDOWN_PLAYLIST = 'activateRundownPlaylist',

@@ -1,6 +1,7 @@
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { MeteorPubSub } from '../pubsub.js'
 import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { MeteorPubSub } from '../pubsub.js'
 
 describe('Pubsub', () => {
 	it('Ensures that PubSub values are unique', () => {

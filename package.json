@@ -52,6 +52,7 @@
 		"@babel/core": "^8.0.0",
 		"@babel/plugin-transform-export-namespace-from": "^8.0.0",
 		"@babel/plugin-transform-modules-commonjs": "^8.0.0",
+		"@eslint/compat": "^2.1.1",
 		"@sofie-automation/code-standard-preset": "^4.0.0",
 		"@types/amqplib": "0.10.8",
 		"@types/debug": "^4.1.13",
@@ -102,6 +103,7 @@
 			"built": true
 		}
 	},
+	"prettier": "@sofie-automation/code-standard-preset/prettier.config.mjs",
 	"lint-staged": {
 		"*.{css,json,md,scss}": [
 			"yarn run prettier"

@@ -1,5 +1,55 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import {
+	ExpectedPackage,
+	ExpectedPlayoutItemGeneric,
+	HackPartMediaObjectSubscription,
+	IBlueprintActionManifest,
+	IBlueprintActionManifestBranding,
+	IBlueprintActionManifestDisplay,
+	IBlueprintActionManifestDisplayContent,
+	IBlueprintActionTriggerMode,
+	IBlueprintAdLibPieceDB,
+	IBlueprintBrandingInfo,
+	IBlueprintConfig,
+	IBlueprintMutatablePart,
+	IBlueprintMutatablePartInstance,
+	IBlueprintPartBranding,
+	IBlueprintPartDB,
+	IBlueprintPartInstance,
+	IBlueprintPiece,
+	IBlueprintPieceBranding,
+	IBlueprintPieceDB,
+	IBlueprintPieceGeneric,
+	IBlueprintPieceInstance,
+	IBlueprintResolvedPieceInstance,
+	IBlueprintRundownDB,
+	IBlueprintRundownPieceDB,
+	IBlueprintRundownPlaylist,
+	IBlueprintSegmentDB,
+	IBlueprintSegmentRundown,
+	IBlueprintShowStyleBase,
+	IBlueprintShowStyleVariant,
+	IOutputLayer,
+	ISourceLayer,
+	NoteSeverity,
+	PieceAbSessionInfo,
+	RundownPlaylistTiming,
+} from '@sofie-automation/blueprints-integration'
+import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
+import {
+	UserEditingDefinition,
+	UserEditingDefinitionAction,
+	UserEditingDefinitionForm,
+	UserEditingDefinitionSofieDefault,
+	UserEditingDefinitionState,
+	UserEditingProperties,
+	UserEditingType,
+} from '@sofie-automation/blueprints-integration/dist/userEditing'
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart, PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import {
@@ -14,83 +64,35 @@ import {
 } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
+	DBRundownPlaylist,
+	QuickLoopMarkerType,
+} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import {
 	CoreUserEditingDefinition,
-	CoreUserEditingDefinitionState,
 	CoreUserEditingDefinitionAction,
 	CoreUserEditingDefinitionForm,
-	CoreUserEditingProperties,
 	CoreUserEditingDefinitionSofie,
+	CoreUserEditingDefinitionState,
+	CoreUserEditingProperties,
 } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { assertNever, clone, cloneObject, Complete, literal, omit } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString, unprotectStringArray } from '@sofie-automation/corelib/dist/protectedString'
-import { ReadonlyDeep } from 'type-fest'
-import {
-	ExpectedPackage,
-	ExpectedPlayoutItemGeneric,
-	HackPartMediaObjectSubscription,
-	IBlueprintActionManifest,
-	IBlueprintActionManifestDisplay,
-	IBlueprintActionManifestDisplayContent,
-	IBlueprintActionTriggerMode,
-	IBlueprintAdLibPieceDB,
-	IBlueprintConfig,
-	IBlueprintMutatablePart,
-	IBlueprintMutatablePartInstance,
-	IBlueprintPartDB,
-	IBlueprintPartInstance,
-	IBlueprintPiece,
-	IBlueprintPieceDB,
-	IBlueprintPieceGeneric,
-	IBlueprintPieceInstance,
-	IBlueprintResolvedPieceInstance,
-	IBlueprintRundownDB,
-	IBlueprintRundownPieceDB,
-	IBlueprintRundownPlaylist,
-	IBlueprintSegmentDB,
-	IBlueprintSegmentRundown,
-	IBlueprintShowStyleBase,
-	IBlueprintShowStyleVariant,
-	IOutputLayer,
-	IBlueprintActionManifestBranding,
-	IBlueprintBrandingInfo,
-	IBlueprintPartBranding,
-	IBlueprintPieceBranding,
-	ISourceLayer,
-	NoteSeverity,
-	PieceAbSessionInfo,
-	RundownPlaylistTiming,
-} from '@sofie-automation/blueprints-integration'
+import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+import { IngestPartNotifyItemReady } from '@sofie-automation/shared-lib/dist/ingest/rundownStatus'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import {
 	JobContext,
 	ProcessedShowStyleBase,
 	ProcessedShowStyleCompound,
 	ProcessedShowStyleVariant,
 } from '../../jobs/index.js'
-import {
-	DBRundownPlaylist,
-	QuickLoopMarkerType,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import _ from 'underscore'
-import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import {
-	UserEditingDefinition,
-	UserEditingDefinitionAction,
-	UserEditingDefinitionForm,
-	UserEditingProperties,
-	UserEditingDefinitionSofieDefault,
-	UserEditingType,
-	UserEditingDefinitionState,
-} from '@sofie-automation/blueprints-integration/dist/userEditing'
-import type { PlayoutMutatablePart } from '../../playout/model/PlayoutPartInstanceModel.js'
-import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
-import { IngestPartNotifyItemReady } from '@sofie-automation/shared-lib/dist/ingest/rundownStatus'
-import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { logger } from '../../logging.js'
+import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
 import { sanitisePartBrandingFromBlueprint } from '../postProcessBranding.js'
+import type { PlayoutMutatablePart } from '../../playout/model/PlayoutPartInstanceModel.js'
 
 /**
  * Convert an object to have all the values of all keys (including optionals) be 'true'
@@ -595,7 +597,7 @@ export async function getMediaObjectDuration(context: JobContext, mediaId: strin
 	const durations: Array<number | undefined> = []
 	mediaObjects.forEach((doc) => {
 		if (doc !== undefined) {
-			durations.push(doc.mediainfo?.format?.duration as number)
+			durations.push(doc.mediainfo?.format?.duration)
 		}
 	})
 

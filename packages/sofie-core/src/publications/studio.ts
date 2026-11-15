@@ -1,19 +1,23 @@
-import { z } from 'zod'
-import { check, zAnyArray } from '../lib/check'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { getActiveRoutes, getRoutedMappings } from '@sofie-automation/meteor-lib/dist/collections/Studios'
-import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
-import {
-	CustomPublish,
-	SetupObserversResult,
-	setUpOptimizedObserverArray,
-	TriggerUpdate,
-} from '../lib/customPublication'
-import { literal } from '@sofie-automation/corelib/dist/lib'
 import { ReadonlyDeep } from 'type-fest'
-import { FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { z } from 'zod'
+
+import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
+import { getActiveRoutes, getRoutedMappings } from '@sofie-automation/meteor-lib/dist/collections/Studios'
+import { RoutedMappings } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
+import {
+	PeripheralDevicePubSub,
+	PeripheralDevicePubSubCollectionsNames,
+} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
 import {
 	ExpectedPackages,
 	ExpectedPackageWorkStatuses,
@@ -22,20 +26,18 @@ import {
 	PackageInfos,
 	Studios,
 } from '../collections'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { RoutedMappings } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { check, zAnyArray } from '../lib/check'
 import {
-	PeripheralDevicePubSub,
-	PeripheralDevicePubSubCollectionsNames,
-} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
-import { checkAccessAndGetPeripheralDevice } from '../security/check'
-import { assertConnectionHasOneOfPermissions } from '../security/auth'
+	CustomPublish,
+	SetupObserversResult,
+	setUpOptimizedObserverArray,
+	TriggerUpdate,
+} from '../lib/customPublication'
 import { fetchStudioIds } from '../optimizations'
+import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export function registerStudioPublications(registry: PublicationRegistry): void {
 	registry.publish(

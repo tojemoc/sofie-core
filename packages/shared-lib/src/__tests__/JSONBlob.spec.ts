@@ -18,6 +18,8 @@ test('JSONBlob', () => {
 		b: 1,
 	}
 
+	const str = 'string'
+
 	try {
 		// Note: This part is not intended to actually be executed, just to check types
 
@@ -30,8 +32,6 @@ test('JSONBlob', () => {
 	} catch (_err) {
 		// ignore execution errors
 	}
-
-	const str = 'string'
 
 	const aBlob = JSONBlobStringify(a)
 	const a2 = JSONBlobParse(aBlob)

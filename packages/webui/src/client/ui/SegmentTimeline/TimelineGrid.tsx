@@ -1,16 +1,16 @@
 import React from 'react'
 import _ from 'underscore'
 
-import { RundownUtils } from '../../lib/rundown.js'
-
-import { getElementWidth, getElementHeight } from '../../utils/dimensions.js'
-import { onElementResize } from '../../lib/resizeObserver.js'
-import type { PartUi } from './SegmentTimelineContainer.js'
-import { getCurrentTime } from '../../lib/systemTime.js'
-import { RundownTiming } from '../RundownView/RundownTiming/RundownTiming.js'
-import { SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
 import type { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { onElementResize } from '../../lib/resizeObserver.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import { getCurrentTime } from '../../lib/systemTime.js'
+import { getElementHeight, getElementWidth } from '../../utils/dimensions.js'
+import { RundownTiming } from '../RundownView/RundownTiming/RundownTiming.js'
 import { RundownTimingProviderContext } from '../RundownView/RundownTiming/withTiming.js'
+import { SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
+import type { PartUi } from './SegmentTimelineContainer.js'
 
 // We're cheating a little: Fontface
 declare class FontFace {
@@ -125,9 +125,12 @@ export class TimelineGrid extends React.Component<ITimelineGridProps> {
 			this.longLineColor = style.getPropertyValue('--timeline-grid-long-line-color') || LONG_LINE_GRID_COLOR
 			this.shortLineColor = style.getPropertyValue('--timeline-grid-short-line-color') || SHORT_LINE_GRID_COLOR
 			this.timelineFinishedBackgroundColor =
-				style.getPropertyValue('--timeline-grid-finished-background-color') || TIMELINE_FINISHED_BACKGROUND_COLOR
+				style.getPropertyValue('--timeline-grid-finished-background-color') ||
+				TIMELINE_FINISHED_BACKGROUND_COLOR
 
-			this.longLineTop = parseFloat(style.getPropertyValue('--timeline-grid-long-line-top') || LONG_LINE_TOP.toString())
+			this.longLineTop = parseFloat(
+				style.getPropertyValue('--timeline-grid-long-line-top') || LONG_LINE_TOP.toString()
+			)
 			this.longLineHeight = parseFloat(
 				style.getPropertyValue('--timeline-grid-long-line-height') || LONG_LINE_HEIGHT.toString()
 			)
@@ -240,7 +243,7 @@ export class TimelineGrid extends React.Component<ITimelineGridProps> {
 
 		// Go up to (width / step) + 1, to allow for the grid line + text, disappearing on the left
 		// in effect, we are rendering +1 grid lines than there should fit inside the area
-		let i = 0
+		let i: number
 		for (i = 0; i < maxTicks; i++) {
 			// we should offset the first step -1, as this is the one that will be dissaperaing as the
 			// timeline is moving
@@ -263,7 +266,10 @@ export class TimelineGrid extends React.Component<ITimelineGridProps> {
 			}
 
 			this.ctx.beginPath()
-			this.ctx.moveTo(xPosition, isLabel ? this.longLineTop * this.pixelRatio : this.shortLineTop * this.pixelRatio)
+			this.ctx.moveTo(
+				xPosition,
+				isLabel ? this.longLineTop * this.pixelRatio : this.shortLineTop * this.pixelRatio
+			)
 			this.ctx.lineTo(
 				xPosition,
 				isLabel
@@ -278,7 +284,8 @@ export class TimelineGrid extends React.Component<ITimelineGridProps> {
 		}
 
 		this.ctx.fillStyle = this.timelineFinishedBackgroundColor
-		const endOfSegment = (this.getSegmentDuration() - this.props.scrollLeft) * this.props.timeScale * this.pixelRatio
+		const endOfSegment =
+			(this.getSegmentDuration() - this.props.scrollLeft) * this.props.timeScale * this.pixelRatio
 		if (endOfSegment < this.width) {
 			this.ctx.fillRect(
 				endOfSegment,
@@ -321,10 +328,12 @@ export class TimelineGrid extends React.Component<ITimelineGridProps> {
 					partInstance.instance.timings?.duration ??
 					Math.max(
 						SegmentTimelinePartClass.getPartDisplayDuration(partInstance, durations),
-						partInstance.instance._id === this.props.currentPartInstanceId && !partInstance.instance.part.autoNext
+						partInstance.instance._id === this.props.currentPartInstanceId &&
+							!partInstance.instance.part.autoNext
 							? SegmentTimelinePartClass.getCurrentLiveLinePosition(partInstance, currentTime) +
 									SegmentTimelinePartClass.getLiveLineTimePadding(this.props.timeScale)
-							: partInstance.instance._id === this.props.currentPartInstanceId && partInstance.instance.part.autoNext
+							: partInstance.instance._id === this.props.currentPartInstanceId &&
+								  partInstance.instance.part.autoNext
 								? SegmentTimelinePartClass.getCurrentLiveLinePosition(partInstance, currentTime)
 								: 0
 					)

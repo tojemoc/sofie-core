@@ -1,9 +1,10 @@
+import { IngestChangeType, IngestPart, NrcsIngestPartChangeDetails } from '@sofie-automation/blueprints-integration'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+
 import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { handleRemovedPart, handleUpdatedPart } from '../ingestPartJobs.js'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { IngestChangeType, IngestPart, NrcsIngestPartChangeDetails } from '@sofie-automation/blueprints-integration'
 import { UpdateIngestRundownChange } from '../runOperation.js'
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
 
 function getDefaultIngestRundown(): IngestRundownWithSource {
 	return {

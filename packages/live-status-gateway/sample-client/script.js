@@ -281,7 +281,7 @@ function updateTTimers(tTimers) {
 		const projectedLi = document.getElementById(`t-timer-projected-${timer.index}`)
 		if (projectedLi && timer.projected) {
 			let projectedTime
-			let projectedInfo = ''
+			let projectedInfo
 			if (timer.projected.paused) {
 				projectedTime = timer.projected.duration
 				projectedInfo = ' (paused)'

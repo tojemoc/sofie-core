@@ -1,32 +1,36 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
-import Tooltip from 'rc-tooltip'
-import ClassNames from 'classnames'
-import { useTranslation } from 'react-i18next'
-import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { ActiveProgressBar } from './ActiveProgressBar.js'
-import { RundownListItem } from './RundownListItem.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { type Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
-import { LoopingIcon } from '../../lib/ui/icons/looping.js'
-import { getRundownPlaylistLink } from './util.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ClassNames from 'classnames'
+import Tooltip from 'rc-tooltip'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
-import { type IRundownDragObject, RundownListDragDropTypes } from './DragAndDropTypes.js'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import { getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import { isLoopDefined } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { TOOLTIP_DEFAULT_DELAY } from '../../lib/lib.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
 import { RundownUtils } from '../../lib/rundown.js'
-import PlaylistRankResetButton from './PlaylistRankResetButton.js'
-import { DisplayFormattedTime } from './DisplayFormattedTime.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { RundownViewLayoutSelection } from './RundownViewLayoutSelection.js'
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import { TOOLTIP_DEFAULT_DELAY } from '../../lib/lib.js'
-import type { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { LoopingIcon } from '../../lib/ui/icons/looping.js'
 import { UserPermissionsContext } from '../UserPermissions.js'
-import { isLoopDefined } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { ActiveProgressBar } from './ActiveProgressBar.js'
+import { DisplayFormattedTime } from './DisplayFormattedTime.js'
+import { RundownListDragDropTypes } from './DragAndDropTypes.js'
+import PlaylistRankResetButton from './PlaylistRankResetButton.js'
+import { RundownListItem } from './RundownListItem.js'
+import { RundownViewLayoutSelection } from './RundownViewLayoutSelection.js'
+import { getRundownPlaylistLink } from './util.js'
+import type { IRundownDragObject } from './DragAndDropTypes.js'
 
 export interface RundownPlaylistUi extends DBRundownPlaylist {
 	rundowns: Rundown[]
@@ -246,7 +250,10 @@ export function RundownPlaylistUi({
 					{playlistExpectedEnd ? (
 						<DisplayFormattedTime displayTimestamp={playlistExpectedEnd} t={t} />
 					) : playlistExpectedStart && playlistExpectedDuration ? (
-						<DisplayFormattedTime displayTimestamp={playlistExpectedStart + playlistExpectedDuration} t={t} />
+						<DisplayFormattedTime
+							displayTimestamp={playlistExpectedStart + playlistExpectedDuration}
+							t={t}
+						/>
 					) : (
 						<span className="dimmed">{t('Not set')}</span>
 					)}

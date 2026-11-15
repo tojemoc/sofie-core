@@ -1,45 +1,49 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import 'moment/min/locales'
+
 import { parse as queryStringParse } from 'query-string'
-import Header from './Header.js'
+import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { ConnectionStatusNotification } from '../lib/ConnectionStatusNotification.js'
+import { DocumentTitleProvider } from '../lib/DocumentTitleProvider.js'
+import { ErrorBoundary } from '../lib/ErrorBoundary.js'
+import { catchError, firstIfArray, isRunningInPWA } from '../lib/lib.js'
 import {
+	getAllowSpeaking,
+	getAllowVibrating,
+	getHelpMode,
+	getIgnorePieceContentStatus,
+	getReportNotifications,
+	getShelfFollowsOnAir,
+	getShowHiddenSourceLayers,
+	getUIZoom,
 	setAllowSpeaking,
 	setAllowVibrating,
 	setHelpMode,
-	setUIZoom,
-	getUIZoom,
-	setShowHiddenSourceLayers,
 	setIgnorePieceContentStatus,
-	setShelfFollowsOnAir,
 	setReportNotifications,
+	setShelfFollowsOnAir,
+	setShowHiddenSourceLayers,
+	setUIZoom,
 	unsetReportNotifications,
-	getShelfFollowsOnAir,
-	getAllowSpeaking,
-	getAllowVibrating,
-	getShowHiddenSourceLayers,
-	getIgnorePieceContentStatus,
-	getHelpMode,
-	getReportNotifications,
 } from '../lib/localStorage.js'
-import Status from './Status.js'
-import { Settings as SettingsView } from './Settings.js'
-import TestTools from './TestTools/index.js'
-import { RundownList } from './RundownList.js'
-import { RundownView } from './RundownView.js'
+import { doModalDialog, ModalDialogGlobalContainer } from '../lib/ModalDialog.js'
+import { relativeToSiteRootUrl, ROOT_URL_PATH_PREFIX } from '../url.js'
 import { ActiveRundownView } from './ActiveRundownView.js'
 import { ClockView } from './ClockView/ClockView.js'
 import { FullscreenOverlay } from './ClockView/FullscreenOverlay.js'
-import { ConnectionStatusNotification } from '../lib/ConnectionStatusNotification.js'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import { ErrorBoundary } from '../lib/ErrorBoundary.js'
+import Header from './Header.js'
 import { PrompterView } from './Prompter/PrompterView.js'
-import { ModalDialogGlobalContainer, doModalDialog } from '../lib/ModalDialog.js'
-import { DocumentTitleProvider } from '../lib/DocumentTitleProvider.js'
-import { catchError, firstIfArray, isRunningInPWA } from '../lib/lib.js'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { useUserPermissions, UserPermissionsContext } from './UserPermissions.js'
-import { relativeToSiteRootUrl, ROOT_URL_PATH_PREFIX } from '../url.js'
+import { RundownList } from './RundownList.js'
+import { RundownView } from './RundownView.js'
+import { Settings as SettingsView } from './Settings.js'
+import Status from './Status.js'
+import TestTools from './TestTools/index.js'
+import { UserPermissionsContext, useUserPermissions } from './UserPermissions.js'
 
 const NullComponent = () => null
 
@@ -97,9 +101,8 @@ export const App: React.FC = function App() {
 				.catch(catchError('documentElement.requestFullscreen'))
 
 			// Use Keyboard API to lock the keyboard and disable all browser shortcuts
-			if (!('keyboard' in navigator))
-				return // but we check for its availability, so it should be fine.
-				// Keyboard Lock: https://wicg.github.io/keyboard-lock/
+			if (!('keyboard' in navigator)) return // but we check for its availability, so it should be fine.
+			// Keyboard Lock: https://wicg.github.io/keyboard-lock/
 			;(navigator.keyboard as any).lock().catch(catchError('keyboard.lock'))
 		}
 		document.addEventListener('mousedown', onMouseDown, {
@@ -188,26 +191,34 @@ export const App: React.FC = function App() {
 							<Route
 								path="/rundown/:playlistId"
 								render={(props) => (
-									<RundownView playlistId={protectString(decodeURIComponent(props.match.params.playlistId))} />
+									<RundownView
+										playlistId={protectString(decodeURIComponent(props.match.params.playlistId))}
+									/>
 								)}
 							/>
 							<Route
 								path="/activeRundown/:studioId"
 								render={(props) => (
-									<ActiveRundownView studioId={protectString(decodeURIComponent(props.match.params.studioId))} />
+									<ActiveRundownView
+										studioId={protectString(decodeURIComponent(props.match.params.studioId))}
+									/>
 								)}
 							/>
 							<Route
 								path="/prompter/:studioId"
 								render={(props) => (
-									<PrompterView studioId={protectString(decodeURIComponent(props.match.params.studioId))} />
+									<PrompterView
+										studioId={protectString(decodeURIComponent(props.match.params.studioId))}
+									/>
 								)}
 							/>
 							{/* We switch to the general ClockView component, and allow it to do the switch between various types of countdowns */}
 							<Route
 								path="/countdowns/:studioId"
 								render={(props) => (
-									<ClockView studioId={protectString(decodeURIComponent(props.match.params.studioId))} />
+									<ClockView
+										studioId={protectString(decodeURIComponent(props.match.params.studioId))}
+									/>
 								)}
 							/>
 							<Route path="/status" render={() => <Status />} />

@@ -1,7 +1,8 @@
-import type { ExpectedPackage, PackageContainer, PackageContainerOnPackage } from './package.js'
+import type { ReadonlyDeep } from 'type-fest'
+
 import type { ExpectedPackageId, PeripheralDeviceId, RundownId, RundownPlaylistId } from '../core/model/Ids.js'
 import type { ProtectedString } from '../lib/protectedString.js'
-import type { ReadonlyDeep } from 'type-fest'
+import type { ExpectedPackage, PackageContainer, PackageContainerOnPackage } from './package.js'
 
 export interface PackageManagerPlayoutContext {
 	_id: PeripheralDeviceId

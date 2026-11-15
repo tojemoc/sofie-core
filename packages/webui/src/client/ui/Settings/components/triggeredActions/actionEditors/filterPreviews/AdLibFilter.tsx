@@ -1,24 +1,21 @@
-import _ from 'underscore'
-import {
-	type FilterType,
-	type IAdLibFilterLink,
-	type IOutputLayer,
-	type ISourceLayer,
-	SourceLayerType,
-} from '@sofie-automation/blueprints-integration'
 import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
 import type { TFunction } from 'i18next'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { FilterEditor } from './FilterEditor.js'
+import type { FilterType, IAdLibFilterLink, IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import type { EditAttributeType } from '../../../../../../lib/EditAttribute.js'
-import { useTracker } from '../../../../../../lib/ReactMeteorData/ReactMeteorData.js'
+
 import {
 	AdLibActions,
 	AdLibPieces,
 	RundownBaselineAdLibActions,
 	RundownBaselineAdLibPieces,
 } from '../../../../../../collections/index.js'
+import { useTracker } from '../../../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { FilterEditor } from './FilterEditor.js'
+import type { EditAttributeType } from '../../../../../../lib/EditAttribute.js'
 
 interface IProps {
 	index: number

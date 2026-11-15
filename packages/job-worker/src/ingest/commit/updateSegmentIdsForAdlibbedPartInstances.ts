@@ -1,7 +1,8 @@
-import { SegmentId, PartInstanceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { JobContext } from '../../jobs/index.js'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+
+import { JobContext } from '../../jobs/index.js'
 import { BeforeIngestOperationPartMap } from '../commit.js'
 import { IngestModelReadonly } from '../model/IngestModel.js'
 

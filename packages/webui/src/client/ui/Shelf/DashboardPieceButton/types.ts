@@ -1,8 +1,10 @@
-import type { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
 import type React from 'react'
+
+import type { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import type { IAdLibListItem } from '../AdLibListItem.js'
 
 export interface IDashboardButtonProps {

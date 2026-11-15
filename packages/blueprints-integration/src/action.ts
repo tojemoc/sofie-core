@@ -1,10 +1,11 @@
-import type { ExpectedPackage } from './package.js'
-import type { SomeContent } from './content.js'
-import type { ITranslatableMessage } from './translations.js'
-import { ExpectedPlayoutItemGeneric } from './documents/index.js'
 import { JSONBlob } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
 import { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { ExpectedPlayoutItemGeneric } from './documents/index.js'
+import type { SomeContent } from './content.js'
 import type { UserEditingDefinition, UserEditingProperties } from './index.js'
+import type { ExpectedPackage } from './package.js'
+import type { ITranslatableMessage } from './translations.js'
 
 export interface ActionUserData {
 	[key: string]: any

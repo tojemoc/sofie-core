@@ -1,5 +1,14 @@
+import _ from 'underscore'
+
 import { BlueprintId, BucketId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { Blueprints, BucketAdLibActions, BucketAdLibs, ShowStyleBases } from '../../../collections'
 import { logger } from '../../../logging'
+import { waitForAllObserversReady } from '../../lib/lib'
+import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
 import {
 	blueprintFieldSpecifier,
 	bucketActionFieldSpecifier,
@@ -9,13 +18,6 @@ import {
 	showStyleBaseFieldSpecifier,
 	SourceLayersDoc,
 } from './bucketContentCache'
-import { Blueprints, BucketAdLibActions, BucketAdLibs, ShowStyleBases } from '../../../collections'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
-import _ from 'underscore'
-import { waitForAllObserversReady } from '../../lib/lib'
 import type { LiveQueryHandleSync } from '../../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

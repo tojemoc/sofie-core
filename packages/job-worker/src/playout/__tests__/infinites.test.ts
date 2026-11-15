@@ -1,14 +1,16 @@
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { ReadonlyDeep, SetRequired } from 'type-fest'
-import { PlayoutModel } from '../model/PlayoutModel.js'
-import { candidatePartIsAfterPreviewPartInstance } from '../infinites.js'
-import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { runJobWithPlayoutModel } from '../lock.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { candidatePartIsAfterPreviewPartInstance } from '../infinites.js'
+import { runJobWithPlayoutModel } from '../lock.js'
+import { PlayoutModel } from '../model/PlayoutModel.js'
 
 describe('canContinueAdlibOnEndInfinites', () => {
 	let context: MockJobContext

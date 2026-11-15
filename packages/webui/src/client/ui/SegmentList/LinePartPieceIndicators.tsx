@@ -1,9 +1,10 @@
 import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
 import { LinePartAdLibIndicator } from './LinePartPieceIndicator/LinePartAdLibIndicator.js'
 import { LinePartPieceIndicator } from './LinePartPieceIndicator/LinePartPieceIndicator.js'
 import { LinePartScriptPiece } from './LinePartPieceIndicator/LinePartScriptPiece.js'
-import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 
 interface IProps {
 	partId: PartId

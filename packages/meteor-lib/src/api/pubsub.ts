@@ -1,3 +1,6 @@
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { ExpectedPlayoutItem } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import {
 	BucketId,
 	PeripheralDeviceId,
@@ -5,28 +8,26 @@ import {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import { UIShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { CorelibPubSub, CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
+import {
+	PeripheralDevicePubSub,
+	PeripheralDevicePubSubCollections,
+	PeripheralDevicePubSubCollectionsNames,
+	PeripheralDevicePubSubTypes,
+} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
 import { ICoreSystem } from '../collections/CoreSystem.js'
 import { Evaluation } from '../collections/Evaluations.js'
-import { ExpectedPlayoutItem } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import { RundownLayoutBase } from '../collections/RundownLayouts.js'
 import { SnapshotItem } from '../collections/Snapshots.js'
 import { TranslationsBundle } from '../collections/TranslationsBundles.js'
 import { DBTriggeredActions, UITriggeredActionsObj } from '../collections/TriggeredActions.js'
 import { UserActionsLogItem } from '../collections/UserActionsLog.js'
-import { UIBucketContentStatus, UISegmentPartNote } from './rundownNotifications.js'
 import { UIDeviceTriggerPreview } from './MountedTriggers.js'
+import { UIBucketContentStatus, UISegmentPartNote } from './rundownNotifications.js'
 import { UIBlueprintUpgradeStatus } from './upgradeStatus.js'
-import {
-	PeripheralDevicePubSub,
-	PeripheralDevicePubSubTypes,
-	PeripheralDevicePubSubCollections,
-	PeripheralDevicePubSubCollectionsNames,
-} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { CorelibPubSub, CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { UIShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 
 /**
  * Ids of possible DDP subscriptions for the UI only

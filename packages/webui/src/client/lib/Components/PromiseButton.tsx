@@ -1,11 +1,15 @@
-import { useCallback, useEffect, useState } from 'react'
-import ClassNames from 'classnames'
-import { logger } from '../logging.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import ClassNames from 'classnames'
+import { useCallback, useEffect, useState } from 'react'
+
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from '../logging.js'
 
 import './PromiseButton.scss'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { Spinner } from '../Spinner.js'
 import { WarningIcon } from '../ui/icons/notifications.js'
 

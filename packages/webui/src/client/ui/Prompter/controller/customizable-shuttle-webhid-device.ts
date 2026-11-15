@@ -1,5 +1,5 @@
-import type { PrompterViewContent } from '../PrompterView'
 import { ShuttleWebHidController } from './shuttle-webhid-device'
+import type { PrompterViewContent } from '../PrompterView'
 
 enum ShuttleButtonTriggerMode {
 	PRESSED = 'pressed',

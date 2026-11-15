@@ -1,16 +1,18 @@
-import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
 import _ from 'underscore'
-import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { Logger } from 'winston'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { CollectionHandlers } from '../liveStatusServer.js'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
+import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
 import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 export interface SelectedPartInstances {
 	previous: DBPartInstance[]

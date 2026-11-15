@@ -1,15 +1,16 @@
-import { NavLink, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
 import { parse as queryStringParse } from 'query-string'
-import { useSubscription, useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
+import { useTranslation } from 'react-i18next'
+import { NavLink, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
 
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { RundownPlaylists } from '../collections/index.js'
+import { useSubscription, useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
 import { Spinner } from '../lib/Spinner.js'
+import { UIStudios } from './Collections.js'
 import { RundownView } from './RundownView.js'
 import { StudioScreenSaver } from './StudioScreenSaver/StudioScreenSaver.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { UIStudios } from './Collections.js'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylists } from '../collections/index.js'
-import { useTranslation } from 'react-i18next'
 import { useSetDocumentClass, useSetDocumentDarkTheme } from './util/useSetDocumentClass.js'
 
 export function ActiveRundownView({ studioId }: Readonly<{ studioId: StudioId }>): JSX.Element | null {

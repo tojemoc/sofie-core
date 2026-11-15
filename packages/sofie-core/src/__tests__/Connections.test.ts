@@ -1,10 +1,11 @@
-jest.mock('../api/integration/influx')
-
-import { trackConnectionClose } from '../Connections'
-import { PeripheralDevices } from '../collections'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { waitUntil } from '../__mocks__/helpers/jest'
+import { PeripheralDevices } from '../collections'
+import { trackConnectionClose } from '../Connections'
+
+jest.mock('../api/integration/influx')
 
 describe('Connections.trackConnectionClose', () => {
 	beforeEach(async () => {

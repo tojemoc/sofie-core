@@ -1,27 +1,29 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import {
 	PartInstanceId,
 	PieceInstanceId,
 	RundownId,
 	RundownPlaylistActivationId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
 import { check, zAnyArray } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
-import { normaliseIds } from '../lib/lib'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { ContentCache, PieceInstanceOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { RundownContentObserver, UIPieceInstancesArgs } from './rundownContentObserver'
-import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
+import { normaliseIds } from '../lib/lib'
+import { ContentCache, createReactiveContentCache, PieceInstanceOmitedFields } from './reactiveContentCache'
+import { RundownContentObserver, UIPieceInstancesArgs } from './rundownContentObserver'
 import type { PublicationRegistry } from '../../publicationRegistry'
 
 export interface UIPieceInstancesState {

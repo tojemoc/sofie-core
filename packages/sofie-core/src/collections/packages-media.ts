@@ -6,6 +6,7 @@ import { PackageContainerPackageStatusDB } from '@sofie-automation/corelib/dist/
 import { PackageContainerStatusDB } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
 import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
 import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+
 import { createAsyncOnlyMongoCollection, createAsyncOnlyReadOnlyMongoCollection } from './collection'
 import { registerIndex } from './indices'
 

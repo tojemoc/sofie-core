@@ -1,72 +1,74 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { mock } from 'jest-mock-extended'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { IBlueprintPieceType, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { PartId, PartInstanceId, RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import {
+	deserializeTimelineBlob,
+	TimelineComplete,
+	TimelineEnableExt,
+} from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { getRandomId, literal, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { getPartGroupId, getPieceControlObjectId, getPieceGroupId } from '@sofie-automation/corelib/dist/playout/ids'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	PlayoutChangedResult,
+	PlayoutChangedType,
+} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { defaultRundownPlaylist } from '../../__mocks__/defaultCollectionObjects.js'
+import { fixSnapshot } from '../../__mocks__/helpers/snapshot.js'
+import { restartRandomId } from '../../__mocks__/nanoid.js'
 import {
 	setupDefaultRundownPlaylist,
 	setupMockPeripheralDevice,
 	setupMockShowStyleCompound,
 } from '../../__mocks__/presetCollections.js'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { handleTakeNextPart } from '../take.js'
-import { handleActivateHold } from '../holdJobs.js'
+import { adjustFakeTime, useFakeCurrentTime, useRealCurrentTime } from '../../__mocks__/time.js'
+import { ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/time.js'
 import { handleActivateRundownPlaylist, handleDeactivateRundownPlaylist } from '../activePlaylistJobs.js'
-import { fixSnapshot } from '../../__mocks__/helpers/snapshot.js'
+import { innerStartOrQueueAdLibPiece } from '../adlibUtils.js'
+import { handleActivateHold } from '../holdJobs.js'
 import { runJobWithPlayoutModel } from '../lock.js'
+import { PlayoutPartInstanceModelImpl } from '../model/implementation/PlayoutPartInstanceModelImpl.js'
+import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
+import { QuickLoopService } from '../model/services/QuickLoopService.js'
+import { handleTakeNextPart } from '../take.js'
 import { updateTimeline } from '../timeline/generate.js'
-import { getSelectedPartInstances, getSortedPartsForRundown } from './lib.js'
-import { PieceLifespan, IBlueprintPieceType, Time } from '@sofie-automation/blueprints-integration'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { RundownPlaylistId, RundownId, PartId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { handleOnPlayoutPlaybackChanged, handleTimelineTriggerTime } from '../timings/index.js'
 import {
-	TimelineEnableExt,
-	TimelineComplete,
-	deserializeTimelineBlob,
-} from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { normalizeArrayToMap, literal, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { getPartGroupId, getPieceControlObjectId, getPieceGroupId } from '@sofie-automation/corelib/dist/playout/ids'
-import { unprotectString, protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import {
-	setupRundownWithInTransitionExistingInfinite,
+	setupRundownBase,
 	setupRundownWithInTransition,
 	setupRundownWithInTransitionContentDelay,
 	setupRundownWithInTransitionContentDelayAndPreroll,
-	setupRundownWithPreroll,
+	setupRundownWithInTransitionDisabled,
+	setupRundownWithInTransitionEnableHold,
+	setupRundownWithInTransitionExistingInfinite,
 	setupRundownWithInTransitionNewInfinite,
 	setupRundownWithInTransitionPlannedPiece,
-	setupRundownWithInTransitionEnableHold,
-	setupRundownWithInTransitionDisabled,
 	setupRundownWithOutTransition,
+	setupRundownWithOutTransitionAndInTransition,
 	setupRundownWithOutTransitionAndPreroll,
 	setupRundownWithOutTransitionAndPreroll2,
-	setupRundownWithOutTransitionAndInTransition,
 	setupRundownWithOutTransitionEnableHold,
-	setupRundownBase,
+	setupRundownWithPreroll,
 } from './helpers/rundowns.js'
-import { defaultRundownPlaylist } from '../../__mocks__/defaultCollectionObjects.js'
-import { ReadonlyDeep } from 'type-fest'
-import { innerStartOrQueueAdLibPiece } from '../adlibUtils.js'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { adjustFakeTime, useFakeCurrentTime, useRealCurrentTime } from '../../__mocks__/time.js'
-import { restartRandomId } from '../../__mocks__/nanoid.js'
-import { ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { handleOnPlayoutPlaybackChanged, handleTimelineTriggerTime } from '../timings/index.js'
-import {
-	PlayoutChangedResult,
-	PlayoutChangedType,
-} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import _ from 'underscore'
-import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
-import { PlayoutPartInstanceModelImpl } from '../model/implementation/PlayoutPartInstanceModelImpl.js'
-import { mock } from 'jest-mock-extended'
-import { QuickLoopService } from '../model/services/QuickLoopService.js'
-import { getCurrentTime } from '../../lib/time.js'
+import { getSelectedPartInstances, getSortedPartsForRundown } from './lib.js'
 
 /**
  * An object used to represent the simplified timeline structure.

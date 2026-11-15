@@ -1,3 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { clone, Complete, omit } from '@sofie-automation/corelib/dist/lib'
 import type {
 	IngestPart,
 	MutableIngestPart,
@@ -5,14 +11,10 @@ import type {
 	SofieIngestPart,
 	SofieIngestSegment,
 } from '@sofie-automation/blueprints-integration'
-import { Complete, clone, omit } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
-import _ from 'underscore'
-import { MutableIngestPartImpl } from './MutableIngestPartImpl.js'
-import { SofieIngestRundownDataCacheGenerator } from '../../ingest/sofieIngestCache.js'
+
 import { getSegmentId } from '../../ingest/lib.js'
-import { SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { SofieIngestRundownDataCacheGenerator } from '../../ingest/sofieIngestCache.js'
+import { MutableIngestPartImpl } from './MutableIngestPartImpl.js'
 
 export interface MutableIngestSegmentChanges {
 	ingestParts: SofieIngestPart[]

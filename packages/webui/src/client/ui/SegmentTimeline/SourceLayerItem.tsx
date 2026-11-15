@@ -1,43 +1,41 @@
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type * as React from 'react'
-import type { ISourceLayerUi, IOutputLayerUi, PartUi } from './SegmentTimelineContainer.js'
-import {
-	SourceLayerType,
-	PieceLifespan,
-	IBlueprintPieceType,
-	UserEditingType,
-	DefaultUserOperationsTypes,
-} from '@sofie-automation/blueprints-integration'
-import { RundownUtils } from '../../lib/rundown.js'
-import { DefaultLayerItemRenderer } from './Renderers/DefaultLayerItemRenderer.js'
-import { MicSourceRenderer } from './Renderers/MicSourceRenderer.js'
-import { VTSourceRenderer } from './Renderers/VTSourceRenderer.js'
-import { L3rdSourceRenderer } from './Renderers/L3rdSourceRenderer.js'
-import { SplitsSourceRenderer } from './Renderers/SplitsSourceRenderer.js'
-import { LocalLayerItemRenderer } from './Renderers/LocalLayerItemRenderer.js'
-
-import { DEBUG_MODE } from './SegmentTimelineDebugMode.js'
-import { getElementDocumentOffset, type OffsetPosition } from '../../utils/positions.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type HighlightEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { pieceUiClassNames } from '../../lib/ui/pieceUiClassNames.js'
-import { TransitionSourceRenderer } from './Renderers/TransitionSourceRenderer.js'
 import type { ReadonlyDeep } from 'type-fest'
-import { useSelectedElementsContext } from '../RundownView/SelectedElementsContext.js'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import { useCallback, useRef, useState, useEffect, useContext } from 'react'
-import { dragContext } from '../RundownView/DragContext.js'
+
 import {
-	convertSourceLayerItemToPreview,
-	type IPreviewPopUpSession,
-	PreviewPopUpContext,
-} from '../PreviewPopUp/PreviewPopUpContext.js'
-import { useRundownViewEventBusListener } from '../../lib/lib.js'
-import { hasUserEditableContent } from '../UserEditOperations/PropertiesPanel.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+	DefaultUserOperationsTypes,
+	IBlueprintPieceType,
+	PieceLifespan,
+	SourceLayerType,
+	UserEditingType,
+} from '@sofie-automation/blueprints-integration'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { HighlightEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { useRundownViewEventBusListener } from '../../lib/lib.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import { pieceUiClassNames } from '../../lib/ui/pieceUiClassNames.js'
+import { getElementDocumentOffset } from '../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../PreviewPopUp/PreviewPopUpContext.js'
+import { dragContext } from '../RundownView/DragContext.js'
+import { useSelectedElementsContext } from '../RundownView/SelectedElementsContext.js'
+import { hasUserEditableContent } from '../UserEditOperations/PropertiesPanel.js'
+import { DefaultLayerItemRenderer } from './Renderers/DefaultLayerItemRenderer.js'
+import { L3rdSourceRenderer } from './Renderers/L3rdSourceRenderer.js'
+import { LocalLayerItemRenderer } from './Renderers/LocalLayerItemRenderer.js'
+import { MicSourceRenderer } from './Renderers/MicSourceRenderer.js'
+import { SplitsSourceRenderer } from './Renderers/SplitsSourceRenderer.js'
+import { TransitionSourceRenderer } from './Renderers/TransitionSourceRenderer.js'
+import { VTSourceRenderer } from './Renderers/VTSourceRenderer.js'
+import { DEBUG_MODE } from './SegmentTimelineDebugMode.js'
+import type { OffsetPosition } from '../../utils/positions.js'
+import type { IPreviewPopUpSession } from '../PreviewPopUp/PreviewPopUpContext.js'
+import type { IOutputLayerUi, ISourceLayerUi, PartUi } from './SegmentTimelineContainer.js'
+
 const LEFT_RIGHT_ANCHOR_SPACER = 15
 const MARGINAL_ANCHORED_WIDTH = 5
 
@@ -151,7 +149,10 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 	const highlightTimeout = useRef<undefined | NodeJS.Timeout>(undefined)
 	const onHighlight = useCallback(
 		(e: HighlightEvent) => {
-			if (e.partId === part.partId && (e.pieceId === piece.instance.piece._id || e.pieceId === piece.instance._id)) {
+			if (
+				e.partId === part.partId &&
+				(e.pieceId === piece.instance.piece._id || e.pieceId === piece.instance._id)
+			) {
 				setHighlight(true)
 				clearTimeout(highlightTimeout.current)
 				highlightTimeout.current = setTimeout(() => {
@@ -354,7 +355,8 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 	const getItemDuration = (returnInfinite?: boolean): number => {
 		const innerPiece = piece.instance.piece
 
-		const expectedDurationNumber = typeof innerPiece.enable.duration === 'number' ? innerPiece.enable.duration || 0 : 0
+		const expectedDurationNumber =
+			typeof innerPiece.enable.duration === 'number' ? innerPiece.enable.duration || 0 : 0
 
 		let itemDuration: number
 		if (!returnInfinite) {
@@ -448,14 +450,17 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 
 			const widthConstrictedMode =
 				isTooSmallForText ||
-				(leftAnchoredWidth > 0 && rightAnchoredWidth > 0 && leftAnchoredWidth + rightAnchoredWidth > elementWidth)
+				(leftAnchoredWidth > 0 &&
+					rightAnchoredWidth > 0 &&
+					leftAnchoredWidth + rightAnchoredWidth > elementWidth)
 
 			const nextIsTouching = !!piece.cropped
 
 			if (followLiveLine && isLiveLine) {
 				const liveLineHistoryWithMargin = liveLineHistorySize - 10
 				if (
-					scrollLeft + liveLineHistoryWithMargin / timeScale > inPoint + partStartsAt + leftAnchoredWidth / timeScale &&
+					scrollLeft + liveLineHistoryWithMargin / timeScale >
+						inPoint + partStartsAt + leftAnchoredWidth / timeScale &&
 					scrollLeft + liveLineHistoryWithMargin / timeScale < inPoint + duration + partStartsAt
 				) {
 					const targetPos = convertTimeToPixels(scrollLeft - inPoint - partStartsAt)
@@ -473,7 +478,10 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 							'translate(' +
 							(widthConstrictedMode
 								? targetPos
-								: Math.min(targetPos, elementWidth - rightAnchoredWidth - liveLineHistoryWithMargin - 10)
+								: Math.min(
+										targetPos,
+										elementWidth - rightAnchoredWidth - liveLineHistoryWithMargin - 10
+									)
 							).toString() +
 							'px, 0) ' +
 							'translate(' +
@@ -500,7 +508,10 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 										: 'none',
 						transform:
 							'translate(' +
-							Math.min(targetPos, elementWidth - rightAnchoredWidth - liveLineHistoryWithMargin - 10).toString() +
+							Math.min(
+								targetPos,
+								elementWidth - rightAnchoredWidth - liveLineHistoryWithMargin - 10
+							).toString() +
 							'px, 0) ' +
 							'translate(' +
 							liveLineHistoryWithMargin.toString() +
@@ -670,7 +681,8 @@ export const SourceLayerItem = (props: Readonly<ISourceLayerItemProps>): JSX.Ele
 				{renderInsideItem(typeClass)}
 				{DEBUG_MODE && studio && (
 					<div className="segment-timeline__debug-info">
-						{innerPiece.enable.start} / {RundownUtils.formatTimeToTimecode(studio.settings, partDuration).substr(-5)} /{' '}
+						{innerPiece.enable.start} /{' '}
+						{RundownUtils.formatTimeToTimecode(studio.settings, partDuration).substr(-5)} /{' '}
 						{piece.renderedDuration
 							? RundownUtils.formatTimeToTimecode(studio.settings, piece.renderedDuration).substr(-5)
 							: 'X'}{' '}

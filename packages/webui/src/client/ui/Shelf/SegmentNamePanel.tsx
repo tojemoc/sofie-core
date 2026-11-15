@@ -1,17 +1,19 @@
 import ClassNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import type {
 	DashboardLayoutSegmentName,
 	RundownLayoutBase,
 	RundownLayoutSegmentName,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+
 import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import { useTranslation } from 'react-i18next'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface ISegmentNamePanelProps {
 	layout: RundownLayoutBase
@@ -55,9 +57,9 @@ function getSegmentName(selectedSegment: 'current' | 'next', playlist: DBRundown
 
 	if (selectedSegment === 'current') {
 		if (currentPartInstance) {
-			const segment = RundownPlaylistClientUtil.getSegments(playlist, { _id: currentPartInstance.segmentId })[0] as
-				| DBSegment
-				| undefined
+			const segment = RundownPlaylistClientUtil.getSegments(playlist, {
+				_id: currentPartInstance.segmentId,
+			})[0] as DBSegment | undefined
 			return segment?.name
 		}
 	} else {
@@ -66,9 +68,9 @@ function getSegmentName(selectedSegment: 'current' | 'next', playlist: DBRundown
 				_id: playlist.nextPartInfo.partInstanceId,
 			})[0] as PartInstance | undefined
 			if (nextPartInstance && nextPartInstance.segmentId !== currentPartInstance.segmentId) {
-				const segment = RundownPlaylistClientUtil.getSegments(playlist, { _id: nextPartInstance.segmentId })[0] as
-					| DBSegment
-					| undefined
+				const segment = RundownPlaylistClientUtil.getSegments(playlist, {
+					_id: nextPartInstance.segmentId,
+				})[0] as DBSegment | undefined
 				return segment?.name
 			}
 		}

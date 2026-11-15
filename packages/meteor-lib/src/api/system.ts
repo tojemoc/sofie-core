@@ -1,4 +1,5 @@
 import { TranslationsBundleId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { TranslationsBundle } from '../collections/TranslationsBundles.js'
 import { ClientAPI } from './client.js'
 
@@ -34,10 +35,10 @@ export interface SystemAPI {
 }
 
 export enum SystemAPIMethods {
-	'cleanupIndexes' = 'system.cleanupIndexes',
-	'cleanupOldData' = 'system.cleanupOldData',
-	'runCronjob' = 'system.runCronjob',
-	'doSystemBenchmark' = 'system.doSystemBenchmark',
-	'getTranslationBundle' = 'system.getTranslationBundle',
-	'generateSingleUseToken' = 'system.generateSingleUseToken',
+	cleanupIndexes = 'system.cleanupIndexes',
+	cleanupOldData = 'system.cleanupOldData',
+	runCronjob = 'system.runCronjob',
+	doSystemBenchmark = 'system.doSystemBenchmark',
+	getTranslationBundle = 'system.getTranslationBundle',
+	generateSingleUseToken = 'system.generateSingleUseToken',
 }

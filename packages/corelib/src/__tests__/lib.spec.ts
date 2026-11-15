@@ -1,5 +1,8 @@
 import { TSR } from '@sofie-automation/blueprints-integration'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { TimelineObjGeneric, TimelineObjType } from '../dataModel/Timeline.js'
+import { UserError, UserErrorMessage } from '../error.js'
 import {
 	formatDateAsTimecode,
 	formatDurationAsTimecode,
@@ -11,8 +14,6 @@ import {
 	removeNullyProperties,
 	stringifyObjects,
 } from '../lib.js'
-import { UserError, UserErrorMessage } from '../error.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 describe('Lib', () => {
 	test('getHash', () => {

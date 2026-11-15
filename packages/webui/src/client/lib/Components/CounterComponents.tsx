@@ -1,7 +1,7 @@
 import Moment from 'react-moment'
-import { RundownUtils } from '../rundown.js'
 
 import { Countdown } from '../../ui/RundownView/RundownHeader/Countdown.js'
+import { RundownUtils } from '../rundown.js'
 
 interface OverUnderProps {
 	value: number

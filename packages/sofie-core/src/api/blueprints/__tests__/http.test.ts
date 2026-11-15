@@ -1,12 +1,16 @@
-import _ from 'underscore'
 import { PassThrough } from 'stream'
-import { SupressLogMessages } from '../../../__mocks__/suppressLogging'
+
+import _ from 'underscore'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+
 import { callKoaRoute } from '../../../__mocks__/koa-util'
+import { SupressLogMessages } from '../../../__mocks__/suppressLogging'
+import * as api from '../api'
 import { blueprintsRouter } from '../http'
 
 jest.mock('../../deviceTriggers/observer')
-import * as api from '../api'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+
 jest.mock('../api.ts')
 
 const DEFAULT_CONTEXT = expect.objectContaining({ req: expect.any(Object), res: expect.any(Object) })

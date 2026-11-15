@@ -1,8 +1,9 @@
-import { deferAsync, getCurrentTime } from './lib/lib'
-import { logger } from './logging'
+import { MetricsGauge } from '@sofie-automation/corelib/dist/prometheus'
+
 import { sendTrace } from './api/integration/influx'
 import { PeripheralDevices } from './collections'
-import { MetricsGauge } from '@sofie-automation/corelib/dist/prometheus'
+import { deferAsync, getCurrentTime } from './lib/lib'
+import { logger } from './logging'
 
 const connections = new Set<string>()
 const connectionsGauge = new MetricsGauge({

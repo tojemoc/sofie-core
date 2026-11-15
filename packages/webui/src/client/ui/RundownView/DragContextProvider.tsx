@@ -1,22 +1,21 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { TFunction } from 'i18next'
+import type { PropsWithChildren } from 'react'
+
+import { DefaultUserOperationsTypes } from '@sofie-automation/blueprints-integration'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import type { DefaultUserOperationRetimePiece, UserOperationTarget } from '@sofie-automation/blueprints-integration'
 import type { PartInstanceId, PieceInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { type PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { dragContext, type IDragContext } from './DragContext.js'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { EditModeEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { Segments } from '../../collections/index.js'
 import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
-import type { TFunction } from 'i18next'
 import { UIParts } from '../Collections.js'
-import { Segments } from '../../collections/index.js'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import {
-	type DefaultUserOperationRetimePiece,
-	DefaultUserOperationsTypes,
-	type UserOperationTarget,
-} from '@sofie-automation/blueprints-integration'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type EditModeEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import { dragContext } from './DragContext.js'
+import type { IDragContext } from './DragContext.js'
 
 const DRAG_TIMEOUT = 10000
 
@@ -69,7 +68,10 @@ export function DragContextProvider({ t, children }: PropsWithChildren<Props>): 
 
 				localPiece = {
 					...ogPiece,
-					instance: { ...ogPiece.instance, partInstanceId: partIdRef.current ?? ogPiece.instance.partInstanceId },
+					instance: {
+						...ogPiece.instance,
+						partInstanceId: partIdRef.current ?? ogPiece.instance.partInstanceId,
+					},
 					renderedInPoint: newInPoint,
 				}
 				setPiece(localPiece)
@@ -92,7 +94,8 @@ export function DragContextProvider({ t, children }: PropsWithChildren<Props>): 
 
 				// find the Segment's External ID
 				const segment = Segments.findOne(part?.segmentId)
-				const oldSegment = part?.segmentId === oldPart?.segmentId ? segment : Segments.findOne(oldPart?.segmentId)
+				const oldSegment =
+					part?.segmentId === oldPart?.segmentId ? segment : Segments.findOne(oldPart?.segmentId)
 				if (!segment) return cleanup()
 
 				const operationTarget: UserOperationTarget = {

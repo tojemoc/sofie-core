@@ -1,5 +1,3 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import {
 	PartInstanceId,
 	RundownId,
@@ -7,6 +5,9 @@ import {
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { ContentCache } from '../reactiveContentCache'
 import { ResolvedAdLibCache } from '../resolvedAdLibCache'
 

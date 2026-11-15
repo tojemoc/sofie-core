@@ -1,4 +1,4 @@
-import { SessionCollectionView, SessionCallbacks } from '../SessionCollectionView'
+import { SessionCallbacks, SessionCollectionView } from '../SessionCollectionView'
 
 /** Records the (collection, id, fields) emitted to the client so tests can assert the merged output. */
 function recorder() {

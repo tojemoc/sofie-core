@@ -1,5 +1,6 @@
 import EJSON from 'ejson'
 import type { RawData } from 'ws'
+
 import { ClientMessage, ServerMessage } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
 
 /** Encode a server->client message for the wire (EJSON-encoded JSON). */

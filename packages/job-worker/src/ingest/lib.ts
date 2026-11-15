@@ -1,12 +1,14 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { ExtendedIngestRundown, SofieIngestRundown } from '@sofie-automation/blueprints-integration'
 import { PartId, RundownId, SegmentId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { getHash } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { ReadonlyDeep } from 'type-fest'
-import { logger } from '../logging.js'
-import { ExtendedIngestRundown, SofieIngestRundown } from '@sofie-automation/blueprints-integration'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+
 import { convertRundownToBlueprints } from '../blueprints/context/lib.js'
+import { logger } from '../logging.js'
 import { IngestSegmentModel } from './model/IngestSegmentModel.js'
 
 export function getRundownId(studioId: StudioId, rundownExternalId: string): RundownId {

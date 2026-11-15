@@ -1,10 +1,12 @@
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import { useTranslation } from 'react-i18next'
-import { Countdown } from './Countdown'
-import { useTiming } from '../RundownTiming/withTiming'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { RundownUtils } from '../../../lib/rundown.js'
 import { getCurrentTime } from '../../../lib/systemTime'
+import { useTiming } from '../RundownTiming/withTiming'
+import { Countdown } from './Countdown'
 
 export function RundownHeaderPlannedStart({
 	playlist,
@@ -24,7 +26,11 @@ export function RundownHeaderPlannedStart({
 	return (
 		<div className="rundown-header__show-timers-endtimes">
 			{!simplified && expectedStart !== undefined && (
-				<Countdown label={t('Plan. Start')} time={expectedStart} className="rundown-header__show-timers-countdown" />
+				<Countdown
+					label={t('Plan. Start')}
+					time={expectedStart}
+					className="rundown-header__show-timers-countdown"
+				/>
 			)}
 			{startedPlayback !== undefined && <Countdown label={t('Started')} time={startedPlayback} />}
 			{startedPlayback === undefined && expectedStart !== undefined && (

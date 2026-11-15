@@ -1,12 +1,13 @@
+import type { ReadonlyDeep } from 'type-fest'
+
+import { getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import type { ExpectedPackage } from '@sofie-automation/blueprints-integration'
-import {
-	getExpectedPackageId,
-	type ExpectedPackageDBType,
-	type ExpectedPackageIngestSourcePart,
-	type ExpectedPackageIngestSourceRundownBaseline,
+import type {
+	ExpectedPackageDBType,
+	ExpectedPackageIngestSourcePart,
+	ExpectedPackageIngestSourceRundownBaseline,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import type { BucketId, ExpectedPackageId, RundownId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { ReadonlyDeep } from 'type-fest'
 
 /**
  * A simpler form of ExpectedPackageDB that is scoped to the properties relevant to ingest.
@@ -14,8 +15,7 @@ import type { ReadonlyDeep } from 'type-fest'
  */
 export interface IngestExpectedPackage<
 	TPackageSource extends { fromPieceType: ExpectedPackageDBType } =
-		| ExpectedPackageIngestSourcePart
-		| ExpectedPackageIngestSourceRundownBaseline,
+		ExpectedPackageIngestSourcePart | ExpectedPackageIngestSourceRundownBaseline,
 > {
 	packageId: ExpectedPackageId
 

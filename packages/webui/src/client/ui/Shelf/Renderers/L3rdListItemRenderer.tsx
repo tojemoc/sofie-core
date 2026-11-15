@@ -1,20 +1,21 @@
-import { useState, useRef, useEffect, useContext } from 'react'
-import { useTranslation } from 'react-i18next'
 import ClassNames from 'classnames'
-import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
-import { type NoraContent, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { getElementDocumentOffset, type OffsetPosition } from '../../../utils/positions.js'
-import { getElementWidth } from '../../../utils/dimensions.js'
-import { StyledTimecode } from '../../../lib/StyledTimecode.js'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import type { AdLibPieceUi } from '../../../lib/shelf.js'
-import { ActionAdLibHotkeyPreview } from '../../../lib/triggers/ActionAdLibHotkeyPreview.js'
-import {
-	PreviewPopUpContext,
-	type IPreviewPopUpSession,
-	convertSourceLayerItemToPreview,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { NoraContent } from '@sofie-automation/blueprints-integration'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import { StyledTimecode } from '../../../lib/StyledTimecode.js'
+import { ActionAdLibHotkeyPreview } from '../../../lib/triggers/ActionAdLibHotkeyPreview.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { AdLibPieceUi } from '../../../lib/shelf.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
 
 export const L3rdListItemRenderer: React.FunctionComponent<ILayerItemRendererProps> = (
 	props: ILayerItemRendererProps

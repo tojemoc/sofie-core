@@ -1,3 +1,6 @@
+import { Logger } from 'winston'
+
+import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
 import {
 	CollectionDocCheck,
 	CoreConnection,
@@ -5,30 +8,29 @@ import {
 	DDPConnectorOptions,
 	DDPTLSOptions,
 	ICoreHandler,
+	KubernetesRestarter,
 	Observer,
+	ParametersOfFunctionOrNever,
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollections,
 	PeripheralDevicePubSubCollectionsNames,
 	PeripheralDevicePubSubTypes,
-	SubscriptionId,
 	stringifyError,
-	ParametersOfFunctionOrNever,
-	KubernetesRestarter,
+	SubscriptionId,
 } from '@sofie-automation/server-core-integration'
-import { DeviceConfig } from './connector.js'
-import { Logger } from 'winston'
-import { LIVE_STATUS_DEVICE_CONFIG } from './configManifest.js'
-import {
-	PeripheralDeviceCategory,
-	PeripheralDeviceType,
-	PeripheralDeviceStatusObject,
-} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { PeripheralDeviceCommandId, StudioId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { StatusCode } from '@sofie-automation/shared-lib/dist/lib/status'
 import { PeripheralDeviceCommand } from '@sofie-automation/shared-lib/dist/core/model/PeripheralDeviceCommand'
 import { LiveStatusGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/LiveStatusGatewayOptionsTypes'
-import { CorelibPubSubTypes, CorelibPubSubCollections } from '@sofie-automation/corelib/dist/pubsub'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import { StatusCode } from '@sofie-automation/shared-lib/dist/lib/status'
+import {
+	PeripheralDeviceCategory,
+	PeripheralDeviceStatusObject,
+	PeripheralDeviceType,
+} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
+import { LIVE_STATUS_DEVICE_CONFIG } from './configManifest.js'
+import { DeviceConfig } from './connector.js'
 
 export interface CoreConfig {
 	host: string
@@ -246,7 +248,7 @@ export class CoreHandler implements ICoreHandler {
 					this.logger.error(e)
 				})
 			}
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/unbound-method
 			const fcn: Function = fcnObject[cmd.functionName as keyof CoreHandler] as Function
 			try {
 				if (!fcn) throw Error(`Function "${cmd.functionName}" not found on device "${cmd.deviceId}"!`)

@@ -1,6 +1,7 @@
 import { DeviceStatusContext, TSR } from '@sofie-automation/blueprints-integration'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { Blueprints, PeripheralDevices, Studios } from '../../collections'
 import { evalBlueprint } from '../blueprints/cache'
 import { resolveActionResult } from '../peripheralDevice'

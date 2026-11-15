@@ -1,14 +1,16 @@
 import { z } from 'zod'
+
+import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
+import { check } from '../../../lib/check'
 import { MigrationData, PendingMigrations, SystemRestAPI } from '../../../lib/rest/v1'
 import { logger } from '../../../logging'
-import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
-import { check } from '../../../lib/check'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { assignSystemBlueprint } from '../../blueprints/api'
 import * as Migrations from '../../../migration/databaseMigration'
+import { assignSystemBlueprint } from '../../blueprints/api'
+import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 class SystemServerAPI implements SystemRestAPI {

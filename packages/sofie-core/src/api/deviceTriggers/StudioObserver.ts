@@ -1,3 +1,7 @@
+import EventEmitter from 'events'
+
+import _ from 'underscore'
+
 import {
 	RundownId,
 	RundownPlaylistActivationId,
@@ -5,23 +9,22 @@ import {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import EventEmitter from 'events'
-import _ from 'underscore'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
+import { RundownPlaylists, Rundowns, ShowStyleBases } from '../../collections'
+import { MinimalMongoCursor } from '../../collections/collection'
 import { logger } from '../../logging'
 import { observerChain } from '../../publications/lib/observerChain'
+import { PromiseDebounce } from '../../publications/lib/PromiseDebounce'
+import { PieceInstancesObserver } from './PieceInstancesObserver'
 import { ContentCache } from './reactiveContentCache'
 import { ContentCache as PieceInstancesContentCache } from './reactiveContentCacheForPieceInstances'
 import { RundownContentObserver } from './RundownContentObserver'
 import { RundownsObserver } from './RundownsObserver'
-import { RundownPlaylists, Rundowns, ShowStyleBases } from '../../collections'
-import { PromiseDebounce } from '../../publications/lib/PromiseDebounce'
-import { PieceInstancesObserver } from './PieceInstancesObserver'
-import { MinimalMongoCursor } from '../../collections/collection'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 type RundownContentChangeHandler = (showStyleBaseId: ShowStyleBaseId, cache: ContentCache) => () => void

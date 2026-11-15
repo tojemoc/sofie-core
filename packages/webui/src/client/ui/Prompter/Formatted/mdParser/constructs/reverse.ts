@@ -1,5 +1,6 @@
-import { type NodeConstruct, type ParserState, CharHandlerResult } from '../parserState'
+import { CharHandlerResult } from '../parserState'
 import type { ReverseNode } from '../astNodes'
+import type { NodeConstruct, ParserState } from '../parserState'
 
 export function reverse(): NodeConstruct {
 	function reverse(char: string, state: ParserState): CharHandlerResult | void {

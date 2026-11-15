@@ -1,21 +1,23 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { PackageManagerPlayoutContext } from '@sofie-automation/shared-lib/dist/package-manager/publications'
-import { check } from '../../lib/check'
-import { ReadonlyDeep } from 'type-fest'
-import { RundownPlaylists, Rundowns } from '../../collections'
-import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../../lib/customPublication'
-import type { PublicationRegistry } from '../../publicationRegistry'
-import { logger } from '../../logging'
 import {
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollectionsNames,
 } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { RundownPlaylists, Rundowns } from '../../collections'
+import { check } from '../../lib/check'
+import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../../lib/customPublication'
+import { logger } from '../../logging'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import type { PublicationRegistry } from '../../publicationRegistry'
 
 export type RundownPlaylistCompact = Pick<DBRundownPlaylist, '_id' | 'activationId' | 'rehearsal' | 'rundownIdsInOrder'>
 const rundownPlaylistFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<RundownPlaylistCompact>>({

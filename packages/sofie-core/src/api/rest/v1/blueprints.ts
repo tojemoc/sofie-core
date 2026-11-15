@@ -1,16 +1,17 @@
 import { z } from 'zod'
-import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { check } from '../../../lib/check'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../../../logging'
-import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
-import { APIBlueprint } from '../../../lib/rest/v1'
-import { BlueprintsRestAPI } from '../../../lib/rest/v1'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { Blueprints } from '../../../collections'
+
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
+import { Blueprints } from '../../../collections'
+import { check } from '../../../lib/check'
+import { APIBlueprint, BlueprintsRestAPI } from '../../../lib/rest/v1'
+import { logger } from '../../../logging'
 import { APIBlueprintFrom } from './typeConversion'
+import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 class BlueprintsServerAPI implements BlueprintsRestAPI {

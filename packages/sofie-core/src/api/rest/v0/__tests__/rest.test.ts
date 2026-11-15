@@ -1,17 +1,20 @@
-import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
-import { MethodRegistry, AnyMethodApiRegistration } from '../../../../methodRegistry'
-import { PublicationRegistry } from '../../../../publicationRegistry'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { callKoaRoute } from '../../../../__mocks__/koa-util'
+import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
+
 import { createLegacyApiRouter } from '..'
+import { callKoaRoute } from '../../../../__mocks__/koa-util'
+import { AnyMethodApiRegistration, MethodRegistry } from '../../../../methodRegistry'
+import { PublicationRegistry } from '../../../../publicationRegistry'
 import { ServerUserActionAPI } from '../../../userActions'
+
+import '../index'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+
+import { MethodContext } from '../../../methodContext'
 
 // we don't want the deviceTriggers observer to start up at this time
 jest.mock('../../../deviceTriggers/observer')
-
-import '../index'
-import { MethodContext } from '../../../methodContext'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 describe('REST API', () => {
 	describe('UNSTABLE v0', () => {

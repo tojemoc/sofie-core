@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import YAML from 'yaml'
+
 import $RefParser from '@apidevtools/json-schema-ref-parser'
+import YAML from 'yaml'
 
 const ROOT_FILE = './api/asyncapi.yaml'
 const OUTPUT_FILE = './src/generated/asyncapi.yaml'

@@ -1,4 +1,5 @@
 import { clone, joinObjectPathFragments, objectPathSet } from '@sofie-automation/corelib/dist/lib'
+
 import type {
 	OverrideOpHelperForItemContentsBatcher,
 	WrappedOverridableItem,
@@ -57,7 +58,11 @@ export class OverrideOpHelperObjectTable implements OverrideOpHelperForItemConte
 
 		if (currentRow.defaults) {
 			// has defaults, so override the single value
-			this.#baseHelper.setItemValue(this.#parentItem.id, joinObjectPathFragments(this.#path, rowId, subPath), value)
+			this.#baseHelper.setItemValue(
+				this.#parentItem.id,
+				joinObjectPathFragments(this.#path, rowId, subPath),
+				value
+			)
 		} else {
 			// no defaults, replace the whole object
 			// Ensure there arent existing overrides

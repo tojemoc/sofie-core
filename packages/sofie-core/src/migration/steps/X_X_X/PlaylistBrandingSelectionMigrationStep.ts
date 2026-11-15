@@ -1,4 +1,5 @@
 import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
+
 import { PartInstances, RundownPlaylists } from '../../../collections'
 
 /**

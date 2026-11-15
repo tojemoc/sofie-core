@@ -1,24 +1,17 @@
+import { isEqual } from 'underscore'
+
+import { RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBNotificationTarget, DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import { getHash } from '@sofie-automation/corelib/dist/hash'
+import { assertNever, clone, deleteAllUndefinedProperties, flatten, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import type { Complete } from '@sofie-automation/corelib/dist/lib'
+
 import { getCurrentTime } from '../lib/index.js'
+import type { MongoBulkWriteOperation } from '../db/collections.js'
 import type { JobContext } from '../jobs/index.js'
 import type { INotificationsModel, INotificationTarget, INotificationWithTarget } from './NotificationsModel.js'
-import {
-	DBNotificationTarget,
-	DBNotificationTargetType,
-	type DBNotificationObj,
-} from '@sofie-automation/corelib/dist/dataModel/Notifications'
-import { getHash } from '@sofie-automation/corelib/dist/hash'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import {
-	assertNever,
-	clone,
-	deleteAllUndefinedProperties,
-	flatten,
-	omit,
-	type Complete,
-} from '@sofie-automation/corelib/dist/lib'
-import { StudioId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { isEqual } from 'underscore'
-import type { MongoBulkWriteOperation } from '../db/collections.js'
 
 interface NotificationsLoadState {
 	dbNotifications: ReadonlyMap<string, DBNotificationObj> | null

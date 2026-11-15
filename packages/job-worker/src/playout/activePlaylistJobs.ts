@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import {
@@ -6,16 +8,16 @@ import {
 	PrepareRundownForBroadcastProps,
 	ResetRundownPlaylistProps,
 } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { JobContext } from '../jobs/index.js'
-import { runJobWithPlayoutModel } from './lock.js'
-import { resetRundownPlaylist } from './lib.js'
 import { getActiveRundownPlaylistsInStudioFromDb } from '../studio/lib.js'
 import {
 	activateRundownPlaylist,
 	deactivateRundownPlaylist,
 	deactivateRundownPlaylistInner,
 } from './activePlaylistActions.js'
-import { ReadonlyDeep } from 'type-fest'
+import { resetRundownPlaylist } from './lib.js'
+import { runJobWithPlayoutModel } from './lock.js'
 
 async function checkNoOtherPlaylistsActive(
 	context: JobContext,

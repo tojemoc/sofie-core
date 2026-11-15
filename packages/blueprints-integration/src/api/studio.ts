@@ -1,48 +1,50 @@
-import type { IBlueprintConfig } from '../common.js'
 import type { ReadonlyDeep } from 'type-fest'
-import type { BlueprintConfigCoreConfig, BlueprintManifestBase, BlueprintManifestType, IConfigMessage } from './base.js'
-import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
-import type { JSONBlob } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+
 import type {
+	StudioPackageContainer,
+	StudioPackageContainerSettings,
+} from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+import type {
+	StudioRouteSet,
+	StudioRouteSetExclusivityGroup,
+} from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
+import type { IStudioSettings } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import type { LiveStatusGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/LiveStatusGatewayOptionsTypes'
+import type { MosDeviceConfig } from '@sofie-automation/shared-lib/dist/generated/MosGatewayDevicesTypes'
+import type { MosGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/MosGatewayOptionsTypes'
+import type { PlayoutGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/PlayoutGatewayConfigTypes'
+import type { JSONBlob } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import type { IBlueprintConfig } from '../common.js'
+import type {
+	BlueprintSnapshotType as _BlueprintSnapshotType,
+	IBlueprintSystemSnapshotInfo,
 	ICommonContext,
 	IFixUpConfigContext,
+	IProcessIngestDataContext,
 	IStudioBaselineContext,
 	IStudioUserContext,
-	IProcessIngestDataContext,
 	ISystemSnapshotCreatedContext,
-	IBlueprintSystemSnapshotInfo,
-	BlueprintSnapshotType as _BlueprintSnapshotType,
 } from '../context/index.js'
-import type { IBlueprintShowStyleBase } from '../showStyle.js'
-import type {
-	ExtendedIngestRundown,
-	NrcsIngestChangeDetails,
-	IngestRundown,
-	MutableIngestRundown,
-	UserOperationChange,
-	PlayoutOperationChange,
-} from '../ingest.js'
 import type {
 	ExpectedPlayoutItemGeneric,
 	IBlueprintResultRundownPlaylist,
 	IBlueprintRundownDB,
 } from '../documents/index.js'
+import type {
+	ExtendedIngestRundown,
+	IngestRundown,
+	MutableIngestRundown,
+	NrcsIngestChangeDetails,
+	PlayoutOperationChange,
+	UserOperationChange,
+} from '../ingest.js'
+import type { ExpectedPackage } from '../package.js'
+import type { IBlueprintShowStyleBase } from '../showStyle.js'
 import type { BlueprintMappings } from '../studio.js'
 import type { TimelineObjectCoreExt, TSR } from '../timeline.js'
-import type { ExpectedPackage } from '../package.js'
-import type {
-	StudioRouteSet,
-	StudioRouteSetExclusivityGroup,
-} from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
-import type {
-	StudioPackageContainer,
-	StudioPackageContainerSettings,
-} from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
-import type { IStudioSettings } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import type { MosDeviceConfig } from '@sofie-automation/shared-lib/dist/generated/MosGatewayDevicesTypes'
-import type { MosGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/MosGatewayOptionsTypes'
-import type { PlayoutGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/PlayoutGatewayConfigTypes'
-import type { LiveStatusGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/LiveStatusGatewayOptionsTypes'
+import type { BlueprintConfigCoreConfig, BlueprintManifestBase, BlueprintManifestType, IConfigMessage } from './base.js'
 
 /**
  * Context provided to device status message functions.

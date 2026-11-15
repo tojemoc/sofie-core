@@ -1,23 +1,22 @@
 import * as React from 'react'
-import type { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { useTranslation } from 'react-i18next'
-import { Accessor } from '@sofie-automation/blueprints-integration'
-import { Studios } from '../../../../collections/index.js'
-import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
-import {
-	useOverrideOpHelper,
-	type WrappedOverridableItem,
-	type WrappedOverridableItemNormal,
-} from '../../util/OverrideOpHelper.js'
-import { LabelAndOverridesForMultiSelect } from '../../../../lib/Components/LabelAndOverrides'
-import {
-	applyAndValidateOverrides,
-	type ObjectWithOverrides,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { MultiSelectInputControl } from '../../../../lib/Components/MultiSelectInput'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { Accessor } from '@sofie-automation/blueprints-integration'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectWithOverrides,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+
+import { Studios } from '../../../../collections/index.js'
+import { LabelAndOverridesForMultiSelect } from '../../../../lib/Components/LabelAndOverrides'
+import { MultiSelectInputControl } from '../../../../lib/Components/MultiSelectInput'
+import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
+import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
+import type { WrappedOverridableItem, WrappedOverridableItemNormal } from '../../util/OverrideOpHelper.js'
 
 interface PackageContainersPickersProps {
 	studio: DBStudio

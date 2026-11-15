@@ -1,9 +1,11 @@
-import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { CollectionBase } from '../collectionBase.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import _ from 'underscore'
+import { Logger } from 'winston'
+
 import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+
+import { CollectionBase } from '../collectionBase.js'
+import { CoreHandler } from '../coreHandler.js'
 
 const THROTTLE_PERIOD_MS = 200
 

@@ -1,64 +1,33 @@
 import _ from 'underscore'
+
 import {
-	PeripheralDevice,
-	PeripheralDeviceType,
-	PeripheralDeviceCategory,
-	PERIPHERAL_SUBTYPE_PROCESS,
-	PeripheralDeviceSubType,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	PieceLifespan,
-	IOutputLayer,
-	ISourceLayer,
-	SourceLayerType,
-	StudioBlueprintManifest,
-	BlueprintManifestType,
 	BlueprintManifestBase,
-	ShowStyleBlueprintManifest,
-	IShowStyleContext,
+	BlueprintManifestType,
+	BlueprintResultPart,
 	BlueprintResultRundown,
 	BlueprintResultSegment,
+	IBlueprintActionManifest,
 	IBlueprintAdLibPiece,
-	IBlueprintRundown,
-	IBlueprintSegment,
-	BlueprintResultPart,
 	IBlueprintPart,
 	IBlueprintPiece,
-	TriggerType,
-	PlayoutActions,
-	StatusCode,
 	IBlueprintPieceType,
-	IBlueprintActionManifest,
-	SofieIngestSegment,
+	IBlueprintRundown,
+	IBlueprintSegment,
+	IOutputLayer,
+	IShowStyleContext,
+	ISourceLayer,
+	PieceLifespan,
+	PlayoutActions,
+	ShowStyleBlueprintManifest,
 	SofieIngestRundown,
+	SofieIngestSegment,
+	SourceLayerType,
+	StatusCode,
+	StudioBlueprintManifest,
+	TriggerType,
 } from '@sofie-automation/blueprints-integration'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { stripVersion } from '../../systemStatus/semverUtils'
-import { internalUploadBlueprint } from '../../api/blueprints/api'
-import { literal, getRandomId, getRandomString, normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { restartRandomId } from '../random'
-import { MongoMock } from '../mongo'
-import { defaultRundownPlaylist, defaultStudio } from '../defaultCollectionObjects'
-import { PackageInfo } from '../../coreSystem'
-import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import { WorkerStatus } from '@sofie-automation/meteor-lib/dist/collections/Workers'
-import { WorkerThreadStatus } from '@sofie-automation/corelib/dist/dataModel/WorkerThreads'
-import {
-	applyAndValidateOverrides,
-	wrapDefaultObject,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import {
 	BlueprintId,
 	RundownId,
@@ -66,6 +35,36 @@ import {
 	ShowStyleBaseId,
 	ShowStyleVariantId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import {
+	PERIPHERAL_SUBTYPE_PROCESS,
+	PeripheralDevice,
+	PeripheralDeviceCategory,
+	PeripheralDeviceSubType,
+	PeripheralDeviceType,
+} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { WorkerThreadStatus } from '@sofie-automation/corelib/dist/dataModel/WorkerThreads'
+import { getRandomId, getRandomString, literal, normalizeArray } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	applyAndValidateOverrides,
+	wrapDefaultObject,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
+import { WorkerStatus } from '@sofie-automation/meteor-lib/dist/collections/Workers'
+import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { TSR_VERSION } from '@sofie-automation/shared-lib/dist/tsr'
+
+import { internalUploadBlueprint } from '../../api/blueprints/api'
 import {
 	AdLibPieces,
 	CoreSystem,
@@ -83,8 +82,11 @@ import {
 	Workers,
 	WorkerThreadStatuses,
 } from '../../collections'
-import { TSR_VERSION } from '@sofie-automation/shared-lib/dist/tsr'
-import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { PackageInfo } from '../../coreSystem'
+import { stripVersion } from '../../systemStatus/semverUtils'
+import { defaultRundownPlaylist, defaultStudio } from '../defaultCollectionObjects'
+import { MongoMock } from '../mongo'
+import { restartRandomId } from '../random'
 
 export enum LAYER_IDS {
 	SOURCE_CAM0 = 'cam0',

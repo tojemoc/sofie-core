@@ -1,9 +1,13 @@
-import { PieceLifespan, type SourceLayerType } from '@sofie-automation/blueprints-integration'
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceStatusCode, type PieceUi } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import classNames from 'classnames'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PieceUi } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
 import { RundownUtils } from '../rundown.js'
 
 export function pieceUiClassNames(

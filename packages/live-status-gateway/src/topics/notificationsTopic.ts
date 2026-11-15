@@ -1,11 +1,13 @@
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { WebSocketTopicBase, WebSocketTopic } from '../wsHandler.js'
-import { CollectionHandlers } from '../liveStatusServer.js'
+
 import { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
-import { toNotificationStatus } from './helpers/notification/toNotificationStatus.js'
 import { NotificationObj } from '@sofie-automation/live-status-gateway-api'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
+import { toNotificationStatus } from './helpers/notification/toNotificationStatus.js'
 
 const THROTTLE_PERIOD_MS = 100
 

@@ -1,8 +1,9 @@
-import { selectNextPart } from '../playout/selectNextPart.js'
-import { PlayoutModel } from '../playout/model/PlayoutModel.js'
-import { JobContext } from '../jobs/index.js'
-import { setNextPart } from '../playout/setNext.js'
 import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+
+import { JobContext } from '../jobs/index.js'
+import { PlayoutModel } from '../playout/model/PlayoutModel.js'
+import { selectNextPart } from '../playout/selectNextPart.js'
+import { setNextPart } from '../playout/setNext.js'
 
 /**
  * Make sure that the nextPartInstance for the current Playlist is still correct.

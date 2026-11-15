@@ -1,4 +1,5 @@
-import { CharHandlerResult, type NodeConstruct, type ParserState } from '../parserState'
+import { CharHandlerResult } from '../parserState'
+import type { NodeConstruct, ParserState } from '../parserState'
 
 export function escape(): NodeConstruct {
 	function escapeChar(_: string, state: ParserState): CharHandlerResult | void {

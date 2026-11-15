@@ -1,13 +1,15 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintPieceType,
 	TimelineObjectCoreExt,
 	TimelineObjHoldMode,
 	TimelineObjOnAirMode,
 } from '@sofie-automation/blueprints-integration'
-import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { ReadonlyDeep } from 'type-fest'
-import { DEFINITELY_ENDED_FUTURE_DURATION } from '../infinites.js'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
+
+import { DEFINITELY_ENDED_FUTURE_DURATION } from '../infinites.js'
 
 /**
  * Check if a PieceInstance has 'definitely ended'.

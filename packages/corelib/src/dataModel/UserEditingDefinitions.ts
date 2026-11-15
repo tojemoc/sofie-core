@@ -1,10 +1,11 @@
 import type {
-	UserEditingType,
+	DefaultUserOperationsTypes,
 	JSONBlob,
 	JSONSchema,
 	UserEditingSourceLayer,
-	DefaultUserOperationsTypes,
+	UserEditingType,
 } from '@sofie-automation/blueprints-integration'
+
 import type { ITranslatableMessage } from '../TranslatableMessage.js'
 
 export type CoreUserEditingDefinition =

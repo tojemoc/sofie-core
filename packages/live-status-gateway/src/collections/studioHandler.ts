@@ -1,10 +1,12 @@
 import { Logger } from 'winston'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { CoreHandler } from '../coreHandler.js'
 import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 export class StudioHandler extends PublicationCollection<DBStudio, CorelibPubSub.studios, CollectionName.Studios> {
 	constructor(logger: Logger, coreHandler: CoreHandler) {

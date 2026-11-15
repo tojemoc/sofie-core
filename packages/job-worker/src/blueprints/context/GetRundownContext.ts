@@ -1,15 +1,17 @@
-import { IGetRundownContext, IBlueprintRundownPlaylist } from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+
+import { IBlueprintRundownPlaylist, IGetRundownContext } from '@sofie-automation/blueprints-integration'
 import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { WatchedPackagesHelper } from './watchedPackages.js'
+import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
 import { ContextInfo } from './CommonContext.js'
-import { ShowStyleUserContext } from './ShowStyleUserContext.js'
 import { convertRundownPlaylistToBlueprints } from './lib.js'
+import { ShowStyleUserContext } from './ShowStyleUserContext.js'
+import { WatchedPackagesHelper } from './watchedPackages.js'
 
 export class GetRundownContext extends ShowStyleUserContext implements IGetRundownContext {
 	private cachedPlaylistsInStudio: Promise<Readonly<IBlueprintRundownPlaylist>[]> | undefined

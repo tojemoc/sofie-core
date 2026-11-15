@@ -1,12 +1,13 @@
 import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { BlueprintValidateConfigForStudioResult, StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { BlueprintValidateConfigForStudioResult, StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import { BlueprintFixUpConfigMessage } from '@sofie-automation/meteor-lib/dist/api/migration'
+
 import { profiler } from '../../api/profiler'
 import { Studios } from '../../collections'
 import { logger } from '../../logging'
 import { QueueStudioJob } from '../../worker/worker'
-import { BlueprintFixUpConfigMessage } from '@sofie-automation/meteor-lib/dist/api/migration'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 async function getStudio(studioId: StudioId): Promise<Pick<DBStudio, '_id'>> {
 	const studio = (await Studios.findOneAsync(studioId, {

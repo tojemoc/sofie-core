@@ -1,6 +1,7 @@
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 /* *************************************************************************

@@ -1,6 +1,7 @@
-import { MOS } from '@sofie-automation/corelib'
-import { IngestRundown, IngestSegment } from '@sofie-automation/blueprints-integration'
 import _ from 'underscore'
+
+import { IngestRundown, IngestSegment } from '@sofie-automation/blueprints-integration'
+import { MOS } from '@sofie-automation/corelib'
 
 export function fixIllegalObject(o: unknown): void {
 	if (_.isArray(o)) {
@@ -14,7 +15,6 @@ export function fixIllegalObject(o: unknown): void {
 				const newKey = key.replace(/^\$/, '@')
 				o[newKey] = val
 				delete o[key]
-				key = newKey
 			}
 			fixIllegalObject(val)
 		})

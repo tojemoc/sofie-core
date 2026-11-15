@@ -1,45 +1,46 @@
 import {
-	buildFormatString,
-	acceptFormat,
-	getAcceptedFormats,
-	getMediaObjectMediaId,
-	PieceContentStreamInfo,
-	checkPieceContentStatusAndDependencies,
-	PieceContentStatusStudio,
-} from '../checkPieceContentStatus'
-import {
-	PackageInfo,
-	WithTimeline,
-	ISourceLayer,
-	SourceLayerType,
 	IBlueprintPieceGeneric,
+	ISourceLayer,
+	PackageInfo,
 	PieceLifespan,
+	SourceLayerType,
 	SplitsContent,
 	VTContent,
+	WithTimeline,
 } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoMock } from '../../../__mocks__/mongo'
+import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
+	EmptyPieceTimelineObjectsBlob,
 	PieceGeneric,
 	PieceStatusCode,
-	EmptyPieceTimelineObjectsBlob,
 } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { IStudioSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
 import {
-	MediaObject,
 	MediaInfo,
+	MediaObject,
 	MediaStream,
 	MediaStreamType,
 } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import { defaultStudio } from '../../../__mocks__/defaultCollectionObjects'
+import { MongoMock } from '../../../__mocks__/mongo'
 import { MediaObjects } from '../../../collections'
+import {
+	acceptFormat,
+	buildFormatString,
+	checkPieceContentStatusAndDependencies,
+	getAcceptedFormats,
+	getMediaObjectMediaId,
+	PieceContentStatusStudio,
+	PieceContentStreamInfo,
+} from '../checkPieceContentStatus'
 import { PieceDependencies } from '../common'
-import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
 import { PieceContentStatusMessageFactory } from '../messageFactory'
-import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 const mockMediaObjectsCollection = MongoMock.getInnerMockCollection<MediaObject>(MediaObjects)
 

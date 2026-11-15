@@ -1,8 +1,9 @@
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { Blueprints, ShowStyleBases, Studios } from '../collections'
 import { getCoreSystemAsync } from '../coreSystem/collection'
 

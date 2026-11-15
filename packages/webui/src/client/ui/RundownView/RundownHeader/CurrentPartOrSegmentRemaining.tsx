@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
 import ClassNames from 'classnames'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownTiming/withTiming.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { SpeechSynthesiser } from '../../../lib/speechSynthesis.js'
+import { useEffect, useRef } from 'react'
+
 import type { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
+import { RundownUtils } from '../../../lib/rundown.js'
+import { SpeechSynthesiser } from '../../../lib/speechSynthesis.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownTiming/withTiming.js'
 import { Countdown } from './Countdown.js'
 
 const SPEAK_ADVANCE = 500
@@ -144,7 +145,10 @@ export const CurrentPartOrSegmentRemaining: React.FC<IPartRemainingProps> = (pro
 
 	return (
 		<span
-			className={ClassNames(props.className, Math.floor(displayTimecode / 1000) > 0 ? props.heavyClassName : undefined)}
+			className={ClassNames(
+				props.className,
+				Math.floor(displayTimecode / 1000) > 0 ? props.heavyClassName : undefined
+			)}
 			role="timer"
 		>
 			{RundownUtils.formatDiffToTimecodeCountdown(displayTimecode || 0)}
@@ -164,7 +168,10 @@ export const RundownHeaderPartRemaining: React.FC<IPartRemainingProps> = (props)
 	return (
 		<Countdown
 			label={props.label}
-			className={ClassNames(props.className, Math.floor(displayTimecode / 1000) > 0 ? props.heavyClassName : undefined)}
+			className={ClassNames(
+				props.className,
+				Math.floor(displayTimecode / 1000) > 0 ? props.heavyClassName : undefined
+			)}
 		>
 			{RundownUtils.formatDiffToTimecodeCountdown(displayTimecode || 0)}
 		</Countdown>

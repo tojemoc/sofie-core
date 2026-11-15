@@ -1,29 +1,33 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
 import classNames from 'classnames'
+import { Meteor } from 'meteor/meteor'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { IOutputLayerUi, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
+
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type { HighlightEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { contextMenuHoldToDisplayTime, useRundownViewEventBusListener } from '../../lib/lib.js'
+import { getAllowSpeaking, getAllowVibrating } from '../../lib/localStorage.js'
+import { getEffectiveInvalidReason, isPartInstanceInvalid } from '../../lib/partInstanceUtil.js'
+import { getPartInstanceTimingId } from '../../lib/rundownTiming.js'
+import { LoopingIcon } from '../../lib/ui/icons/looping.js'
+import { SegmentEnd } from '../../lib/ui/icons/segment.js'
+import { getElementDocumentOffset } from '../../utils/positions.js'
+import { CurrentPartOrSegmentRemaining } from '../RundownView/RundownHeader/CurrentPartOrSegmentRemaining.js'
+import { AutoNextStatus } from '../RundownView/RundownTiming/AutoNextStatus.js'
+import { PartDisplayDuration } from '../RundownView/RundownTiming/PartDuration.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
+import { InvalidPartCover } from '../SegmentTimeline/Parts/InvalidPartCover.js'
+import { SegmentTimelinePartElementId } from '../SegmentTimeline/Parts/SegmentTimelinePart.js'
 import { StoryboardPartSecondaryPieces } from './StoryboardPartSecondaryPieces/StoryboardPartSecondaryPieces.js'
 import { StoryboardPartThumbnail } from './StoryboardPartThumbnail/StoryboardPartThumbnail.js'
-import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { contextMenuHoldToDisplayTime, useRundownViewEventBusListener } from '../../lib/lib.js'
-import { getElementDocumentOffset } from '../../utils/positions.js'
-import type { IContextMenuContext } from '../RundownView.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { SegmentTimelinePartElementId } from '../SegmentTimeline/Parts/SegmentTimelinePart.js'
-import { CurrentPartOrSegmentRemaining } from '../RundownView/RundownHeader/CurrentPartOrSegmentRemaining.js'
-import { getAllowSpeaking, getAllowVibrating } from '../../lib/localStorage.js'
-import { type HighlightEvent, RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { Meteor } from 'meteor/meteor'
 import { StoryboardPartTransitions } from './StoryboardPartTransitions.js'
-import { PartDisplayDuration } from '../RundownView/RundownTiming/PartDuration.js'
-import { InvalidPartCover } from '../SegmentTimeline/Parts/InvalidPartCover.js'
-import { SegmentEnd } from '../../lib/ui/icons/segment.js'
-import { AutoNextStatus } from '../RundownView/RundownTiming/AutoNextStatus.js'
-import { type RundownTimingContext, getPartInstanceTimingId } from '../../lib/rundownTiming.js'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
-import { LoopingIcon } from '../../lib/ui/icons/looping.js'
-import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
-import { getEffectiveInvalidReason, isPartInstanceInvalid } from '../../lib/partInstanceUtil.js'
+import type { RundownTimingContext } from '../../lib/rundownTiming.js'
+import type { IContextMenuContext } from '../RundownView.js'
+import type { IOutputLayerUi, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	className?: string
@@ -221,7 +225,8 @@ export function StoryboardPart({
 							'segment-storyboard__part__next-line--opposite',
 							{
 								'segment-storyboard__part__next-line--autonext': part.instance.part.autoNext,
-								'segment-storyboard__part__next-line--next': isLivePart && (!isLastSegment || doesPlaylistHaveNextPart),
+								'segment-storyboard__part__next-line--next':
+									isLivePart && (!isLastSegment || doesPlaylistHaveNextPart),
 								'segment-storyboard__part__next-line--end-of-show':
 									isLastSegment && (!isLivePart || !doesPlaylistHaveNextPart),
 							}
@@ -249,7 +254,8 @@ export function StoryboardPart({
 			{!isLastSegment && isLastPartInSegment && !isEndOfLoopingShow && !isInvalid && (
 				<div
 					className={classNames('segment-storyboard__part__segment-end', {
-						'segment-storyboard__part__segment-end--next': isLivePart && (!isLastSegment || doesPlaylistHaveNextPart),
+						'segment-storyboard__part__segment-end--next':
+							isLivePart && (!isLastSegment || doesPlaylistHaveNextPart),
 					})}
 				>
 					<div className="segment-storyboard__part__segment-end__label">

@@ -1,12 +1,14 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
+
 import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { CollectionHandlers } from '../liveStatusServer.js'
+import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
 import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
 import type { CollectionDocCheck, ParametersOfFunctionOrNever } from '@sofie-automation/server-core-integration'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 const PLAYLIST_KEYS = ['currentPartInfo', 'nextPartInfo'] as const
 type Playlist = PickKeys<DBRundownPlaylist, typeof PLAYLIST_KEYS>

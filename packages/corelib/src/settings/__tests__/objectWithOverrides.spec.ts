@@ -1,5 +1,6 @@
-import { literal } from '../../lib.js'
 import clone from 'fast-clone'
+
+import { literal } from '../../lib.js'
 import {
 	applyAndValidateOverrides,
 	ObjectWithOverrides,

@@ -1,4 +1,5 @@
-import { type HTMLMotionProps, motion } from 'motion/react'
+import { motion } from 'motion/react'
+import type { HTMLMotionProps } from 'motion/react'
 
 export function PopUpPanel(props: HTMLMotionProps<'div'>): React.JSX.Element {
 	return (

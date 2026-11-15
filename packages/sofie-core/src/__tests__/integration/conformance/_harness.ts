@@ -10,10 +10,12 @@
  * collection, the wrapper-parity suite (Part 2) does not need to re-run any of this matrix.
  */
 import { MongoClient } from 'mongodb'
+
 import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { FindOptions, MongoQuery, MongoModifier, MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
-import { convertFindOptionsToNative } from '../../../collections/implementations/asyncCollection'
+import { FindOptions, MongoBulkWriteOperation, MongoModifier, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+
 import { freshCollection } from '../_integrationDb'
+import { convertFindOptionsToNative } from '../../../collections/implementations/asyncCollection'
 
 /** A plain seed/result document. `_id` is a plain string (corelib's `ProtectedString` is identity-on-string). */
 export type SeedDoc = { _id: string } & Record<string, unknown>
@@ -25,9 +27,7 @@ export type SeedDoc = { _id: string } & Record<string, unknown>
  *  - `bothThrow`: both reject (e.g. a full-document update with no atomic operators, mixed projection).
  */
 export type Expectation =
-	| { status: 'match' }
-	| { status: 'inMemoryThrows'; reason: string }
-	| { status: 'bothThrow'; reason: string }
+	{ status: 'match' } | { status: 'inMemoryThrows'; reason: string } | { status: 'bothThrow'; reason: string }
 
 interface BaseCase {
 	name: string

@@ -1,10 +1,11 @@
 /* eslint-disable n/no-process-exit */
 
-import { Atem } from 'atem-connection'
 import * as fs from 'fs'
+import * as path from 'path'
+
+import { Atem } from 'atem-connection'
 import { AtemMediaPoolAsset, AtemMediaPoolType } from 'timeline-state-resolver'
 import _ from 'underscore'
-import * as path from 'path'
 
 /**
  * This script is a temporary implementation to upload media to the atem.

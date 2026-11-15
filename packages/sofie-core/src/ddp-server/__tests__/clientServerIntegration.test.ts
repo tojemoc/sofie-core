@@ -1,14 +1,18 @@
-import { createServer, type Server } from 'http'
-import type { AddressInfo } from 'net'
-import { WebSocketServer } from 'ws'
+import { createServer } from 'http'
 import { URL } from 'url'
+
+import { WebSocketServer } from 'ws'
+import type { Server } from 'http'
+import type { AddressInfo } from 'net'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { DDPClient } from '@sofie-automation/server-core-integration'
+
 import { MethodRegistry } from '../../methodRegistry'
 import { PublicationRegistry } from '../../publicationRegistry'
-import type { PublicationContext } from '../../publications/lib/lib'
-import { DdpSession } from '../DdpSession'
 import { DdpConnectionRegistry } from '../ConnectionRegistry'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { DdpSession } from '../DdpSession'
+import type { PublicationContext } from '../../publications/lib/lib'
 
 /**
  * End-to-end test: the real `server-core-integration` DDP client talks to a real `DdpSession` over a real

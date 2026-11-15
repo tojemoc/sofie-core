@@ -1,6 +1,5 @@
-import { protectString, ProtectedString } from '../../protectedString.js'
-import { MongoFieldSpecifier } from '../../mongo.js'
-import { ObserveCallbacks, ObserveChangesCallbacks } from '../../mongo.js'
+import { MongoFieldSpecifier, ObserveCallbacks, ObserveChangesCallbacks } from '../../mongo.js'
+import { ProtectedString, protectString } from '../../protectedString.js'
 import { InMemoryMongoCollection } from '../InMemoryMongoCollection.js'
 
 interface Thing {
@@ -160,7 +159,7 @@ describe('replace', () => {
 	test('replaces an existing doc', () => {
 		const c = makeCollection()
 		c.insert(thing('a', { name: 'x', rank: 1, group: 'g' }))
-		const replaced = c.replace({ _id: id('a'), name: 'y', rank: 2 } as Thing)
+		const replaced = c.replace({ _id: id('a'), name: 'y', rank: 2 })
 		expect(replaced).toBe(true)
 		const doc = c.findOne('a' as any)
 		expect(doc).toEqual({ _id: id('a'), name: 'y', rank: 2 })
@@ -168,7 +167,7 @@ describe('replace', () => {
 
 	test('missing  → inserts', () => {
 		const c = makeCollection()
-		expect(c.replace({ _id: id('a'), name: 'y', rank: 2 } as Thing)).toBe(false)
+		expect(c.replace({ _id: id('a'), name: 'y', rank: 2 })).toBe(false)
 		expect(c.findOne('a' as any)?.name).toBe('y')
 	})
 })
@@ -197,11 +196,11 @@ describe('bulkWrite', () => {
 		c.insert(thing('repl', { name: 'old', rank: 1 }))
 
 		c.bulkWrite([
-			{ insertOne: { document: thing('ins') } as any },
-			{ updateOne: { filter: { _id: id('upd') }, update: { $set: { rank: 10 } } } as any },
-			{ updateMany: { filter: { rank: 0 }, update: { $set: { name: 'zero' } } } as any },
-			{ deleteOne: { filter: { _id: id('del1') } } as any },
-			{ deleteMany: { filter: { group: 'g' } } as any },
+			{ insertOne: { document: thing('ins') } },
+			{ updateOne: { filter: { _id: id('upd') }, update: { $set: { rank: 10 } } } },
+			{ updateMany: { filter: { rank: 0 }, update: { $set: { name: 'zero' } } } },
+			{ deleteOne: { filter: { _id: id('del1') } } },
+			{ deleteMany: { filter: { group: 'g' } } },
 			{
 				replaceOne: {
 					filter: { _id: id('repl') },
@@ -300,7 +299,7 @@ describe('observe (full document)', () => {
 		changed: jest.Mock
 		removed: jest.Mock
 	} {
-		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() } as any
+		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() }
 	}
 
 	test('initial snapshot delivered as added', () => {
@@ -404,7 +403,7 @@ describe('observeChanges', () => {
 		changed: jest.Mock
 		removed: jest.Mock
 	} {
-		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() } as any
+		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() }
 	}
 
 	test('added delivers id + fields (minus _id)', () => {
@@ -443,7 +442,7 @@ describe('observe windowing (sort/skip/limit)', () => {
 		changed: jest.Mock
 		removed: jest.Mock
 	} {
-		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() } as any
+		return { added: jest.fn(), changed: jest.fn(), removed: jest.fn() }
 	}
 	const addedIds = (cb: { added: jest.Mock }) => cb.added.mock.calls.map((c) => String(c[0])).sort()
 	const removedIds = (cb: { removed: jest.Mock }) => cb.removed.mock.calls.map((c) => String(c[0])).sort()

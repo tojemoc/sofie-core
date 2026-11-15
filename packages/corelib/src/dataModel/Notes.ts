@@ -1,6 +1,7 @@
 import { NoteSeverity } from '@sofie-automation/blueprints-integration'
+
 import { ITranslatableMessage } from '../TranslatableMessage.js'
-import { RundownId, SegmentId, PartId, PieceId } from './Ids.js'
+import { PartId, PieceId, RundownId, SegmentId } from './Ids.js'
 
 export interface INoteBase {
 	type: NoteSeverity

@@ -1,10 +1,10 @@
-import type { OnGenerateTimelineObj, TSR } from '../timeline.js'
 import type { IBlueprintPartInstance, IBlueprintPieceInstance, IBlueprintSegmentDB } from '../documents/index.js'
-import type { IRundownContext } from './rundownContext.js'
 import type { IBlueprintExternalMessageQueueObj } from '../message.js'
-import type { BlueprintQuickLookInfo } from './quickLoopInfo.js'
-import type { ITTimersContext } from './tTimersContext.js'
+import type { OnGenerateTimelineObj, TSR } from '../timeline.js'
 import type { IBrandingReadMethods } from './brandingContext.js'
+import type { BlueprintQuickLookInfo } from './quickLoopInfo.js'
+import type { IRundownContext } from './rundownContext.js'
+import type { ITTimersContext } from './tTimersContext.js'
 
 export interface IEventContext {
 	getCurrentTime(): number

@@ -1,5 +1,6 @@
-import { ClientAPI } from '../client.js'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+
+import { ClientAPI } from '../client.js'
 
 describe('ClientAPI', () => {
 	it('Creates a responseSuccess object', () => {

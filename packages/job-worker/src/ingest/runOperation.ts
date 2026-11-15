@@ -1,35 +1,36 @@
-import { IngestDatabasePersistedModel, IngestModel, IngestModelReadonly } from './model/IngestModel.js'
-import { BeforeIngestOperationPartMap, CommitIngestOperation } from './commit.js'
-import { SofieIngestRundownDataCache, SofieIngestRundownDataCacheGenerator } from './sofieIngestCache.js'
-import { canRundownBeUpdated, getRundownId, getSegmentId } from './lib.js'
-import { JobContext } from '../jobs/index.js'
-import { IngestPropsBase } from '@sofie-automation/corelib/dist/worker/ingest'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { loadIngestModelFromRundownExternalId } from './model/implementation/LoadIngestModel.js'
-import { Complete, clone } from '@sofie-automation/corelib/dist/lib'
-import { CommitIngestData, runWithRundownLockWithoutFetchingRundown } from './lock.js'
 import {
-	NrcsIngestChangeDetails,
-	IngestRundown,
-	UserOperationChange,
-	SofieIngestSegment,
 	IngestChangeType,
+	IngestRundown,
+	NrcsIngestChangeDetails,
 	PlayoutOperationChange,
+	SofieIngestSegment,
+	UserOperationChange,
 } from '@sofie-automation/blueprints-integration'
-import { MutableIngestRundownImpl } from '../blueprints/ingest/MutableIngestRundownImpl.js'
-import { ProcessIngestDataContext } from '../blueprints/context/index.js'
 import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { clone, Complete } from '@sofie-automation/corelib/dist/lib'
+import { IngestPropsBase } from '@sofie-automation/corelib/dist/worker/ingest'
+
+import { ProcessIngestDataContext } from '../blueprints/context/index.js'
+import { MutableIngestRundownImpl } from '../blueprints/ingest/MutableIngestRundownImpl.js'
+import { JobContext } from '../jobs/index.js'
+import { logger } from '../logging.js'
+import { BeforeIngestOperationPartMap, CommitIngestOperation } from './commit.js'
 import {
 	GenerateRundownMode,
 	updateRundownFromIngestData,
 	updateRundownFromIngestDataInner,
 } from './generationRundown.js'
 import { calculateSegmentsAndRemovalsFromIngestData, calculateSegmentsFromIngestData } from './generationSegment.js'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { canRundownBeUpdated, getRundownId, getSegmentId } from './lib.js'
+import { CommitIngestData, runWithRundownLockWithoutFetchingRundown } from './lock.js'
+import { loadIngestModelFromRundownExternalId } from './model/implementation/LoadIngestModel.js'
+import { IngestDatabasePersistedModel, IngestModel, IngestModelReadonly } from './model/IngestModel.js'
 import { NrcsIngestRundownDataCache } from './nrcsIngestCache.js'
-import { logger } from '../logging.js'
+import { SofieIngestRundownDataCache, SofieIngestRundownDataCacheGenerator } from './sofieIngestCache.js'
 
 export enum ComputedIngestChangeAction {
 	DELETE = 'delete',

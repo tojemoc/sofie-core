@@ -1,10 +1,11 @@
 import { getHash } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { getShowStyleConfigRef, getStudioConfigRef } from '../configRefs.js'
 import { CommonContext } from '../context/CommonContext.js'
-import { StudioContext } from '../context/StudioContext.js'
 import { ShowStyleContext } from '../context/ShowStyleContext.js'
+import { StudioContext } from '../context/StudioContext.js'
 
 describe('Test blueprint api context', () => {
 	let jobContext: MockJobContext

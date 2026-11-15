@@ -1,6 +1,5 @@
-import _ from 'underscore'
-import { ProtectedString } from './protectedString.js'
 import * as objectPath from 'object-path'
+import _ from 'underscore'
 import type {
 	Condition,
 	DeleteManyModel,
@@ -17,7 +16,9 @@ import type {
 	UpdateManyModel,
 	UpdateOneModel,
 } from 'mongodb'
+
 import { clone } from './lib.js'
+import { ProtectedString } from './protectedString.js'
 
 /** Hack's using typings pulled from meteor */
 
@@ -33,9 +34,7 @@ export type MongoFieldSpecifierZeroes<T> = {
 	[P in keyof T]?: 0
 }
 export type MongoFieldSpecifier<T> =
-	| MongoFieldSpecifierOnes<T>
-	| MongoFieldSpecifierZeroes<T>
-	| MongoFieldSpecifierOnesStrict<Partial<T>>
+	MongoFieldSpecifierOnes<T> | MongoFieldSpecifierZeroes<T> | MongoFieldSpecifierOnesStrict<Partial<T>>
 
 /**
  * Type helper to construct a field specifier to include all the keys mentioned in a type union.
@@ -72,18 +71,18 @@ export type FindObserveChangesOptions<TDoc> = ObserveChangesOptions & FindOption
 
 /** Callbacks for observing the full documents of a query as its result set changes. */
 export interface ObserveCallbacks<DBInterface> {
-	added?(document: DBInterface): void
-	changed?(newDocument: DBInterface, oldDocument: DBInterface): void
-	removed?(oldDocument: DBInterface): void
+	added?: (document: DBInterface) => void
+	changed?: (newDocument: DBInterface, oldDocument: DBInterface) => void
+	removed?: (oldDocument: DBInterface) => void
 }
 /**
  * Callbacks for observing a query as its result set changes. Only the differences between the old and new
  * documents are passed to the callbacks.
  */
 export interface ObserveChangesCallbacks<DBInterface extends { _id: ProtectedString<any> }> {
-	added?(id: DBInterface['_id'], fields: Partial<DBInterface>): void
-	changed?(id: DBInterface['_id'], fields: Partial<DBInterface>): void
-	removed?(id: DBInterface['_id']): void
+	added?: (id: DBInterface['_id'], fields: Partial<DBInterface>) => void
+	changed?: (id: DBInterface['_id'], fields: Partial<DBInterface>) => void
+	removed?: (id: DBInterface['_id']) => void
 }
 
 /**
@@ -418,7 +417,7 @@ export function mongoFindOptions<TDoc extends { _id: ProtectedString<any> }>(
 		if ('fields' in options && 'projection' in options) {
 			throw new Error(`Only one of 'fields' and 'projection' can be specified`)
 		}
-		const projection = (options.projection || options.fields) as MongoFieldSpecifier<TDoc> | undefined
+		const projection = options.projection || options.fields
 		if (projection !== undefined) {
 			docs = docs.map((doc) => mongoProjectDocument(doc, projection))
 		}
@@ -442,7 +441,7 @@ export function mongoProjectDocument<TDoc extends { _id: ProtectedString<any> }>
 	// identically to `{ 'b.c': 1 }` (as MongoDB does). This lets the include/exclude branches below
 	// reuse the dot-path aware projection logic instead of including/excluding the whole `b` subtree.
 	const proj: Record<string, 0 | 1> = {}
-	flattenProjection(projection as Record<string, unknown>, '', proj)
+	flattenProjection(projection, '', proj)
 
 	const idVal = proj['_id']
 	const includeKeys = _.keys(proj).filter((key) => key !== '_id' && proj[key] !== 0)

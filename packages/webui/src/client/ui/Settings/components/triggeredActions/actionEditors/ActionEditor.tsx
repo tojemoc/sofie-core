@@ -1,23 +1,25 @@
-import { useCallback, useState } from 'react'
-import _ from 'underscore'
-import {
-	type FilterType,
-	type IAdLibFilterLink,
-	type IGUIContextFilterLink,
-	type IRundownPlaylistFilterLink,
-	PlayoutActions,
-	type SomeAction,
-} from '@sofie-automation/blueprints-integration'
-import { AdLibFilter } from './filterPreviews/AdLibFilter.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { ViewFilter } from './filterPreviews/ViewFilter.js'
-import { RundownPlaylistFilter } from './filterPreviews/RundownPlaylistFilter.js'
-import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { ActionSelector } from './actionSelector/ActionSelector.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from 'rc-tooltip'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+
+import { PlayoutActions } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import type {
+	FilterType,
+	IAdLibFilterLink,
+	IGUIContextFilterLink,
+	IRundownPlaylistFilterLink,
+	SomeAction,
+} from '@sofie-automation/blueprints-integration'
+import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
+import { ActionSelector } from './actionSelector/ActionSelector.js'
+import { AdLibFilter } from './filterPreviews/AdLibFilter.js'
+import { RundownPlaylistFilter } from './filterPreviews/RundownPlaylistFilter.js'
+import { ViewFilter } from './filterPreviews/ViewFilter.js'
 import type { OverrideOpHelper } from '../../../util/OverrideOpHelper.js'
 
 interface IProps {
@@ -124,7 +126,8 @@ export const ActionEditor: React.FC<IProps> = function ActionEditor({
 		return (
 			action.filterChain.length > 0 &&
 			((action.filterChain[0] as IRundownPlaylistFilterLink | IGUIContextFilterLink).object === 'view' ||
-				(action.filterChain[0] as IRundownPlaylistFilterLink | IGUIContextFilterLink).object === 'rundownPlaylist')
+				(action.filterChain[0] as IRundownPlaylistFilterLink | IGUIContextFilterLink).object ===
+					'rundownPlaylist')
 		)
 	}
 

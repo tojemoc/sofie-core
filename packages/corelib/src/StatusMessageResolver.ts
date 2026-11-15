@@ -1,8 +1,9 @@
+import { SystemErrorCode } from '@sofie-automation/shared-lib/dist/systemErrorMessages'
+import type { DeviceStatusContext, DeviceStatusMessageFunction } from '@sofie-automation/blueprints-integration'
+
 import { BlueprintId } from './dataModel/Ids.js'
 import { generateTranslation } from './lib.js'
 import { ITranslatableMessage, wrapTranslatableMessageFromBlueprints } from './TranslatableMessage.js'
-import { SystemErrorCode } from '@sofie-automation/shared-lib/dist/systemErrorMessages'
-import type { DeviceStatusContext, DeviceStatusMessageFunction } from '@sofie-automation/blueprints-integration'
 
 // Re-export for consumers of corelib
 export type { DeviceStatusContext, DeviceStatusMessageFunction }

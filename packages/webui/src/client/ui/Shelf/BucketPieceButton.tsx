@@ -1,13 +1,14 @@
+import { useDrag, useDrop } from 'react-dnd'
 import type { PropsWithChildren } from 'react'
-import type { IDashboardButtonProps } from './DashboardPieceButton/types'
-import { DashboardPieceButton } from './DashboardPieceButton/DashboardPieceButton.js'
 
-import { useDrop, useDrag } from 'react-dnd'
-import { DragDropItemTypes } from '../DragDropItemTypes.js'
-import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
-import type { BucketAdLibActionUi, BucketAdLibItem } from './RundownViewBuckets.js'
 import type { IBlueprintActionTriggerMode } from '@sofie-automation/blueprints-integration'
+import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import type { BucketId, PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { DragDropItemTypes } from '../DragDropItemTypes.js'
+import { DashboardPieceButton } from './DashboardPieceButton/DashboardPieceButton.js'
+import type { IDashboardButtonProps } from './DashboardPieceButton/types'
+import type { BucketAdLibActionUi, BucketAdLibItem } from './RundownViewBuckets.js'
 
 interface IBucketPieceDragObject {
 	id: PieceId

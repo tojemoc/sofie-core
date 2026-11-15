@@ -1,5 +1,6 @@
-import { type NodeConstruct, type ParserState, CharHandlerResult } from '../parserState'
-import type { EmphasisNode, StrongNode, Node, ParentNodeBase } from '../astNodes'
+import { CharHandlerResult } from '../parserState'
+import type { EmphasisNode, Node, ParentNodeBase, StrongNode } from '../astNodes'
+import type { NodeConstruct, ParserState } from '../parserState'
 
 export function emphasisAndStrong(): NodeConstruct {
 	function emphasisOrStrong(char: string, state: ParserState): CharHandlerResult | void {

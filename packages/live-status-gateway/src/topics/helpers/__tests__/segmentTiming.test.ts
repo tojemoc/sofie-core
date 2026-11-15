@@ -1,7 +1,8 @@
-import { calculateSegmentTiming } from '../segmentTiming.js'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { calculateSegmentTiming } from '../segmentTiming.js'
 
 function makeTestPart(id: string, expectedDuration: number): Partial<DBPart> {
 	return {

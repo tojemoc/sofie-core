@@ -1,22 +1,24 @@
+import { SetOptional } from 'type-fest'
+import _ from 'underscore'
+
+import { SofieIngestPart, SofieIngestSegment } from '@sofie-automation/blueprints-integration'
 import { RundownId, SegmentId, SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
-	SofieIngestDataCacheObj,
 	SofieIngestCacheType,
+	SofieIngestDataCacheObj,
+	SofieIngestDataCacheObjPart,
 	SofieIngestDataCacheObjRundown,
 	SofieIngestDataCacheObjSegment,
-	SofieIngestDataCacheObjPart,
 	SofieIngestRundownWithSource,
 } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import _ from 'underscore'
-import { SofieIngestPart, SofieIngestSegment } from '@sofie-automation/blueprints-integration'
-import { JobContext } from '../jobs/index.js'
-import { getPartId, getSegmentId } from './lib.js'
-import { SetOptional } from 'type-fest'
 import { groupByToMap, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { ICollection } from '../db/index.js'
+import { JobContext } from '../jobs/index.js'
 import { getCurrentTime } from '../lib/index.js'
+import { getPartId, getSegmentId } from './lib.js'
 
 /**
  * Represents a Rundown in the SofieIngestDataCache collection and provides methods for interacting with it.
@@ -173,7 +175,7 @@ export class SofieIngestRundownDataCache {
 			updates.push({
 				deleteMany: {
 					filter: {
-						_id: { $in: removedIds as any },
+						_id: { $in: removedIds },
 					},
 				},
 			})

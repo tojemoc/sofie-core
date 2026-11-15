@@ -1,17 +1,19 @@
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { ReadonlyDeep } from 'type-fest'
+
 import { PartId, PartInstanceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { PartInstances, Parts, RundownPlaylists } from '../../collections'
-import type { LiveQueryHandleSync } from '../../lib/lib'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { PartInstances, Parts, RundownPlaylists } from '../../collections'
 import { logger } from '../../logging'
 import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from './observerGroup'
-import type { ReadonlyDeep } from 'type-fest'
+import type { LiveQueryHandleSync } from '../../lib/lib'
 
 /**
  * The RundownPlaylist properties needed to know which Branding applies to documents which have no
@@ -137,8 +139,7 @@ export async function observeSelectedPartInstancesBranding<TPlaylist extends Pla
  */
 export async function getBrandingRundownIdsForPart(partId: PartId): Promise<RundownId[]> {
 	const part = (await Parts.findOneAsync(partId, { projection: { _id: 1, rundownId: 1 } })) as
-		| Pick<DBPart, '_id' | 'rundownId'>
-		| undefined
+		Pick<DBPart, '_id' | 'rundownId'> | undefined
 
 	return part ? [part.rundownId] : []
 }

@@ -1,4 +1,4 @@
-import { getElementWidth, getElementHeight } from '../dimensions.js'
+import { getElementHeight, getElementWidth } from '../dimensions.js'
 
 describe('client/utils/dimensions', () => {
 	let getComputedStyle: jest.SpyInstance

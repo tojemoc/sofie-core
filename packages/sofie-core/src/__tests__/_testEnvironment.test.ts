@@ -1,16 +1,18 @@
-import { RandomMock } from '../__mocks__/random'
-import { MongoMock } from '../__mocks__/mongo'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { sleep } from '../lib/lib'
+
+import { defaultStudio } from '../__mocks__/defaultCollectionObjects'
+import { MongoMock } from '../__mocks__/mongo'
+import { RandomMock } from '../__mocks__/random'
 import {
 	AdLibPieces,
 	Blueprints,
 	CoreSystem,
 	Evaluations,
 	ExternalMessageQueue,
-	NrcsIngestDataCache,
 	MediaObjects,
+	NrcsIngestDataCache,
 	Parts,
 	PeripheralDeviceCommands,
 	PeripheralDevices,
@@ -26,9 +28,8 @@ import {
 	Timeline,
 	UserActionsLog,
 } from '../collections'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { defaultStudio } from '../__mocks__/defaultCollectionObjects'
 import { createMockCollection } from '../collections/implementations/mock'
+import { sleep } from '../lib/lib'
 
 describe('Basic test of test environment', () => {
 	test('Meteor Random mock', () => {

@@ -1,11 +1,12 @@
+import { IngestChangeType } from '@sofie-automation/blueprints-integration'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	PlayoutExecuteChangeOperationProps,
 	UserExecuteChangeOperationProps,
 } from '@sofie-automation/corelib/dist/worker/ingest'
+
 import { JobContext } from '../jobs/index.js'
-import { UpdateIngestRundownResult, runIngestUpdateOperationBase } from './runOperation.js'
-import { IngestChangeType } from '@sofie-automation/blueprints-integration'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { runIngestUpdateOperationBase, UpdateIngestRundownResult } from './runOperation.js'
 
 export async function handleUserExecuteChangeOperation(
 	context: JobContext,

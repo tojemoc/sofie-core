@@ -1,13 +1,15 @@
+import ClassNames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
-import { getCurrentTime } from '../../../lib/systemTime.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { useTiming } from './withTiming.js'
-import ClassNames from 'classnames'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getPlaylistTimingDiff } from '../../../lib/rundownTiming.js'
+
 import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { getPlaylistTimingDiff } from '../../../lib/rundownTiming.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { useTiming } from './withTiming.js'
 
 interface IEndTimingProps {
 	rundownPlaylist: DBRundownPlaylist
@@ -68,7 +70,12 @@ export function PlaylistEndTiming({
 					</span>
 				) : expectedStart && expectedDuration ? (
 					<span className="timing-clock countdown plan-end" role="timer">
-						{RundownUtils.formatDiffToTimecode(getCurrentTime() - (expectedStart + expectedDuration), true, true, true)}
+						{RundownUtils.formatDiffToTimecode(
+							getCurrentTime() - (expectedStart + expectedDuration),
+							true,
+							true,
+							true
+						)}
 					</span>
 				) : null)}
 
@@ -76,7 +83,9 @@ export function PlaylistEndTiming({
 				expectedEnd ? (
 					!rundownPlaylist.startedPlayback ? (
 						<span className="timing-clock plan-end visual-last-child" role="timer">
-							{!hidePlannedEndLabel && <span className="timing-clock-label right">{endLabel ?? t('Planned End')}</span>}
+							{!hidePlannedEndLabel && (
+								<span className="timing-clock-label right">{endLabel ?? t('Planned End')}</span>
+							)}
 							<Moment interval={0} format="HH:mm:ss" date={expectedEnd} />
 						</span>
 					) : (
@@ -89,13 +98,21 @@ export function PlaylistEndTiming({
 					)
 				) : timingDurations ? (
 					isLoopRunning(rundownPlaylist) ? (
-						timingDurations.partCountdown && rundownPlaylist.activationId && rundownPlaylist.currentPartInfo ? (
+						timingDurations.partCountdown &&
+						rundownPlaylist.activationId &&
+						rundownPlaylist.currentPartInfo ? (
 							<span className="timing-clock plan-end visual-last-child" role="timer">
-								{!hidePlannedEndLabel && <span className="timing-clock-label right">{t('Next Loop at')}</span>}
+								{!hidePlannedEndLabel && (
+									<span className="timing-clock-label right">{t('Next Loop at')}</span>
+								)}
 								<Moment
 									interval={0}
 									format="HH:mm:ss"
-									date={now + (timingDurations.partCountdown[Object.keys(timingDurations.partCountdown)[0]] || 0)}
+									date={
+										now +
+										(timingDurations.partCountdown[Object.keys(timingDurations.partCountdown)[0]] ||
+											0)
+									}
 								/>
 							</span>
 						) : null

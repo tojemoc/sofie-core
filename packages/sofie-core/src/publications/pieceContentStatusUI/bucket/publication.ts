@@ -1,5 +1,8 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PackageInfo } from '@sofie-automation/blueprints-integration'
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
 import {
 	BucketAdLibActionId,
 	BucketAdLibId,
@@ -9,21 +12,21 @@ import {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { literal } from '@sofie-automation/corelib/dist/lib'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { ReadonlyDeep } from 'type-fest'
 import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { UIBucketContentStatus } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
+
 import { Buckets, MediaObjects, PackageContainerPackageStatuses, PackageInfos, Studios } from '../../../collections'
-import { literal } from '@sofie-automation/corelib/dist/lib'
+import { check } from '../../../lib/check'
 import {
 	CustomPublishCollection,
 	setUpCollectionOptimizedObserver,
-	TriggerUpdate,
 	SetupObserversResult,
+	TriggerUpdate,
 } from '../../../lib/customPublication'
-import type { PublicationRegistry } from '../../../publicationRegistry'
-import { BucketContentCache, createReactiveContentCache } from './bucketContentCache'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../../../security/securityVerify'
+import { PieceContentStatusStudio } from '../checkPieceContentStatus'
 import {
 	addItemsWithDependenciesChangesToChangedSet,
 	fetchStudio,
@@ -34,12 +37,11 @@ import {
 	PieceDependencies,
 	studioFieldSpecifier,
 } from '../common'
+import { PieceContentStatusMessageFactory } from '../messageFactory'
+import { BucketContentCache, createReactiveContentCache } from './bucketContentCache'
 import { BucketContentObserver } from './bucketContentObserver'
 import { regenerateForBucketActionIds, regenerateForBucketAdLibIds } from './regenerateForItem'
-import { PieceContentStatusStudio } from '../checkPieceContentStatus'
-import { check } from '../../../lib/check'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../../../security/securityVerify'
-import { PieceContentStatusMessageFactory } from '../messageFactory'
+import type { PublicationRegistry } from '../../../publicationRegistry'
 
 interface UIBucketContentStatusesArgs {
 	readonly studioId: StudioId

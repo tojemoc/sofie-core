@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import classNames from 'classnames'
+import { useMemo } from 'react'
 
 /**
  * Layout constants for the column-packed grid component.
@@ -181,7 +181,13 @@ export function ColumnPackedGrid<TItem>({
 								/>
 							)
 						} else if (entry.type === 'item' && entry.item) {
-							return <ColumnPackedGridItemComponent key={entry.item.key} item={entry.item} standalone={true} />
+							return (
+								<ColumnPackedGridItemComponent
+									key={entry.item.key}
+									item={entry.item}
+									standalone={true}
+								/>
+							)
 						}
 						return null
 					})}
@@ -237,7 +243,11 @@ function ColumnPackedGridItemComponent<TItem>({
 				'column-packed-grid__item--standalone': standalone,
 			})}
 		>
-			<input type="checkbox" checked={item.isSelected} onChange={(e) => item.onToggle(item.data, e.target.checked)} />
+			<input
+				type="checkbox"
+				checked={item.isSelected}
+				onChange={(e) => item.onToggle(item.data, e.target.checked)}
+			/>
 			<span className="column-packed-grid__item-label">{item.label}</span>
 		</label>
 	)

@@ -1,4 +1,3 @@
-import type { IRundownUserContext } from './rundownContext.js'
 import type {
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
@@ -7,6 +6,7 @@ import type {
 	IBlueprintPieceInstance,
 } from '../documents/index.js'
 import type { IEventContext } from './eventContext.js'
+import type { IRundownUserContext } from './rundownContext.js'
 import type { ITTimersContext } from './tTimersContext.js'
 
 export interface ISyncIngestUpdateToPartInstanceContext extends IRundownUserContext, ITTimersContext, IEventContext {

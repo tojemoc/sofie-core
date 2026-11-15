@@ -1,4 +1,5 @@
-import { MongoClient, Db } from 'mongodb'
+import { Db, MongoClient } from 'mongodb'
+
 import { logger } from '../logging'
 
 /**

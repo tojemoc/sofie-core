@@ -1,7 +1,8 @@
-import { registerRoutes } from '../playlists'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
 import { PlaylistsRestAPI } from '../../../../lib/rest/v1'
+import { registerRoutes } from '../playlists'
 
 describe('Playlists REST API Routes', () => {
 	let mockRegisterRoute: jest.Mock

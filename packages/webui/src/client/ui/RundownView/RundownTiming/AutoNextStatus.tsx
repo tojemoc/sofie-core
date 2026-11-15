@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+
 import { TimingDataResolution, TimingTickResolution, useTiming } from './withTiming.js'
 
 export function AutoNextStatus(): JSX.Element | null {

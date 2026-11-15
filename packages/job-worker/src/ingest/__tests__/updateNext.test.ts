@@ -1,17 +1,19 @@
-import { RundownId, RundownPlaylistId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PartInstanceId, RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { saveIntoDb } from '../../db/changes.js'
-import { ensureNextPartIsValid as ensureNextPartIsValidRaw } from '../updateNext.js'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { saveIntoDb } from '../../db/changes.js'
 import { runJobWithPlayoutModel } from '../../playout/lock.js'
+import { setNextPart } from '../../playout/setNext.js'
+import { ensureNextPartIsValid as ensureNextPartIsValidRaw } from '../updateNext.js'
 
 jest.mock('../../playout/setNext')
-import { setNextPart } from '../../playout/setNext.js'
+
 type TsetNextPart = jest.MockedFunction<typeof setNextPart>
 const setNextPartMock = setNextPart as TsetNextPart
 setNextPartMock.mockImplementation(async () => Promise.resolve()) // Default mock

@@ -1,7 +1,8 @@
-import { TimelineObjRundown, TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { deNowifyInfinites } from '../multi-gateway.js'
 import { TSR } from '@sofie-automation/blueprints-integration'
+import { TimelineObjRundown, TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { literal } from '@sofie-automation/corelib/dist/lib'
+
+import { deNowifyInfinites } from '../multi-gateway.js'
 
 describe('Multi-gateway', () => {
 	describe('deNowifyInfinites', () => {

@@ -1,12 +1,13 @@
-import { addMigrationSteps } from './databaseMigration'
-import { logger } from '../logging'
+import { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
 import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
 import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
+import { logger } from '../logging'
+import { addMigrationSteps } from './databaseMigration'
 
 /**
  * This file contains system specific migration steps.

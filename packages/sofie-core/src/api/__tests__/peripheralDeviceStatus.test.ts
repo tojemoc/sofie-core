@@ -1,14 +1,16 @@
 import '../../__mocks__/_extendJest'
+
 import { StatusCode } from '@sofie-automation/blueprints-integration'
 import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { PeripheralDeviceStatusObject } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
 import { PeripheralDeviceAPIMethods } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
-import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { PeripheralDeviceStatusObject } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
 import {
 	DefaultEnvironment,
 	setupDefaultStudioEnvironment,
 	setupMockStudioBlueprintWithDeviceStatusMessages,
 } from '../../__mocks__/helpers/database'
+import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
 import { PeripheralDevices, Studios } from '../../collections'
 import { ServerPeripheralDeviceAPIClass } from '../peripheralDevice'
 

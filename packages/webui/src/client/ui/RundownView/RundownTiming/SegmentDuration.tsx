@@ -1,12 +1,14 @@
 import classNames from 'classnames'
 import type { ReactNode } from 'react'
-import { useTiming } from './withTiming.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
-import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
-import { getPartInstanceTimingId } from '../../../lib/rundownTiming.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+
 import { CountdownType } from '@sofie-automation/blueprints-integration'
+import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { getPartInstanceTimingId } from '../../../lib/rundownTiming.js'
+import { useTiming } from './withTiming.js'
+import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 
 interface ISegmentDurationProps {
 	segment: DBSegment
@@ -26,7 +28,7 @@ interface ISegmentDurationProps {
 export function SegmentDuration(props: ISegmentDurationProps): JSX.Element | null {
 	const timingDurations = useTiming()
 
-	let duration: number | undefined = undefined
+	let duration: number | undefined
 	let playedOut = 0
 
 	const segmentBudgetDuration = props.segment.segmentTiming?.budgetDuration

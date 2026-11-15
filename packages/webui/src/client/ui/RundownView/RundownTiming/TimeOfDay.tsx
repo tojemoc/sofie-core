@@ -1,6 +1,7 @@
-import { useTiming } from './withTiming.js'
-import Moment from 'react-moment'
 import classNames from 'classnames'
+import Moment from 'react-moment'
+
+import { useTiming } from './withTiming.js'
 
 export function TimeOfDay({ className }: Readonly<{ className?: string }>): JSX.Element {
 	const timingDurations = useTiming()

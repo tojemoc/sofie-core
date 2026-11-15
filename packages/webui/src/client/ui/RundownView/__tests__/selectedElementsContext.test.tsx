@@ -1,7 +1,9 @@
-import { renderHook, act } from '@testing-library/react'
-import { SelectedElementProvider, useSelectedElementsContext, useElementSelection } from '../SelectedElementsContext.js'
+import { act, renderHook } from '@testing-library/react'
+
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import type { RundownId, SegmentId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { SelectedElementProvider, useElementSelection, useSelectedElementsContext } from '../SelectedElementsContext.js'
 
 describe('SelectedElementProvider', () => {
 	const createRundownElement = (id: string) => ({

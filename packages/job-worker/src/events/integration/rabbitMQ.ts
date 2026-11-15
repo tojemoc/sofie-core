@@ -1,14 +1,16 @@
-import _ from 'underscore'
 import * as AMQP from 'amqplib'
-import { logger } from '../../logging.js'
+import _ from 'underscore'
+
 import { ExternalMessageQueueObjRabbitMQ } from '@sofie-automation/blueprints-integration'
-import { ExternalMessageQueueObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { FatalExternalMessageError } from '../ExternalMessageQueue.js'
 import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import { ExternalMessageQueueObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { retrieveBlueprintConfigRefs } from '../../blueprints/config.js'
 import { StudioCacheContext } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
+import { FatalExternalMessageError } from '../ExternalMessageQueue.js'
 
 interface Message {
 	_id: ExternalMessageQueueObjId
@@ -167,7 +169,7 @@ class ChannelManager extends Manager {
 		} catch (err) {
 			this.fatalError = true
 			this.errorCount++
-			throw new Error('Error when creating AMQP channel ' + err)
+			throw new Error('Error when creating AMQP channel ' + err, { cause: err })
 		}
 	}
 

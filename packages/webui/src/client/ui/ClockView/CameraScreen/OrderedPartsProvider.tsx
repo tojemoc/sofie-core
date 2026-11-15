@@ -1,7 +1,10 @@
-import React, { type PropsWithChildren, useMemo } from 'react'
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../../RundownView/RundownTiming/withTiming.js'
+import React, { useMemo } from 'react'
+import type { PropsWithChildren } from 'react'
+
 import { protectStringArray } from '@sofie-automation/corelib/dist/protectedString'
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../../RundownView/RundownTiming/withTiming.js'
 
 export const OrderedPartsContext = React.createContext<PartId[]>([])
 
@@ -9,7 +12,8 @@ export function OrderedPartsProvider({ children }: PropsWithChildren): JSX.Eleme
 	const timingDurations = useTiming(TimingTickResolution.Low, TimingDataResolution.Synced)
 
 	const orderedPartIds = useMemo(
-		() => protectStringArray<PartId>(timingDurations.partCountdown ? Object.keys(timingDurations.partCountdown) : []),
+		() =>
+			protectStringArray<PartId>(timingDurations.partCountdown ? Object.keys(timingDurations.partCountdown) : []),
 		[Object.keys(timingDurations.partCountdown ?? {}).join(',')]
 	)
 

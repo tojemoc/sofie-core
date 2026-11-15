@@ -1,27 +1,29 @@
-import { RundownPlaylistId, AdLibActionId, BucketAdLibActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { AdLibActionId, BucketAdLibActionId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type {
 	DBRundownPlaylist,
 	SelectedPartInstance,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { IBranding } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { handleTakeNextPart } from '../take.js'
-import { handleExecuteAdlibAction } from '../adlibAction.js'
-import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
 import { ActionExecutionContext } from '../../blueprints/context/adlibActions.js'
 import { ActionPartChange } from '../../blueprints/context/services/PartAndPieceInstanceActionService.js'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { IBranding } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import * as Infinites from '../../playout/infinites.js'
 import * as TakeApi from '../../playout/take.js'
+import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
+import { handleExecuteAdlibAction } from '../adlibAction.js'
+import { handleTakeNextPart } from '../take.js'
+import { updateTimeline } from '../timeline/generate.js'
 
 const syncPlayheadInfinitesForNextPartInstanceMock = jest.spyOn(Infinites, 'syncPlayheadInfinitesForNextPartInstance')
 const takeNextPartMock = jest.spyOn(TakeApi, 'performTakeToNextedPart')
 
 jest.mock('../timeline/generate')
-import { updateTimeline } from '../timeline/generate.js'
+
 type TupdateTimeline = jest.MockedFunction<typeof updateTimeline>
 const updateTimelineMock = updateTimeline as TupdateTimeline
 

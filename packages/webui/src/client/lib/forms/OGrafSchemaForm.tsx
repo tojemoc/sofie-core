@@ -1,5 +1,6 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import { getDefaultDataFromSchema } from 'ograf-form'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+
 import type { JSONSchema } from '@sofie-automation/blueprints-integration'
 
 declare global {

@@ -1,15 +1,17 @@
 import deepmerge from 'deepmerge'
 import { ReadonlyDeep } from 'type-fest'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { clone } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { profiler } from '../../api/profiler'
 import { logger } from '../../logging'
-import { LiveQueryHandle, lazyIgnore } from '../lib'
-import { CustomPublish, CustomPublishChanges } from './publish'
 import { waitForAllObserversReady } from '../../publications/lib/lib'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { lazyIgnore, LiveQueryHandle } from '../lib'
+import { CustomPublish, CustomPublishChanges } from './publish'
 
 const apmNamespace = 'optimizedObserver'
 
@@ -78,8 +80,7 @@ export async function setUpOptimizedObserverInner<
 	lazynessDuration = 3 // ms
 ): Promise<void> {
 	let thisObserverWrapper = optimizedObservers[identifier] as
-		| OptimizedObserverWrapper<PublicationDoc, Args, State>
-		| undefined
+		OptimizedObserverWrapper<PublicationDoc, Args, State> | undefined
 
 	// Once this receiver stops, this will be called to remove it from the subscriber lists
 	function removeReceiver() {

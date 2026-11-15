@@ -1,6 +1,7 @@
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { getCurrentSegmentParts } from '../segmentParts.js'
 
 function makePart(id: string, title: string): DBPart {

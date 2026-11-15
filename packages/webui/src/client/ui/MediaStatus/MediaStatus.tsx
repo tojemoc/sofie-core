@@ -1,6 +1,13 @@
-import { useMemo, type JSX } from 'react'
-import { useSubscription, useSubscriptions, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { useMemo } from 'react'
+import type { JSX } from 'react'
+
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { IBlueprintActionManifestDisplayContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
 import type {
 	AdLibActionId,
 	PartId,
@@ -13,6 +20,13 @@ import type {
 	SegmentId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+import type { ExpectedPackage } from '@sofie-automation/shared-lib/dist/package-manager/package'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -23,19 +37,10 @@ import {
 	RundownPlaylists,
 	Rundowns,
 } from '../../collections/index.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { type ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import type { ExpectedPackage } from '@sofie-automation/shared-lib/dist/package-manager/package'
-import type { PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
-import type { IBlueprintActionManifestDisplayContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import { type Piece, PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
-import { UIPieceContentStatuses, UIShowStyleBases } from '../Collections.js'
-import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { i18nTranslator } from '../i18n.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { useSubscription, useSubscriptions, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import { RundownUtils } from '../../lib/rundown.js'
+import { UIPieceContentStatuses, UIShowStyleBases } from '../Collections.js'
+import { i18nTranslator } from '../i18n.js'
 
 export function MediaStatus({
 	playlistIds,
@@ -298,7 +303,7 @@ function useMediaStatusSubscriptions(
 		CorelibPubSub.uiPartInstances,
 		activePlaylists.filter((playlist) => playlist.activationId).map((playlist) => [playlist.activationId ?? null])
 	)
-	readyStatus[counter++] = useSubscriptions(
+	readyStatus[counter] = useSubscriptions(
 		CorelibPubSub.uiPieceInstances,
 		activePlaylists.map((playlist) => [
 			playlist.rundownIdsInOrder,
@@ -386,7 +391,15 @@ function useAdLibItems(partIds: PartId[], partMeta: Map<PartId, PartMeta>) {
 				const meta = partMeta.get(adlib.partId)
 
 				if (!meta) return
-				return getListItemFromPieceAndPartMeta(adlib._id, adlib, meta, adlib.partId, undefined, meta.segmentId, true)
+				return getListItemFromPieceAndPartMeta(
+					adlib._id,
+					adlib,
+					meta,
+					adlib.partId,
+					undefined,
+					meta.segmentId,
+					true
+				)
 			}),
 		[adlibs, partMeta],
 		[]
@@ -616,7 +629,8 @@ function getListItemFromRundownPieceAndRundownMeta(
 	meta: RundownMeta
 ): MediaStatusListItem | undefined {
 	const showStyleBase = meta.showStyleBaseId && UIShowStyleBases.findOne(meta.showStyleBaseId)
-	const sourceLayer = piece.sourceLayerId !== undefined ? showStyleBase?.sourceLayers?.[piece.sourceLayerId] : undefined
+	const sourceLayer =
+		piece.sourceLayerId !== undefined ? showStyleBase?.sourceLayers?.[piece.sourceLayerId] : undefined
 
 	if (sourceLayer?.isHidden) return
 
@@ -677,7 +691,8 @@ function getListItemFromPieceAndPartMeta(
 	isAdLib: boolean
 ): MediaStatusListItem | undefined {
 	const showStyleBase = meta.showStyleBaseId && UIShowStyleBases.findOne(meta.showStyleBaseId)
-	const sourceLayer = piece.sourceLayerId !== undefined ? showStyleBase?.sourceLayers?.[piece.sourceLayerId] : undefined
+	const sourceLayer =
+		piece.sourceLayerId !== undefined ? showStyleBase?.sourceLayers?.[piece.sourceLayerId] : undefined
 
 	if (sourceLayer?.isHidden) return
 

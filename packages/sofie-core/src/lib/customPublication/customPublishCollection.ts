@@ -1,8 +1,10 @@
-import { getRandomId, deleteAllUndefinedProperties, clone } from '@sofie-automation/corelib/dist/lib'
-import { ProtectedString, isProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { ReadonlyDeep } from 'type-fest'
-import { profiler } from '../../api/profiler'
+
 import { diffObject } from '@sofie-automation/corelib/dist/diffObject'
+import { clone, deleteAllUndefinedProperties, getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { isProtectedString, ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { profiler } from '../../api/profiler'
 import { CustomPublishChanges } from './publish'
 
 type SelectorFunction<TDoc extends { _id: ProtectedString<any> }> = (doc: TDoc) => boolean

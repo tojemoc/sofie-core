@@ -1,17 +1,18 @@
 import type { ChangeStreamDocument } from 'mongodb'
-import { ProtectedString } from '../protectedString.js'
+
+import { diffObject } from '../diffObject.js'
 import { clone } from '../lib.js'
 import {
-	MongoQuery,
-	MongoFieldSpecifier,
-	SortSpecifier,
-	mongoWhere,
-	mongoProjectDocument,
 	makeMongoSortComparator,
+	MongoFieldSpecifier,
+	mongoProjectDocument,
+	MongoQuery,
+	mongoWhere,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
+	SortSpecifier,
 } from '../mongo.js'
-import { diffObject } from '../diffObject.js'
+import { ProtectedString } from '../protectedString.js'
 
 /** A handle to a running observe; call `stop()` to tear it down. */
 export interface MongoLiveQueryHandle {

@@ -1,20 +1,22 @@
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import type { UIBlueprintUpgradeStatusCoreSystem } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
-import { useTranslation } from 'react-i18next'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { UIBlueprintUpgradeStatuses } from '../../Collections.js'
-import { getUpgradeStatusMessage, SystemUpgradeStatusButtons } from '../Upgrades/Components.js'
-import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { Blueprints, CoreSystem } from '../../../collections/index.js'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { UIBlueprintUpgradeStatusCoreSystem } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { Blueprints, CoreSystem } from '../../../collections/index.js'
 import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
 import { EditAttribute } from '../../../lib/EditAttribute.js'
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { RedirectToBlueprintButton } from '../../../lib/SettingsNavigation.js'
+import { UIBlueprintUpgradeStatuses } from '../../Collections.js'
+import { getUpgradeStatusMessage, SystemUpgradeStatusButtons } from '../Upgrades/Components.js'
 
 interface SystemManagementBlueprintProps {
 	coreSystem: ICoreSystem | undefined

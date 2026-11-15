@@ -1,7 +1,8 @@
-import type { DeviceConfigManifest } from '../core/deviceConfigManifest.js'
-import type { PeripheralDeviceId, RundownPlaylistId, PartInstanceId, PieceInstanceId } from '../core/model/Ids.js'
-import type { StatusCode } from '../lib/status.js'
 import type { DeviceStatusDetail } from 'timeline-state-resolver-types'
+
+import type { DeviceConfigManifest } from '../core/deviceConfigManifest.js'
+import type { PartInstanceId, PeripheralDeviceId, PieceInstanceId, RundownPlaylistId } from '../core/model/Ids.js'
+import type { StatusCode } from '../lib/status.js'
 
 // Re-export for use in UI components
 export type { DeviceStatusDetail } from 'timeline-state-resolver-types'
@@ -112,6 +113,7 @@ export type PeripheralDeviceSubType = PERIPHERAL_SUBTYPE_PROCESS | string | numb
 
 /** SUBTYPE_PROCESS means that the device is NOT a sub-device, but a (parent) process. */
 export type PERIPHERAL_SUBTYPE_PROCESS = '_process'
+// eslint-disable-next-line no-useless-assignment -- exported const; cross-file reads aren't visible to this rule
 export const PERIPHERAL_SUBTYPE_PROCESS: PERIPHERAL_SUBTYPE_PROCESS = '_process'
 
 export interface PeripheralDeviceInitOptions {

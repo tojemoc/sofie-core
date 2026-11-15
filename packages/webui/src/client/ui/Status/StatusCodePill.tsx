@@ -1,10 +1,12 @@
-import type * as React from 'react'
+import ClassNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import ClassNames from 'classnames'
+import type * as React from 'react'
+
 import { StatusCode } from '@sofie-automation/blueprints-integration'
-import {} from './SystemStatus/SystemStatus.js'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+
+import './SystemStatus/SystemStatus.js'
 
 export function statusCodeToString(t: TFunction, statusCode: StatusCode): string {
 	switch (statusCode) {

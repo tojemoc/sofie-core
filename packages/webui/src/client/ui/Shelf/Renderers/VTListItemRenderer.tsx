@@ -1,19 +1,19 @@
-import { useState, useRef, useEffect, useContext } from 'react'
 import ClassNames from 'classnames'
-import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
-import type { VTContent, LiveSpeakContent } from '@sofie-automation/blueprints-integration'
-import { getElementDocumentOffset, type OffsetPosition } from '../../../utils/positions.js'
-import { getElementWidth } from '../../../utils/dimensions.js'
+import { useContext, useEffect, useRef, useState } from 'react'
+
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import type { LiveSpeakContent, VTContent } from '@sofie-automation/blueprints-integration'
+
+import { RundownUtils } from '../../../lib/rundown.js'
 import { StyledTimecode } from '../../../lib/StyledTimecode.js'
 import { ActionAdLibHotkeyPreview } from '../../../lib/triggers/ActionAdLibHotkeyPreview.js'
-import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { HourglassIconSmall } from '../../../lib/ui/icons/notifications.js'
-import {
-	PreviewPopUpContext,
-	type IPreviewPopUpSession,
-	convertSourceLayerItemToPreview,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import { RundownUtils } from '../../../lib/rundown.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
 
 export const VTListItemRenderer: React.FunctionComponent<ILayerItemRendererProps> = (
 	props: ILayerItemRendererProps
@@ -165,7 +165,9 @@ export const VTListItemRenderer: React.FunctionComponent<ILayerItemRendererProps
 				{props.adLibListItem.name}
 			</td>
 			<td className="adlib-panel__list-view__list__table__cell--duration">
-				{sourceDuration ? <StyledTimecode time={sourceDuration} studioSettings={props.studio?.settings} /> : null}
+				{sourceDuration ? (
+					<StyledTimecode time={sourceDuration} studioSettings={props.studio?.settings} />
+				) : null}
 			</td>
 			{/*<td className='adlib-panel__list-view__list__table__cell--data'>
 			&nbsp;

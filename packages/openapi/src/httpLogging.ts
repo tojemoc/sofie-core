@@ -1,4 +1,4 @@
-import { Middleware, ResponseContext, ErrorContext, RequestContext, FetchParams } from '../client/ts/index.js'
+import { ErrorContext, FetchParams, Middleware, RequestContext, ResponseContext } from '../client/ts/index.js'
 
 class TestError extends Error {
 	override name: 'TestError' = 'TestError' as const

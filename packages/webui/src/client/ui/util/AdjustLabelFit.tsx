@@ -1,4 +1,5 @@
-import { useEffect, useRef, useLayoutEffect, type CSSProperties, type FunctionComponent } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
+import type { CSSProperties, FunctionComponent } from 'react'
 
 export interface AdjustLabelFitProps {
 	/**

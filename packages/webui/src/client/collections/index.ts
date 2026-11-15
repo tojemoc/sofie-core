@@ -7,40 +7,42 @@
  * and will be stronger typed in the future.
  */
 
-import type { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import type { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
-import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import {
 	CollectionName,
 	CustomCollectionName as CustomCorelibCollectionName,
 } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import type { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import type { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
+import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import type { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
 import type { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
 import type { PackageContainerStatusDB } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
-import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { type ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import type { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
 import type { Evaluation } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
-import type { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
+import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { SnapshotItem } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+import type { TranslationsBundle } from '@sofie-automation/meteor-lib/dist/collections/TranslationsBundles'
+import type { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
+import type { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
+import type { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
+
 import {
 	createSyncCorelibCustomPublicationMongoCollection,
 	createSyncMongoCollection,
 	createSyncReadOnlyMongoCollection,
 } from './lib.js'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import type { SnapshotItem } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import type { TranslationsBundle } from '@sofie-automation/meteor-lib/dist/collections/TranslationsBundles'
-import type { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import type { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
 
 /**
  * AdLibActions, as published by the `uiAdLibActions` and `uiAdLibActionsForPart` custom publications.

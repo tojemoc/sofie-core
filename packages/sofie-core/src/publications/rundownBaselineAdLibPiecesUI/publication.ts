@@ -1,22 +1,24 @@
-import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { ReadonlyDeep } from 'type-fest'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PieceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
 import { check, zAnyArray } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
-import { normaliseIds } from '../lib/lib'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { ContentCache, RundownBaselineAdLibItemOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import { RundownContentObserver, UIRundownBaselineAdLibPiecesArgs } from './rundownContentObserver'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
+import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { normaliseIds } from '../lib/lib'
+import { ContentCache, createReactiveContentCache, RundownBaselineAdLibItemOmitedFields } from './reactiveContentCache'
+import { RundownContentObserver, UIRundownBaselineAdLibPiecesArgs } from './rundownContentObserver'
 import type { PublicationRegistry } from '../../publicationRegistry'
 
 type PublicationDoc = Omit<RundownBaselineAdLibItem, RundownBaselineAdLibItemOmitedFields>

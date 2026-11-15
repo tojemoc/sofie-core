@@ -1,8 +1,9 @@
 import type { SplitsContent } from '@sofie-automation/blueprints-integration'
-import type { IProps } from './ThumbnailRendererFactory.js'
+
 import { RenderSplitPreview } from '../../../../lib/SplitPreviewBox.js'
 import { getSplitPreview } from '../../../../lib/ui/splitPreview.js'
 import { useContentStatusForPieceInstance } from '../../../SegmentTimeline/withMediaObjectStatus.js'
+import type { IProps } from './ThumbnailRendererFactory.js'
 
 export function SplitsThumbnailRenderer({ pieceInstance }: Readonly<IProps>): JSX.Element {
 	const contentStatus = useContentStatusForPieceInstance(pieceInstance.instance)

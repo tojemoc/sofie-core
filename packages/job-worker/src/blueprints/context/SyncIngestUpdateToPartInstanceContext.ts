@@ -1,46 +1,48 @@
-import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { normalizeArrayToMap, omit } from '@sofie-automation/corelib/dist/lib'
-import { protectString, protectStringArray, unprotectStringArray } from '@sofie-automation/corelib/dist/protectedString'
-import { PlayoutPartInstanceModel } from '../../playout/model/PlayoutPartInstanceModel.js'
-import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
 import { ReadonlyDeep } from 'type-fest'
 import _ from 'underscore'
-import { ContextInfo } from './CommonContext.js'
-import { RundownUserContext } from './RundownUserContext.js'
+
 import {
-	ISyncIngestUpdateToPartInstanceContext,
-	IBlueprintPiece,
-	IBlueprintPieceInstance,
-	OmitId,
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
 	IBlueprintPartInstance,
+	IBlueprintPiece,
+	IBlueprintPieceInstance,
+	ISyncIngestUpdateToPartInstanceContext,
+	OmitId,
 	SomeContent,
-	WithTimeline,
 	Time,
+	WithTimeline,
 } from '@sofie-automation/blueprints-integration'
-import { postProcessPieces, postProcessTimelineObjects } from '../postProcess.js'
-import { sanitisePieceBrandingFromBlueprint } from '../postProcessBranding.js'
-import {
-	IBlueprintPieceObjectsSampleKeys,
-	convertPieceInstanceToBlueprints,
-	convertPartInstanceToBlueprints,
-	convertPartialBlueprintMutablePartToCore,
-	convertPartialBlueprintMutatablePartInstanceToCore,
-} from './lib.js'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { JobContext, JobStudio, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
 	PieceTimelineObjectsBlob,
 	serializePieceTimelineObjectsBlob,
 } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { EXPECTED_INGEST_TO_PLAYOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
-import { getCurrentTime } from '../../lib/index.js'
-import { TTimersService } from './services/TTimersService.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { RundownTTimer, RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { normalizeArrayToMap, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString, protectStringArray, unprotectStringArray } from '@sofie-automation/corelib/dist/protectedString'
+import { EXPECTED_INGEST_TO_PLAYOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
 import type { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { JobContext, JobStudio, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
+import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from '../../playout/model/PlayoutPartInstanceModel.js'
+import { postProcessPieces, postProcessTimelineObjects } from '../postProcess.js'
+import { sanitisePieceBrandingFromBlueprint } from '../postProcessBranding.js'
+import { ContextInfo } from './CommonContext.js'
+import {
+	convertPartialBlueprintMutablePartToCore,
+	convertPartialBlueprintMutatablePartInstanceToCore,
+	convertPartInstanceToBlueprints,
+	convertPieceInstanceToBlueprints,
+	IBlueprintPieceObjectsSampleKeys,
+} from './lib.js'
+import { RundownUserContext } from './RundownUserContext.js'
+import { TTimersService } from './services/TTimersService.js'
 
 export class SyncIngestUpdateToPartInstanceContext
 	extends RundownUserContext

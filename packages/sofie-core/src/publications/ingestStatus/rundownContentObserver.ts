@@ -1,5 +1,12 @@
+import _ from 'underscore'
+
 import { RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { NrcsIngestDataCache, PartInstances, Parts, RundownPlaylists, Rundowns } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../lib/lib'
+import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../lib/observerGroup'
 import {
 	ContentCache,
 	nrcsIngestDataCacheObjSpecifier,
@@ -9,11 +16,6 @@ import {
 	rundownFieldSpecifier,
 	// segmentFieldSpecifier,
 } from './reactiveContentCache'
-import { NrcsIngestDataCache, PartInstances, Parts, RundownPlaylists, Rundowns } from '../../collections'
-import { waitForAllObserversReady } from '../lib/lib'
-import _ from 'underscore'
-import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../lib/observerGroup'
-import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

@@ -1,11 +1,13 @@
+import type { ReadonlyDeep } from 'type-fest'
+
 import {
 	isValidForBranding,
 	resolvePartForBranding,
 	resolvePieceForBranding,
 } from '@sofie-automation/corelib/dist/playout/branding'
-import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import type { ReadonlyDeep } from 'type-fest'
+import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+
 import type { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
 
 /**

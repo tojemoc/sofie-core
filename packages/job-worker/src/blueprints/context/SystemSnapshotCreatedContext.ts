@@ -1,6 +1,8 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintPlayoutDevice, ISystemSnapshotCreatedContext, TSR } from '@sofie-automation/blueprints-integration'
 import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { ReadonlyDeep } from 'type-fest'
+
 import { JobContext, JobStudio } from '../../jobs/index.js'
 import { executePeripheralDeviceAction, listPlayoutDevicesForStudio } from '../../peripheralDevice.js'
 import { ProcessedStudioConfig } from '../config.js'

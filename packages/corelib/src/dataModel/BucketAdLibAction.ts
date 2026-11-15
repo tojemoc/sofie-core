@@ -1,7 +1,7 @@
-import { BucketAdLibActionId, BucketId, StudioId, ShowStyleVariantId, ShowStyleBaseId } from './Ids.js'
-import { RundownImportVersions } from './Rundown.js'
 import { AdLibActionCommon } from './AdlibAction.js'
 import { BucketAdLibIngestInfo } from './BucketAdLibPiece.js'
+import { BucketAdLibActionId, BucketId, ShowStyleBaseId, ShowStyleVariantId, StudioId } from './Ids.js'
+import { RundownImportVersions } from './Rundown.js'
 
 export interface BucketAdLibAction extends Omit<AdLibActionCommon, 'rundownId' | 'branding' | 'onlyValidForBranding'> {
 	_id: BucketAdLibActionId

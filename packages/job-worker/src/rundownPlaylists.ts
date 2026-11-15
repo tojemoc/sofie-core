@@ -1,18 +1,27 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import {
+	BlueprintResultRundownPlaylist,
+	IBlueprintRundown,
+	NoteSeverity,
+} from '@sofie-automation/blueprints-integration'
 import { RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { INoteBase } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
 	DBRundownPlaylist,
 	QuickLoopMarkerType,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import {
 	clone,
+	generateTranslation,
 	getHash,
 	getRandomString,
 	normalizeArrayToMap,
-	generateTranslation,
 } from '@sofie-automation/corelib/dist/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { sortRundownIDsInPlaylist } from '@sofie-automation/corelib/dist/playout/playlist'
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
 import {
@@ -21,33 +30,26 @@ import {
 	RegeneratePlaylistProps,
 	RemovePlaylistProps,
 } from '@sofie-automation/corelib/dist/worker/studio'
-import { ReadonlyDeep } from 'type-fest'
-import {
-	BlueprintResultRundownPlaylist,
-	IBlueprintRundown,
-	NoteSeverity,
-} from '@sofie-automation/blueprints-integration'
-import { JobContext, JobStudio } from './jobs/index.js'
-import { logger } from './logging.js'
-import { resetRundownPlaylist } from './playout/lib.js'
-import { runJobWithPlaylistLock, runWithPlayoutModel } from './playout/lock.js'
-import { updateTimeline } from './playout/timeline/generate.js'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { WrappedStudioBlueprint } from './blueprints/cache.js'
 import { StudioUserContext } from './blueprints/context/index.js'
-import { getCurrentTime } from './lib/index.js'
+import { convertRundownToBlueprints } from './blueprints/context/lib.js'
 import {
 	regeneratePlaylistAndRundownOrder,
 	removeRundownFromPlaylistAndUpdatePlaylist,
 	updatePlayoutAfterChangingRundownInPlaylist,
 } from './ingest/commit.js'
-import { allowedToMoveRundownOutOfPlaylist } from './rundown.js'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { PlaylistLock, RundownLock } from './jobs/lock.js'
 import { runWithRundownLock } from './ingest/lock.js'
-import { convertRundownToBlueprints } from './blueprints/context/lib.js'
-import { sortRundownIDsInPlaylist } from '@sofie-automation/corelib/dist/playout/playlist'
-import { INoteBase } from '@sofie-automation/corelib/dist/dataModel/Notes'
+import { JobContext, JobStudio } from './jobs/index.js'
+import { PlaylistLock, RundownLock } from './jobs/lock.js'
+import { getCurrentTime } from './lib/index.js'
+import { logger } from './logging.js'
+import { resetRundownPlaylist } from './playout/lib.js'
+import { runJobWithPlaylistLock, runWithPlayoutModel } from './playout/lock.js'
+import { updateTimeline } from './playout/timeline/generate.js'
+import { allowedToMoveRundownOutOfPlaylist } from './rundown.js'
 
 /**
  * Debug: Remove a Playlist and all its contents

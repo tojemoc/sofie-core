@@ -1,8 +1,9 @@
+import classNames from 'classnames'
 import { useMemo } from 'react'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
+
 import { RundownUtils } from '../../lib/rundown.js'
 import { FreezeFrameIcon } from '../../lib/ui/icons/freezeFrame.js'
-import classNames from 'classnames'
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
 import { FREEZE_FRAME_FLASH } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {

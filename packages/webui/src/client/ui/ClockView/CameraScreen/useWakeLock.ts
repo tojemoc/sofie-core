@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+
 import { catchError } from '../../../lib/lib.js'
 
 export function useWakeLock(): void {

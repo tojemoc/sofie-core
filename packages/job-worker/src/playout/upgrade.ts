@@ -6,7 +6,8 @@ import {
 	StudioRouteBehavior,
 	TSR,
 } from '@sofie-automation/blueprints-integration'
-import { IStudioSettings, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PERIPHERAL_SUBTYPE_PROCESS, PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import {
 	MappingsExt,
 	StudioDeviceSettings,
@@ -17,7 +18,8 @@ import {
 	StudioRouteSet,
 	StudioRouteSetExclusivityGroup,
 } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { Complete, clone, literal } from '@sofie-automation/corelib/dist/lib'
+import { FixUpBlueprintConfigContext } from '@sofie-automation/corelib/dist/fixUpBlueprintConfig/context'
+import { clone, Complete, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
@@ -25,13 +27,12 @@ import {
 	BlueprintFixUpConfigForStudioResult,
 	BlueprintValidateConfigForStudioResult,
 } from '@sofie-automation/corelib/dist/worker/studio'
+import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
+import { IStudioSettings, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import { compileCoreConfigValues } from '../blueprints/config.js'
 import { CommonContext } from '../blueprints/context/index.js'
 import { JobContext } from '../jobs/index.js'
-import { FixUpBlueprintConfigContext } from '@sofie-automation/corelib/dist/fixUpBlueprintConfig/context'
-import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
-import { PERIPHERAL_SUBTYPE_PROCESS, PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 /**
  * Run the Blueprint applyConfig for the studio

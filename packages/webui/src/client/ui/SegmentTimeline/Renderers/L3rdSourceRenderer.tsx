@@ -1,14 +1,15 @@
-import * as React from 'react'
-import { getElementWidth } from '../../../utils/dimensions.js'
-
 import classNames from 'classnames'
-import { PieceMultistepChevron, getPieceSteps } from '../../SegmentContainer/PieceMultistepChevron.js'
-import { CustomLayerItemRenderer, type ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
+import * as React from 'react'
+import type { ReadonlyDeep } from 'type-fest'
 
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import type { ReadonlyDeep } from 'type-fest'
+
 import { getNoticeLevelForPieceStatus } from '../../../lib/notifications/notifications.js'
 import { PieceStatusIcon } from '../../../lib/ui/PieceStatusIcon.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { getPieceSteps, PieceMultistepChevron } from '../../SegmentContainer/PieceMultistepChevron.js'
+import { CustomLayerItemRenderer } from './CustomLayerItemRenderer.js'
+import type { ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
 
 interface IProps extends ICustomLayerItemProps {
 	contentStatus?: ReadonlyDeep<PieceContentStatusObj>

@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor'
+
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
 import { logger } from './logging.js'
 import { MeteorCall } from './meteorApi.js'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
 
 export const systemTime = {
 	hasBeenSet: false,

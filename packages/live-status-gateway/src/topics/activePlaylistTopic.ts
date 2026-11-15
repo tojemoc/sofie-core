@@ -1,52 +1,43 @@
+import _ from 'underscore'
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import {
 	DBRundownPlaylist,
 	QuickLoopMarker,
 	QuickLoopMarkerType,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { assertNever, literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { SelectedPartInstances } from '../collections/partInstancesHandler.js'
-import { ShowStyleBaseExt } from '../collections/showStyleBaseHandler.js'
-import { WebSocketTopicBase, WebSocketTopic } from '../wsHandler.js'
-import { calculateCurrentSegmentTiming } from './helpers/segmentTiming.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import _ from 'underscore'
-import { calculateCurrentPartTiming } from './helpers/partTiming.js'
-import { getCurrentSegmentParts } from './helpers/segmentParts.js'
-import { SelectedPieceInstances, PieceInstanceMin } from '../collections/pieceInstancesHandler.js'
-import { toPieceStatus } from './helpers/pieceStatus.js'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
 import { normalizeArray } from '@sofie-automation/corelib/dist/lib'
 import {
-	PartStatus,
+	ActivePlaylistEvent,
+	ActivePlaylistQuickLoop,
+	ActivePlaylistTimingMode,
 	CurrentPartStatus,
 	CurrentSegment,
-	ActivePlaylistEvent,
-	ActivePlaylistTimingMode,
-	ActivePlaylistQuickLoop,
+	PartStatus,
 	QuickLoopMarker as QuickLoopMarkerStatus,
 	QuickLoopMarkerType as QuickLoopMarkerStatusType,
 	TTimerStatus,
-	TTimerIndex,
-	TimerModeCountdown,
-	TimerModeFreeRun,
-	TimerModeTimeOfDay,
-	TimerStateRunning,
-	TimerStatePaused,
 } from '@sofie-automation/live-status-gateway-api'
-
-import { CollectionHandlers } from '../liveStatusServer.js'
 import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
+import { assertNever, literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { Complete, PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
 
-// Union types for timer modes and states (not exported from API package)
-type TimerMode = TimerModeCountdown | TimerModeFreeRun | TimerModeTimeOfDay
-type TimerState = TimerStateRunning | TimerStatePaused
+import { SelectedPartInstances } from '../collections/partInstancesHandler.js'
+import { PieceInstanceMin, SelectedPieceInstances } from '../collections/pieceInstancesHandler.js'
+import { ShowStyleBaseExt } from '../collections/showStyleBaseHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
+import { calculateCurrentPartTiming } from './helpers/partTiming.js'
+import { toPieceStatus } from './helpers/pieceStatus.js'
+import { getCurrentSegmentParts } from './helpers/segmentParts.js'
+import { calculateCurrentSegmentTiming } from './helpers/segmentTiming.js'
 
 const THROTTLE_PERIOD_MS = 100
 
@@ -275,7 +266,7 @@ export class ActivePlaylistTopic extends WebSocketTopicBase implements WebSocket
 		if (!tTimers || tTimers.length === 0) {
 			return [
 				{
-					index: 1 as TTimerIndex,
+					index: 1,
 					label: '',
 					configured: false,
 					mode: null,
@@ -284,7 +275,7 @@ export class ActivePlaylistTopic extends WebSocketTopicBase implements WebSocket
 					anchorPartId: null,
 				},
 				{
-					index: 2 as TTimerIndex,
+					index: 2,
 					label: '',
 					configured: false,
 					mode: null,
@@ -293,7 +284,7 @@ export class ActivePlaylistTopic extends WebSocketTopicBase implements WebSocket
 					anchorPartId: null,
 				},
 				{
-					index: 3 as TTimerIndex,
+					index: 3,
 					label: '',
 					configured: false,
 					mode: null,
@@ -309,12 +300,12 @@ export class ActivePlaylistTopic extends WebSocketTopicBase implements WebSocket
 
 	private transformTTimer({ index, label, mode, state, projectedState, anchorPartId }: RundownTTimer): TTimerStatus {
 		return {
-			index: index as TTimerIndex,
+			index: index,
 			label,
 			configured: !!(mode && state),
-			mode: mode as TimerMode | null,
-			state: state as TimerState | null,
-			projected: projectedState ? (projectedState as TimerState) : null,
+			mode: mode,
+			state: state,
+			projected: projectedState ? projectedState : null,
 			anchorPartId: anchorPartId ? unprotectString(anchorPartId) : null,
 		}
 	}
@@ -411,6 +402,6 @@ function translatePlaylistTimingType(type: PlaylistTimingType): ActivePlaylistTi
 		default:
 			assertNever(type)
 			// Cast and return the value anyway, so that the application works
-			return type as any as ActivePlaylistTimingMode
+			return type
 	}
 }

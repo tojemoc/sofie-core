@@ -1,12 +1,15 @@
-import type { SplitsContentBoxContent, SplitsContentBoxProperties } from '@sofie-automation/blueprints-integration'
-import type { SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import type { SplitsBoxLayoutScrubSettings } from '../../../lib/ui/splitsPreviewVideo.js'
-import { setVideoElementPosition } from '../../../lib/ui/videoPreviewScrub.js'
 import classNames from 'classnames'
 import { useEffect, useMemo, useRef } from 'react'
-import { getSplitPreview, SplitRole, type SplitSubItem } from '../../../lib/ui/splitPreview.js'
 import type { ReadonlyDeep } from 'type-fest'
+
+import type { SplitsContentBoxContent, SplitsContentBoxProperties } from '@sofie-automation/blueprints-integration'
+import type { SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import { getSplitPreview, SplitRole } from '../../../lib/ui/splitPreview.js'
+import { setVideoElementPosition } from '../../../lib/ui/videoPreviewScrub.js'
+import type { SplitSubItem } from '../../../lib/ui/splitPreview.js'
+import type { SplitsBoxLayoutScrubSettings } from '../../../lib/ui/splitsPreviewVideo.js'
 
 interface BoxLayoutPreviewProps {
 	content: {

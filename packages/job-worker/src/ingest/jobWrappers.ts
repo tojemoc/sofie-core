@@ -1,15 +1,16 @@
-import { IngestPropsBase } from '@sofie-automation/corelib/dist/worker/ingest'
-import { JobContext } from '../jobs/index.js'
-import {
-	IngestUpdateOperationFunction,
-	UpdateIngestRundownResult,
-	runCustomIngestUpdateOperation,
-	runIngestUpdateOperation,
-} from './runOperation.js'
-import { CommitIngestData } from './lock.js'
-import { IngestModel } from './model/IngestModel.js'
 import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
 import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { IngestPropsBase } from '@sofie-automation/corelib/dist/worker/ingest'
+
+import { JobContext } from '../jobs/index.js'
+import { CommitIngestData } from './lock.js'
+import { IngestModel } from './model/IngestModel.js'
+import {
+	IngestUpdateOperationFunction,
+	runCustomIngestUpdateOperation,
+	runIngestUpdateOperation,
+	UpdateIngestRundownResult,
+} from './runOperation.js'
 
 /**
  * Wrap a mos specific ingest job to be an ingest update operation, with a provided function which runs a precheck and returns the final ingestRundown mutator

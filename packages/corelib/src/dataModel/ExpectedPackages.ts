@@ -1,6 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { ExpectedPackage, Time } from '@sofie-automation/blueprints-integration'
-import { protectString } from '../protectedString.js'
+
 import { getHash, hashObj } from '../lib.js'
+import { protectString } from '../protectedString.js'
 import {
 	AdLibActionId,
 	BucketAdLibActionId,
@@ -15,7 +18,6 @@ import {
 	SegmentId,
 	StudioId,
 } from './Ids.js'
-import { ReadonlyDeep } from 'type-fest'
 
 /*
  Expected Packages are created from Pieces and other content in the rundown.
@@ -136,8 +138,7 @@ export interface ExpectedPackageIngestSourceStudioBaseline extends ExpectedPacka
 export type ExpectedPackageIngestSourcePart = ExpectedPackageIngestSourcePiece | ExpectedPackageIngestSourceAdlibAction
 
 export type ExpectedPackageIngestSourceBucket =
-	| ExpectedPackageIngestSourceBucketAdlibPiece
-	| ExpectedPackageIngestSourceBucketAdlibAction
+	ExpectedPackageIngestSourceBucketAdlibPiece | ExpectedPackageIngestSourceBucketAdlibAction
 
 export type ExpectedPackageIngestSourceRundownBaseline =
 	| ExpectedPackageIngestSourceBaselinePiece

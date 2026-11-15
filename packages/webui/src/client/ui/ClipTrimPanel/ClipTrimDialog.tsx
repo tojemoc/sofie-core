@@ -1,19 +1,23 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ClipTrimPanel } from './ClipTrimPanel.js'
-import type { VTContent } from '@sofie-automation/blueprints-integration'
-import { ModalDialog, type SomeEvent } from '../../lib/ModalDialog.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
+import type { ReadonlyDeep } from 'type-fest'
+
+import { getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { type Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
 import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { ReadonlyDeep } from 'type-fest'
+import type { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { ModalDialog } from '../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { ClipTrimPanel } from './ClipTrimPanel.js'
+import type { SomeEvent } from '../../lib/ModalDialog.js'
 
 export interface IProps {
 	playlistId: RundownPlaylistId

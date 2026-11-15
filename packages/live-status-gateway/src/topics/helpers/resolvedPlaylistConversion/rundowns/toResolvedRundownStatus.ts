@@ -1,6 +1,7 @@
-import { ResolvedPlaylistConversionContext, getOrderedSegmentsInRundown } from '../context/conversionContext.js'
-import { toResolvedSegmentStatus } from '../segments/toResolvedSegmentStatus.js'
 import type { ResolvedRundown } from '@sofie-automation/live-status-gateway-api'
+
+import { getOrderedSegmentsInRundown, ResolvedPlaylistConversionContext } from '../context/conversionContext.js'
+import { toResolvedSegmentStatus } from '../segments/toResolvedSegmentStatus.js'
 
 /** Converts a rundown id into a fully expanded `ResolvedRundown` payload. */
 export function toResolvedRundownStatus(ctx: ResolvedPlaylistConversionContext, rundownId: string): ResolvedRundown {

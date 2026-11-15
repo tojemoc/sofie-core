@@ -1,6 +1,7 @@
-import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PublicationContext } from '../../publications/lib/lib'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { PublicationContext } from '../../publications/lib/lib'
 
 export interface CustomPublishChanges<T extends { _id: ProtectedString<any> }> {
 	added: Array<T>

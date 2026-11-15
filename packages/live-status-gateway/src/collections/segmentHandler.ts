@@ -1,16 +1,18 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { SelectedPartInstances } from './partInstancesHandler.js'
-import { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
-import { SegmentsHandler } from './segmentsHandler.js'
+import { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CollectionHandlers } from '../liveStatusServer.js'
+import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
 import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
+import { SelectedPartInstances } from './partInstancesHandler.js'
+import { SegmentsHandler } from './segmentsHandler.js'
 
 const PLAYLIST_KEYS = ['rundownIdsInOrder'] as const
 type Playlist = PickKeys<DBRundownPlaylist, typeof PLAYLIST_KEYS>

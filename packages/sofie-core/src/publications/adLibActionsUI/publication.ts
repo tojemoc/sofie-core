@@ -1,25 +1,27 @@
-import { resolveAdLibActionForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
+import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { AdLibActionId, PartId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { resolveAdLibActionForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
 import { check, zAnyArray } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
-import { normaliseIds } from '../lib/lib'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { ContentCache, AdLibActionOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { RundownContentObserver, UIAdLibActionsArgs } from './rundownContentObserver'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
-import type { PublicationRegistry } from '../../publicationRegistry'
+import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { normaliseIds } from '../lib/lib'
+import { AdLibActionOmitedFields, ContentCache, createReactiveContentCache } from './reactiveContentCache'
+import { RundownContentObserver, UIAdLibActionsArgs } from './rundownContentObserver'
 import type { CustomPublish } from '../../lib/customPublication'
+import type { PublicationRegistry } from '../../publicationRegistry'
 
 export interface UIAdLibActionsState extends BrandingState {
 	contentCache: ReadonlyDeep<ContentCache>

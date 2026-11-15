@@ -1,31 +1,23 @@
-import React, { useCallback, useMemo } from 'react'
-import ClassNames from 'classnames'
-import { faPencilAlt, faTrash, faCheck, faExclamationTriangle, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faExclamationTriangle, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { type ISourceLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { literal, getRandomString } from '@sofie-automation/corelib/dist/lib'
+import ClassNames from 'classnames'
 import Tooltip from 'rc-tooltip'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { sourceLayerTypeString } from '../../../lib/rundown.js'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { getHelpMode } from '../../../lib/localStorage.js'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
-import { findHighestRank } from '../StudioSettings.js'
-import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
 import type {
 	ObjectOverrideSetOp,
 	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import {
-	getAllCurrentAndDeletedItemsFromOverrides,
-	type OverrideOpHelper,
-	useOverrideOpHelper,
-	type WrappedOverridableItemNormal,
-} from '../util/OverrideOpHelper.js'
-import { TextInputControl } from '../../../lib/Components/TextInput.js'
+
+import { ShowStyleBases } from '../../../collections/index.js'
 import { CheckboxControl } from '../../../lib/Components/Checkbox.js'
-import { IntInputControl } from '../../../lib/Components/IntInput.js'
 import { DropdownInputControl, getDropdownInputOptions } from '../../../lib/Components/DropdownInput.js'
+import { IntInputControl } from '../../../lib/Components/IntInput.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
@@ -33,7 +25,14 @@ import {
 	LabelAndOverridesForDropdown,
 	LabelAndOverridesForInt,
 } from '../../../lib/Components/LabelAndOverrides.js'
-import { ShowStyleBases } from '../../../collections/index.js'
+import { TextInputControl } from '../../../lib/Components/TextInput.js'
+import { getHelpMode } from '../../../lib/localStorage.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { sourceLayerTypeString } from '../../../lib/rundown.js'
+import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
+import { findHighestRank } from '../StudioSettings.js'
+import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../util/OverrideOpHelper.js'
+import type { OverrideOpHelper, WrappedOverridableItemNormal } from '../util/OverrideOpHelper.js'
 
 // Re-export for local use, keeping the same name for minimal code changes
 const sourceLayerString = sourceLayerTypeString
@@ -244,11 +243,18 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 				<td className="settings-studio-source-table__actions table-item-actions c3">
 					{!item.defaults && (
 						<button className="action-btn" disabled>
-							<FontAwesomeIcon icon={faSync} title={t('Source layer cannot be reset as it has no default values')} />
+							<FontAwesomeIcon
+								icon={faSync}
+								title={t('Source layer cannot be reset as it has no default values')}
+							/>
 						</button>
 					)}
 					{item.defaults && item.overrideOps.length > 0 && (
-						<button className="action-btn" onClick={confirmReset} title={t('Reset source layer to default values')}>
+						<button
+							className="action-btn"
+							onClick={confirmReset}
+							title={t('Reset source layer to default values')}
+						>
 							<FontAwesomeIcon icon={faSync} />
 						</button>
 					)}
@@ -264,8 +270,15 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 				<tr className="expando-details hl">
 					<td colSpan={4}>
 						<div className="properties-grid">
-							<LabelAndOverrides label={t('Source Name')} item={item} itemKey={'name'} overrideHelper={overrideHelper}>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+							<LabelAndOverrides
+								label={t('Source Name')}
+								item={item}
+								itemKey={'name'}
+								overrideHelper={overrideHelper}
+							>
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 							<LabelAndOverrides
 								label={t('Source Abbreviation')}
@@ -273,11 +286,17 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'abbreviation'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 							<label className="field">
 								<LabelActual label={t('Internal ID')} />
-								<TextInputControl value={item.id} handleUpdate={doChangeItemId} disabled={!!item.defaults} />
+								<TextInputControl
+									value={item.id}
+									handleUpdate={doChangeItemId}
+									disabled={!!item.defaults}
+								/>
 							</label>
 							<LabelAndOverridesForDropdown
 								label={t('Source Type')}
@@ -296,7 +315,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isRemoteInput'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Is a Guest Input')}
@@ -304,7 +325,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isGuestInput'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Is hidden')}
@@ -312,7 +335,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isHidden'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForInt
 								label={t('Display Rank')}
@@ -329,7 +354,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								overrideHelper={overrideHelper}
 								hint="When set, Pieces on this Source Layer will be used to display summaries, thumbnails etc for the Part in GUIs. "
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Display in a column in List View')}
@@ -337,7 +364,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'onListViewColumn'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Display AdLibs in a column in List View')}
@@ -345,7 +374,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'onListViewAdLibColumn'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Pieces on this layer can be cleared')}
@@ -353,7 +384,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isClearable'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Pieces on this layer are sticky')}
@@ -361,7 +394,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isSticky'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Only Pieces present in rundown are sticky')}
@@ -369,7 +404,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'stickyOriginalOnly'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('Allow disabling of Pieces')}
@@ -377,7 +414,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'allowDisable'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverridesForCheckbox
 								label={t('AdLibs on this layer can be queued')}
@@ -385,7 +424,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'isQueueable'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<CheckboxControl value={!!value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverridesForCheckbox>
 							<LabelAndOverrides
 								label={t('Exclusivity group')}
@@ -393,7 +434,9 @@ function SourceLayerEntry({ item, isExpanded, toggleExpanded, overrideHelper }: 
 								itemKey={'exclusiveGroup'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 						</div>
 						<div className="m-1 me-2 text-end">

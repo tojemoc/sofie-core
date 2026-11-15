@@ -1,22 +1,24 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { PackageContainer } from '@sofie-automation/shared-lib/dist/package-manager/package'
 import { PackageManagerPackageContainers } from '@sofie-automation/shared-lib/dist/package-manager/publications'
-import { check } from '../../lib/check'
-import { ReadonlyDeep } from 'type-fest'
-import { Studios } from '../../collections'
-import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../../lib/customPublication'
-import type { PublicationRegistry } from '../../publicationRegistry'
-import { logger } from '../../logging'
 import {
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollectionsNames,
 } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { Studios } from '../../collections'
+import { check } from '../../lib/check'
+import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../../lib/customPublication'
+import { logger } from '../../logging'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import type { PublicationRegistry } from '../../publicationRegistry'
 
 type StudioFields = '_id' | 'packageContainersWithOverrides'
 const studioFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<DBStudio, StudioFields>>>({
@@ -65,8 +67,7 @@ async function manipulateExpectedPackagesPublicationData(
 	// Future: this may want to cache on the state, but with only a single observer there feels little point
 
 	const studio = (await Studios.findOneAsync(args.studioId, { projection: studioFieldSpecifier })) as
-		| Pick<DBStudio, StudioFields>
-		| undefined
+		Pick<DBStudio, StudioFields> | undefined
 
 	const packageContainers: { [containerId: string]: PackageContainer } = {}
 	if (studio) {

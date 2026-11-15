@@ -1,3 +1,4 @@
+import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 import { toResolvedRundownStatus } from '../rundowns/toResolvedRundownStatus.js'
 import {
 	makePart,
@@ -7,7 +8,6 @@ import {
 	makeSegment,
 	makeTestShowStyleBaseExt,
 } from './resolvedPlaylistConversionTestUtils.js'
-import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 
 jest.mock('../segments/toResolvedSegmentStatus.js', () => ({
 	toResolvedSegmentStatus: jest.fn((_ctx, segment) => ({ id: String(segment._id) })),

@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { useTranslation } from 'react-i18next'
+
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
 import type { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { LinePartIndicator } from './LinePartIndicator.js'
-import { useTranslation } from 'react-i18next'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import StudioContext from '../../RundownView/StudioContext.js'
-import { AdLibActions, AdLibPieces } from '../../../collections/index.js'
-import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import { AdLibActions, AdLibPieces } from '../../../collections/index.js'
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import StudioContext from '../../RundownView/StudioContext.js'
+import { LinePartIndicator } from './LinePartIndicator.js'
 
 interface IProps {
 	sourceLayers: ISourceLayerExtended[]

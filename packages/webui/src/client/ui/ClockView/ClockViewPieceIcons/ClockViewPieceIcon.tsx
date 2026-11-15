@@ -1,31 +1,28 @@
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import {
-	SourceLayerType,
-	type ISourceLayer,
-	type CameraContent,
-	type RemoteContent,
-	type EvsContent,
-} from '@sofie-automation/blueprints-integration'
-import { CamInputIcon } from './ClockViewRenderers/CamInputIcon.js'
-import { VTInputIcon } from './ClockViewRenderers/VTInputIcon.js'
-import SplitInputIcon from './ClockViewRenderers/SplitInputIcon.js'
-import { RemoteInputIcon } from './ClockViewRenderers/RemoteInputIcon.js'
-import { LiveSpeakInputIcon } from './ClockViewRenderers/LiveSpeakInputIcon.js'
-import { RemoteSpeakInputIcon } from './ClockViewRenderers/RemoteSpeakInputIcon.js'
-import { GraphicsInputIcon } from './ClockViewRenderers/GraphicsInputIcon.js'
-import { UnknownInputIcon } from './ClockViewRenderers/UnknownInputIcon.js'
+import type { ReadonlyDeep } from 'type-fest'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { findPieceInstanceToShow, findPieceInstanceToShowFromInstances } from './utils.js'
-import LocalInputIcon from './ClockViewRenderers/LocalInputIcon.js'
+import type { CameraContent, EvsContent, ISourceLayer, RemoteContent } from '@sofie-automation/blueprints-integration'
 import type {
 	PartInstanceId,
 	RundownId,
 	RundownPlaylistActivationId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { ReadonlyDeep } from 'type-fest'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { CamInputIcon } from './ClockViewRenderers/CamInputIcon.js'
+import { GraphicsInputIcon } from './ClockViewRenderers/GraphicsInputIcon.js'
+import { LiveSpeakInputIcon } from './ClockViewRenderers/LiveSpeakInputIcon.js'
+import LocalInputIcon from './ClockViewRenderers/LocalInputIcon.js'
+import { RemoteInputIcon } from './ClockViewRenderers/RemoteInputIcon.js'
+import { RemoteSpeakInputIcon } from './ClockViewRenderers/RemoteSpeakInputIcon.js'
+import SplitInputIcon from './ClockViewRenderers/SplitInputIcon.js'
+import { UnknownInputIcon } from './ClockViewRenderers/UnknownInputIcon.js'
+import { VTInputIcon } from './ClockViewRenderers/VTInputIcon.js'
+import { findPieceInstanceToShow, findPieceInstanceToShowFromInstances } from './utils.js'
 
 export interface IPropsHeader {
 	partInstanceId: PartInstanceId
@@ -62,7 +59,9 @@ export const PieceIcon = (props: {
 				const localContent = piece ? (piece.content as EvsContent | undefined) : undefined
 				return (
 					<LocalInputIcon
-						inputIndex={localContent ? localContent.studioLabelShort || localContent.studioLabel : undefined}
+						inputIndex={
+							localContent ? localContent.studioLabelShort || localContent.studioLabel : undefined
+						}
 						abbreviation={props.sourceLayer.abbreviation}
 					/>
 				)

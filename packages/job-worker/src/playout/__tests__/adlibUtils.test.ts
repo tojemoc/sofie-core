@@ -1,17 +1,18 @@
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { QueuePartTarget } from '@sofie-automation/blueprints-integration'
 import { RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { setupDefaultRundown, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { defaultRundownPlaylist } from '../../__mocks__/defaultCollectionObjects.js'
-import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { defaultRundownPlaylist } from '../../__mocks__/defaultCollectionObjects.js'
+import { setupDefaultRundown, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
 import { insertQueuedPartWithPieces, resolveQueuedAdlibInsertTarget } from '../adlibUtils.js'
 import { runJobWithPlayoutModel } from '../lock.js'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
 import { handleTakeNextPart } from '../take.js'
-import { QueuePartTarget } from '@sofie-automation/blueprints-integration'
 
 describe('adlibUtils', () => {
 	async function setupActivatedPlaylist(rundownId: RundownId, playlistId: RundownPlaylistId) {

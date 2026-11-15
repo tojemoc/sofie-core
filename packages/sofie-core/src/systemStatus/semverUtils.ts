@@ -1,6 +1,7 @@
 import * as semver from 'semver'
-import { StatusCode } from '@sofie-automation/blueprints-integration'
 import _ from 'underscore'
+
+import { StatusCode } from '@sofie-automation/blueprints-integration'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export type Version = string

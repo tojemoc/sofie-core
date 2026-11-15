@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
 	IBlueprintBrandingInfo,
 	IBlueprintPartInstance,
@@ -5,26 +8,25 @@ import {
 	ITimelineEventContext,
 	Time,
 } from '@sofie-automation/blueprints-integration'
-import { ReadonlyDeep } from 'type-fest'
-import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
+import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { clone } from '@sofie-automation/corelib/dist/lib'
+import { PieceInstance, ResolvedPieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
 	ABSessionInfo,
 	DBRundownPlaylist,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getCurrentTime } from '../../lib/index.js'
-import { PieceInstance, ResolvedPieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { ProcessedStudioConfig, ProcessedShowStyleConfig } from '../config.js'
-import _ from 'underscore'
+import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobStudio, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
+import { AbSessionHelper } from '../../playout/abPlayback/abSessionHelper.js'
+import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../config.js'
 import { convertPartInstanceToBlueprints, createBlueprintQuickLoopInfo, resolveSelectedBranding } from './lib.js'
 import { RundownContext } from './RundownContext.js'
-import { AbSessionHelper } from '../../playout/abPlayback/abSessionHelper.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
 
 export class OnTimelineGenerateContext extends RundownContext implements ITimelineEventContext {
 	readonly currentPartInstance: Readonly<IBlueprintPartInstance> | undefined

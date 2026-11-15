@@ -3,6 +3,7 @@
  * Driven through {@link InMemoryMongoCollection} so it exercises the production mock read path.
  */
 import { MongoClient } from 'mongodb'
+
 import { connectSharedMongoClient } from '../_integrationDb'
 import { ConformanceCase, runConformanceTable, SeedDoc } from './_harness'
 

@@ -1,4 +1,27 @@
 import _ from 'underscore'
+
+import {
+	IBlueprintActionManifest,
+	IBlueprintAdLibPiece,
+	IBlueprintPiece,
+	IBlueprintPieceType,
+	PieceLifespan,
+	TimelineObjectCoreExt,
+	TSR,
+} from '@sofie-automation/blueprints-integration'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import {
+	deserializePieceTimelineObjectsBlob,
+	EmptyPieceTimelineObjectsBlob,
+	Piece,
+} from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { TimelineObjGeneric, TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+// Setup the mocks
+import * as hashlib from '@sofie-automation/corelib/dist/hash'
+import { clone, literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import {
 	postProcessAdLibActions,
 	postProcessAdLibPieces,
@@ -6,28 +29,7 @@ import {
 	postProcessRundownBaselineItems,
 	postProcessStudioBaselineObjects,
 } from '../postProcess.js'
-import {
-	IBlueprintActionManifest,
-	IBlueprintAdLibPiece,
-	IBlueprintPiece,
-	PieceLifespan,
-	TimelineObjectCoreExt,
-	TSR,
-	IBlueprintPieceType,
-} from '@sofie-automation/blueprints-integration'
-import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { clone, literal, omit } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TimelineObjGeneric, TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import {
-	deserializePieceTimelineObjectsBlob,
-	EmptyPieceTimelineObjectsBlob,
-	Piece,
-} from '@sofie-automation/corelib/dist/dataModel/Piece'
 
-// Setup the mocks
-import * as hashlib from '@sofie-automation/corelib/dist/hash'
 const getHashOrig = hashlib.getHash
 const getHashMock = jest.spyOn(hashlib, 'getHash')
 

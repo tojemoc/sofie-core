@@ -1,8 +1,9 @@
-import { PartInstanceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { logger } from '../../logging.js'
-import { JobContext } from '../../jobs/index.js'
-import { PlayoutModel } from '../model/PlayoutModel.js'
 import { Time } from '@sofie-automation/blueprints-integration'
+import { PartInstanceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { JobContext } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
+import { PlayoutModel } from '../model/PlayoutModel.js'
 import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
 import { PlayoutPieceInstanceModel } from '../model/PlayoutPieceInstanceModel.js'
 

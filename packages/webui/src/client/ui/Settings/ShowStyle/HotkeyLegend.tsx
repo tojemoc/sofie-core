@@ -1,19 +1,21 @@
-import React, { useCallback } from 'react'
-import ClassNames from 'classnames'
-import { faPencilAlt, faTrash, faCheck, faPlus, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faDownload, faPencilAlt, faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { HotkeyDefinition, DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { literal, getRandomString } from '@sofie-automation/corelib/dist/lib'
+import ClassNames from 'classnames'
+import React, { useCallback } from 'react'
+import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
-import { EditAttribute } from '../../../lib/EditAttribute.js'
-import { hotkeyHelper } from '../../../lib/hotkeyHelper.js'
-import { NotificationCenter, NoticeLevel, Notification } from '../../../lib/notifications/notifications.js'
-import { UploadButton } from '../../../lib/uploadButton.js'
+
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBShowStyleBase, HotkeyDefinition } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
 import { ShowStyleBases } from '../../../collections/index.js'
 import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
-import Button from 'react-bootstrap/esm/Button'
-import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { EditAttribute } from '../../../lib/EditAttribute.js'
+import { hotkeyHelper } from '../../../lib/hotkeyHelper.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { UploadButton } from '../../../lib/uploadButton.js'
 import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
 
 interface IHotkeyLegendSettingsProps {
@@ -120,7 +122,10 @@ export function HotkeyLegendSettings({ showStyleBase }: IHotkeyLegendSettingsPro
 												</label>
 											</div>
 											<div className="m-1 me-2 text-end">
-												<Button variant="primary" onClick={() => toggleExpanded(item._id, false)}>
+												<Button
+													variant="primary"
+													onClick={() => toggleExpanded(item._id, false)}
+												>
 													<FontAwesomeIcon icon={faCheck} />
 												</Button>
 											</div>

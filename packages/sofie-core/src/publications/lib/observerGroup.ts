@@ -1,7 +1,8 @@
-import { getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { LiveQueryHandle, lazyIgnore } from '../../lib/lib'
-import { waitForAllObserversReady } from './lib'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+
+import { lazyIgnore, LiveQueryHandle } from '../../lib/lib'
+import { waitForAllObserversReady } from './lib'
 
 export interface ReactiveMongoObserverGroupHandle extends LiveQueryHandle {
 	/**

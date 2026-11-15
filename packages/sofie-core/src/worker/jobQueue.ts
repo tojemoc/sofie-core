@@ -1,14 +1,16 @@
-import { UserError } from '@sofie-automation/corelib/dist/error'
-import { MetricsCounter } from '@sofie-automation/corelib/dist/prometheus'
-import type { JobSpec } from '@sofie-automation/job-worker/dist/main'
-import type { JobTimings, WorkerJob } from './worker'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import type { QueueJobOptions } from '@sofie-automation/job-worker/dist/jobs'
-import { getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../logging'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { getCurrentTime } from '../lib/lib'
 import _ from 'underscore'
+
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+import { MetricsCounter } from '@sofie-automation/corelib/dist/prometheus'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { QueueJobOptions } from '@sofie-automation/job-worker/dist/jobs'
+import type { JobSpec } from '@sofie-automation/job-worker/dist/main'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { getCurrentTime } from '../lib/lib'
+import { logger } from '../logging'
+import type { JobTimings, WorkerJob } from './worker'
 
 const metricsQueueTotalCounter = new MetricsCounter({
 	name: 'sofie_meteor_jobqueue_queue_total',

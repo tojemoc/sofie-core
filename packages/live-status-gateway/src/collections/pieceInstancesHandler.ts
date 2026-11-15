@@ -1,27 +1,29 @@
-import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
+import { ReadonlyDeep } from 'type-fest'
 import _ from 'underscore'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { Logger } from 'winston'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import {
 	createPartCurrentTimes,
 	PieceInstanceWithTimings,
 	processAndPrunePieceInstanceTimings,
 	resolvePrunedPieceInstance,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { ShowStyleBaseExt } from './showStyleBaseHandler.js'
-import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { SelectedPartInstances } from './partInstancesHandler.js'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import areElementsShallowEqual from '@sofie-automation/shared-lib/dist/lib/isShallowEqual'
+import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
+
+import { CoreHandler } from '../coreHandler.js'
 import { arePropertiesDeepEqual } from '../helpers/equality.js'
 import { CollectionHandlers } from '../liveStatusServer.js'
-import { ReadonlyDeep } from 'type-fest'
-import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
+import { PublicationCollection } from '../publicationCollection.js'
+import { SelectedPartInstances } from './partInstancesHandler.js'
+import { ShowStyleBaseExt } from './showStyleBaseHandler.js'
 
 const PLAYLIST_KEYS = [
 	'_id',

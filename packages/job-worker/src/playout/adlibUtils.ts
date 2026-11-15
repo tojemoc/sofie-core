@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { PieceLifespan, QueuePartTarget } from '@sofie-automation/blueprints-integration'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import {
@@ -8,35 +11,34 @@ import {
 	PieceInstanceId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { assertNever, getRandomId, getRank } from '@sofie-automation/corelib/dist/lib'
 import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { getCurrentTime } from '../lib/index.js'
+import { compareMarkerPositions, MarkerPosition } from '@sofie-automation/corelib/dist/playout/playlist'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { QueueablePartAndPieces } from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
 import { JobContext } from '../jobs/index.js'
-import { PlayoutModel } from './model/PlayoutModel.js'
-import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
+import { getCurrentTime } from '../lib/index.js'
+import { logger } from '../logging.js'
+import { updatePartInstanceRanksAfterAdlib } from '../updatePartInstanceRanksAndOrphanedState.js'
 import {
 	fetchPiecesThatMayBeActiveForPart,
 	getPieceInstancesForPart,
 	syncPlayheadInfinitesForNextPartInstance,
 } from './infinites.js'
-import { convertAdLibToGenericPiece } from './pieces.js'
-import { getResolvedPiecesForCurrentPartInstance } from './resolvedPieces.js'
-import { updateTimeline } from './timeline/generate.js'
-import { PieceLifespan, QueuePartTarget } from '@sofie-automation/blueprints-integration'
-import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { updatePartInstanceRanksAfterAdlib } from '../updatePartInstanceRanksAndOrphanedState.js'
-import { setNextPart } from './setNext.js'
-import { logger } from '../logging.js'
-import { ReadonlyDeep } from 'type-fest'
+import { PlayoutModel } from './model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
 import { PlayoutRundownModel } from './model/PlayoutRundownModel.js'
 import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { compareMarkerPositions, MarkerPosition } from '@sofie-automation/corelib/dist/playout/playlist'
-import { QueueablePartAndPieces } from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
+import { convertAdLibToGenericPiece } from './pieces.js'
+import { getResolvedPiecesForCurrentPartInstance } from './resolvedPieces.js'
+import { setNextPart } from './setNext.js'
+import { updateTimeline } from './timeline/generate.js'
 
 export type QueuedAdlibInsertTarget = {
 	targetSegment: ReadonlyDeep<PlayoutSegmentModel>

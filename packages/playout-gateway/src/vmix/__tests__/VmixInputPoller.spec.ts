@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+
 import { parseVmixInputsFromXml, serializeVmixInputRecords } from '../parseVmixInputsXml.js'
-import { VmixInputPoller, FetchLike } from '../VmixInputPoller.js'
 import { vmixInputMediaId, vmixInputMediaObjectId, vmixInputToMediaObject } from '../vmixInputMediaObject.js'
+import { FetchLike, VmixInputPoller } from '../VmixInputPoller.js'
 import { getVmixPollerConfig } from '../VmixInputPollerManager.js'
 
 const fixtureXml = readFileSync(join(__dirname, 'fixtures', 'vmix-api.xml'), 'utf8')

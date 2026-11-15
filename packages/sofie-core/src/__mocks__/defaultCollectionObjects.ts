@@ -1,17 +1,5 @@
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { Piece, EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { getRundownId } from '../api/ingest/lib'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import {
 	PartId,
 	PartInstanceId,
@@ -27,11 +15,24 @@ import {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
 	DEFAULT_FALLBACK_PART_DURATION,
 	DEFAULT_MINIMUM_TAKE_SPAN,
 } from '@sofie-automation/shared-lib/dist/core/constants'
-import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { getRundownId } from '../api/ingest/lib'
 
 export function defaultRundownPlaylist(_id: RundownPlaylistId, studioId: StudioId): DBRundownPlaylist {
 	return {

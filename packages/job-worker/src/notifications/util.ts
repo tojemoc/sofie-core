@@ -1,8 +1,9 @@
-import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import type { INotification } from './NotificationsModel.js'
-import { INoteBase } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { INoteBase } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import { getHash } from '@sofie-automation/corelib/dist/hash'
+import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
+
+import type { INotification } from './NotificationsModel.js'
 
 export function convertNoteToNotification(note: INoteBase, blueprintIds: BlueprintId[]): INotification {
 	return {

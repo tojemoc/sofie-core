@@ -1,11 +1,12 @@
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutColoredBox,
 	RundownLayoutBase,
 	RundownLayoutColoredBox,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IColoredBoxPanelProps {
 	visible?: boolean

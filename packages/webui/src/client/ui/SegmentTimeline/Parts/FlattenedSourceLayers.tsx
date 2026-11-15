@@ -1,10 +1,13 @@
-import _ from 'underscore'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { ISourceLayerUi } from '../SegmentTimelineContainer.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { SourceLayerItemContainer } from '../SourceLayerItemContainer.js'
-import { type ISourceLayerPropsBase, useMouseContext } from './SourceLayer.js'
+import _ from 'underscore'
+
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import { SourceLayerItemContainer } from '../SourceLayerItemContainer.js'
+import { useMouseContext } from './SourceLayer.js'
+import type { ISourceLayerUi } from '../SegmentTimelineContainer.js'
+import type { ISourceLayerPropsBase } from './SourceLayer.js'
 
 interface IFlattenedSourceLayerProps extends ISourceLayerPropsBase {
 	layers: ISourceLayerUi[]

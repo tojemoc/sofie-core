@@ -1,16 +1,18 @@
-import { PartInstanceId, PieceInstanceInfiniteId, PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import _ from 'underscore'
+
+import { PartId, PartInstanceId, PieceInstanceInfiniteId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { ABSessionInfo } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { clone, getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { TimelineObjectAbSessionInfo } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
-import _ from 'underscore'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../../__mocks__/presetCollections.js'
 import { AbSessionHelper } from '../abSessionHelper.js'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { TimelineObjectAbSessionInfo } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
 
 describe('AbSessionHelper', () => {
 	let jobContext: MockJobContext

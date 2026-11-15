@@ -1,38 +1,31 @@
 import React, { useMemo } from 'react'
 import _ from 'underscore'
-import { SegmentTimeline, type SegmentTimelineClass } from './SegmentTimeline.js'
-import {
-	computeSegmentDisplayDuration,
-	RundownTiming,
-	type TimingEvent,
-} from '../RundownView/RundownTiming/RundownTiming.js'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
-import { SpeechSynthesiser } from '../../lib/speechSynthesis.js'
-import { getElementWidth } from '../../utils/dimensions.js'
-import { isMaintainingFocus, scrollToSegment, getHeaderHeight } from '../../lib/viewPort.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type GoToPartEvent,
-	type GoToPartInstanceEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
-import {
-	type PartUi,
-	withResolvedSegment,
-	type IResolvedSegmentProps,
-	type ITrackedResolvedSegmentProps,
-	type IOutputLayerUi,
-} from '../SegmentContainer/withResolvedSegment.js'
-import { computeSegmentDuration, getPartInstanceTimingId } from '../../lib/rundownTiming.js'
-import { DEFAULT_DISPLAY_DURATION, DEFAULT_TIME_SCALE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { RundownViewShelf } from '../RundownView/RundownViewShelf.js'
-import type { PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { catchError, useDebounce } from '../../lib/lib.js'
+
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { DEFAULT_DISPLAY_DURATION, DEFAULT_TIME_SCALE } from '@sofie-automation/shared-lib/dist/core/constants'
+import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type {
+	GoToPartEvent,
+	GoToPartInstanceEvent,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { catchError, useDebounce } from '../../lib/lib.js'
 import { logger } from '../../lib/logging.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { computeSegmentDuration, getPartInstanceTimingId } from '../../lib/rundownTiming.js'
+import { SpeechSynthesiser } from '../../lib/speechSynthesis.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { getHeaderHeight, isMaintainingFocus, scrollToSegment } from '../../lib/viewPort.js'
+import { getElementWidth } from '../../utils/dimensions.js'
+import { UIPartInstances, UIParts } from '../Collections.js'
+import { computeSegmentDisplayDuration, RundownTiming } from '../RundownView/RundownTiming/RundownTiming.js'
+import { RundownTimingProviderContext } from '../RundownView/RundownTiming/withTiming.js'
+import { RundownViewShelf } from '../RundownView/RundownViewShelf.js'
+import { withResolvedSegment } from '../SegmentContainer/withResolvedSegment.js'
 import {
 	FALLBACK_ZOOM_FACTOR,
 	getMinimumZoomFactor,
@@ -40,9 +33,16 @@ import {
 	SIMULATED_PLAYBACK_HARD_MARGIN,
 	TIMELINE_RIGHT_PADDING,
 } from './Constants.js'
-import { UIPartInstances, UIParts } from '../Collections.js'
-import { RundownTimingProviderContext } from '../RundownView/RundownTiming/withTiming.js'
-import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import { SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
+import { SegmentTimeline } from './SegmentTimeline.js'
+import type { TimingEvent } from '../RundownView/RundownTiming/RundownTiming.js'
+import type {
+	IOutputLayerUi,
+	IResolvedSegmentProps,
+	ITrackedResolvedSegmentProps,
+	PartUi,
+} from '../SegmentContainer/withResolvedSegment.js'
+import type { SegmentTimelineClass } from './SegmentTimeline.js'
 
 // Kept for backwards compatibility
 export type { SegmentUi, PartUi, ISourceLayerUi, IOutputLayerUi } from '../SegmentContainer/withResolvedSegment.js'
@@ -232,15 +232,22 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 			let currentLivePart: PartExtended | undefined = undefined
 			let currentNextPart: PartExtended | undefined = undefined
 
-			let autoNextPart = false
+			let autoNextPart: boolean
 
-			if (this.props.ownCurrentPartInstance && this.props.ownCurrentPartInstance.segmentId === this.props.segmentId) {
+			if (
+				this.props.ownCurrentPartInstance &&
+				this.props.ownCurrentPartInstance.segmentId === this.props.segmentId
+			) {
 				isLiveSegment = true
-				currentLivePart = this.props.parts.find((part) => part.instance._id === this.props.ownCurrentPartInstance?._id)
+				currentLivePart = this.props.parts.find(
+					(part) => part.instance._id === this.props.ownCurrentPartInstance?._id
+				)
 			}
 			if (this.props.ownNextPartInstance) {
 				isNextSegment = true
-				currentNextPart = this.props.parts.find((part) => part.instance._id === this.props.ownNextPartInstance?._id)
+				currentNextPart = this.props.parts.find(
+					(part) => part.instance._id === this.props.ownNextPartInstance?._id
+				)
 			}
 			autoNextPart = !!(
 				currentLivePart &&
@@ -475,7 +482,8 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 
 				if (zoomInToFit) {
 					// display dur in ms
-					const displayDur = SegmentTimelinePartClass.getPartDisplayDuration(part, this.context?.durations) || 1
+					const displayDur =
+						SegmentTimelinePartClass.getPartDisplayDuration(part, this.context?.durations) || 1
 					// is the padding is larger than the width of the resulting size?
 					const tooSmallTimeline = timelineWidth < TIMELINE_RIGHT_PADDING * 3
 					// width in px, pad on both sides
@@ -486,7 +494,9 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 					newScale = desiredWidth / displayDur
 
 					// the left padding
-					const padding = tooSmallTimeline ? (timelineWidth * 0.1) / newScale : TIMELINE_RIGHT_PADDING / newScale
+					const padding = tooSmallTimeline
+						? (timelineWidth * 0.1) / newScale
+						: TIMELINE_RIGHT_PADDING / newScale
 					// offset in ms
 					scrollLeft = part.startsAt - padding
 					// scrollLeft should be at least 0
@@ -541,8 +551,12 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 					const currentLivePartInstance = state.currentLivePart.instance
 
 					const partOffset =
-						(this.context.durations?.partDisplayStartsAt?.[getPartInstanceTimingId(currentLivePartInstance)] || 0) -
-						(this.context.durations?.partDisplayStartsAt?.[getPartInstanceTimingId(this.props.parts[0]?.instance)] || 0)
+						(this.context.durations?.partDisplayStartsAt?.[
+							getPartInstanceTimingId(currentLivePartInstance)
+						] || 0) -
+						(this.context.durations?.partDisplayStartsAt?.[
+							getPartInstanceTimingId(this.props.parts[0]?.instance)
+						] || 0)
 
 					let isExpectedToPlay = !!currentLivePartInstance.timings?.plannedStartedPlayback
 					const lastTake = currentLivePartInstance.timings?.take
@@ -587,7 +601,11 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 
 			this.visibilityChangeTimeout = setTimeout(() => {
 				if (this.isUnmounted) return
-				if (entries[0].intersectionRatio < 0.99 && !isMaintainingFocus() && Date.now() - this.mountedTime > 2000) {
+				if (
+					entries[0].intersectionRatio < 0.99 &&
+					!isMaintainingFocus() &&
+					Date.now() - this.mountedTime > 2000
+				) {
 					if (typeof this.props.onSegmentScroll === 'function') this.props.onSegmentScroll()
 					this.isVisible = false
 				} else {
@@ -638,7 +656,10 @@ const SegmentTimelineContainerContent = withResolvedSegment(
 		}
 
 		getShowAllTimeScale = () => {
-			if (!this.timelineDiv || isLiveSegmentButLivePositionNotSet(this.state.isLiveSegment, this.state.livePosition)) {
+			if (
+				!this.timelineDiv ||
+				isLiveSegmentButLivePositionNotSet(this.state.isLiveSegment, this.state.livePosition)
+			) {
 				return this.state.maxTimeScale
 			}
 

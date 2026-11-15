@@ -1,12 +1,14 @@
-import type * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import type { FilterType, IRundownPlaylistFilterLink } from '@sofie-automation/blueprints-integration'
+import type * as React from 'react'
+
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import type { EditAttributeType } from '../../../../../../lib/EditAttribute.js'
+import type { FilterType, IRundownPlaylistFilterLink } from '@sofie-automation/blueprints-integration'
+
+import { Studios } from '../../../../../../collections/index.js'
 import { useTracker } from '../../../../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { FilterEditor } from './FilterEditor.js'
-import { Studios } from '../../../../../../collections/index.js'
+import type { EditAttributeType } from '../../../../../../lib/EditAttribute.js'
 
 interface IProps {
 	index: number

@@ -1,6 +1,7 @@
-import { addMigrationSteps } from './databaseMigration'
-import { Blueprints, ShowStyleVariants } from '../collections'
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+
+import { Blueprints, ShowStyleVariants } from '../collections'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 49
 

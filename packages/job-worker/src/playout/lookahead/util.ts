@@ -1,10 +1,12 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
 import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
-import { ReadonlyDeep } from 'type-fest'
+
 import { JobContext } from '../../jobs/index.js'
 import { PlayoutModel } from '../model/PlayoutModel.js'
 import { selectNextPart } from '../selectNextPart.js'

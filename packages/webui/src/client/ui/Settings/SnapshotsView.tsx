@@ -1,29 +1,32 @@
-import * as React from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { logger } from '../../lib/logging.js'
-import { EditAttribute } from '../../lib/EditAttribute.js'
-import { faWindowClose, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faUpload, faWindowClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fetchFrom, hashSingleUseToken } from '../../lib/lib.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
-import { UploadButton } from '../../lib/uploadButton.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import type { SnapshotId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Snapshots, Studios } from '../../collections/index.js'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { useTranslation } from 'react-i18next'
-import Button from 'react-bootstrap/esm/Button'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { createPrivateApiPath } from '../../url.js'
-import { UserError } from '@sofie-automation/corelib/dist/error'
-import { type SnapshotItem, SnapshotType } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+import * as React from 'react'
 import { useState } from 'react'
-import { MomentFromNow } from '../../lib/Moment.js'
+import Button from 'react-bootstrap/esm/Button'
+import { useTranslation } from 'react-i18next'
+
+import { UserError } from '@sofie-automation/corelib/dist/error'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { SnapshotType } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { SnapshotId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { SnapshotItem } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+
+import { Snapshots, Studios } from '../../collections/index.js'
+import { EditAttribute } from '../../lib/EditAttribute.js'
+import { fetchFrom, hashSingleUseToken } from '../../lib/lib.js'
+import { logger } from '../../lib/logging.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { MomentFromNow } from '../../lib/Moment.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { UploadButton } from '../../lib/uploadButton.js'
+import { createPrivateApiPath } from '../../url.js'
 
 export default function SnapshotsView(): JSX.Element {
 	const { t } = useTranslation()
@@ -57,7 +60,9 @@ export default function SnapshotsView(): JSX.Element {
 				<h3 className="my-2">{t('Full System Snapshot')}</h3>
 				<p className="my-2">
 					<span className="text-s vsubtle">
-						{t('A Full System Snapshot contains all system settings (studios, showstyles, blueprints, devices, etc.)')}
+						{t(
+							'A Full System Snapshot contains all system settings (studios, showstyles, blueprints, devices, etc.)'
+						)}
 					</span>
 				</p>
 
@@ -310,7 +315,9 @@ function RestoreStoredSnapshotButton({ snapshotId }: { snapshotId: SnapshotId })
 		if (snapshot) {
 			doModalDialog({
 				title: t('Restore Snapshot'),
-				message: t('Do you really want to restore the snapshot "{{snapshotName}}"?', { snapshotName: snapshot.name }),
+				message: t('Do you really want to restore the snapshot "{{snapshotName}}"?', {
+					snapshotName: snapshot.name,
+				}),
 				onAccept: () => {
 					MeteorCall.snapshot
 						.restoreSnapshot(snapshotId, false)
@@ -329,7 +336,9 @@ function RestoreStoredSnapshotButton({ snapshotId }: { snapshotId: SnapshotId })
 							logger.error(err)
 							doModalDialog({
 								title: t('Restore Snapshot'),
-								message: t('Snapshot restore failed: {{errorMessage}}', { errorMessage: stringifyError(err) }),
+								message: t('Snapshot restore failed: {{errorMessage}}', {
+									errorMessage: stringifyError(err),
+								}),
 								acceptOnly: true,
 								onAccept: () => {
 									// nothing
@@ -404,7 +413,9 @@ function RemoveSnapshotButton({ snapshotId }: { snapshotId: SnapshotId }) {
 						logger.error(err)
 						doModalDialog({
 							title: t('Remove Snapshot'),
-							message: t('Snapshot remove failed: {{errorMessage}}', { errorMessage: stringifyError(err) }),
+							message: t('Snapshot remove failed: {{errorMessage}}', {
+								errorMessage: stringifyError(err),
+							}),
 							acceptOnly: true,
 							onAccept: () => {
 								// nothing

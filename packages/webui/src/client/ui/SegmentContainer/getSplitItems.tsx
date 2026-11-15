@@ -1,10 +1,12 @@
 import classNames from 'classnames'
+import type { ReadonlyDeep } from 'type-fest'
+
 import type { SplitsContent } from '@sofie-automation/blueprints-integration'
 import type { SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import { getSplitPreview, SplitRole } from '../../lib/ui/splitPreview.js'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
 import { RundownUtils } from '../../lib/rundown.js'
-import type { ReadonlyDeep } from 'type-fest'
+import { getSplitPreview, SplitRole } from '../../lib/ui/splitPreview.js'
 
 export function getSplitItems(
 	pieceInstance: PieceUi,

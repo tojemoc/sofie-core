@@ -1,7 +1,8 @@
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { sleep } from '../../lib'
 import { optimizedObserverCountSubscribers, setUpOptimizedObserverInner, TriggerUpdate } from '../optimizedObserverBase'
 import { CustomPublish, CustomPublishChanges } from '../publish'
-import { sleep } from '../../lib'
 
 interface CustomPublishMockExt {
 	stop?: () => void

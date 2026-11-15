@@ -1,9 +1,12 @@
 import * as fs from 'fs'
-import { public_dir } from './lib'
-import { getCoreSystemAsync } from './coreSystem/collection'
-import { SofieLogo } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
 import KoaRouter from '@koa/router'
+
+import { SofieLogo } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
 import { bindKoaRouter } from './api/rest/koa'
+import { getCoreSystemAsync } from './coreSystem/collection'
+import { public_dir } from './lib'
 
 export function bindLogoRouter(): KoaRouter {
 	const logoRouter = new KoaRouter()

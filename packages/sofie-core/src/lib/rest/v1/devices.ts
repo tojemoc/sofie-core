@@ -1,5 +1,6 @@
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 /* *************************************************************************

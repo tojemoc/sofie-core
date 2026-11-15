@@ -1,14 +1,16 @@
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import classNames from 'classnames'
 import { useContext, useMemo } from 'react'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { withResolvedSegment } from '../../SegmentContainer/withResolvedSegment.js'
 import { ActivePartInstancesContext, PieceFilter } from './index.js'
-import {
-	withResolvedSegment,
-	type IResolvedSegmentProps as IWithResolvedSegmentProps,
-	type ITrackedResolvedSegmentProps as IWithResolvedSegmentInjectedProps,
-} from '../../SegmentContainer/withResolvedSegment.js'
 import { OrderedPartsContext } from './OrderedPartsProvider.js'
 import { Part } from './Part.js'
+import type {
+	ITrackedResolvedSegmentProps as IWithResolvedSegmentInjectedProps,
+	IResolvedSegmentProps as IWithResolvedSegmentProps,
+} from '../../SegmentContainer/withResolvedSegment.js'
 
 interface IProps extends IWithResolvedSegmentProps {
 	index: number
@@ -54,7 +56,9 @@ export const Segment = withResolvedSegment(
 				unplayedValidParts
 					.map((part) => ({
 						part,
-						piece: part.pieces.sort((a, b) => (b.renderedInPoint ?? 0) - (a.renderedInPoint ?? 0)).find(selectPiece),
+						piece: part.pieces
+							.sort((a, b) => (b.renderedInPoint ?? 0) - (a.renderedInPoint ?? 0))
+							.find(selectPiece),
 					}))
 					.filter((pair) => pair.piece !== undefined),
 			[selectPiece, unplayedValidParts]

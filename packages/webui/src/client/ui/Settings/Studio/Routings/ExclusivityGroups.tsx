@@ -1,31 +1,33 @@
+import { faCheck, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ClassNames from 'classnames'
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type {
 	DBStudio,
 	StudioRouteSet,
 	StudioRouteSetExclusivityGroup,
 } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPencilAlt, faCheck, faSync, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useTranslation } from 'react-i18next'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
 import { Studios } from '../../../../collections/index.js'
 import { LabelActual, LabelAndOverrides } from '../../../../lib/Components/LabelAndOverrides.js'
-import {
-	type OverrideOpHelper,
-	type WrappedOverridableItem,
-	type WrappedOverridableItemDeleted,
-	type WrappedOverridableItemNormal,
-	useOverrideOpHelper,
-} from '../../util/OverrideOpHelper.js'
-import {
-	applyAndValidateOverrides,
-	type ObjectOverrideSetOp,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
 import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
+import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
+import type {
+	OverrideOpHelper,
+	WrappedOverridableItem,
+	WrappedOverridableItemDeleted,
+	WrappedOverridableItemNormal,
+} from '../../util/OverrideOpHelper.js'
 
 interface ExclusivityGroupsTableProps {
 	studio: DBStudio
@@ -223,7 +225,9 @@ function ExclusivityGroupRow({
 								itemKey={'name'}
 								overrideHelper={exclusivityOverrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 						</div>
 						<div className="m-1 me-2 text-end">

@@ -1,14 +1,16 @@
-import type * as i18next from 'i18next'
-import _ from 'underscore'
-import { NotificationCenter, Notification, NoticeLevel } from './notifications/notifications.js'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
 import { Meteor } from 'meteor/meteor'
-import { logger } from './logging.js'
+import _ from 'underscore'
+import type * as i18next from 'i18next'
+
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { getCurrentTime, systemTime } from './systemTime.js'
-import { UserAction } from '@sofie-automation/meteor-lib/dist/userAction'
 import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { UserAction } from '@sofie-automation/meteor-lib/dist/userAction'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { logger } from './logging.js'
+import { NoticeLevel, Notification, NotificationCenter } from './notifications/notifications.js'
+import { getCurrentTime, systemTime } from './systemTime.js'
 
 export { UserAction }
 
@@ -263,7 +265,7 @@ export function doUserAction<Result>(
 export function eventContextForLog(e: any): [string, Time] {
 	const timeStamp = getEventTimestamp(e)
 	if (!e) return ['', timeStamp]
-	let str = ''
+	let str: string
 	if (_.isString(e)) {
 		return [e, timeStamp]
 	} else if (e.currentTarget && e.currentTarget.localName && !e.key && !e.code) {

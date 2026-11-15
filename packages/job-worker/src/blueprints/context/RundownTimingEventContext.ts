@@ -1,18 +1,20 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintPartInstance,
 	IBlueprintPieceInstance,
 	IBlueprintSegmentDB,
 	IRundownTimingEventContext,
 } from '@sofie-automation/blueprints-integration'
-import { ReadonlyDeep } from 'type-fest'
-import { protectString, protectStringArray, unDeepString } from '@sofie-automation/corelib/dist/protectedString'
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { protectString, protectStringArray, unDeepString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { MongoQuery } from '../../db/index.js'
-import { convertPartInstanceToBlueprints, convertPieceInstanceToBlueprints, convertSegmentToBlueprints } from './lib.js'
+import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import { ContextInfo } from './CommonContext.js'
+import { convertPartInstanceToBlueprints, convertPieceInstanceToBlueprints, convertSegmentToBlueprints } from './lib.js'
 import { RundownDataChangedEventContext } from './RundownDataChangedEventContext.js'
 
 export class RundownTimingEventContext extends RundownDataChangedEventContext implements IRundownTimingEventContext {

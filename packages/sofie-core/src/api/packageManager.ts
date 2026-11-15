@@ -1,11 +1,12 @@
+import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
 import { PeripheralDevices } from '../collections'
 import { executePeripheralDeviceFunction } from './peripheralDevice/executeFunction'
-import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 export async function restartExpectation(deviceId: PeripheralDeviceId, workId: string): Promise<void> {
 	await executePeripheralDeviceFunction(deviceId, 'restartExpectation', workId)

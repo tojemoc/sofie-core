@@ -1,28 +1,30 @@
-import { resolvePartForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PartId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { resolvePartForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { RundownPlaylists } from '../../collections'
 import { check } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { ContentCache, PartOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { RundownPlaylists } from '../../collections'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { RundownsObserver } from '../lib/rundownsObserver'
-import { RundownContentObserver } from './rundownContentObserver'
-import { extractRanks, findMarkerPosition, modifyPartForQuickLoop, stringsToIndexLookup } from '../lib/quickLoop'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
+import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { extractRanks, findMarkerPosition, modifyPartForQuickLoop, stringsToIndexLookup } from '../lib/quickLoop'
+import { RundownsObserver } from '../lib/rundownsObserver'
+import { ContentCache, createReactiveContentCache, PartOmitedFields } from './reactiveContentCache'
+import { RundownContentObserver } from './rundownContentObserver'
 import type { PublicationRegistry } from '../../publicationRegistry'
 
 interface UIPartsArgs {

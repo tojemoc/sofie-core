@@ -1,38 +1,40 @@
+import { parse as queryStringParse } from 'query-string'
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import {
-	type CameraContent,
-	type RemoteContent,
-	type RemoteSpeakContent,
-	SourceLayerType,
-	type SplitsContent,
+import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type {
+	CameraContent,
+	RemoteContent,
+	RemoteSpeakContent,
+	SplitsContent,
 } from '@sofie-automation/blueprints-integration'
 import type { RundownId, ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { Rundowns } from '../../../collections/index.js'
-import { useSubscription, useSubscriptionIfEnabled, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { UIPartInstances, UIStudios } from '../../Collections.js'
-import { Rundown as RundownComponent } from './Rundown.js'
-import { useLocation } from 'react-router-dom'
-import { parse as queryStringParse } from 'query-string'
-import { OrderedPartsProvider } from './OrderedPartsProvider.js'
-import { offElementResize, onElementResize } from '../../../lib/resizeObserver.js'
-import { useTranslation } from 'react-i18next'
-import { Spinner } from '../../../lib/Spinner.js'
-import { useBlackBrowserTheme } from '../../../lib/useBlackBrowserTheme.js'
-import { useWakeLock } from './useWakeLock.js'
-import { useDebounce } from '../../../lib/lib.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import {
-	useSetDocumentClass,
-	useSetDocumentDarkTheme,
-	useOwnedElementClassToggle,
-} from '../../util/useSetDocumentClass.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { Rundowns } from '../../../collections/index.js'
+import { useDebounce } from '../../../lib/lib.js'
+import { useSubscription, useSubscriptionIfEnabled, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { offElementResize, onElementResize } from '../../../lib/resizeObserver.js'
+import { Spinner } from '../../../lib/Spinner.js'
+import { useBlackBrowserTheme } from '../../../lib/useBlackBrowserTheme.js'
+import { UIPartInstances, UIStudios } from '../../Collections.js'
+import {
+	useOwnedElementClassToggle,
+	useSetDocumentClass,
+	useSetDocumentDarkTheme,
+} from '../../util/useSetDocumentClass.js'
+import { OrderedPartsProvider } from './OrderedPartsProvider.js'
+import { Rundown as RundownComponent } from './Rundown.js'
+import { useWakeLock } from './useWakeLock.js'
 
 interface IProps {
 	playlist: DBRundownPlaylist | undefined
@@ -102,7 +104,11 @@ export function CameraScreen({ playlist, studioId }: Readonly<IProps>): JSX.Elem
 	const rundownIds = useMemo(() => rundowns.map((rundown) => rundown._id), [rundowns])
 	const showStyleBaseIds = useMemo(() => rundowns.map((rundown) => rundown.showStyleBaseId), [rundowns])
 
-	const rundownsReady = useSubscriptionIfEnabled(CorelibPubSub.rundownsInPlaylists, playlistIds.length > 0, playlistIds)
+	const rundownsReady = useSubscriptionIfEnabled(
+		CorelibPubSub.rundownsInPlaylists,
+		playlistIds.length > 0,
+		playlistIds
+	)
 	useSubscriptionIfEnabled(CorelibPubSub.segments, rundownIds.length > 0, rundownIds, {})
 
 	const studioReady = useSubscription(MeteorPubSub.uiStudio, studioId)
@@ -180,7 +186,8 @@ export function CameraScreen({ playlist, studioId }: Readonly<IProps>): JSX.Elem
 			if (studioLabels !== null) {
 				if (piece.sourceLayer?.type === SourceLayerType.SPLITS) {
 					const splitContent = piece.instance.piece.content as SplitsContent
-					if (!splitContent.boxSourceConfiguration.find((item) => studioLabels.includes(item.studioLabel))) return false
+					if (!splitContent.boxSourceConfiguration.find((item) => studioLabels.includes(item.studioLabel)))
+						return false
 				} else {
 					if (!studioLabels.includes(camLikeContent.studioLabel)) return false
 				}

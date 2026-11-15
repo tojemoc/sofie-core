@@ -1,52 +1,52 @@
-import * as React from 'react'
-import { Meteor } from 'meteor/meteor'
-import _ from 'underscore'
 import ClassNames from 'classnames'
-import type {
-	RundownLayoutExternalFrame,
-	RundownLayoutBase,
-	DashboardLayoutExternalFrame,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { assertNever, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { parseMosPluginMessageXml, type MosPluginMessage } from '../../lib/parsers/mos/mosXml2Js.js'
-import {
-	createMosAppInfoXmlString,
-	type UIMetric as MOSUIMetric,
-	UIMetricMode as MOSUIMetricMode,
-	Events as MOSEvents,
-} from '../../lib/data/mos/plugin-support.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { Meteor } from 'meteor/meteor'
+import * as React from 'react'
 import { withTranslation } from 'react-i18next'
-import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import {
-	type DefaultUserOperationImportMOSItem,
-	DefaultUserOperationsTypes,
-	type IngestAdlib,
-	UserEditingType,
-	type UserOperationTarget,
+import _ from 'underscore'
+
+import { DefaultUserOperationsTypes, UserEditingType } from '@sofie-automation/blueprints-integration'
+import { assertNever, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { MOS, MOS_DATA_IS_STRICT, mosTypes } from '@sofie-automation/meteor-lib/dist/mos'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type {
+	DefaultUserOperationImportMOSItem,
+	IngestAdlib,
+	UserOperationTarget,
 } from '@sofie-automation/blueprints-integration'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown.js'
-import { Buckets, Rundowns, Segments } from '../../collections/index.js'
 import type {
 	BucketId,
 	PartInstanceId,
 	RundownId,
 	RundownPlaylistId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MOS_DATA_IS_STRICT, mosTypes, MOS } from '@sofie-automation/meteor-lib/dist/mos'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { logger } from '../../lib/logging.js'
-import RundownViewEventBus, {
-	type ItemDroppedEvent,
-	RundownViewEvents,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { UIPartInstances, UIParts } from '../Collections.js'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown.js'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type {
+	DashboardLayoutExternalFrame,
+	RundownLayoutBase,
+	RundownLayoutExternalFrame,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { ItemDroppedEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { Buckets, Rundowns, Segments } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import {
+	createMosAppInfoXmlString,
+	Events as MOSEvents,
+	UIMetricMode as MOSUIMetricMode,
+} from '../../lib/data/mos/plugin-support.js'
+import { logger } from '../../lib/logging.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { parseMosPluginMessageXml } from '../../lib/parsers/mos/mosXml2Js.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { UIPartInstances, UIParts } from '../Collections.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
+import type { UIMetric as MOSUIMetric } from '../../lib/data/mos/plugin-support.js'
+import type { MosPluginMessage } from '../../lib/parsers/mos/mosXml2Js.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 
 interface IProps {
 	layout: RundownLayoutBase
@@ -152,7 +152,11 @@ export const ExternalFramePanel: React.ComponentType<IProps> = withTranslation()
 		}
 
 		onReceiveMessage = (e: MessageEvent) => {
-			if ((e.origin === 'null' || e.origin === self.origin) && this.frame && e.source === this.frame.contentWindow) {
+			if (
+				(e.origin === 'null' || e.origin === self.origin) &&
+				this.frame &&
+				e.source === this.frame.contentWindow
+			) {
 				const data = e.data || (e as any)['message']
 				if (!data) return
 				if (data.type) {
@@ -613,7 +617,10 @@ export const ExternalFramePanel: React.ComponentType<IProps> = withTranslation()
 		}
 
 		componentDidUpdate(prevProps: IProps) {
-			if (prevProps.playlist.currentPartInfo?.partInstanceId !== this.props.playlist.currentPartInfo?.partInstanceId) {
+			if (
+				prevProps.playlist.currentPartInfo?.partInstanceId !==
+				this.props.playlist.currentPartInfo?.partInstanceId
+			) {
 				this.sendSofieMessage(
 					literal<CurrentNextPartChangedSofieExternalMessage>({
 						id: getRandomString(),
@@ -738,7 +745,9 @@ export const ExternalFramePanel: React.ComponentType<IProps> = withTranslation()
 						sandbox="allow-forms allow-popups allow-scripts allow-same-origin"
 						style={frameStyle}
 					></iframe>
-					{this.props.panel.disableFocus && <div className="external-frame-panel__overlay" style={frameStyle}></div>}
+					{this.props.panel.disableFocus && (
+						<div className="external-frame-panel__overlay" style={frameStyle}></div>
+					)}
 				</div>
 			)
 		}

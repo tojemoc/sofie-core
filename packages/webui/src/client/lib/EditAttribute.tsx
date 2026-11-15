@@ -1,21 +1,26 @@
-import * as React from 'react'
-import _ from 'underscore'
-import { useTracker } from './ReactMeteorData/react-meteor-data.js'
-import { MultiSelect, type MultiSelectEvent, type MultiSelectOptions } from './multiSelect.js'
 import ClassNames from 'classnames'
-import { type ColorPickerEvent, ColorPicker } from './colorPicker.js'
-import { IconPicker, type IconPickerEvent } from './iconPicker.js'
+import * as React from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import _ from 'underscore'
+
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import type { MongoCollection } from '../collections/lib.js'
+
+import { ColorPicker } from './colorPicker.js'
 import { CheckboxControl } from './Components/Checkbox.js'
-import { TextInputControl } from './Components/TextInput.js'
-import { IntInputControl } from './Components/IntInput.js'
 import { DropdownInputControl, getDropdownInputOptions } from './Components/DropdownInput.js'
 import { FloatInputControl } from './Components/FloatInput.js'
-import { joinLines, MultiLineTextInputControl, splitValueIntoLines } from './Components/MultiLineTextInput.js'
+import { IntInputControl } from './Components/IntInput.js'
 import { JsonTextInputControl, tryParseJson } from './Components/JsonTextInput.js'
+import { joinLines, MultiLineTextInputControl, splitValueIntoLines } from './Components/MultiLineTextInput.js'
+import { TextInputControl } from './Components/TextInput.js'
 import { ToggleSwitchControl } from './Components/ToggleSwitch.js'
-import { useCallback, useMemo, useState } from 'react'
+import { IconPicker } from './iconPicker.js'
+import { MultiSelect } from './multiSelect.js'
+import { useTracker } from './ReactMeteorData/react-meteor-data.js'
+import type { MongoCollection } from '../collections/lib.js'
+import type { ColorPickerEvent } from './colorPicker.js'
+import type { IconPickerEvent } from './iconPicker.js'
+import type { MultiSelectEvent, MultiSelectOptions } from './multiSelect.js'
 
 interface IEditAttribute extends IEditAttributeBaseProps {
 	type: EditAttributeType
@@ -389,7 +394,7 @@ function useEditAttributeStateHelper(props: IEditAttributeBaseProps): EditAttrib
 	)
 
 	const getAttributeValue = useCallback((): any => {
-		let v = null
+		let v
 		if (props.overrideDisplayValue !== undefined) {
 			v = props.overrideDisplayValue
 		} else {

@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor'
-import { logger } from './logging.js'
-import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
 import { MakeMeteorCall } from '@sofie-automation/meteor-lib/dist/api/methods'
-import { MeteorApply } from './MeteorApply.js'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { logger } from './logging.js'
+import { MeteorApply } from './MeteorApply.js'
 
 /**
  * Type safe wrapper around Meteor.subscribe()

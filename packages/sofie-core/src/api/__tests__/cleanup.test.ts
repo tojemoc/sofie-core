@@ -1,57 +1,59 @@
 import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 
 import '../../collections' // include this in order to get all of the collection set up
-import { cleanupOldDataInner } from '../cleanup'
+
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
+
 import {
 	DefaultEnvironment,
 	setupDefaultRundownPlaylist,
 	setupDefaultStudioEnvironment,
 } from '../../__mocks__/helpers/database'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
-	RundownPlaylists,
-	Rundowns,
-	Studios,
-	ShowStyleBases,
-	Blueprints,
-	PeripheralDevices,
-	Workers,
-	TriggeredActions,
-	PartInstances,
-	PieceInstances,
-	Segments,
-	Parts,
-	Pieces,
 	AdLibActions,
-	Buckets,
+	Blueprints,
 	BucketAdLibActions,
 	BucketAdLibs,
+	Buckets,
 	Evaluations,
 	ExpectedPackages,
 	ExpectedPackageWorkStatuses,
 	ExpectedPlayoutItems,
 	ExternalMessageQueue,
+	Notifications,
 	NrcsIngestDataCache,
 	PackageContainerPackageStatuses,
+	PackageContainerStatuses,
 	PackageInfos,
+	PartInstances,
+	Parts,
 	PeripheralDeviceCommands,
+	PeripheralDevices,
+	PieceInstances,
+	Pieces,
 	RundownBaselineAdLibActions,
 	RundownBaselineObjs,
 	RundownLayouts,
+	RundownPlaylists,
+	Rundowns,
+	Segments,
+	ShowStyleBases,
 	Snapshots,
-	UserActionsLog,
-	Timeline,
-	TranslationsBundles,
-	PackageContainerStatuses,
-	TimelineDatastore,
-	Notifications,
 	SofieIngestDataCache,
+	Studios,
+	Timeline,
+	TimelineDatastore,
+	TranslationsBundles,
+	TriggeredActions,
+	UserActionsLog,
+	Workers,
 } from '../../collections'
 import { Collections } from '../../collections/lib'
+import { cleanupOldDataInner } from '../cleanup'
 import { generateTranslationBundleOriginId } from '../translationsBundles'
-import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
-import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 
 describe('Cleanup', () => {
 	let env: DefaultEnvironment
@@ -96,7 +98,7 @@ describe('Cleanup', () => {
 			try {
 				expect(result.docsToRemove).toBe(0)
 			} catch (e) {
-				throw new Error(`${result.collectionName} ${e}`)
+				throw new Error(`${result.collectionName} ${e}`, { cause: e })
 			}
 		}
 
@@ -142,7 +144,7 @@ describe('Cleanup', () => {
 			try {
 				expect(await collection.countDocuments()).toBe(0)
 			} catch (e) {
-				throw new Error(`${collectionName} ${e}`)
+				throw new Error(`${collectionName} ${e}`, { cause: e })
 			}
 		}
 	})
@@ -481,7 +483,7 @@ async function setDefaultDatatoDB(env: DefaultEnvironment, now: number) {
 		try {
 			expect(await collection.countDocuments()).toBeGreaterThanOrEqual(1)
 		} catch (e) {
-			throw new Error(`${collectionName} ${e}`)
+			throw new Error(`${collectionName} ${e}`, { cause: e })
 		}
 	}
 }

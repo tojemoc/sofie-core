@@ -1,5 +1,6 @@
-import { SofieIngestRundown, SofieIngestSegment, SofieIngestPart } from '@sofie-automation/blueprints-integration'
-import { SofieIngestDataCacheObjId, RundownId, SegmentId, PartId } from './Ids.js'
+import { SofieIngestPart, SofieIngestRundown, SofieIngestSegment } from '@sofie-automation/blueprints-integration'
+
+import { PartId, RundownId, SegmentId, SofieIngestDataCacheObjId } from './Ids.js'
 import { RundownSource } from './Rundown.js'
 
 /*
@@ -57,6 +58,4 @@ export interface SofieIngestDataCacheObjPart extends SofieIngestDataCacheBase {
 }
 
 export type SofieIngestDataCacheObj =
-	| SofieIngestDataCacheObjRundown
-	| SofieIngestDataCacheObjSegment
-	| SofieIngestDataCacheObjPart
+	SofieIngestDataCacheObjRundown | SofieIngestDataCacheObjSegment | SofieIngestDataCacheObjPart

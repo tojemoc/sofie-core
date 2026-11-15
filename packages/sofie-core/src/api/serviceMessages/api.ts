@@ -1,8 +1,9 @@
+import KoaRouter from '@koa/router'
+import bodyParser from 'koa-bodyparser'
+
+import { bindKoaRouter } from '../rest/koa'
 import { postHandler } from './postHandler'
 import { deleteMessage, readAllMessages } from './serviceMessagesApi'
-import KoaRouter from '@koa/router'
-import { bindKoaRouter } from '../rest/koa'
-import bodyParser from 'koa-bodyparser'
 
 export function bindServiceMessagesRouter(): void {
 	const serviceMessagesRouter = new KoaRouter()

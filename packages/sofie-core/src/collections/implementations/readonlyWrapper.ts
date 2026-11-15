@@ -1,7 +1,9 @@
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import type { IndexDescriptionInfo } from 'mongodb'
-import type { AsyncOnlyMongoCollection, AsyncOnlyReadOnlyMongoCollection, MinimalMongoCursor } from '../collection'
+
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
 import type { LiveQueryHandleSync } from '../../lib/lib'
+import type { AsyncOnlyMongoCollection, AsyncOnlyReadOnlyMongoCollection, MinimalMongoCursor } from '../collection'
 
 export class WrappedReadOnlyMongoCollection<
 	DBInterface extends { _id: ProtectedString<any> },

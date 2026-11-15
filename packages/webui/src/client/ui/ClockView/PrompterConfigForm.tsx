@@ -1,9 +1,11 @@
-import { useState, useCallback, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import Form from 'react-bootstrap/esm/Form'
+import { useCallback, useMemo, useState } from 'react'
 import Collapse from 'react-bootstrap/esm/Collapse'
+import Form from 'react-bootstrap/esm/Form'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { FullscreenLink } from './FullscreenLink.js'
 
 import './PrompterConfigForm.scss'
@@ -466,7 +468,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="10,30,50"
 											value={config.pedal_reverseSpeedMap ?? ''}
-											onChange={(e) => updateConfig('pedal_reverseSpeedMap', e.target.value || null)}
+											onChange={(e) =>
+												updateConfig('pedal_reverseSpeedMap', e.target.value || null)
+											}
 										/>
 									</Form.Group>
 								</div>
@@ -478,7 +482,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="0"
 											value={config.pedal_rangeRevMin ?? ''}
-											onChange={(e) => updateConfig('pedal_rangeRevMin', parseIntOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('pedal_rangeRevMin', parseIntOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -488,7 +494,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="35"
 											value={config.pedal_rangeNeutralMin ?? ''}
-											onChange={(e) => updateConfig('pedal_rangeNeutralMin', parseIntOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('pedal_rangeNeutralMin', parseIntOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -498,7 +506,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="80"
 											value={config.pedal_rangeNeutralMax ?? ''}
-											onChange={(e) => updateConfig('pedal_rangeNeutralMax', parseIntOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('pedal_rangeNeutralMax', parseIntOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -508,7 +518,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="127"
 											value={config.pedal_rangeFwdMax ?? ''}
-											onChange={(e) => updateConfig('pedal_rangeFwdMax', parseIntOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('pedal_rangeFwdMax', parseIntOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 								</div>
@@ -547,7 +559,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="1,2,3,4,5,8,12,30"
 											value={config.joycon_reverseSpeedMap ?? ''}
-											onChange={(e) => updateConfig('joycon_reverseSpeedMap', e.target.value || null)}
+											onChange={(e) =>
+												updateConfig('joycon_reverseSpeedMap', e.target.value || null)
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -558,7 +572,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="1.4"
 											value={config.joycon_rightHandOffset ?? ''}
-											onChange={(e) => updateConfig('joycon_rightHandOffset', parseFloatOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('joycon_rightHandOffset', parseFloatOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -567,7 +583,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											id="joycon-invert"
 											label={t('Invert joystick')}
 											checked={config.joycon_invertJoystick === true}
-											onChange={(e) => updateConfig('joycon_invertJoystick', e.target.checked ? true : null)}
+											onChange={(e) =>
+												updateConfig('joycon_invertJoystick', e.target.checked ? true : null)
+											}
 										/>
 									</Form.Group>
 								</div>
@@ -580,7 +598,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="-1"
 											value={config.joycon_rangeRevMin ?? ''}
-											onChange={(e) => updateConfig('joycon_rangeRevMin', parseFloatOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('joycon_rangeRevMin', parseFloatOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -591,7 +611,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="-0.25"
 											value={config.joycon_rangeNeutralMin ?? ''}
-											onChange={(e) => updateConfig('joycon_rangeNeutralMin', parseFloatOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('joycon_rangeNeutralMin', parseFloatOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -602,7 +624,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="0.25"
 											value={config.joycon_rangeNeutralMax ?? ''}
-											onChange={(e) => updateConfig('joycon_rangeNeutralMax', parseFloatOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('joycon_rangeNeutralMax', parseFloatOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-2">
@@ -613,7 +637,9 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 											size="sm"
 											placeholder="1"
 											value={config.joycon_rangeFwdMax ?? ''}
-											onChange={(e) => updateConfig('joycon_rangeFwdMax', parseFloatOrNull(e.target.value))}
+											onChange={(e) =>
+												updateConfig('joycon_rangeFwdMax', parseFloatOrNull(e.target.value))
+											}
 										/>
 									</Form.Group>
 								</div>
@@ -662,14 +688,17 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 									size="sm"
 									placeholder="0.1"
 									value={config.xbox_triggerDeadZone ?? ''}
-									onChange={(e) => updateConfig('xbox_triggerDeadZone', parseFloatOrNull(e.target.value))}
+									onChange={(e) =>
+										updateConfig('xbox_triggerDeadZone', parseFloatOrNull(e.target.value))
+									}
 								/>
 								<Form.Text className="text-muted">{t('Value between 0 and 1')}</Form.Text>
 							</Form.Group>
 							<div className="info-box">
 								<small>
 									<strong>{t('Button mapping')}:</strong>
-									<br />A = {t('Take')}, B = {t('Go to Live')}, X = {t('Previous')}, Y = {t('Following')}
+									<br />A = {t('Take')}, B = {t('Go to Live')}, X = {t('Previous')}, Y ={' '}
+									{t('Following')}
 									<br />
 									LB = {t('Top')}, RB = {t('Next')}, D-Pad = {t('Fine scroll')}
 								</small>
@@ -685,7 +714,13 @@ export function PrompterConfigForm({ studioId }: Readonly<{ studioId: StudioId }
 					<Form.Label>
 						<strong>{t('Generated URL')}:</strong>
 					</Form.Label>
-					<Form.Control type="text" size="sm" readOnly value={generatedUrl} onClick={(e) => e.currentTarget.select()} />
+					<Form.Control
+						type="text"
+						size="sm"
+						readOnly
+						value={generatedUrl}
+						onClick={(e) => e.currentTarget.select()}
+					/>
 				</Form.Group>
 				<Link to={generatedUrl} className="btn btn-primary me-2">
 					{t('Open Prompter')}

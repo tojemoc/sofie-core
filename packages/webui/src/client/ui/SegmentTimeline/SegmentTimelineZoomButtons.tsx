@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { ZoomInIcon, ZoomOutIcon, ZoomShowAll } from '../../lib/ui/icons/segmentZoomIcon.js'
+
 import { catchError } from '../../lib/lib.js'
+import { ZoomInIcon, ZoomOutIcon, ZoomShowAll } from '../../lib/ui/icons/segmentZoomIcon.js'
 
 interface IProps {
 	timeScale: number

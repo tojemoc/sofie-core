@@ -1,4 +1,5 @@
 import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+
 import { IBlueprintPlayoutDevice, TSR } from '../index.js'
 
 export interface IExecuteTSRActionsContext {

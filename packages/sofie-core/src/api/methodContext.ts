@@ -1,5 +1,6 @@
-import type { DDPClientConnection } from '../ddp-server/types'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+
+import type { DDPClientConnection } from '../ddp-server/types'
 
 export interface MethodContext {
 	/**

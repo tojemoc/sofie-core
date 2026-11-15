@@ -1,12 +1,15 @@
-import { joinObjectPathFragments, literal } from '@sofie-automation/corelib/dist/lib'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type {
-	WrappedOverridableItemNormal,
-	OverrideOpHelperForItemContents,
-} from '../../ui/Settings/util/OverrideOpHelper.js'
+
+import { getSchemaUIField, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
+import { joinObjectPathFragments, literal } from '@sofie-automation/corelib/dist/lib'
+import { TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { Base64ImageInputControl } from '../Components/Base64ImageInput.js'
+import { BreadCrumbTextInput } from '../Components/BreadCrumbTextInput.js'
 import { CheckboxControl } from '../Components/Checkbox.js'
-import { type DropdownInputOption, DropdownInputControl } from '../Components/DropdownInput.js'
+import { DropdownInputControl } from '../Components/DropdownInput.js'
 import { FloatInputControl } from '../Components/FloatInput.js'
 import { IntInputControl } from '../Components/IntInput.js'
 import { JsonTextInputControl } from '../Components/JsonTextInput.js'
@@ -17,26 +20,24 @@ import {
 	LabelAndOverridesForDropdown,
 	LabelAndOverridesForInt,
 } from '../Components/LabelAndOverrides.js'
-import { MultiLineTextInputControl } from '../Components/MultiLineTextInput.js'
-import { TextInputControl } from '../Components/TextInput.js'
-import { type JSONSchema, TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
-import { SchemaFormArrayTable } from './SchemaFormTable/ArrayTable.js'
-import {
-	type SchemaFormCommonProps,
-	type SchemaFormSofieEnumDefinition,
-	translateStringIfHasNamespaces,
-} from './schemaFormUtil.js'
-import { MultiSelectInputControl } from '../Components/MultiSelectInput.js'
-import { SchemaFormObjectTable } from './SchemaFormTable/ObjectTable.js'
-import { getSchemaUIField, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
-import { SchemaFormSectionHeader } from './SchemaFormSectionHeader.js'
-import { Base64ImageInputControl } from '../Components/Base64ImageInput.js'
 import { MultiLineIntInputControl } from '../Components/MultiLineIntInput.js'
-import { ToggleSwitchControl } from '../Components/ToggleSwitch.js'
-import { BreadCrumbTextInput } from '../Components/BreadCrumbTextInput.js'
-import { OneOfButtonsWithOverrides } from './SchemaFormOneOfButtons/OneOfButtons.js'
+import { MultiLineTextInputControl } from '../Components/MultiLineTextInput.js'
+import { MultiSelectInputControl } from '../Components/MultiSelectInput.js'
+import { TextInputControl } from '../Components/TextInput.js'
 import { TimeMsInputControl } from '../Components/TimeMsInput.js'
+import { ToggleSwitchControl } from '../Components/ToggleSwitch.js'
 import { OGrafSchemaForm } from './OGrafSchemaForm.js'
+import { OneOfButtonsWithOverrides } from './SchemaFormOneOfButtons/OneOfButtons.js'
+import { SchemaFormSectionHeader } from './SchemaFormSectionHeader.js'
+import { SchemaFormArrayTable } from './SchemaFormTable/ArrayTable.js'
+import { SchemaFormObjectTable } from './SchemaFormTable/ObjectTable.js'
+import { translateStringIfHasNamespaces } from './schemaFormUtil.js'
+import type {
+	OverrideOpHelperForItemContents,
+	WrappedOverridableItemNormal,
+} from '../../ui/Settings/util/OverrideOpHelper.js'
+import type { DropdownInputOption } from '../Components/DropdownInput.js'
+import type { SchemaFormCommonProps, SchemaFormSofieEnumDefinition } from './schemaFormUtil.js'
 
 interface SchemaFormWithOverridesProps extends SchemaFormCommonProps {
 	/** Base path of the schema within the document */
@@ -78,7 +79,9 @@ function useChildPropsForFormComponent(props: Readonly<SchemaFormWithOverridesPr
 			translationNamespaces: props.translationNamespaces,
 			commonAttrs: {
 				label: translateStringIfHasNamespaces(title, props.translationNamespaces),
-				hint: description ? translateStringIfHasNamespaces(description, props.translationNamespaces) : undefined,
+				hint: description
+					? translateStringIfHasNamespaces(description, props.translationNamespaces)
+					: undefined,
 				item: props.item,
 				itemKey: props.attr,
 				overrideHelper: props.overrideHelper,
@@ -259,7 +262,9 @@ const SofieEnumFormWithOverrides = ({ sofieEnumDefinitions, ...props }: SofieEnu
 		if (sofieEnumDefinition && Array.isArray(sofieEnumFilter) && sofieEnumFilter.length) {
 			// Filter and convert options
 			const validFilter = new Set(sofieEnumFilter)
-			return sofieEnumDefinition.options.filter((opt) => validFilter.has(opt.filter)).map((opt, i) => ({ ...opt, i }))
+			return sofieEnumDefinition.options
+				.filter((opt) => validFilter.has(opt.filter))
+				.map((opt, i) => ({ ...opt, i }))
 		} else if (sofieEnumDefinition) {
 			// Show all the options
 			return sofieEnumDefinition.options.map((opt, i) => ({ ...opt, i }))
@@ -465,7 +470,11 @@ const JsonFormWithOverrides = ({ schema, commonAttrs }: Readonly<FormComponentPr
 	return (
 		<LabelAndOverrides {...commonAttrs}>
 			{(value, handleUpdate) => (
-				<JsonTextInputControl placeholder={JSON.stringify(schema.default)} value={value} handleUpdate={handleUpdate} />
+				<JsonTextInputControl
+					placeholder={JSON.stringify(schema.default)}
+					value={value}
+					handleUpdate={handleUpdate}
+				/>
 			)}
 		</LabelAndOverrides>
 	)

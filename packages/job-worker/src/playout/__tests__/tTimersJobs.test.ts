@@ -1,4 +1,15 @@
-import { setupDefaultJobEnvironment, MockJobContext } from '../../__mocks__/context.js'
+import { PartId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import {
+	defaultPart,
+	defaultRundown,
+	defaultRundownPlaylist,
+	defaultSegment,
+} from '../../__mocks__/defaultCollectionObjects.js'
 import {
 	handleRecalculateTTimerProjections,
 	handleTTimerClearProjected,
@@ -6,16 +17,6 @@ import {
 	handleTTimerSetProjectedDuration,
 	handleTTimerSetProjectedTime,
 } from '../tTimersJobs.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PartId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import {
-	defaultPart,
-	defaultRundown,
-	defaultRundownPlaylist,
-	defaultSegment,
-} from '../../__mocks__/defaultCollectionObjects.js'
 
 describe('tTimersJobs', () => {
 	let context: MockJobContext

@@ -1,19 +1,21 @@
-import { z } from 'zod'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { ReadonlyDeep } from 'type-fest'
-import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { z } from 'zod'
+
+import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBStudio, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { Studios } from '../collections'
+import { check } from '../lib/check'
 import {
 	CustomPublishCollection,
 	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
 } from '../lib/customPublication'
-import { Studios } from '../collections'
-import { check } from '../lib/check'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 
@@ -88,8 +90,7 @@ async function manipulateUIStudioPublicationData(
 	if (args.studioId) {
 		// Operate on a single studio
 		const studio = (await Studios.findOneAsync(args.studioId, { projection: fieldSpecifier })) as
-			| Pick<DBStudio, StudioFields>
-			| undefined
+			Pick<DBStudio, StudioFields> | undefined
 
 		if (studio) {
 			collection.replace(convertDocument(studio))

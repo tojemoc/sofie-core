@@ -1,13 +1,15 @@
-import { createBrandingObservers } from '../lib/branding'
+import { ReadonlyDeep } from 'type-fest'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
 import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { PieceLifespan } from '@sofie-automation/blueprints-integration'
 import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { ReadonlyDeep } from 'type-fest'
-import { logger } from '../../logging'
-import { ContentCache, pieceFieldSpecifier } from './reactiveContentCache'
+
 import { Pieces } from '../../collections'
+import { logger } from '../../logging'
+import { createBrandingObservers } from '../lib/branding'
 import { waitForAllObserversReady } from '../lib/lib'
+import { ContentCache, pieceFieldSpecifier } from './reactiveContentCache'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 /**

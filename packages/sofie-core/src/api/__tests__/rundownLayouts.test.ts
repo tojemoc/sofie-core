@@ -1,19 +1,21 @@
 import '../../__mocks__/_extendJest'
-import { setupDefaultStudioEnvironment, DefaultEnvironment } from '../../__mocks__/helpers/database'
-import { literal, getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import {
-	RundownLayoutType,
-	RundownLayout,
-	CustomizableRegions,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPIMethods } from '@sofie-automation/meteor-lib/dist/api/rundownLayouts'
+
 import { RundownLayoutId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownLayouts } from '../../collections'
-import { SupressLogMessages } from '../../__mocks__/suppressLogging'
-import { shelfLayoutsRouter, ServerRundownLayoutsAPI } from '../rundownLayouts'
-import { callKoaRoute } from '../../__mocks__/koa-util'
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { RundownLayoutsAPIMethods } from '@sofie-automation/meteor-lib/dist/api/rundownLayouts'
+import {
+	CustomizableRegions,
+	RundownLayout,
+	RundownLayoutType,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { DefaultEnvironment, setupDefaultStudioEnvironment } from '../../__mocks__/helpers/database'
 import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { callKoaRoute } from '../../__mocks__/koa-util'
+import { SupressLogMessages } from '../../__mocks__/suppressLogging'
+import { RundownLayouts } from '../../collections'
+import { ServerRundownLayoutsAPI, shelfLayoutsRouter } from '../rundownLayouts'
 
 const MeteorCall = makeMeteorCallForTest({ methods: RundownLayoutsAPIMethods, class: ServerRundownLayoutsAPI })
 

@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintBrandingInfo, IBlueprintConfig } from '@sofie-automation/blueprints-integration'
 import { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
@@ -9,7 +11,6 @@ import {
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
 import { deepFreeze, omit } from '@sofie-automation/corelib/dist/lib'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ReadonlyDeep } from 'type-fest'
 
 /**
  * A lightly processed version of DBShowStyleVariant, with any ObjectWithOverrides<T> pre-flattened

@@ -1,12 +1,14 @@
 import { z } from 'zod'
-import { check } from '../../lib/check'
-import { MethodContext } from '../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../security/check'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
+import { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
+
 import { Parts, Rundowns, Segments } from '../../collections'
+import { check } from '../../lib/check'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { MethodContext } from '../methodContext'
 
 export namespace RundownPartSettingsIntegration {
 	/**

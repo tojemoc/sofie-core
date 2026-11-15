@@ -1,7 +1,5 @@
 import '../../../__mocks__/_extendJest'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { runUpgradeForShowStyleBase, validateConfigForShowStyleBase } from '../showStyleBase'
-import { setupMockShowStyleBase, setupMockShowStyleBlueprint } from '../../../__mocks__/helpers/database'
+
 import {
 	BlueprintManifestType,
 	BlueprintResultApplyShowStyleConfig,
@@ -11,15 +9,18 @@ import {
 	SourceLayerType,
 	TriggerType,
 } from '@sofie-automation/blueprints-integration'
-import { clone, generateTranslation, getRandomString, normalizeArray, omit } from '@sofie-automation/corelib/dist/lib'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { BlueprintValidateConfigForStudioResult } from '@sofie-automation/corelib/dist/worker/studio'
-import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
-
-import * as blueprintCache from '../../../api/blueprints/cache'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { ShowStyleBases, TriggeredActions } from '../../../collections'
+import { clone, generateTranslation, getRandomString, normalizeArray, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { BlueprintValidateConfigForStudioResult } from '@sofie-automation/corelib/dist/worker/studio'
 import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { setupMockShowStyleBase, setupMockShowStyleBlueprint } from '../../../__mocks__/helpers/database'
+import * as blueprintCache from '../../../api/blueprints/cache'
+import { ShowStyleBases, TriggeredActions } from '../../../collections'
+import { runUpgradeForShowStyleBase, validateConfigForShowStyleBase } from '../showStyleBase'
 
 describe('ShowStyleBase upgrades', () => {
 	afterEach(() => {

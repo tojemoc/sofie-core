@@ -1,5 +1,6 @@
-import { CustomCollectionName } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { CustomCollectionName as CustomCorelibCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { CustomCollectionName } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
 import {
 	createSyncCorelibCustomPublicationMongoCollection,
 	createSyncCustomPublicationMongoCollection,

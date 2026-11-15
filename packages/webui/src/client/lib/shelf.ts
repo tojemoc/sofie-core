@@ -1,19 +1,21 @@
 import _ from 'underscore'
-import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { ReadonlyDeep } from 'type-fest'
+
 import {
 	createPartCurrentTimes,
 	processAndPrunePieceInstanceTimings,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { getUnfinishedPieceInstancesReactive } from './rundownLayouts.js'
 import type { PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstances } from '../collections/index.js'
-import type { ReadonlyDeep } from 'type-fest'
-import type { AdLibPieceUi } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
-import { getCurrentTimeReactive } from './currentTimeReactive'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { AdLibPieceUi } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
+
+import { PieceInstances } from '../collections/index.js'
+import { getCurrentTimeReactive } from './currentTimeReactive'
+import { getUnfinishedPieceInstancesReactive } from './rundownLayouts.js'
 
 export type { AdLibPieceUi } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
 

@@ -1,25 +1,28 @@
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { literal } from '@sofie-automation/corelib/dist/lib'
 import classNames from 'classnames'
 import { useCallback, useState } from 'react'
+
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
 import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
+import { isPartInstanceInvalid } from '../../lib/partInstanceUtil.js'
 import { RundownUtils } from '../../lib/rundown.js'
+import { getPartInstanceTimingId } from '../../lib/rundownTiming.js'
+import { LoopingIcon } from '../../lib/ui/icons/looping.js'
 import { getElementDocumentOffset } from '../../utils/positions.js'
-import type { IContextMenuContext } from '../RundownView.js'
 import { CurrentPartOrSegmentRemaining } from '../RundownView/RundownHeader/CurrentPartOrSegmentRemaining.js'
-import type { SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
 import { SegmentTimelinePartElementId } from '../SegmentTimeline/Parts/SegmentTimelinePart.js'
 import { LinePartIdentifier } from './LinePartIdentifier.js'
 import { LinePartPieceIndicators } from './LinePartPieceIndicators.js'
 import { LinePartTimeline } from './LinePartTimeline.js'
 import { LinePartTitle } from './LinePartTitle.js'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownView/RundownTiming/withTiming.js'
-import { type RundownTimingContext, getPartInstanceTimingId } from '../../lib/rundownTiming.js'
-import { LoopingIcon } from '../../lib/ui/icons/looping.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
-import { isPartInstanceInvalid } from '../../lib/partInstanceUtil.js'
+import type { RundownTimingContext } from '../../lib/rundownTiming.js'
+import type { IContextMenuContext } from '../RundownView.js'
+import type { SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	segment: SegmentUi
@@ -116,7 +119,9 @@ export function LinePart({
 		return (
 			<>
 				{part.instance.part.expectedDuration !== undefined && part.instance.part.expectedDuration > 0 && (
-					<span role="timer">{RundownUtils.formatDiffToTimecodeWithSign(part.instance.part.expectedDuration)}</span>
+					<span role="timer">
+						{RundownUtils.formatDiffToTimecodeWithSign(part.instance.part.expectedDuration)}
+					</span>
 				)}
 				{(part.instance.part.expectedDuration === 0 || part.instance.part.expectedDuration === undefined) && (
 					<span>––:––</span>

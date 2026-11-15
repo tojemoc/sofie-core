@@ -1,3 +1,7 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import {
 	ExpectedPackageId,
 	PartInstanceId,
@@ -8,16 +12,14 @@ import {
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+
+import { MongoBulkWriteOperation } from '../../../db/collections.js'
 import { JobContext } from '../../../jobs/index.js'
 import { PlayoutPartInstanceModelImpl } from './PlayoutPartInstanceModelImpl.js'
 import { PlayoutRundownModelImpl } from './PlayoutRundownModelImpl.js'
-import { ReadonlyDeep } from 'type-fest'
-import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
-import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { MongoBulkWriteOperation } from '../../../db/collections.js'
 
 /**
  * Save any changed AdlibTesting Segments

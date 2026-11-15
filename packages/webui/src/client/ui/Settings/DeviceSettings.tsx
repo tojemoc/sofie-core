@@ -1,31 +1,32 @@
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useCallback } from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import { useTranslation } from 'react-i18next'
+
 import {
-	type PeripheralDevice,
-	PeripheralDeviceType,
 	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDeviceCategory,
+	PeripheralDeviceType,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { getExpectedLatency } from '@sofie-automation/corelib/dist/studio/playout'
+import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
+import { PeripheralDevices } from '../../collections/index.js'
+import { PeripheralDevicesAPI } from '../../lib/clientAPI.js'
+import { LabelActual } from '../../lib/Components/LabelAndOverrides.js'
 import { EditAttribute } from '../../lib/EditAttribute.js'
 import { doModalDialog } from '../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
 import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
 import { Spinner } from '../../lib/Spinner.js'
-import { PeripheralDevicesAPI } from '../../lib/clientAPI.js'
-
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
 import { StatusCodePill } from '../Status/StatusCodePill.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import {
 	GenericAttachedSubDeviceSettingsComponent,
 	GenericDeviceSettingsComponent,
 } from './components/GenericDeviceSettingsComponent.js'
 import { DevicePackageManagerSettings } from './DevicePackageManagerSettings.js'
-import { getExpectedLatency } from '@sofie-automation/corelib/dist/studio/playout'
-import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDevices } from '../../collections/index.js'
-import { useTranslation } from 'react-i18next'
-import { LabelActual } from '../../lib/Components/LabelAndOverrides.js'
-import Button from 'react-bootstrap/esm/Button'
 
 interface IDeviceSettingsProps {
 	match: {
@@ -38,7 +39,10 @@ interface IDeviceSettingsProps {
 export default function DeviceSettings(props: IDeviceSettingsProps): JSX.Element {
 	const { t } = useTranslation()
 
-	const device = useTracker(() => PeripheralDevices.findOne(props.match.params.deviceId), [props.match.params.deviceId])
+	const device = useTracker(
+		() => PeripheralDevices.findOne(props.match.params.deviceId),
+		[props.match.params.deviceId]
+	)
 
 	if (!device) {
 		return <Spinner />
@@ -58,7 +62,12 @@ export default function DeviceSettings(props: IDeviceSettingsProps): JSX.Element
 								{t('No name set')} <FontAwesomeIcon icon={faExclamationTriangle} />
 							</div>
 						) : null}
-						<EditAttribute attribute="name" obj={device} type="text" collection={PeripheralDevices}></EditAttribute>
+						<EditAttribute
+							attribute="name"
+							obj={device}
+							type="text"
+							collection={PeripheralDevices}
+						></EditAttribute>
 					</label>
 
 					<label className="field">
@@ -74,7 +83,9 @@ export default function DeviceSettings(props: IDeviceSettingsProps): JSX.Element
 
 					{device.category === PeripheralDeviceCategory.INGEST && <IngestDeviceCoreConfig device={device} />}
 
-					{device.subType === PERIPHERAL_SUBTYPE_PROCESS && <GenericDeviceSettingsComponent device={device} />}
+					{device.subType === PERIPHERAL_SUBTYPE_PROCESS && (
+						<GenericDeviceSettingsComponent device={device} />
+					)}
 				</div>
 				<div className="text-end">
 					<div className="mb-2">
@@ -212,10 +223,13 @@ function TroubleshootDeviceButton({ deviceId, deviceName }: { deviceId: Peripher
 						new Notification(
 							undefined,
 							NoticeLevel.WARNING,
-							t('There was an error when troubleshooting the device: "{{deviceName}}": {{errorMessage}}', {
-								deviceName,
-								errorMessage: err + '',
-							}),
+							t(
+								'There was an error when troubleshooting the device: "{{deviceName}}": {{errorMessage}}',
+								{
+									deviceName,
+									errorMessage: err + '',
+								}
+							),
 							'DeviceSettings'
 						)
 					)

@@ -1,5 +1,5 @@
-import { addMigrationSteps } from './databaseMigration'
 import { RundownPlaylists, Rundowns } from '../collections'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 44
 

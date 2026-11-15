@@ -1,7 +1,9 @@
 // This is a collection of functions that match what the playout-gateway / TSR does
 
 import _ from 'underscore'
+
 import { TSR } from '@sofie-automation/blueprints-integration'
+
 import { TimelineObjGeneric, TimelineObjGroup } from '../dataModel/Timeline.js'
 
 // playout-gateway:
@@ -9,7 +11,7 @@ export function transformTimeline(timeline: Array<TimelineObjGeneric>): Array<Ti
 	const transformObject = (obj: TimelineObjGeneric | TimelineObjGroup): TimelineContentObject => {
 		if (!obj.id) throw new Error(`Timeline object missing id attribute ${JSON.stringify(obj)} `)
 
-		const transformedObj: TimelineContentObject = obj as any
+		const transformedObj: TimelineContentObject = obj
 		if (!transformedObj.content) transformedObj.content = {}
 		if (transformedObj.isGroup) {
 			if (!transformedObj.content.objects) transformedObj.content.objects = []

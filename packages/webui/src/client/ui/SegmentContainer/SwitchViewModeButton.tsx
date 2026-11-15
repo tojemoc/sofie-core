@@ -1,7 +1,7 @@
 import Tooltip from 'rc-tooltip'
 import { useTranslation } from 'react-i18next'
-import { SegmentViewMode as SegmentViewModeIcon } from '../../lib/ui/icons/listView.js'
 
+import { SegmentViewMode as SegmentViewModeIcon } from '../../lib/ui/icons/listView.js'
 import { SegmentViewMode } from './SegmentViewModes.js'
 
 export function getNextMode(currentMode: SegmentViewMode | undefined): SegmentViewMode {

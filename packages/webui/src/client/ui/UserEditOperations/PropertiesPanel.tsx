@@ -1,37 +1,37 @@
-import type * as React from 'react'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import {
-	type DefaultUserOperationEditProperties,
-	DefaultUserOperationsTypes,
-	type JSONBlob,
-	JSONBlobParse,
-	type JSONSchema,
-	type UserEditingDefinitionAction,
-	type UserEditingProperties,
-	type UserEditingSourceLayer,
-	UserEditingType,
-	type UserOperationTarget,
-} from '@sofie-automation/blueprints-integration'
-import { literal } from '@sofie-automation/corelib/dist/lib'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import type * as React from 'react'
+import type { ReadonlyDeep } from 'type-fest'
+
+import { DefaultUserOperationsTypes, JSONBlobParse, UserEditingType } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type {
+	DefaultUserOperationEditProperties,
+	JSONBlob,
+	JSONSchema,
+	UserEditingDefinitionAction,
+	UserEditingProperties,
+	UserEditingSourceLayer,
+	UserOperationTarget,
+} from '@sofie-automation/blueprints-integration'
+import type {
+	CoreUserEditingDefinition,
+	CoreUserEditingProperties,
+} from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions.js'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { BlueprintAssetIcon } from '../../lib/Components/BlueprintAssetIcon.js'
+import { SchemaFormWithState } from '../../lib/forms/SchemaFormWithState.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { RundownUtils } from '../../lib/rundown.js'
 import {
 	useSelectedElements,
 	useSelectedElementsContext,
 	useSelectedObjectsUserEditProps,
 } from '../RundownView/SelectedElementsContext.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { SchemaFormWithState } from '../../lib/forms/SchemaFormWithState.js'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { BlueprintAssetIcon } from '../../lib/Components/BlueprintAssetIcon.js'
-import type { ReadonlyDeep } from 'type-fest'
-import type {
-	CoreUserEditingDefinition,
-	CoreUserEditingProperties,
-} from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions.js'
-import { RundownUtils } from '../../lib/rundown.js'
 
 type PendingChange = DefaultUserOperationEditProperties['payload']
 
@@ -190,7 +190,8 @@ export function PropertiesPanel(): JSX.Element {
 					{userEditOperations &&
 						userEditOperations.map((operation) => {
 							if (
-								(operation.type !== UserEditingType.ACTION && operation.type !== UserEditingType.STATE) ||
+								(operation.type !== UserEditingType.ACTION &&
+									operation.type !== UserEditingType.STATE) ||
 								!operation.icon ||
 								!operation.isActive
 							)
@@ -233,7 +234,11 @@ export function PropertiesPanel(): JSX.Element {
 				<div className="propertiespanel-pop-up__footer">
 					<button
 						className="propertiespanel-pop-up__button propertiespanel-pop-up__button_restore start"
-						title={selectedElement?.type === 'segment' ? t('Restore Segment from NRCS') : t('Restore Part from NRCS')}
+						title={
+							selectedElement?.type === 'segment'
+								? t('Restore Segment from NRCS')
+								: t('Restore Part from NRCS')
+						}
 						disabled={!selectedElement}
 						onClick={handleRevertChanges}
 					>
@@ -244,7 +249,9 @@ export function PropertiesPanel(): JSX.Element {
 							/>
 						</svg>
 						<span className="propertiespanel-pop-up__label-with-icon">
-							{selectedElement?.type === 'segment' ? t('Restore Segment from NRCS') : t('Restore Part from NRCS')}
+							{selectedElement?.type === 'segment'
+								? t('Restore Segment from NRCS')
+								: t('Restore Part from NRCS')}
 						</span>
 					</button>
 

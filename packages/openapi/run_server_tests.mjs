@@ -5,9 +5,9 @@
  */
 
 import { exec } from 'child_process'
-import { exit } from 'process'
-import { join } from 'path'
 import { createServer } from 'http'
+import { join } from 'path'
+import { exit } from 'process'
 
 import { expressAppConfig } from './server/node_modules/oas3-tools/dist/index.js'
 

@@ -1,11 +1,13 @@
 import { faPencilAlt, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import classNames from 'classnames'
 import { useCallback } from 'react'
-import type { SchemaSummaryField } from './schemaFormUtil.js'
-import type { WrappedOverridableItemNormal } from '../../ui/Settings/util/OverrideOpHelper.js'
 import { useTranslation } from 'react-i18next'
+
+import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
+
+import type { WrappedOverridableItemNormal } from '../../ui/Settings/util/OverrideOpHelper.js'
+import type { SchemaSummaryField } from './schemaFormUtil.js'
 
 interface SchemaTableSummaryRowProps<T extends string | number> {
 	summaryFields: SchemaSummaryField[]

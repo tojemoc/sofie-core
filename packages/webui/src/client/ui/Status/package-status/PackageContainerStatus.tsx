@@ -1,13 +1,15 @@
-import Tooltip from 'rc-tooltip'
-import { useTranslation } from 'react-i18next'
 import ClassNames from 'classnames'
+import Tooltip from 'rc-tooltip'
+import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+
+import type { ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
 import type { PackageContainerStatusDB } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
-import { StatusCodePill } from '../StatusCodePill.js'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
 import { doUserAction, UserAction } from '../../../lib/clientUserAction.js'
 import { MeteorCall } from '../../../lib/meteorApi.js'
-import type { ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import Button from 'react-bootstrap/Button'
+import { StatusCodePill } from '../StatusCodePill.js'
 
 export const PackageContainerStatus: React.FC<{
 	packageContainerStatus: PackageContainerStatusDB
@@ -43,10 +45,16 @@ export const PackageContainerStatus: React.FC<{
 				<td className="indent"></td>
 				<td>{packageContainerStatus.containerId}</td>
 				<td>
-					<StatusCodePill connected={device?.connected || false} statusCode={packageContainerStatus.status.status} />
+					<StatusCodePill
+						connected={device?.connected || false}
+						statusCode={packageContainerStatus.status.status}
+					/>
 				</td>
 				<td>
-					<Tooltip overlay={offlineReasonMessages || packageContainerStatus.status.statusReason.tech} placement="top">
+					<Tooltip
+						overlay={offlineReasonMessages || packageContainerStatus.status.statusReason.tech}
+						placement="top"
+					>
 						<span>{offlineReasonMessages || packageContainerStatus.status.statusReason.user}</span>
 					</Tooltip>
 				</td>

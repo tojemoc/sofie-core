@@ -2,7 +2,8 @@ import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibActio
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { NrcsIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
@@ -10,9 +11,9 @@ import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataM
 import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+
 import { createAsyncOnlyReadOnlyMongoCollection } from './collection'
 import { registerIndex } from './indices'
 

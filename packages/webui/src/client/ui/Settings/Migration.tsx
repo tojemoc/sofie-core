@@ -1,21 +1,24 @@
-import * as React from 'react'
-import { type Translated, translateWithTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import ClassNames from 'classnames'
+import { faClipboardCheck, faCoffee, faDatabase, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboardCheck, faDatabase, faCoffee, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { logger } from '../../lib/logging.js'
+import ClassNames from 'classnames'
+import * as React from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import _ from 'underscore'
+
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import type {
 	GetMigrationStatusResult,
-	RunMigrationResult,
 	MigrationChunk,
+	RunMigrationResult,
 } from '@sofie-automation/meteor-lib/dist/api/migration'
-import _ from 'underscore'
+
+import { logger } from '../../lib/logging.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { translateWithTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
 import { checkForOldDataAndCleanUp } from './SystemManagement.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { UpgradesView } from './Upgrades/View.js'
-import Button from 'react-bootstrap/esm/Button'
+import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
 
 interface IProps {}
 interface IState {
@@ -177,12 +180,19 @@ export const MigrationView = translateWithTracker<IProps, IState, ITrackedProps>
 							<div>
 								{this.state.migration
 									? _.map(this.state.migration.chunks, (chunk, i) => {
-											const str = t('Version for {{name}}: From {{fromVersion}} to {{toVersion}}', {
-												name: chunk.sourceName,
-												fromVersion: chunk._dbVersion,
-												toVersion: chunk._targetVersion,
-											})
-											return <div key={i}>{chunk._dbVersion === chunk._targetVersion ? <b>{str}</b> : str}</div>
+											const str = t(
+												'Version for {{name}}: From {{fromVersion}} to {{toVersion}}',
+												{
+													name: chunk.sourceName,
+													fromVersion: chunk._dbVersion,
+													toVersion: chunk._targetVersion,
+												}
+											)
+											return (
+												<div key={i}>
+													{chunk._dbVersion === chunk._targetVersion ? <b>{str}</b> : str}
+												</div>
+											)
 										})
 									: null}
 							</div>
@@ -216,10 +226,13 @@ export const MigrationView = translateWithTracker<IProps, IState, ITrackedProps>
 								<h2 className="my-4">{t('Migrate database')}</h2>
 
 								<p>
-									{t(`This migration consists of {{stepCount}} steps ({{ignoredStepCount}} steps are ignored).`, {
-										stepCount: this.state.migration.automaticStepCount,
-										ignoredStepCount: this.state.migration.ignoredStepCount,
-									})}
+									{t(
+										`This migration consists of {{stepCount}} steps ({{ignoredStepCount}} steps are ignored).`,
+										{
+											stepCount: this.state.migration.automaticStepCount,
+											ignoredStepCount: this.state.migration.ignoredStepCount,
+										}
+									)}
 								</p>
 
 								<table className="table expando migration-steps-table">
@@ -233,9 +246,13 @@ export const MigrationView = translateWithTracker<IProps, IState, ITrackedProps>
 											<td className="table-item-actions c3">
 												<button
 													className="action-btn"
-													onClick={() => this.setState({ showAllSteps: !this.state.showAllSteps })}
+													onClick={() =>
+														this.setState({ showAllSteps: !this.state.showAllSteps })
+													}
 												>
-													<FontAwesomeIcon icon={this.state.showAllSteps ? faEyeSlash : faEye} />
+													<FontAwesomeIcon
+														icon={this.state.showAllSteps ? faEyeSlash : faEye}
+													/>
 												</button>
 											</td>
 										</tr>
@@ -289,7 +306,11 @@ export const MigrationView = translateWithTracker<IProps, IState, ITrackedProps>
 								{this.state.haveRunMigration && !this.state.migrationCompleted ? (
 									<div>
 										<div>
-											<div>{t('Please check the database related to the warnings above. If neccessary, you can')}</div>
+											<div>
+												{t(
+													'Please check the database related to the warnings above. If neccessary, you can'
+												)}
+											</div>
 											<Button
 												variant="outline-secondary"
 												className="my-4"
@@ -314,7 +335,9 @@ export const MigrationView = translateWithTracker<IProps, IState, ITrackedProps>
 							</div>
 						) : null}
 
-						{this.state.migrationCompleted ? <div>{t('The migration was completed successfully!')}</div> : null}
+						{this.state.migrationCompleted ? (
+							<div>{t('The migration was completed successfully!')}</div>
+						) : null}
 
 						{!this.state.migrationNeeded ? (
 							<div>

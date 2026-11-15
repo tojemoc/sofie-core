@@ -1,22 +1,24 @@
+import { Meteor } from 'meteor/meteor'
+import { parse as queryStringParse } from 'query-string'
 import React, { useEffect, useMemo, useState } from 'react'
+
+import type { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
 import {
-	getLocalAllowStudio,
 	getLocalAllowConfigure,
 	getLocalAllowDeveloper,
-	getLocalAllowTesting,
 	getLocalAllowService,
-	setAllowStudio,
+	getLocalAllowStudio,
+	getLocalAllowTesting,
 	setAllowConfigure,
 	setAllowDeveloper,
-	setAllowTesting,
 	setAllowService,
+	setAllowStudio,
+	setAllowTesting,
 } from '../lib/localStorage.js'
-import { parse as queryStringParse } from 'query-string'
 import { MeteorCall } from '../lib/meteorApi.js'
-import type { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
-import { APP_HEADER_AUTH_ENABLED } from '../lib/Settings.js'
 import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
-import { Meteor } from 'meteor/meteor'
+import { APP_HEADER_AUTH_ENABLED } from '../lib/Settings.js'
 
 export type { UserPermissions }
 

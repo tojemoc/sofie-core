@@ -1,15 +1,16 @@
-import { readAllMessages, writeMessage } from '../../../api/serviceMessages/serviceMessagesApi'
-import * as CoreSystemUtil from '../../../coreSystem/collection'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
 	Criticality,
 	ExternalServiceMessage,
 	ICoreSystem,
 	ServiceMessage,
 } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { CoreSystem } from '../../../collections'
+
 import { SupressLogMessages } from '../../../__mocks__/suppressLogging'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { readAllMessages, writeMessage } from '../../../api/serviceMessages/serviceMessagesApi'
+import { CoreSystem } from '../../../collections'
+import * as CoreSystemUtil from '../../../coreSystem/collection'
 
 function convertExternalToServiceMessage(message: ExternalServiceMessage): ServiceMessage {
 	return {

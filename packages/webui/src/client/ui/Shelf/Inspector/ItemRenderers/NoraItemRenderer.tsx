@@ -1,15 +1,18 @@
-import type { NoraContent } from '@sofie-automation/blueprints-integration'
-import { type IModalAttributes, Modal } from '../../../../lib/ui/containers/modals/Modal.js'
-import { NoraItemEditor } from './NoraItemEditor.js'
-import { RundownUtils } from '../../../../lib/rundown.js'
-import { useTranslation } from 'react-i18next'
-import InspectorTitle from './InspectorTitle.js'
-import { ErrorBoundary } from '../../../../lib/ErrorBoundary.js'
-import type { IAdLibListItem } from '../../AdLibListItem.js'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import type { NoraContent } from '@sofie-automation/blueprints-integration'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { ErrorBoundary } from '../../../../lib/ErrorBoundary.js'
+import { RundownUtils } from '../../../../lib/rundown.js'
+import { Modal } from '../../../../lib/ui/containers/modals/Modal.js'
+import InspectorTitle from './InspectorTitle.js'
+import { NoraItemEditor } from './NoraItemEditor.js'
+import type { IModalAttributes } from '../../../../lib/ui/containers/modals/Modal.js'
+import type { IAdLibListItem } from '../../AdLibListItem.js'
 
 export { isNoraItem }
 

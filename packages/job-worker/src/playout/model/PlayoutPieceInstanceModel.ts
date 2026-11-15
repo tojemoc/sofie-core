@@ -1,7 +1,8 @@
-import { PieceInstanceInfiniteId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+
 import { Time } from '@sofie-automation/blueprints-integration'
+import { PieceInstanceInfiniteId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 
 export interface PlayoutPieceInstanceModel {
 	/**

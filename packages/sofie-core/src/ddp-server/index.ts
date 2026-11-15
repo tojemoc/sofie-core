@@ -1,14 +1,16 @@
-import type { Server as HttpServer } from 'http'
-import { WebSocketServer } from 'ws'
 import { URL } from 'url'
+
+import { WebSocketServer } from 'ws'
+import type { Server as HttpServer } from 'http'
+
+import { trackConnectionClose, trackConnectionOpen } from '../Connections'
+import { getRootSubpath } from '../lib'
 import { logger } from '../logging'
 import { MethodRegistry } from '../methodRegistry'
 import { PublicationRegistry } from '../publicationRegistry'
-import { DdpSession } from './DdpSession'
-import { DdpConnectionRegistry } from './ConnectionRegistry'
 import { DDP_HEARTBEAT_INTERVAL, DDP_HEARTBEAT_TIMEOUT, STANDALONE_DDP_SERVER_PATH } from './config'
-import { getRootSubpath } from '../lib'
-import { trackConnectionOpen, trackConnectionClose } from '../Connections'
+import { DdpConnectionRegistry } from './ConnectionRegistry'
+import { DdpSession } from './DdpSession'
 
 /**
  * Create the registry of live standalone-DDP sessions, wired up to the production connection lifecycle

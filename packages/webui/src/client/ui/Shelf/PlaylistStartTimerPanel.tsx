@@ -1,13 +1,15 @@
 import ClassNames from 'classnames'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutPlaylistStartTimer,
 	RundownLayoutBase,
 	RundownLayoutPlaylistStartTimer,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { PlaylistStartTiming } from '../RundownView/RundownTiming/PlaylistStartTiming.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IPlaylistStartTimerPanelProps {
 	layout: RundownLayoutBase

@@ -1,64 +1,15 @@
-import { z } from 'zod'
-import * as Path from 'path'
-import _ from 'underscore'
-import Koa from 'koa'
-import KoaRouter from '@koa/router'
-import bodyParser from 'koa-bodyparser'
-import { check } from '../lib/check'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	SnapshotType,
-	SnapshotSystem,
-	SnapshotDebug,
-	SnapshotBase,
-	SnapshotRundownPlaylist,
-} from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
-import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
-import { getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { protectString, unprotectString, unprotectStringArray } from '@sofie-automation/corelib/dist/protectedString'
-import { formatDateTime } from '@sofie-automation/meteor-lib/dist/time'
-import { getCurrentTime, fixValidPath } from '../lib/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { PeripheralDevice, PERIPHERAL_SUBTYPE_PROCESS } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { logger } from '../logging'
-import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
-import {
-	NewSnapshotAPI,
-	PlaylistSnapshotOptions,
-	SystemSnapshotOptions,
-} from '@sofie-automation/meteor-lib/dist/api/shapshot'
-import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { parseVersion } from '../systemStatus/semverUtils'
-import { CURRENT_SYSTEM_VERSION } from '../migration/currentSystemVersion'
-import { isVersionSupported } from '../migration/databaseMigration'
-import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { BlueprintSnapshotType, IngestRundown, VTContent } from '@sofie-automation/blueprints-integration'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { importIngestRundown } from './ingest/http'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import { MethodContext, MethodContextAPI } from './methodContext'
-import { saveIntoDb, sumChanges } from '../lib/database'
 import * as fs from 'fs'
+import * as Path from 'path'
+
+import KoaRouter from '@koa/router'
+import Koa from 'koa'
+import bodyParser from 'koa-bodyparser'
+import _ from 'underscore'
+import { z } from 'zod'
+
+import { BlueprintSnapshotType, IngestRundown, VTContent } from '@sofie-automation/blueprints-integration'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
-import {
-	PackageContainerPackageStatusDB,
-	getPackageContainerPackageId,
-} from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
-import { PackageInfoDB, getPackageInfoId } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
-import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
-import { QueueStudioJob } from '../worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { checkAccessToPlaylist, VerifiedRundownPlaylistForUserAction } from '../security/check'
-import { getSystemStorePath, PackageInfo } from '../coreSystem'
-import { JSONBlobParse, JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
 import {
 	BlueprintId,
 	ExpectedPackageId,
@@ -68,6 +19,54 @@ import {
 	SnapshotId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import {
+	NrcsIngestCacheType,
+	NrcsIngestDataCacheObjPart,
+	NrcsIngestDataCacheObjRundown,
+	NrcsIngestDataCacheObjSegment,
+} from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import {
+	getPackageContainerPackageId,
+	PackageContainerPackageStatusDB,
+} from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
+import { getPackageInfoId, PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
+import { PERIPHERAL_SUBTYPE_PROCESS, PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
+import { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { protectString, unprotectString, unprotectStringArray } from '@sofie-automation/corelib/dist/protectedString'
+import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import {
+	NewSnapshotAPI,
+	PlaylistSnapshotOptions,
+	SystemSnapshotOptions,
+} from '@sofie-automation/meteor-lib/dist/api/shapshot'
+import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import {
+	SnapshotBase,
+	SnapshotDebug,
+	SnapshotRundownPlaylist,
+	SnapshotSystem,
+	SnapshotType,
+} from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
+import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
+import { formatDateTime } from '@sofie-automation/meteor-lib/dist/time'
+import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+import { JSONBlobParse, JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
 import {
 	Blueprints,
 	CoreSystem,
@@ -87,19 +86,23 @@ import {
 	TriggeredActions,
 	UserActionsLog,
 } from '../collections'
+import { getSystemStorePath, PackageInfo } from '../coreSystem'
 import { getCoreSystemAsync } from '../coreSystem/collection'
+import { isInTestMode } from '../lib'
+import { check } from '../lib/check'
+import { saveIntoDb, sumChanges } from '../lib/database'
+import { fixValidPath, getCurrentTime } from '../lib/lib'
+import { logger } from '../logging'
+import { CURRENT_SYSTEM_VERSION } from '../migration/currentSystemVersion'
+import { isVersionSupported } from '../migration/databaseMigration'
+import { assertConnectionHasOneOfPermissions, RequestCredentials } from '../security/auth'
+import { checkAccessToPlaylist, VerifiedRundownPlaylistForUserAction } from '../security/check'
+import { parseVersion } from '../systemStatus/semverUtils'
+import { QueueStudioJob } from '../worker/worker'
+import { importIngestRundown } from './ingest/http'
+import { MethodContext, MethodContextAPI } from './methodContext'
 import { executePeripheralDeviceFunction } from './peripheralDevice/executeFunction'
 import { verifyHashedToken } from './singleUseTokens'
-import {
-	NrcsIngestDataCacheObjRundown,
-	NrcsIngestDataCacheObjSegment,
-	NrcsIngestDataCacheObjPart,
-	NrcsIngestCacheType,
-} from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
-import { assertConnectionHasOneOfPermissions, RequestCredentials } from '../security/auth'
-import { isInTestMode } from '../lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 const PERMISSIONS_FOR_SNAPSHOT_MANAGEMENT: Array<keyof UserPermissions> = ['configure']
 
@@ -167,9 +170,6 @@ async function createSystemSnapshot(options: SystemSnapshotOptions): Promise<Sys
 
 	let queryStudio: MongoQuery<DBStudio> = {}
 	let queryShowStyleBases: MongoQuery<DBShowStyleBase> = {}
-	let queryShowStyleVariants: MongoQuery<DBShowStyleVariant> = {}
-	let queryRundownLayouts: MongoQuery<RundownLayoutBase> = {}
-	let queryTriggeredActions: MongoQuery<DBTriggeredActions> = {}
 	let queryDevices: MongoQuery<PeripheralDevice> = {}
 	let queryBlueprints: MongoQuery<Blueprint> = {}
 
@@ -189,9 +189,11 @@ async function createSystemSnapshot(options: SystemSnapshotOptions): Promise<Sys
 
 	const showStyleBaseIds = showStyleBases.map((s) => s._id)
 
-	queryShowStyleVariants = { showStyleBaseId: { $in: showStyleBaseIds } }
-	queryRundownLayouts = { showStyleBaseId: { $in: showStyleBaseIds } }
-	queryTriggeredActions = { showStyleBaseIds: { $in: [null, ...showStyleBaseIds] } }
+	const queryShowStyleVariants: MongoQuery<DBShowStyleVariant> = { showStyleBaseId: { $in: showStyleBaseIds } }
+	const queryRundownLayouts: MongoQuery<RundownLayoutBase> = { showStyleBaseId: { $in: showStyleBaseIds } }
+	const queryTriggeredActions: MongoQuery<DBTriggeredActions> = {
+		showStyleBaseIds: { $in: [null, ...showStyleBaseIds] },
+	}
 
 	if (studioId) queryDevices = { 'studioAndConfigId.studioId': studioId }
 

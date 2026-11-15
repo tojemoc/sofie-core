@@ -1,25 +1,27 @@
-import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PartId, PieceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { resolvePieceForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
 import { check, zAnyArray } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
-import { normaliseIds } from '../lib/lib'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { ContentCache, PieceOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { RundownContentObserver, UIPiecesArgs } from './rundownContentObserver'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
-import type { PublicationRegistry } from '../../publicationRegistry'
+import { BrandingState, updateProjectedBrandingId } from '../lib/branding'
+import { normaliseIds } from '../lib/lib'
+import { ContentCache, createReactiveContentCache, PieceOmitedFields } from './reactiveContentCache'
+import { RundownContentObserver, UIPiecesArgs } from './rundownContentObserver'
 import type { CustomPublish } from '../../lib/customPublication'
+import type { PublicationRegistry } from '../../publicationRegistry'
 
 export interface UIPiecesState extends BrandingState {
 	contentCache: ReadonlyDeep<ContentCache>

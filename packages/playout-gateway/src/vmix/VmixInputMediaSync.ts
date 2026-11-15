@@ -1,7 +1,8 @@
 import type { Logger } from 'winston'
-import type { CoreTSRDeviceHandler } from '../coreHandler.js'
+
 import { VmixInputRecord } from './types.js'
 import { vmixInputCollectionId, vmixInputMediaObjectId, vmixInputToMediaObject } from './vmixInputMediaObject.js'
+import type { CoreTSRDeviceHandler } from '../coreHandler.js'
 
 export {
 	vmixInputCollectionId,

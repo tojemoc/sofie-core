@@ -1,10 +1,12 @@
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import StudioContext from '../../RundownView/StudioContext.js'
-import { StoryboardSecondaryPiece } from './StoryboardSecondaryPiece.js'
 import classNames from 'classnames'
 import { useMemo } from 'react'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import StudioContext from '../../RundownView/StudioContext.js'
+import { StoryboardSecondaryPiece } from './StoryboardSecondaryPiece.js'
 
 export function StoryboardSourceLayerItem({
 	piece,
@@ -33,7 +35,8 @@ export function StoryboardSourceLayerItem({
 		() => ({
 			'--piece-index': index,
 			'--piece-playback-duration': `${piece.renderedDuration}ms`,
-			zIndex: hoverIndex !== null ? (index <= hoverIndex ? totalSiblings + index : totalSiblings - index) : undefined,
+			zIndex:
+				hoverIndex !== null ? (index <= hoverIndex ? totalSiblings + index : totalSiblings - index) : undefined,
 		}),
 		[index, piece.renderedDuration, hoverIndex, index, totalSiblings]
 	)

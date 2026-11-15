@@ -1,8 +1,10 @@
 import ClassNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist.js'
+
 import { getDefaultTTimer } from '../../lib/tTimerUtils.js'
 import { TTimerDisplay } from './TTimerDisplay.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist.js'
-import { useTranslation } from 'react-i18next'
 
 interface RundownStatusBarProps {
 	playlist?: DBRundownPlaylist
@@ -28,7 +30,9 @@ export function RundownStatusBar({
 		>
 			{showPlaylistName && <div className="rundown-status-bar__rundown-name">{playlistName}</div>}
 			<div className="rundown-status-bar__right">
-				<div className="rundown-status-bar__t-timer">{!!activeTTimer && <TTimerDisplay timer={activeTTimer} />}</div>
+				<div className="rundown-status-bar__t-timer">
+					{!!activeTTimer && <TTimerDisplay timer={activeTTimer} />}
+				</div>
 			</div>
 		</div>
 	)

@@ -1,38 +1,41 @@
+import ClassNames from 'classnames'
+import { Meteor } from 'meteor/meteor'
 import * as React from 'react'
 import _ from 'underscore'
-import {
-	type RundownLayoutBase,
-	type RundownLayoutAdLibRegion,
-	type DashboardLayoutAdLibRegion,
-	RundownLayoutAdLibRegionRole,
+import type { ReadonlyDeep } from 'type-fest'
+
+import { RundownLayoutAdLibRegionRole } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type {
+	DashboardLayoutAdLibRegion,
+	RundownLayoutAdLibRegion,
+	RundownLayoutBase,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { dashboardElementStyle, type IDashboardPanelTrackedProps } from './DashboardPanel.js'
-import ClassNames from 'classnames'
-import { type IAdLibPanelProps, type AdLibFetchAndFilterProps, fetchAndFilter } from './AdLibPanel.js'
-import { matchFilter } from './AdLibListView.js'
+
 import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { translateWithTracker, type Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { translateWithTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import {
-	type AdLibPieceUi,
 	getNextPieceInstancesGrouped,
 	getUnfinishedPieceInstancesGrouped,
 	isAdLibDisplayedAsOnAir,
 	isAdLibNext,
 	isAdLibOnAir,
 } from '../../lib/shelf.js'
-import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import {
-	useContentStatusForPieceInstance,
-	type WithMediaObjectStatusProps,
-} from '../SegmentTimeline/withMediaObjectStatus.js'
-import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
 import { UIStudios } from '../Collections.js'
-import { Meteor } from 'meteor/meteor'
-import type { ReadonlyDeep } from 'type-fest'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import { useContentStatusForPieceInstance } from '../SegmentTimeline/withMediaObjectStatus.js'
+import { matchFilter } from './AdLibListView.js'
+import { fetchAndFilter } from './AdLibPanel.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { WithMediaObjectStatusProps } from '../SegmentTimeline/withMediaObjectStatus.js'
+import type { AdLibFetchAndFilterProps, IAdLibPanelProps } from './AdLibPanel.js'
+import type { IDashboardPanelTrackedProps } from './DashboardPanel.js'
 
 interface IState {
 	objId?: string
@@ -197,9 +200,9 @@ class AdLibRegionPanelBase extends React.Component<
 			this.props.panel.tags && this.props.rundownBaselineAdLibs
 				? this.props.rundownBaselineAdLibs
 						.concat(_.flatten(this.props.uiSegments.map((seg) => seg.pieces)))
-						.filter((item) => matchFilter(item, this.props.showStyleBase.sourceLayers, liveSegment, this.props.filter))[
-						this.props.adlibRank ? this.props.adlibRank : 0
-					]
+						.filter((item) =>
+							matchFilter(item, this.props.showStyleBase.sourceLayers, liveSegment, this.props.filter)
+						)[this.props.adlibRank ? this.props.adlibRank : 0]
 				: undefined
 		return (
 			<div

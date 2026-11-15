@@ -1,45 +1,49 @@
-import React, { createContext, type PropsWithChildren, type ReactNode, useRef } from 'react'
-import _ from 'underscore'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DEFAULT_DISPLAY_DURATION } from '@sofie-automation/shared-lib/dist/core/constants'
 import ClassNames from 'classnames'
 import { Meteor } from 'meteor/meteor'
+import { animate } from 'motion'
 import { parse as queryStringParse } from 'query-string'
+import React, { createContext, useRef } from 'react'
+import { withTranslation } from 'react-i18next'
 import { Route } from 'react-router-dom'
-import { animate, type AnimationPlaybackControls } from 'motion'
+import _ from 'underscore'
+import type { AnimationPlaybackControls } from 'motion'
+import type { PropsWithChildren, ReactNode } from 'react'
+
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { DEFAULT_DISPLAY_DURATION } from '@sofie-automation/shared-lib/dist/core/constants'
+import type { PartInstanceId, PieceId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { RundownPlaylists, Rundowns } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { OverUnderChip } from '../../lib/Components/OverUnderChip.js'
+import { documentTitle } from '../../lib/DocumentTitleProvider.js'
+import { firstIfArray } from '../../lib/lib.js'
+import { logger } from '../../lib/logging.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
 import {
-	type Translated,
 	useGlobalDelayedTrackerUpdateState,
 	useSubscription,
 	useSubscriptionIfEnabled,
 	useSubscriptions,
 	useTracker,
 } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-
-import type { PartInstanceId, PieceId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { withTranslation } from 'react-i18next'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { firstIfArray } from '../../lib/lib.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../../lib/logging.js'
-import { RundownPlaylists, Rundowns } from '../../collections/index.js'
-import { documentTitle } from '../../lib/DocumentTitleProvider.js'
 import { Spinner } from '../../lib/Spinner.js'
+import { RundownStatusBar } from '../ClockView/RundownStatusBar.js'
 import { UIStudios } from '../Collections.js'
 import { RundownTimingProvider } from '../RundownView/RundownTiming/RundownTimingProvider.js'
 import { StudioScreenSaver } from '../StudioScreenSaver/StudioScreenSaver.js'
 import { PrompterControlManager } from './controller/manager.js'
-import { RundownStatusBar } from '../ClockView/RundownStatusBar.js'
-import { PrompterAPI, type PrompterData, type PrompterDataPart, type PrompterDataPiece } from './prompter.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
 import { MdDisplay } from './Formatted/MdDisplay.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import { OverUnderChip } from '../../lib/Components/OverUnderChip.js'
+import { PrompterAPI } from './prompter.js'
 import { PrompterControlButtons } from './PrompterControlButtons/PrompterControlButtons.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { PrompterData, PrompterDataPart, PrompterDataPiece } from './prompter.js'
 
 const DEFAULT_UPDATE_THROTTLE = 250 //ms
 const PIECE_MISSING_UPDATE_THROTTLE = 2000 //ms
@@ -182,7 +186,9 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 			controlButtons: queryParams['controlButtons'] as PrompterConfig['controlButtons'],
 
 			joycon_invertJoystick:
-				queryParams['joycon_invertJoystick'] === undefined ? true : queryParams['joycon_invertJoystick'] === '1',
+				queryParams['joycon_invertJoystick'] === undefined
+					? true
+					: queryParams['joycon_invertJoystick'] === '1',
 			joycon_speedMap:
 				queryParams['joycon_speedMap'] === undefined
 					? undefined
@@ -192,10 +198,13 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 					? undefined
 					: asArray(queryParams['joycon_reverseSpeedMap']).map((value) => parseInt(value, 10)),
 			joycon_rangeRevMin: parseInt(firstIfArray(queryParams['joycon_rangeRevMin']) as string, 10) || undefined,
-			joycon_rangeNeutralMin: parseInt(firstIfArray(queryParams['joycon_rangeNeutralMin']) as string, 10) || undefined,
-			joycon_rangeNeutralMax: parseInt(firstIfArray(queryParams['joycon_rangeNeutralMax']) as string, 10) || undefined,
+			joycon_rangeNeutralMin:
+				parseInt(firstIfArray(queryParams['joycon_rangeNeutralMin']) as string, 10) || undefined,
+			joycon_rangeNeutralMax:
+				parseInt(firstIfArray(queryParams['joycon_rangeNeutralMax']) as string, 10) || undefined,
 			joycon_rangeFwdMax: parseInt(firstIfArray(queryParams['joycon_rangeFwdMax']) as string, 10) || undefined,
-			joycon_rightHandOffset: parseInt(firstIfArray(queryParams['joycon_rightHandOffset']) as string, 10) || undefined,
+			joycon_rightHandOffset:
+				parseInt(firstIfArray(queryParams['joycon_rightHandOffset']) as string, 10) || undefined,
 			pedal_speedMap:
 				queryParams['pedal_speedMap'] === undefined
 					? undefined
@@ -205,8 +214,10 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 					? undefined
 					: asArray(queryParams['pedal_reverseSpeedMap']).map((value) => parseInt(value, 10)),
 			pedal_rangeRevMin: parseInt(firstIfArray(queryParams['pedal_rangeRevMin']) as string, 10) || undefined,
-			pedal_rangeNeutralMin: parseInt(firstIfArray(queryParams['pedal_rangeNeutralMin']) as string, 10) || undefined,
-			pedal_rangeNeutralMax: parseInt(firstIfArray(queryParams['pedal_rangeNeutralMax']) as string, 10) || undefined,
+			pedal_rangeNeutralMin:
+				parseInt(firstIfArray(queryParams['pedal_rangeNeutralMin']) as string, 10) || undefined,
+			pedal_rangeNeutralMax:
+				parseInt(firstIfArray(queryParams['pedal_rangeNeutralMax']) as string, 10) || undefined,
 			pedal_rangeFwdMax: parseInt(firstIfArray(queryParams['pedal_rangeFwdMax']) as string, 10) || undefined,
 			xbox_speedMap:
 				queryParams['xbox_speedMap'] === undefined
@@ -385,7 +396,8 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 	scrollToLive(): void {
 		const scrollMargin = this.calculateScrollPosition()
 		const current =
-			document.querySelector<HTMLElement>('.prompter .live') || document.querySelector<HTMLElement>('.prompter .next')
+			document.querySelector<HTMLElement>('.prompter .live') ||
+			document.querySelector<HTMLElement>('.prompter .next')
 
 		if (!current) return
 
@@ -521,7 +533,9 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 			? currentPartElementAfter.getBoundingClientRect().top + positionTop
 			: null
 
-		const nextPositionEnd = nextPartElementAfter ? nextPartElementAfter.getBoundingClientRect().top + positionTop : null
+		const nextPositionEnd = nextPartElementAfter
+			? nextPartElementAfter.getBoundingClientRect().top + positionTop
+			: null
 
 		const takeIndicator = document.querySelector('.take-indicator')
 		if (takeIndicator) {
@@ -607,12 +621,16 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 					<>
 						<RundownTimingProvider
 							playlist={this.props.rundownPlaylist}
-							defaultDuration={this.props.studio?.settings.defaultDisplayDuration ?? DEFAULT_DISPLAY_DURATION}
+							defaultDuration={
+								this.props.studio?.settings.defaultDisplayDuration ?? DEFAULT_DISPLAY_DURATION
+							}
 						>
 							<Prompter
 								rundownPlaylistId={this.props.rundownPlaylist._id}
 								config={this.configOptions}
-								allowTestingAdlibsToPersist={this.props.studio?.settings.allowTestingAdlibsToPersist ?? false}
+								allowTestingAdlibsToPersist={
+									this.props.studio?.settings.allowTestingAdlibsToPersist ?? false
+								}
 							>
 								{this.configOptions.showOverUnder && (
 									<OverUnderChip
@@ -632,9 +650,15 @@ export class PrompterViewContent extends React.Component<Translated<IProps & ITr
 								id="prompter-debug"
 								style={{
 									marginTop: this.configOptions.margin ? this.configOptions.margin + 'vh' : undefined,
-									marginBottom: this.configOptions.margin ? this.configOptions.margin + 'vh' : undefined,
-									marginLeft: this.configOptions.margin ? this.configOptions.margin + 'vw' : undefined,
-									marginRight: this.configOptions.margin ? this.configOptions.margin + 'vw' : undefined,
+									marginBottom: this.configOptions.margin
+										? this.configOptions.margin + 'vh'
+										: undefined,
+									marginLeft: this.configOptions.margin
+										? this.configOptions.margin + 'vw'
+										: undefined,
+									marginRight: this.configOptions.margin
+										? this.configOptions.margin + 'vw'
+										: undefined,
 								}}
 							></div>
 						) : null}
@@ -936,7 +960,9 @@ const PrompterContent = withTranslation()(
 					return
 				} else {
 					if (this.props.config.debug)
-						logger.debug(`Selected anchor ${scrollAnchor.anchorId} as anchor element outside of view, jumping to it`)
+						logger.debug(
+							`Selected anchor ${scrollAnchor.anchorId} as anchor element outside of view, jumping to it`
+						)
 
 					// Note: config.margin does not have to be taken into account here,
 					// the css margins magically does it for us.
@@ -970,19 +996,25 @@ const PrompterContent = withTranslation()(
 				for (const rundown of this.props.prompterData.rundowns) {
 					for (const segment of rundown.segments) {
 						if (scrollAnchor.anchorId === `segment_${segment.id}`) {
-							logger.error(`Read anchor troubleshooting: segment "${segment.id}" was found in prompterData!`)
+							logger.error(
+								`Read anchor troubleshooting: segment "${segment.id}" was found in prompterData!`
+							)
 							return
 						}
 
 						for (const part of segment.parts) {
 							if (scrollAnchor.anchorId === `partInstance_${part.id}`) {
-								logger.error(`Read anchor troubleshooting: part "${part.id}" was found in prompterData!`)
+								logger.error(
+									`Read anchor troubleshooting: part "${part.id}" was found in prompterData!`
+								)
 								return
 							}
 
 							for (const piece of part.pieces) {
 								if (scrollAnchor.anchorId === `line_${piece.id}`) {
-									logger.error(`Read anchor troubleshooting: piece "${piece.id}" was found in prompterData!`)
+									logger.error(
+										`Read anchor troubleshooting: piece "${piece.id}" was found in prompterData!`
+									)
 									return
 								}
 							}
@@ -1166,7 +1198,9 @@ const PrompterContent = withTranslation()(
 									data-obj-id={segment.id + '_' + part.id + '_' + line.id}
 									key={'line_' + part.id + '_' + segment.id + '_' + line.id}
 									data-live-continuation-of={
-										partStatus === 'live' && line.continuationOf ? `line_${line.continuationOf}` : undefined
+										partStatus === 'live' && line.continuationOf
+											? `line_${line.continuationOf}`
+											: undefined
 									}
 									className={ClassNames('prompter-line', {
 										'add-blank': this.props.config.addBlankLine,
@@ -1218,7 +1252,10 @@ const PrompterContent = withTranslation()(
 
 					<div className="overlay-fix">
 						<div
-							className={'read-marker ' + (!this.props.config.showMarker ? 'hide' : this.props.config.marker || 'hide')}
+							className={
+								'read-marker ' +
+								(!this.props.config.showMarker ? 'hide' : this.props.config.marker || 'hide')
+							}
 						></div>
 
 						<div

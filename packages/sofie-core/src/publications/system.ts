@@ -1,11 +1,13 @@
 import { z } from 'zod'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { CoreSystem, Notifications } from '../collections'
+
 import { RundownId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { check } from '../lib/check'
-import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { CoreSystem, Notifications } from '../collections'
+import { check } from '../lib/check'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 
 export function registerSystemPublications(registry: PublicationRegistry): void {

@@ -1,6 +1,6 @@
-import type { IDefaultRendererProps } from './DefaultRenderer.js'
 import { getSplitItems } from '../../../SegmentContainer/getSplitItems.js'
 import { useContentStatusForPieceInstance } from '../../../SegmentTimeline/withMediaObjectStatus.js'
+import type { IDefaultRendererProps } from './DefaultRenderer.js'
 
 export function SplitsRenderer({ piece: pieceInstance }: Readonly<IDefaultRendererProps>): JSX.Element {
 	const contentStatus = useContentStatusForPieceInstance(pieceInstance.instance)

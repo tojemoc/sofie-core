@@ -1,6 +1,8 @@
+import { AnyBulkWriteOperation } from 'mongodb'
+
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { AnyBulkWriteOperation } from 'mongodb'
+
 import { DocumentChangeTracker } from '../DocumentChangeTracker.js'
 import { DocumentChanges } from '../utils.js'
 

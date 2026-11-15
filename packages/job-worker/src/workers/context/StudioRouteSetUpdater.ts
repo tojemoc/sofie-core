@@ -1,17 +1,19 @@
+import type { ReadonlyDeep } from 'type-fest'
+
 import { StudioRouteBehavior, StudioRouteSet } from '@sofie-automation/blueprints-integration'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { deepFreeze } from '@sofie-automation/corelib/dist/lib'
 import {
 	getAllCurrentItemsFromOverrides,
 	OverrideOpHelperImpl,
 	WrappedOverridableItemNormal,
 } from '@sofie-automation/corelib/dist/overrideOpHelper'
-import { logger } from '../../logging.js'
-import type { ReadonlyDeep } from 'type-fest'
-import type { WorkerDataCache } from '../caches.js'
-import type { IDirectCollections } from '../../db/index.js'
-import { JobStudio } from '../../jobs/index.js'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { JobStudio } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
+import type { IDirectCollections } from '../../db/index.js'
+import type { WorkerDataCache } from '../caches.js'
 
 export class StudioRouteSetUpdater {
 	readonly #directCollections: Readonly<IDirectCollections>

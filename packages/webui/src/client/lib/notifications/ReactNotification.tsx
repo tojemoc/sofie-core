@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
-import { NoticeLevel, NotificationCenter, Notification, type NotificationAction } from './notifications.js'
+
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+
 import { getCurrentTime } from '../systemTime.js'
+import { NoticeLevel, Notification, NotificationCenter } from './notifications.js'
+import type { NotificationAction } from './notifications.js'
 
 export interface IProps {
 	level?: NoticeLevel

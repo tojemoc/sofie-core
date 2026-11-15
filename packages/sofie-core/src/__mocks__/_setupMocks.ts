@@ -1,6 +1,7 @@
+import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
+
 import { setLogLevel } from '../logging'
 import { resetRandomId } from './random'
-import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
 import { SupressLogMessages } from './suppressLogging'
 
 // This file is run before all tests start.

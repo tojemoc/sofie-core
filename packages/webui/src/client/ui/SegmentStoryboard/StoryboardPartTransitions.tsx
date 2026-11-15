@@ -1,9 +1,11 @@
 import React from 'react'
+
 import { SourceLayerType } from '@sofie-automation/blueprints-integration'
-import type { IOutputLayerUi } from '../SegmentContainer/withResolvedSegment.js'
-import { StoryboardSourceLayer } from './StoryboardPartSecondaryPieces/StoryboardSourceLayer.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { PartExtended } from '@sofie-automation/corelib/src/dataModel/Part.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
+import { StoryboardSourceLayer } from './StoryboardPartSecondaryPieces/StoryboardSourceLayer.js'
+import type { IOutputLayerUi } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	part: PartExtended
@@ -26,7 +28,12 @@ export const StoryboardPartTransitions = React.memo(function StoryboardPartTrans
 					.flat()
 			).map((sourceLayer) => {
 				return (
-					<StoryboardSourceLayer key={sourceLayer._id} sourceLayer={sourceLayer} pieces={part.pieces} part={part} />
+					<StoryboardSourceLayer
+						key={sourceLayer._id}
+						sourceLayer={sourceLayer}
+						pieces={part.pieces}
+						part={part}
+					/>
 				)
 			})}
 		</div>

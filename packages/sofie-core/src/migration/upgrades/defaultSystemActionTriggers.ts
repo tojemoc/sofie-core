@@ -1,14 +1,14 @@
 import {
-	IBlueprintTriggeredActions,
 	ClientActions,
-	TriggerType,
-	PlayoutActions,
-	IBlueprintDefaultCoreSystemTriggersType,
 	IBlueprintDefaultCoreSystemTriggers,
+	IBlueprintDefaultCoreSystemTriggersType,
+	IBlueprintTriggeredActions,
+	PlayoutActions,
+	TriggerType,
 } from '@sofie-automation/blueprints-integration'
+import { TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { getHash, generateTranslation as t } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 let j = 0
 
@@ -411,7 +411,7 @@ export const DEFAULT_CORE_TRIGGERS: IBlueprintDefaultCoreSystemTriggers = {
 				up: true,
 			},
 		},
-		_rank: ++j * 1000,
+		_rank: (j + 1) * 1000,
 		name: t('Rewind segments to start'),
 	},
 }

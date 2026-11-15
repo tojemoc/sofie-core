@@ -1,13 +1,14 @@
-import { OnPlayoutPlaybackChangedProps } from '@sofie-automation/corelib/dist/worker/studio'
-import { logger } from '../../logging.js'
-import { JobContext } from '../../jobs/index.js'
-import { runJobWithPlayoutModel } from '../lock.js'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { OnPlayoutPlaybackChangedProps } from '@sofie-automation/corelib/dist/worker/studio'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { onPiecePlaybackStarted, onPiecePlaybackStopped } from './piecePlayback.js'
-import { onPartPlaybackStarted, onPartPlaybackStopped } from './partPlayback.js'
+
+import { JobContext } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
+import { runJobWithPlayoutModel } from '../lock.js'
 import { updateTimeline } from '../timeline/generate.js'
+import { onPartPlaybackStarted, onPartPlaybackStopped } from './partPlayback.js'
+import { onPiecePlaybackStarted, onPiecePlaybackStopped } from './piecePlayback.js'
 
 export { handleTimelineTriggerTime } from './timelineTriggerTime.js'
 

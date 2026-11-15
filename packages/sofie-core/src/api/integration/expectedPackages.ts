@@ -1,17 +1,9 @@
+import _ from 'underscore'
 import { z } from 'zod'
-import { check, zAnyArray, zPlainObject } from '../../lib/check'
-import { MethodContext } from '../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+
 import { ExpectedPackageStatusAPI, PackageInfo } from '@sofie-automation/blueprints-integration'
+import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../../lib/lib'
-import { getPackageContainerPackageId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
-import { getPackageInfoId, PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
-import type { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
-import { onUpdatedPackageInfo } from '../ingest/packageInfo'
-import { getPackageContainerId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
 import {
 	ExpectedPackageId,
 	ExpectedPackageWorkStatusId,
@@ -19,6 +11,14 @@ import {
 	PackageContainerPackageId,
 	PeripheralDeviceId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { getPackageContainerPackageId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
+import { getPackageContainerId } from '@sofie-automation/corelib/dist/dataModel/PackageContainerStatus'
+import { getPackageInfoId, PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+
 import {
 	ExpectedPackages,
 	ExpectedPackageWorkStatuses,
@@ -26,10 +26,12 @@ import {
 	PackageContainerStatuses,
 	PackageInfos,
 } from '../../collections'
+import { check, zAnyArray, zPlainObject } from '../../lib/check'
+import { getCurrentTime } from '../../lib/lib'
 import { logger } from '../../logging'
-import _ from 'underscore'
-import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { onUpdatedPackageInfo } from '../ingest/packageInfo'
+import { MethodContext } from '../methodContext'
 
 export namespace PackageManagerIntegration {
 	export async function updateExpectedPackageWorkStatuses(

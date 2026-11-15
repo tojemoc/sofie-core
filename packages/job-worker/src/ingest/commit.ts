@@ -1,49 +1,51 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
 import {
-	SegmentId,
 	PartId,
-	RundownPlaylistId,
-	RundownId,
 	PartInstanceId,
+	RundownId,
+	RundownPlaylistId,
+	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { DBRundown, RundownOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { unprotectString, protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { clone, groupByToMapFunc } from '@sofie-automation/corelib/dist/lib'
+import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { EventsJobs } from '@sofie-automation/corelib/dist/worker/events'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { JobContext } from '../jobs/index.js'
+import { PlaylistLock } from '../jobs/lock.js'
 import { logger } from '../logging.js'
+import { getTranslatedMessage, ServerTranslatedMesssages } from '../notes.js'
+import { runJobWithPlaylistLock, runWithPlayoutModel } from '../playout/lock.js'
+import { createPlayoutModelFromIngestModel } from '../playout/model/implementation/LoadPlayoutModel.js'
+import { PlayoutRundownModelImpl } from '../playout/model/implementation/PlayoutRundownModelImpl.js'
+import { PlayoutSegmentModelImpl } from '../playout/model/implementation/PlayoutSegmentModelImpl.js'
 import { PlayoutModel } from '../playout/model/PlayoutModel.js'
 import { PlayoutRundownModel } from '../playout/model/PlayoutRundownModel.js'
+import { recalculateTTimerProjections } from '../playout/tTimers.js'
 import { allowedToMoveRundownOutOfPlaylist } from '../rundown.js'
-import { updatePartInstanceRanksAndOrphanedState } from '../updatePartInstanceRanksAndOrphanedState.js'
 import {
 	getPlaylistIdFromExternalId,
 	produceRundownPlaylistInfoFromRundown,
 	removePlaylistFromDb,
 	removeRundownFromDb,
 } from '../rundownPlaylists.js'
-import { ReadonlyDeep } from 'type-fest'
-import { IngestDatabasePersistedModel, IngestModel, IngestModelReadonly } from './model/IngestModel.js'
-import { JobContext } from '../jobs/index.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { runJobWithPlaylistLock, runWithPlayoutModel } from '../playout/lock.js'
+import { updatePartInstanceRanksAndOrphanedState } from '../updatePartInstanceRanksAndOrphanedState.js'
+import { updateSegmentIdsForAdlibbedPartInstances } from './commit/updateSegmentIdsForAdlibbedPartInstances.js'
 import { CommitIngestData } from './lock.js'
-import { clone, groupByToMapFunc } from '@sofie-automation/corelib/dist/lib'
-import { PlaylistLock } from '../jobs/lock.js'
+import { IngestDatabasePersistedModel, IngestModel, IngestModelReadonly } from './model/IngestModel.js'
 import { syncChangesToPartInstances } from './syncChangesToPartInstance.js'
 import { ensureNextPartIsValid } from './updateNext.js'
-import { recalculateTTimerProjections } from '../playout/tTimers.js'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { getTranslatedMessage, ServerTranslatedMesssages } from '../notes.js'
-import _ from 'underscore'
-import { EventsJobs } from '@sofie-automation/corelib/dist/worker/events'
-import { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { PlayoutRundownModelImpl } from '../playout/model/implementation/PlayoutRundownModelImpl.js'
-import { PlayoutSegmentModelImpl } from '../playout/model/implementation/PlayoutSegmentModelImpl.js'
-import { createPlayoutModelFromIngestModel } from '../playout/model/implementation/LoadPlayoutModel.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { updateSegmentIdsForAdlibbedPartInstances } from './commit/updateSegmentIdsForAdlibbedPartInstances.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
 
 export type BeforePartMapItem = { id: PartId; rank: number }
 export type BeforeIngestOperationPartMap = ReadonlyMap<SegmentId, Array<BeforePartMapItem>>

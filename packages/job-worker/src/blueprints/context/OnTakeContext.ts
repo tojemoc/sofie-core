@@ -1,4 +1,7 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
+	IBlueprintBrandingInfo,
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
 	IBlueprintPart,
@@ -6,37 +9,36 @@ import {
 	IBlueprintPiece,
 	IBlueprintPieceDB,
 	IBlueprintPieceInstance,
+	IBlueprintPlayoutDevice,
 	IBlueprintResolvedPieceInstance,
+	IBlueprintSegmentDB,
 	IEventContext,
+	IOnTakeContext,
 	OmitId,
+	QueuePartTarget,
 	Time,
 	TSR,
-	IBlueprintPlayoutDevice,
-	IOnTakeContext,
-	IBlueprintSegmentDB,
-	QueuePartTarget,
-	IBlueprintBrandingInfo,
 } from '@sofie-automation/blueprints-integration'
+import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ReadonlyDeep } from 'type-fest'
+import type { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
+import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
+import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
+import { executePeripheralDeviceAction, listPlayoutDevices } from '../../peripheralDevice.js'
+import { getOrderedPartsAfterPlayhead } from '../../playout/lookahead/util.js'
 import { PlayoutModel } from '../../playout/model/PlayoutModel.js'
 import { ContextInfo } from './CommonContext.js'
-import { ShowStyleUserContext } from './ShowStyleUserContext.js'
-import { WatchedPackagesHelper } from './watchedPackages.js'
-import { getCurrentTime } from '../../lib/index.js'
-import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { executePeripheralDeviceAction, listPlayoutDevices } from '../../peripheralDevice.js'
+import { convertPartToBlueprints, emitIngestOperation, resolveSelectedBranding } from './lib.js'
 import {
 	ActionPartChange,
 	PartAndPieceInstanceActionService,
 	QueueablePartAndPieces,
 } from './services/PartAndPieceInstanceActionService.js'
-import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
-import { getOrderedPartsAfterPlayhead } from '../../playout/lookahead/util.js'
-import { convertPartToBlueprints, emitIngestOperation, resolveSelectedBranding } from './lib.js'
-import type { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
 import { TTimersService } from './services/TTimersService.js'
-import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { ShowStyleUserContext } from './ShowStyleUserContext.js'
+import { WatchedPackagesHelper } from './watchedPackages.js'
 
 export class OnTakeContext extends ShowStyleUserContext implements IOnTakeContext, IEventContext {
 	readonly #tTimersService: TTimersService

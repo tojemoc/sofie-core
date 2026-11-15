@@ -3,6 +3,7 @@
  * Each case applies the modifier then compares the WHOLE collection state afterwards.
  */
 import { MongoClient } from 'mongodb'
+
 import { connectSharedMongoClient } from '../_integrationDb'
 import { ConformanceCase, runConformanceTable, SeedDoc } from './_harness'
 

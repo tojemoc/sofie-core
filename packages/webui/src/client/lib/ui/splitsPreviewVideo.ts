@@ -1,6 +1,8 @@
-import { SourceLayerType, type SplitsContent } from '@sofie-automation/blueprints-integration'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { SplitsContent } from '@sofie-automation/blueprints-integration'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 
 export type PreviewVideoContentUI = {
 	type: 'video'

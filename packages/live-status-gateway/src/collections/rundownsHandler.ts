@@ -1,8 +1,10 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { CollectionBase } from '../collectionBase.js'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
+import { CollectionBase } from '../collectionBase.js'
+import { CoreHandler } from '../coreHandler.js'
 
 export class RundownsHandler extends CollectionBase<DBRundown[], CollectionName.Rundowns> {
 	constructor(logger: Logger, coreHandler: CoreHandler) {

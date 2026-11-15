@@ -1,11 +1,12 @@
-import { AllPubSubNames, AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { MetricsGauge } from '@sofie-automation/corelib/dist/prometheus'
-import { extractFunctionSignature } from './lib'
-import { logger } from './logging'
-import { MinimalMongoCursor } from './collections/collection'
-import { PublicationContext, PublishDocType } from './publications/lib/lib'
-import { CustomPublishMeteor, PublishIfDocument } from './lib/customPublication/publish'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MetricsGauge } from '@sofie-automation/corelib/dist/prometheus'
+import { AllPubSubNames, AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { MinimalMongoCursor } from './collections/collection'
+import { extractFunctionSignature } from './lib'
+import { CustomPublishMeteor, PublishIfDocument } from './lib/customPublication/publish'
+import { logger } from './logging'
+import { PublicationContext, PublishDocType } from './publications/lib/lib'
 
 // The Prometheus gauge is registered globally by name, so it must live at module scope rather than on
 // the registry instance, otherwise constructing a second registry (e.g. in tests) would throw.

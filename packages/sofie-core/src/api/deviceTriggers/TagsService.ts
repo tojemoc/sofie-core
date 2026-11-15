@@ -1,8 +1,9 @@
 import { PartInstanceId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { PieceInstanceFields, ContentCache } from './reactiveContentCacheForPieceInstances'
 import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { areSetsEqual, doSetsIntersect } from '@sofie-automation/corelib/dist/lib'
+import { isValidForBranding } from '@sofie-automation/corelib/dist/playout/branding'
 import {
 	createPartCurrentTimes,
 	PieceInstanceWithTimings,
@@ -10,9 +11,9 @@ import {
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { IWrappedAdLib } from '@sofie-automation/meteor-lib/dist/triggers/actionFilterChainCompilers'
-import { areSetsEqual, doSetsIntersect } from '@sofie-automation/corelib/dist/lib'
+
 import { getCurrentTime } from '../../lib/lib'
-import { isValidForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { ContentCache, PieceInstanceFields } from './reactiveContentCacheForPieceInstances'
 
 export class TagsService {
 	protected onAirPiecesTags: Set<string> = new Set()

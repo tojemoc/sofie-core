@@ -1,6 +1,7 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { MappingExt, MappingsExt, StudioRouteSet } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { ReadonlyDeep } from 'type-fest'
 import { getActiveRoutes, getRoutedMappings } from '@sofie-automation/meteor-lib/dist/collections/Studios'
 
 type MappingExtWithOriginalName = ReadonlyDeep<MappingExt> & { originalLayerName: string }

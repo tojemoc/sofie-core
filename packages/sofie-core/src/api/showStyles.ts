@@ -1,24 +1,26 @@
+import deepmerge from 'deepmerge'
 import { z } from 'zod'
-import { check } from '../lib/check'
-import { CreateAdlibTestingRundownOption, NewShowStylesAPI } from '@sofie-automation/meteor-lib/dist/api/showStyles'
+
+import { IBlueprintConfig } from '@sofie-automation/blueprints-integration'
+import { ShowStyleBaseId, ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MethodContextAPI, MethodContext } from './methodContext'
-import deepmerge from 'deepmerge'
 import {
 	applyAndValidateOverrides,
 	ObjectWithOverrides,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { IBlueprintConfig } from '@sofie-automation/blueprints-integration'
-import { ShowStyleBaseId, ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownLayouts, ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { CreateAdlibTestingRundownOption, NewShowStylesAPI } from '@sofie-automation/meteor-lib/dist/api/showStyles'
 import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
+import { RundownLayouts, ShowStyleBases, ShowStyleVariants, Studios } from '../collections'
+import { check } from '../lib/check'
 import { assertConnectionHasOneOfPermissions } from '../security/auth'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MethodContext, MethodContextAPI } from './methodContext'
 
 const PERMISSIONS_FOR_MANAGE_SHOWSTYLES: Array<keyof UserPermissions> = ['configure']
 

@@ -1,34 +1,39 @@
+import * as cp from 'child_process'
+import * as crypto from 'crypto'
+
+import Debug from 'debug'
 import {
-	Conductor,
-	DeviceType,
-	ConductorOptions,
-	TimelineTriggerTimeResult,
-	DeviceOptionsAny,
-	TSRTimelineObj,
-	TSRTimeline,
-	TSRTimelineContent,
-	DeviceOptionsAtem,
 	AtemMediaPoolAsset,
+	Conductor,
+	ConductorOptions,
+	Datastore,
+	DeviceOptionsAny,
+	DeviceOptionsAtem,
+	DeviceType,
 	ExpectedPlayoutItem,
 	ExpectedPlayoutItemContent,
 	StatusCode,
-	Datastore,
+	TimelineTriggerTimeResult,
+	TSRTimeline,
+	TSRTimelineContent,
+	TSRTimelineObj,
 } from 'timeline-state-resolver'
-import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler.js'
-import * as crypto from 'crypto'
-import * as cp from 'child_process'
-
+import { BaseRemoteDeviceIntegration } from 'timeline-state-resolver/dist/service/remoteDeviceInstance'
 import _ from 'underscore'
-import {
-	Observer,
-	PeripheralDevicePubSubCollectionsNames,
-	stringifyError,
-} from '@sofie-automation/server-core-integration'
 import { Logger } from 'winston'
-import { disableAtemUpload } from './config.js'
-import Debug from 'debug'
-import { FinishedTrace, sendTrace } from './influxdb.js'
 
+import {
+	assertNever,
+	getSchemaDefaultValues,
+	Observer,
+	PeripheralDeviceAPI,
+	PeripheralDeviceForDevice,
+	PeripheralDevicePubSubCollectionsNames,
+	protectString,
+	stringifyError,
+	unprotectObject,
+	unprotectString,
+} from '@sofie-automation/server-core-integration'
 import { RundownId, RundownPlaylistId, StudioId, TimelineHash } from '@sofie-automation/shared-lib/dist/core/model/Ids'
 import {
 	deserializeTimelineBlob,
@@ -37,28 +42,22 @@ import {
 	TimelineObjGeneric,
 } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
 import { PlayoutGatewayConfig } from '@sofie-automation/shared-lib/dist/generated/PlayoutGatewayConfigTypes'
+
+import { disableAtemUpload } from './config.js'
+import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler.js'
+import { FinishedTrace, sendTrace } from './influxdb.js'
 import {
-	assertNever,
-	getSchemaDefaultValues,
-	PeripheralDeviceAPI,
-	PeripheralDeviceForDevice,
-	protectString,
-	unprotectObject,
-	unprotectString,
-} from '@sofie-automation/server-core-integration'
-import { BaseRemoteDeviceIntegration } from 'timeline-state-resolver/dist/service/remoteDeviceInstance'
-import { TSRDeviceRegistry } from './tsrDeviceRegistry.js'
-import {
-	playoutDevicesTotalGauge,
-	playoutDeviceConnectedGauge,
-	playoutResolveDurationHistogram,
-	playoutTimelineAgeGauge,
-	playoutSlowSentCommandsCounter,
-	playoutSlowFulfilledCommandsCounter,
 	playoutCommandErrorsCounter,
 	playoutCommandsSentCounter,
+	playoutDeviceConnectedGauge,
+	playoutDevicesTotalGauge,
 	playoutPlaybackCallbacksCounter,
+	playoutResolveDurationHistogram,
+	playoutSlowFulfilledCommandsCounter,
+	playoutSlowSentCommandsCounter,
+	playoutTimelineAgeGauge,
 } from './playoutMetrics.js'
+import { TSRDeviceRegistry } from './tsrDeviceRegistry.js'
 import { getVmixPollerConfig, VmixInputPollerManager } from './vmix/VmixInputPollerManager.js'
 
 const debug = Debug('playout-gateway')

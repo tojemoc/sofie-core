@@ -1,15 +1,17 @@
-import type { IBlueprintDeviceTrigger } from '@sofie-automation/blueprints-integration'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import classNames from 'classnames'
 import { useMemo } from 'react'
+import Form from 'react-bootstrap/esm/Form'
+
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { Studios } from '../../../../../collections/index.js'
-import { getCurrentTime } from '../../../../../lib/systemTime.js'
+import type { IBlueprintDeviceTrigger } from '@sofie-automation/blueprints-integration'
 import type { UIDeviceTriggerPreview } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
+
+import { Studios } from '../../../../../collections/index.js'
 import { useSubscriptionIfEnabled, useTracker } from '../../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { getCurrentTime } from '../../../../../lib/systemTime.js'
 import { DeviceTriggersPreviews } from '../../../../Collections.js'
 import { DeviceTrigger } from './DeviceTrigger.js'
-import Form from 'react-bootstrap/esm/Form'
 
 interface IProps {
 	trigger: IBlueprintDeviceTrigger
@@ -85,11 +87,13 @@ export const DeviceEditor = function DeviceEditor({ trigger, modified, readonly,
 
 						{previewedTrigger.values && (
 							<p>
-								{Object.entries<string | number | boolean>(previewedTrigger.values).map(([key, value]) => (
-									<span key={key}>
-										{key}: {value}
-									</span>
-								))}
+								{Object.entries<string | number | boolean>(previewedTrigger.values).map(
+									([key, value]) => (
+										<span key={key}>
+											{key}: {value}
+										</span>
+									)
+								)}
 							</p>
 						)}
 					</li>

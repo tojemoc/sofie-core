@@ -1,20 +1,22 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
 import React, { useState } from 'react'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import type { IconProp } from '@fortawesome/fontawesome-svg-core'
+
+import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import { SplitDropdown } from '../../lib/SplitDropdown.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
 import {
 	getRundownPlaylistLink,
 	getRundownWithShelfLayoutLink as getRundownWithLayoutLink,
 	getShelfLink,
 } from './util.js'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import classNames from 'classnames'
-import type { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { useTranslation } from 'react-i18next'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 export const RundownViewLayoutSelection = React.memo(function RundownViewLayoutSelection2({
 	playlistId,
@@ -80,7 +82,11 @@ export const RundownViewLayoutSelection = React.memo(function RundownViewLayoutS
 					{
 						key: 'default',
 						node: (
-							<Link to={getRundownPlaylistLink(playlistId)} onClick={() => saveViewChoice('default')} key={'default'}>
+							<Link
+								to={getRundownPlaylistLink(playlistId)}
+								onClick={() => saveViewChoice('default')}
+								key={'default'}
+							>
 								<div className="action-btn expco-item">{t('Default')}</div>
 							</Link>
 						),

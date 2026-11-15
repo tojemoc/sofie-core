@@ -1,6 +1,6 @@
-import type { SystemBlueprintManifest } from './system.js'
-import type { StudioBlueprintManifest } from './studio.js'
 import type { ShowStyleBlueprintManifest } from './showStyle.js'
+import type { StudioBlueprintManifest } from './studio.js'
+import type { SystemBlueprintManifest } from './system.js'
 
 export * from './base.js'
 export * from './showStyle.js'

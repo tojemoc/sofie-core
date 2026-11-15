@@ -1,13 +1,13 @@
 import classNames from 'classnames'
-import React, { type CSSProperties, useCallback, useContext, useEffect, useMemo, useRef } from 'react'
-import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
-import {
-	PreviewPopUpContext,
-	type IPreviewPopUpSession,
-	convertSourceLayerItemToPreview,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
+import type { CSSProperties } from 'react'
+
 import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	piece: PieceExtended
@@ -36,7 +36,11 @@ export const LinePartSecondaryPiece: React.FC<IProps> = React.memo(function Line
 	const typeClass = piece?.sourceLayer?.type ? RundownUtils.getSourceLayerClassName(piece?.sourceLayer?.type) : ''
 
 	const pieceStyle = useMemo<CSSProperties>(() => {
-		const width = timeInBase(piece.renderedDuration ?? Math.max(timelineBase, partDuration), timelineBase, timelineBase)
+		const width = timeInBase(
+			piece.renderedDuration ?? Math.max(timelineBase, partDuration),
+			timelineBase,
+			timelineBase
+		)
 		const left = timeInBase(piece.renderedInPoint ?? 0, timelineBase, timelineBase)
 		const overflow = Math.max(0, left + width - 100)
 		return {

@@ -1,12 +1,14 @@
 import ClassNames from 'classnames'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutTextLabel,
 	RundownLayoutBase,
 	RundownLayoutTextLabel,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface ITextLabelPanelProps {
 	visible?: boolean

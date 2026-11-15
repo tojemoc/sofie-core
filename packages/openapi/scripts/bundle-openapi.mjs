@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
+
 import $RefParser from '@apidevtools/json-schema-ref-parser'
+import yaml from 'js-yaml'
 
 const ROOT_FILE = './api/actions.yaml'
 const OUTPUT_FILE = './src/generated/openapi.yaml'

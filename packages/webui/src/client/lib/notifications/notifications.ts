@@ -1,20 +1,24 @@
-import { ReactiveVar } from 'meteor/reactive-var'
-import _ from 'underscore'
-import { Tracker } from 'meteor/tracker'
-import { Meteor } from 'meteor/meteor'
 import { EventEmitter } from 'events'
+
+import { Meteor } from 'meteor/meteor'
+import { ReactiveVar } from 'meteor/reactive-var'
+import { Tracker } from 'meteor/tracker'
+import _ from 'underscore'
+
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { assertNever, getRandomString } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { isTranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import {
-	type ProtectedString,
-	unprotectString,
 	isProtectedString,
 	protectString,
+	unprotectString,
 } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { isTranslatableMessage, type ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { MeteorCall } from '../../lib/meteorApi.js'
 import type { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+import type { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { MeteorCall } from '../../lib/meteorApi.js'
 import { LocalStorageProperty } from '../localStorage.js'
 
 let reportNotificationsId: string | null = null

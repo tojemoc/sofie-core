@@ -1,7 +1,7 @@
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
 import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
-import type { ActivePlaylistEvent } from '@sofie-automation/live-status-gateway-api'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { ActivePlaylistEvent } from '@sofie-automation/live-status-gateway-api'
 
 import { translatePlaylistTimingType } from './translatePlaylistTimingType.js'
 

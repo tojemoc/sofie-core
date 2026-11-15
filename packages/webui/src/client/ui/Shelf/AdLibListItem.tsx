@@ -1,13 +1,15 @@
-import ClassNames from 'classnames'
-import type { ISourceLayer, IBlueprintActionTriggerMode } from '@sofie-automation/blueprints-integration'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import renderItem from './Renderers/ItemRendererFactory.js'
-import { useContentStatusForAdlibPiece } from '../SegmentTimeline/withMediaObjectStatus.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
-import { setShelfContextMenuContext, ContextType as MenuContextType } from './ShelfContextMenu.js'
-import type { IAdLibListItem } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
+import ClassNames from 'classnames'
+
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IBlueprintActionTriggerMode, ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { IAdLibListItem } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
+
+import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
+import { useContentStatusForAdlibPiece } from '../SegmentTimeline/withMediaObjectStatus.js'
+import renderItem from './Renderers/ItemRendererFactory.js'
+import { ContextType as MenuContextType, setShelfContextMenuContext } from './ShelfContextMenu.js'
 
 export type { IAdLibListItem } from '@sofie-automation/meteor-lib/dist/uiTypes/Adlib'
 

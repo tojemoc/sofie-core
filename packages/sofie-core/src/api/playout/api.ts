@@ -1,14 +1,14 @@
-import { NewPlayoutAPI } from '@sofie-automation/meteor-lib/dist/api/playout'
-import { ServerPlayoutAPI } from './playout'
-import { MethodContextAPI } from '../methodContext'
-import { QueueStudioJob } from '../../worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-
 import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
-import { assertConnectionHasOneOfPermissions } from '../../security/auth'
-import { Studios } from '../../collections'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import { NewPlayoutAPI } from '@sofie-automation/meteor-lib/dist/api/playout'
+import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
+import { Studios } from '../../collections'
+import { assertConnectionHasOneOfPermissions } from '../../security/auth'
+import { QueueStudioJob } from '../../worker/worker'
+import { MethodContextAPI } from '../methodContext'
+import { ServerPlayoutAPI } from './playout'
 
 const PERMISSIONS_FOR_STUDIO_BASELINE: Array<keyof UserPermissions> = ['configure', 'studio']
 

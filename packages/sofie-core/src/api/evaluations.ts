@@ -1,16 +1,17 @@
-import { EvaluationBase } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
-import { getRandomId, getSofieHostUrl } from '@sofie-automation/corelib/dist/lib'
-import { getCurrentTime } from '../lib/lib'
-import { deferAsync } from '../lib/lib'
-import { logger } from '../logging'
 import _ from 'underscore'
-import { fetchStudioLight } from '../optimizations'
-import { sendSlackMessageToWebhook } from './integration/slack'
+
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { Evaluations, RundownPlaylists } from '../collections'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { VerifiedRundownPlaylistForUserAction } from '../security/check'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, getSofieHostUrl } from '@sofie-automation/corelib/dist/lib'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { EvaluationBase } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
+
+import { Evaluations, RundownPlaylists } from '../collections'
+import { deferAsync, getCurrentTime } from '../lib/lib'
+import { logger } from '../logging'
+import { fetchStudioLight } from '../optimizations'
+import { VerifiedRundownPlaylistForUserAction } from '../security/check'
+import { sendSlackMessageToWebhook } from './integration/slack'
 
 export async function saveEvaluation(
 	_playlist: VerifiedRundownPlaylistForUserAction,

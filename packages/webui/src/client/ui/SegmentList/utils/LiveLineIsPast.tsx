@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { TimingDataResolution, TimingTickResolution, useTiming } from '../../RundownView/RundownTiming/withTiming.js'
 
 export const LiveLineIsPast = React.memo(function LiveLineIsPast({

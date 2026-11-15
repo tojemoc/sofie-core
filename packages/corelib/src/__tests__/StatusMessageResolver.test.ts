@@ -1,6 +1,7 @@
-import { StatusMessageResolver } from '../StatusMessageResolver.js'
 import { SystemErrorCode } from '@sofie-automation/shared-lib/dist/systemErrorMessages'
+
 import { protectString } from '../protectedString.js'
+import { StatusMessageResolver } from '../StatusMessageResolver.js'
 
 // Mock device status codes (these would come from TSR in production)
 const MockDeviceStatusCode = {

@@ -8,8 +8,9 @@
  */
 
 import { ExpectedPackageStatusAPI, Time } from '@sofie-automation/blueprints-integration'
+
 import { protectString } from '../protectedString.js'
-import { StudioId, PeripheralDeviceId, PackageContainerId } from './Ids.js'
+import { PackageContainerId, PeripheralDeviceId, StudioId } from './Ids.js'
 
 export interface PackageContainerStatusDB {
 	_id: PackageContainerId // unique id, see getPackageContainerId()

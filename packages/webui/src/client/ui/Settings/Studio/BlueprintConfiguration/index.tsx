@@ -1,21 +1,21 @@
 import { useCallback, useMemo } from 'react'
-import { useSubscription, useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { BlueprintConfigSchemaSettings } from '../../BlueprintConfigSchema/index.js'
-import {
-	applyAndValidateOverrides,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { Blueprints, Studios } from '../../../../collections/index.js'
-import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
 import { useTranslation } from 'react-i18next'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { SelectConfigPreset } from './SelectConfigPreset.js'
-import { SelectBlueprint } from './SelectBlueprint.js'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { UIBlueprintUpgradeStatuses } from '../../../Collections.js'
-import { getUpgradeStatusMessage, UpgradeStatusButtons } from '../../Upgrades/Components.js'
+import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { UIBlueprintUpgradeStatusStudio } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+
+import { Blueprints, Studios } from '../../../../collections/index.js'
+import { useSubscription, useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
+import { UIBlueprintUpgradeStatuses } from '../../../Collections.js'
+import { BlueprintConfigSchemaSettings } from '../../BlueprintConfigSchema/index.js'
+import { getUpgradeStatusMessage, UpgradeStatusButtons } from '../../Upgrades/Components.js'
+import { SelectBlueprint } from './SelectBlueprint.js'
+import { SelectConfigPreset } from './SelectConfigPreset.js'
 
 interface StudioBlueprintConfigurationSettingsProps {
 	studio: DBStudio

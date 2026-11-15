@@ -1,13 +1,15 @@
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { type EvsContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
-
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import type { IPropsHeader } from './PieceIcon.js'
-import { findPieceInstanceToShow } from './utils.js'
-import type { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { EvsContent } from '@sofie-automation/blueprints-integration'
+import type { RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
+
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { findPieceInstanceToShow } from './utils.js'
+import type { IPropsHeader } from './PieceIcon.js'
 
 interface INamePropsHeader extends IPropsHeader {
 	partName: string
@@ -26,7 +28,10 @@ function getLocalPieceLabel(piece: ReadonlyDeep<PieceGeneric>): JSX.Element | nu
 	return (
 		<>
 			{color && (
-				<span style={{ color: color.startsWith('#') ? color : `#${color}` }} className="piece__label__colored-mark">
+				<span
+					style={{ color: color.startsWith('#') ? color : `#${color}` }}
+					className="piece__label__colored-mark"
+				>
 					·
 				</span>
 			)}

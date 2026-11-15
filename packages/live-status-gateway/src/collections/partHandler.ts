@@ -1,15 +1,17 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 import { SelectedPartInstances } from './partInstancesHandler.js'
 import { PartsHandler } from './partsHandler.js'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CollectionHandlers } from '../liveStatusServer.js'
-import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
 
 const PLAYLIST_KEYS = ['_id'] as const
 type Playlist = PickKeys<DBRundownPlaylist, typeof PLAYLIST_KEYS>

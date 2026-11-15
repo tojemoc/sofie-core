@@ -1,11 +1,12 @@
-import * as React from 'react'
-import type { Sorensen } from '@sofie-automation/sorensen'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Escape from './../../../Escape.js'
+import * as React from 'react'
 
-import { SorensenContext } from '../../../SorensenContext.js'
 import { DEFAULT_CONFIRM_KEY_CODE } from '@sofie-automation/shared-lib/dist/core/constants'
+import type { Sorensen } from '@sofie-automation/sorensen'
+
 import { getCoreSystemSettings } from '../../../../collections/index.js'
+import { SorensenContext } from '../../../SorensenContext.js'
+import Escape from './../../../Escape.js'
 
 export interface IModalAttributes {
 	show?: boolean

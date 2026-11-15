@@ -1,16 +1,19 @@
-import { useState, useEffect, useLayoutEffect } from 'react'
-import classNames from 'classnames'
-import { usePopper } from 'react-popper'
-import { EditAttribute, type EditAttributeType } from '../../../../../../lib/EditAttribute.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { sameWidth } from '../../../../../../lib/popperUtils.js'
-import { catchError } from '../../../../../../lib/lib.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { preventOverflow } from '@popperjs/core'
-import { DropdownInputControl, getDropdownInputOptions } from '../../../../../../lib/Components/DropdownInput.js'
+import classNames from 'classnames'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import Button from 'react-bootstrap/esm/Button'
-import { SwitchFilterType } from './SwitchFilterType'
+import { usePopper } from 'react-popper'
+
 import type { FilterType } from '@sofie-automation/blueprints-integration'
+
+import { DropdownInputControl, getDropdownInputOptions } from '../../../../../../lib/Components/DropdownInput.js'
+import { EditAttribute } from '../../../../../../lib/EditAttribute.js'
+import { catchError } from '../../../../../../lib/lib.js'
+import { sameWidth } from '../../../../../../lib/popperUtils.js'
+import { SwitchFilterType } from './SwitchFilterType'
+import type { EditAttributeType } from '../../../../../../lib/EditAttribute.js'
 
 interface IProps {
 	fieldLabel: string
@@ -59,7 +62,9 @@ export const FilterEditor: React.FC<IProps> = function FilterEditor(props: IProp
 			if (
 				popperElement &&
 				referenceElement &&
-				!composedPath.find((item) => item instanceof HTMLElement && item.className === popperElement.className) &&
+				!composedPath.find(
+					(item) => item instanceof HTMLElement && item.className === popperElement.className
+				) &&
 				!composedPath.includes(referenceElement)
 			) {
 				onClose(index)

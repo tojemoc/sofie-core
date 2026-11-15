@@ -1,5 +1,27 @@
+import _ from 'underscore'
+
 import { BlueprintId, RundownId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import {
+	AdLibActions,
+	AdLibPieces,
+	Blueprints,
+	PartInstances,
+	Parts,
+	PieceInstances,
+	Pieces,
+	RundownBaselineAdLibActions,
+	RundownBaselineAdLibPieces,
+	Rundowns,
+	Segments,
+	ShowStyleBases,
+} from '../../../collections'
 import { logger } from '../../../logging'
+import { waitForAllObserversReady } from '../../lib/lib'
+import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
 import {
 	adLibActionFieldSpecifier,
 	adLibPieceFieldSpecifier,
@@ -15,26 +37,6 @@ import {
 	showStyleBaseFieldSpecifier,
 	SourceLayersDoc,
 } from './reactiveContentCache'
-import {
-	AdLibActions,
-	AdLibPieces,
-	Blueprints,
-	PartInstances,
-	Parts,
-	PieceInstances,
-	Pieces,
-	RundownBaselineAdLibActions,
-	RundownBaselineAdLibPieces,
-	Rundowns,
-	Segments,
-	ShowStyleBases,
-} from '../../../collections'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
-import _ from 'underscore'
-import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { waitForAllObserversReady } from '../../lib/lib'
 import type { LiveQueryHandleSync } from '../../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

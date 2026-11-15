@@ -1,5 +1,6 @@
 import { IBlueprintAdLibPiece, IngestAdlib, SomeContent } from '@sofie-automation/blueprints-integration'
-import { BucketAdLibId, BucketId, StudioId, ShowStyleVariantId, ShowStyleBaseId } from './Ids.js'
+
+import { BucketAdLibId, BucketId, ShowStyleBaseId, ShowStyleVariantId, StudioId } from './Ids.js'
 import { PieceTimelineObjectsBlob } from './Piece.js'
 import { RundownImportVersions } from './Rundown.js'
 

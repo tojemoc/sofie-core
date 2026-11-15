@@ -1,12 +1,14 @@
-import { IRundownContext, IBlueprintSegmentRundown } from '@sofie-automation/blueprints-integration'
-import type { Time } from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { IBlueprintSegmentRundown, IRundownContext } from '@sofie-automation/blueprints-integration'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { ProcessedStudioConfig, ProcessedShowStyleConfig } from '../config.js'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { Time } from '@sofie-automation/blueprints-integration'
+
 import { JobStudio, ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { convertRundownToBlueprintSegmentRundown } from './lib.js'
+import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../config.js'
 import { ContextInfo } from './CommonContext.js'
+import { convertRundownToBlueprintSegmentRundown } from './lib.js'
 import { ShowStyleContext } from './ShowStyleContext.js'
 
 /** Rundown */

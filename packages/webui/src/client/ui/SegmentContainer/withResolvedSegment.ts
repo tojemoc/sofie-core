@@ -1,24 +1,11 @@
-import type * as React from 'react'
 import _ from 'underscore'
-import { type ISourceLayer, type NoteSeverity, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
-import { withTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import type { IContextMenuContext } from '../RundownView.js'
-import { equalSets } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { RundownUtils } from '../../lib/rundown.js'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { slowDownReactivity } from '../../lib/reactiveData/reactiveDataHelper.js'
-import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
-import { getIsFilterActive } from '../../lib/rundownLayouts.js'
-import type {
-	RundownLayoutFilterBase,
-	RundownViewLayout,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { getReactivePieceNoteCountsForSegment } from './getReactivePieceNoteCountsForSegment.js'
-import type { SegmentViewMode } from './SegmentViewModes.js'
+import type * as React from 'react'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import type { AdlibSegmentUi } from '../../lib/shelf.js'
+import { equalSets } from '@sofie-automation/shared-lib/dist/lib/lib'
+import type { ISourceLayer, NoteSeverity } from '@sofie-automation/blueprints-integration'
 import type {
 	PartId,
 	RundownId,
@@ -26,18 +13,35 @@ import type {
 	SegmentId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstances, Segments } from '../../collections/index.js'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { type SegmentExtended, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
+import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { SegmentExtended } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type {
 	IOutputLayerExtended,
 	ISourceLayerExtended,
 	UIShowStyleBase,
 } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type {
+	RundownLayoutFilterBase,
+	RundownViewLayout,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { PieceInstances, Segments } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
+import { slowDownReactivity } from '../../lib/reactiveData/reactiveDataHelper.js'
+import { withTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import { getIsFilterActive } from '../../lib/rundownLayouts.js'
+import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
+import { getReactivePieceNoteCountsForSegment } from './getReactivePieceNoteCountsForSegment.js'
+import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
+import type { AdlibSegmentUi } from '../../lib/shelf.js'
+import type { IContextMenuContext } from '../RundownView.js'
+import type { SegmentViewMode } from './SegmentViewModes.js'
 
 export interface SegmentUi extends SegmentExtended {
 	/** Output layers available in the installation used by this segment */

@@ -1,7 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import type { ABPlayerDefinition } from '@sofie-automation/blueprints-integration'
 import type { StudioRouteSet } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { logger } from '../../logging.js'
-import { ReadonlyDeep } from 'type-fest'
 
 /**
  * Map<poolName, Map<playerId, disablePlayer>>

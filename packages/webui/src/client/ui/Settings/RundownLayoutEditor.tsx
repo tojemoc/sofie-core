@@ -1,46 +1,48 @@
-import React, { useCallback, useMemo } from 'react'
-import ClassNames from 'classnames'
-import { EditAttribute } from '../../lib/EditAttribute.js'
-import { type Translated, useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { faUpload, faPlus, faCheck, faPencilAlt, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faDownload, faPencilAlt, faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	RundownLayoutType,
-	type RundownLayoutBase,
-	type RundownLayoutFilter,
-	PieceDisplayStyle,
-	type DashboardLayout,
-	ActionButtonType,
-	type DashboardLayoutActionButton,
-	RundownLayoutElementType,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import {
-	type CustomizableRegionLayout,
-	type CustomizableRegionSettingsManifest,
-	RundownLayoutsAPI,
-} from '../../lib/rundownLayouts.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { UploadButton } from '../../lib/uploadButton.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
-import { catchError, fetchFrom } from '../../lib/lib.js'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import ClassNames from 'classnames'
+import React, { useCallback, useMemo } from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import { useTranslation, withTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import { defaultColorPickerPalette } from '../../lib/colorPicker.js'
-import { FilterEditor } from './components/FilterEditor.js'
-import ShelfLayoutSettings from './components/rundownLayouts/ShelfLayoutSettings.js'
-import RundownViewLayoutSettings from './components/rundownLayouts/RundownViewLayoutSettings.js'
+
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import {
+	ActionButtonType,
+	PieceDisplayStyle,
+	RundownLayoutElementType,
+	RundownLayoutType,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import type { RundownLayoutId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	DashboardLayout,
+	DashboardLayoutActionButton,
+	RundownLayoutBase,
+	RundownLayoutFilter,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { RundownLayouts } from '../../collections/index.js'
+import { defaultColorPickerPalette } from '../../lib/colorPicker.js'
 import { LabelActual } from '../../lib/Components/LabelAndOverrides.js'
-import { useTranslation, withTranslation } from 'react-i18next'
-import Button from 'react-bootstrap/esm/Button'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { EditAttribute } from '../../lib/EditAttribute.js'
+import { catchError, fetchFrom } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { UploadButton } from '../../lib/uploadButton.js'
 import { createPrivateApiPath } from '../../url.js'
+import { FilterEditor } from './components/FilterEditor.js'
+import RundownViewLayoutSettings from './components/rundownLayouts/RundownViewLayoutSettings.js'
+import ShelfLayoutSettings from './components/rundownLayouts/ShelfLayoutSettings.js'
+import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import type { CustomizableRegionLayout, CustomizableRegionSettingsManifest } from '../../lib/rundownLayouts.js'
 
 export interface IProps {
 	showStyleBaseId: ShowStyleBaseId
@@ -90,7 +92,12 @@ const RundownLayoutEditorContent = withTranslation()(
 		onAddLayout = () => {
 			const { t, showStyleBaseId } = this.props
 			MeteorCall.rundownLayout
-				.createRundownLayout(t('New Layout'), this.props.layoutTypes[0], showStyleBaseId, this.props.customRegion._id)
+				.createRundownLayout(
+					t('New Layout'),
+					this.props.layoutTypes[0],
+					showStyleBaseId,
+					this.props.customRegion._id
+				)
 				.catch(catchError('rundownLayout.createRundownLayout'))
 		}
 
@@ -198,7 +205,9 @@ const RundownLayoutEditorContent = withTranslation()(
 				no: t('Cancel'),
 				message: t('Are you sure you want to delete the shelf layout "{{name}}"?', { name: item.name }),
 				onAccept: () => {
-					MeteorCall.rundownLayout.removeRundownLayout(item._id).catch(catchError('rundownLayout.removeRundownLayout'))
+					MeteorCall.rundownLayout
+						.removeRundownLayout(item._id)
+						.catch(catchError('rundownLayout.removeRundownLayout'))
 				},
 			})
 		}
@@ -211,7 +220,10 @@ const RundownLayoutEditorContent = withTranslation()(
 					<h4 className="my-2">{t('Action Buttons')}</h4>
 					{item.actionButtons &&
 						item.actionButtons.map((button, index) => (
-							<div className="rundown-layout-editor-filter card m-2 p-2 grid-buttons-right" key={button._id}>
+							<div
+								className="rundown-layout-editor-filter card m-2 p-2 grid-buttons-right"
+								key={button._id}
+							>
 								<div className="properties-grid">
 									<label className="field">
 										<LabelActual label={t('Label')} />
@@ -303,7 +315,12 @@ const RundownLayoutEditorContent = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Icon')} />
-						<EditAttribute attribute={'icon'} obj={item} type="iconpicker" collection={RundownLayouts}></EditAttribute>
+						<EditAttribute
+							attribute={'icon'}
+							obj={item}
+							type="iconpicker"
+							collection={RundownLayouts}
+						></EditAttribute>
 					</label>
 
 					<label className="field">
@@ -371,7 +388,9 @@ const RundownLayoutEditorContent = withTranslation()(
 									hl: this.isItemEdited(item),
 								})}
 							>
-								<th className="settings-studio-rundown-layouts-table__name c3">{item.name || t('Default Layout')}</th>
+								<th className="settings-studio-rundown-layouts-table__name c3">
+									{item.name || t('Default Layout')}
+								</th>
 								<td className="settings-studio-rundown-layouts-table__value c2">{item.type}</td>
 								<td className="settings-studio-rundown-layouts-table__value c1">
 									{this.props.studios.map((studio) => (
@@ -426,21 +445,34 @@ const RundownLayoutEditorContent = withTranslation()(
 
 										{layout?.supportedFilters.length ? (
 											<div className="my-2">
-												<Button variant="outline-secondary" onClick={() => this.onAddElement(item)}>
+												<Button
+													variant="outline-secondary"
+													onClick={() => this.onAddElement(item)}
+												>
 													<FontAwesomeIcon icon={faPlus} />
 													&nbsp;
 													{layout?.filtersTitle
-														? t('Add {{filtersTitle}}', { filtersTitle: layout?.filtersTitle })
+														? t('Add {{filtersTitle}}', {
+																filtersTitle: layout?.filtersTitle,
+															})
 														: t(`Add filter`)}
 												</Button>
 											</div>
 										) : null}
 										{item.type === RundownLayoutType.DASHBOARD_LAYOUT ? (
 											<>
-												<div>{RundownLayoutsAPI.isDashboardLayout(item) ? this.renderActionButtons(item) : null}</div>
+												<div>
+													{RundownLayoutsAPI.isDashboardLayout(item)
+														? this.renderActionButtons(item)
+														: null}
+												</div>
 												<div className="my-2 grid-buttons-right">
 													<div>
-														<Button variant="outline-secondary" className="mx-1" onClick={() => this.onAddButton(item)}>
+														<Button
+															variant="outline-secondary"
+															className="mx-1"
+															onClick={() => this.onAddButton(item)}
+														>
 															<FontAwesomeIcon icon={faPlus} />
 															&nbsp;
 															{t('Add button')}
@@ -448,7 +480,11 @@ const RundownLayoutEditorContent = withTranslation()(
 													</div>
 
 													<div>
-														<Button variant="primary" className="mx-1" onClick={() => this.finishEditItem(item)}>
+														<Button
+															variant="primary"
+															className="mx-1"
+															onClick={() => this.finishEditItem(item)}
+														>
 															<FontAwesomeIcon icon={faCheck} />
 														</Button>
 													</div>

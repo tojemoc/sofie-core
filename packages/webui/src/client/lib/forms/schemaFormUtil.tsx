@@ -1,8 +1,10 @@
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { i18nTranslator } from '../../ui/i18n.js'
-import { type JSONSchema, TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
 import { getSchemaUIField, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
 import { joinObjectPathFragments } from '@sofie-automation/corelib/dist/lib'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { i18nTranslator } from '../../ui/i18n.js'
 
 export interface SchemaFormSofieEnumDefinition {
 	options: {
@@ -37,7 +39,9 @@ export interface SchemaFormCommonProps {
 }
 
 export function translateStringIfHasNamespaces(str: string, translationNamespaces: string[] | undefined): string {
-	return translationNamespaces ? translateMessage({ key: str, namespaces: translationNamespaces }, i18nTranslator) : str
+	return translationNamespaces
+		? translateMessage({ key: str, namespaces: translationNamespaces }, i18nTranslator)
+		: str
 }
 
 export interface SchemaSummaryField {
@@ -79,7 +83,8 @@ export function getSchemaSummaryFields(schema: JSONSchema, prefix?: string): Sch
 						: schema
 				if (schemaForEnum.enum && getSchemaUIField(schemaForEnum, SchemaFormUIField.TsEnumNames)) {
 					// For enum items, we should display the pretty name
-					const tsEnumNames = (getSchemaUIField(schemaForEnum, SchemaFormUIField.TsEnumNames) || []) as string[]
+					const tsEnumNames = (getSchemaUIField(schemaForEnum, SchemaFormUIField.TsEnumNames) ||
+						[]) as string[]
 					const valueToNameMap = new Map<string | number, string>()
 
 					schemaForEnum.enum.forEach((value: any, i: number) => {

@@ -1,19 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-
-import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { Spinner } from '../../lib/Spinner.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
 import { Meteor } from 'meteor/meteor'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import { useTranslation } from 'react-i18next'
-import { MeteorCall } from '../../lib/meteorApi.js'
+
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { PeripheralDevices } from '../../collections/index.js'
 import { eventContextForLog } from '../../lib/clientUserAction.js'
 import { logger } from '../../lib/logging.js'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { Spinner } from '../../lib/Spinner.js'
 
 interface IDevicePackageManagerSettingsProps {
 	deviceId: PeripheralDeviceId
@@ -148,14 +149,16 @@ export const DevicePackageManagerSettings: React.FC<IDevicePackageManagerSetting
 							<h4 className="">{t('Statistics')}</h4>
 							<table className="table">
 								<tbody>
-									{Object.entries<any>(status.expectationManager?.expectationStatistics || {}).map(([key, value]) => {
-										return (
-											<tr key={key}>
-												<td>{key}</td>
-												<td>{JSON.stringify(value)}</td>
-											</tr>
-										)
-									})}
+									{Object.entries<any>(status.expectationManager?.expectationStatistics || {}).map(
+										([key, value]) => {
+											return (
+												<tr key={key}>
+													<td>{key}</td>
+													<td>{JSON.stringify(value)}</td>
+												</tr>
+											)
+										}
+									)}
 								</tbody>
 							</table>
 

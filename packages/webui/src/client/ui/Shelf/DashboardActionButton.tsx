@@ -1,11 +1,9 @@
-import type * as React from 'react'
 import ClassNames from 'classnames'
+import type * as React from 'react'
 
-import {
-	ActionButtonType,
-	type DashboardLayoutActionButton,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { ActionButtonType } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DashboardLayoutActionButton } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
 
 export interface IDashboardButtonProps {
 	button: DashboardLayoutActionButton
@@ -37,7 +35,8 @@ export function DashboardActionButton({
 
 	const isToggled = button.type === ActionButtonType.READY_ON_AIR && (!!playlist.rehearsal || !!playlist.activationId)
 
-	const label = isToggled && button.labelToggled && button.labelToggled.length > 0 ? button.labelToggled : button.label
+	const label =
+		isToggled && button.labelToggled && button.labelToggled.length > 0 ? button.labelToggled : button.label
 
 	return (
 		<div

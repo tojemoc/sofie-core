@@ -1,23 +1,21 @@
-import { useCallback, useMemo } from 'react'
-import { Studios } from '../../../../collections/index.js'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
-import {
-	type PeripheralDevice,
-	PeripheralDeviceCategory,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { getHelpMode } from '../../../../lib/localStorage.js'
-import Tooltip from 'rc-tooltip'
-import { useTranslation } from 'react-i18next'
-import { getAllCurrentAndDeletedItemsFromOverrides } from '../../util/OverrideOpHelper.js'
-import {
-	type ObjectOverrideSetOp,
-	wrapDefaultObject,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { StudioIngestDevice } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Tooltip from 'rc-tooltip'
+import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { PeripheralDeviceCategory } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { StudioIngestDevice } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { ObjectOverrideSetOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { Studios } from '../../../../collections/index.js'
+import { getHelpMode } from '../../../../lib/localStorage.js'
+import { useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { getAllCurrentAndDeletedItemsFromOverrides } from '../../util/OverrideOpHelper.js'
 import { GenericSubDevicesTable } from './GenericSubDevices.js'
 import { useStagedSubDeviceOverrides } from './useStagedSubDeviceOverrides.js'
 

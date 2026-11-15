@@ -1,19 +1,21 @@
+import _ from 'underscore'
+
 import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
 import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { Studios, CoreSystem, Rundowns, ShowStyleBases } from '../../collections'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { CoreSystem, Rundowns, ShowStyleBases, Studios } from '../../collections'
+import { logger } from '../../logging'
 import { runUpgradeForShowStyleBase, runUpgradeForStudio } from '../../migration/upgrades'
 import { runUpgradeForCoreSystem } from '../../migration/upgrades/system'
-import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import _ from 'underscore'
-import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { QueueIngestJob, QueueStudioJob } from '../../worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { logger } from '../../logging'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export async function blueprintsPerformDevelopmentMode(blueprint: Blueprint): Promise<void> {
 	// Note: These are not the most efficient implementations, but this is a development tool so the simplicity is more important

@@ -1,20 +1,20 @@
 import { useContext, useEffect, useRef, useState } from 'react'
-import { getPieceScrubDurationMs } from '../../../lib/ui/splitsPreviewVideo.js'
+
 import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
-import { getElementDocumentOffset, type OffsetPosition } from '../../../utils/positions.js'
-import { getElementHeight, getElementWidth } from '../../../utils/dimensions.js'
-import { ThumbnailRenderer } from './Renderers/ThumbnailRendererFactory.js'
-import { PieceElement } from '../../SegmentContainer/PieceElement.js'
 import type { PartId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
-import {
-	convertSourceLayerItemToPreview,
-	type IPreviewPopUpSession,
-	PreviewPopUpContext,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { getPieceScrubDurationMs } from '../../../lib/ui/splitsPreviewVideo.js'
+import { getElementHeight, getElementWidth } from '../../../utils/dimensions.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import { PieceElement } from '../../SegmentContainer/PieceElement.js'
+import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
 import { SplitButtonLayerBackground } from '../../Shelf/DashboardPieceButton/subcomponents/SplitButtonLayerBackground.js'
+import { ThumbnailRenderer } from './Renderers/ThumbnailRendererFactory.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	partId: PartId

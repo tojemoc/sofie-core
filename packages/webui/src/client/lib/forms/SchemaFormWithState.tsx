@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from 'react'
+import type { AnyARecord } from 'dns'
+
+import { literal, objectPathSet } from '@sofie-automation/corelib/dist/lib'
+
+import { SchemaFormWithOverrides } from './SchemaFormWithOverrides.js'
 import type {
 	OverrideOpHelperForItemContentsBatcher,
 	WrappedOverridableItemNormal,
 } from '../../ui/Settings/util/OverrideOpHelper.js'
 import type { SchemaFormCommonProps } from './schemaFormUtil.js'
-import { SchemaFormWithOverrides } from './SchemaFormWithOverrides.js'
-import { literal, objectPathSet } from '@sofie-automation/corelib/dist/lib'
-import type { AnyARecord } from 'dns'
 
 interface SchemaFormWithStateProps extends Omit<SchemaFormCommonProps, 'isRequired'> {
 	object: any

@@ -1,34 +1,36 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { ReadonlyDeep } from 'type-fest'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+
 import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
 	PieceInstance,
 	PieceInstancePiece,
 	ResolvedPieceInstance,
 } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import {
 	createPartCurrentTimes,
 	PartCurrentTimes,
 	processAndPrunePieceInstanceTimings,
 	resolvePrunedPieceInstance,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
+import { getPartTimingsOrDefaults } from '@sofie-automation/corelib/dist/playout/timings'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
+import { setupPieceInstanceInfiniteProperties } from '../pieces.js'
 import {
 	getResolvedPiecesForCurrentPartInstance,
 	getResolvedPiecesForPartInstancesOnTimeline,
 } from '../resolvedPieces.js'
-import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
 import { SelectedPartInstanceTimelineInfo } from '../timeline/generate.js'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { setupPieceInstanceInfiniteProperties } from '../pieces.js'
-import { getPartTimingsOrDefaults } from '@sofie-automation/corelib/dist/playout/timings'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 describe('Resolved Pieces', () => {
 	let context: MockJobContext

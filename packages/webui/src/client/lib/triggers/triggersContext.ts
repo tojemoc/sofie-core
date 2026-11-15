@@ -1,13 +1,18 @@
+import { Tracker } from 'meteor/tracker'
+import type { ReactiveVar as MeteorReactiveVar } from 'meteor/reactive-var'
+
+import type { IBaseFilterLink } from '@sofie-automation/blueprints-integration'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { FindOptions, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import type { ReactivePlaylistActionContext } from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
+import type { TriggerReactiveVar } from '@sofie-automation/meteor-lib/dist/triggers/reactive-var'
 import type {
 	TriggersAsyncCollection,
 	TriggersContext,
 	TriggerTrackerComputation,
 } from '@sofie-automation/meteor-lib/dist/triggers/triggersContext'
-import { hashSingleUseToken } from '../lib.js'
-import { MeteorCall } from '../meteorApi.js'
-import type { IBaseFilterLink } from '@sofie-automation/blueprints-integration'
-import { doUserAction } from '../clientUserAction.js'
-import { Tracker } from 'meteor/tracker'
+import type { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -17,16 +22,13 @@ import {
 	Rundowns,
 	Segments,
 } from '../../collections/index.js'
-import { logger } from '../logging.js'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { ReactivePlaylistActionContext } from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
-import type { FindOneOptions, MongoReadOnlyCollection } from '../../collections/lib.js'
-import type { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { ReactiveVar as MeteorReactiveVar } from 'meteor/reactive-var'
-import type { TriggerReactiveVar } from '@sofie-automation/meteor-lib/dist/triggers/reactive-var'
-import type { FindOptions, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { memoizedIsolatedAutorunAsync } from '../memoizedIsolatedAutorun.js'
 import { UIParts } from '../../ui/Collections.js'
+import { doUserAction } from '../clientUserAction.js'
+import { hashSingleUseToken } from '../lib.js'
+import { logger } from '../logging.js'
+import { memoizedIsolatedAutorunAsync } from '../memoizedIsolatedAutorun.js'
+import { MeteorCall } from '../meteorApi.js'
+import type { FindOneOptions, MongoReadOnlyCollection } from '../../collections/lib.js'
 
 class UiTriggersCollectionWrapper<
 	DBInterface extends { _id: ProtectedString<any> },

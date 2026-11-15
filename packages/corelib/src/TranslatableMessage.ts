@@ -1,5 +1,7 @@
-import { ITranslatableMessage as IBlueprintTranslatableMessage } from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
+
+import { ITranslatableMessage as IBlueprintTranslatableMessage } from '@sofie-automation/blueprints-integration'
+
 import { BlueprintId } from './dataModel/Ids.js'
 
 /**

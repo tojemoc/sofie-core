@@ -1,16 +1,18 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import { PartId, PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { groupByToMap, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
+
+import { MongoBulkWriteOperation } from './db/collections.js'
 import { BeforeIngestOperationPartMap, BeforePartMapItem } from './ingest/commit.js'
+import { IngestModelReadonly } from './ingest/model/IngestModel.js'
 import { JobContext } from './jobs/index.js'
 import { logger } from './logging.js'
-import _ from 'underscore'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { PlayoutModel } from './playout/model/PlayoutModel.js'
-import { IngestModelReadonly } from './ingest/model/IngestModel.js'
 import { PlayoutPartInstanceModel } from './playout/model/PlayoutPartInstanceModel.js'
-import { MongoBulkWriteOperation } from './db/collections.js'
 
 type MinimalPartInstance = Pick<DBPartInstance, '_id' | 'segmentId' | 'orphaned'> & {
 	part: Pick<DBPart, '_id' | '_rank'>
@@ -183,7 +185,7 @@ async function updateNormalPartInstanceRanksAndFindOrphans(
 	const partInstancesInChangedSegments = (await context.directCollections.PartInstances.findFetch(
 		{
 			reset: { $ne: true },
-			segmentId: { $in: changedSegmentIds as SegmentId[] },
+			segmentId: { $in: changedSegmentIds },
 		},
 		{
 			projection: {

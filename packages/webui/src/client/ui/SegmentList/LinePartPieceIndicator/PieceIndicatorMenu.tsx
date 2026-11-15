@@ -1,12 +1,14 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import Escape from './../../../lib/Escape.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { usePopper } from 'react-popper'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { StoryboardSecondaryPiece } from '../../SegmentStoryboard/StoryboardPartSecondaryPieces/StoryboardSecondaryPiece.js'
-import StudioContext from '../../RundownView/StudioContext.js'
-import { catchError } from '../../../lib/lib.js'
 import type { PieceExtended, PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { catchError } from '../../../lib/lib.js'
+import StudioContext from '../../RundownView/StudioContext.js'
+import { StoryboardSecondaryPiece } from '../../SegmentStoryboard/StoryboardPartSecondaryPieces/StoryboardSecondaryPiece.js'
+import Escape from './../../../lib/Escape.js'
 
 export function PieceIndicatorMenu({
 	pieces,

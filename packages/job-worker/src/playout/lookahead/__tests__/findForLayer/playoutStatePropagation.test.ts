@@ -1,9 +1,10 @@
-jest.mock('../../findObjects')
-import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
 import { findLookaheadForLayer, PartInstanceAndPieceInstancesInfos } from '../../findForLayer.js'
-import { findForLayerTestConstants } from './constants.js'
 import { findLookaheadObjectsForPart } from '../../findObjects.js'
 import { PartAndPieces } from '../../util.js'
+import { findForLayerTestConstants } from './constants.js'
+import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
+
+jest.mock('../../findObjects')
 
 const findLookaheadObjectsForPartMockBase = findLookaheadObjectsForPart as TfindLookaheadObjectsForPart
 const findLookaheadObjectsForPartMock = findLookaheadObjectsForPartMockBase.mockImplementation(() => []) // Default mock

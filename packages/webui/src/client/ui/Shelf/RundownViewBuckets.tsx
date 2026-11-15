@@ -1,44 +1,45 @@
-import * as React from 'react'
-import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { BucketPanel } from './BucketPanel.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-
-import { withTranslation } from 'react-i18next'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString, type ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getElementDocumentOffset } from '../../utils/positions.js'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
-import { doModalDialog, type ModalDialogQueueItem } from '../../lib/ModalDialog.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-
-import { MeteorCall } from '../../lib/meteorApi.js'
 import update from 'immutability-helper'
+import * as React from 'react'
+import { withTranslation } from 'react-i18next'
 
-import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
-import type { AdLibPieceUi } from '../../lib/shelf.js'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import { setShelfContextMenuContext, ContextType as MenuContextType } from './ShelfContextMenu.js'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type BucketAdLibEvent,
-	type BucketEvent,
-	type IEventContext,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
 import type { BucketAdLibId, BucketId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { DashboardLayoutExternalFrame } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
 import type {
+	BucketAdLibEvent,
+	BucketEvent,
+	IEventContext,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type {
+	BucketAdLibActionUi,
 	BucketAdLibItem,
 	BucketAdLibUi,
-	BucketAdLibActionUi,
 } from '@sofie-automation/meteor-lib/dist/uiTypes/Bucket'
+import type { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
 import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { getElementDocumentOffset } from '../../utils/positions.js'
+import { BucketPanel } from './BucketPanel.js'
+import { ContextType as MenuContextType, setShelfContextMenuContext } from './ShelfContextMenu.js'
+import type { ModalDialogQueueItem } from '../../lib/ModalDialog.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
 
 export type {
 	BucketAdLibItem,
@@ -325,7 +326,8 @@ export const RundownViewBuckets: React.ComponentType<IBucketsProps> = withTransl
 				t,
 				e.context,
 				UserAction.CREATE_BUCKET,
-				(e, ts) => MeteorCall.userAction.bucketsCreateNewBucket(e, ts, this.props.playlist.studioId, t('New Bucket')),
+				(e, ts) =>
+					MeteorCall.userAction.bucketsCreateNewBucket(e, ts, this.props.playlist.studioId, t('New Bucket')),
 				(_err, res) => {
 					if (ClientAPI.isClientResponseSuccess(res)) {
 						this.setState({
@@ -503,7 +505,10 @@ export const RundownViewBuckets: React.ComponentType<IBucketsProps> = withTransl
 					} else if (newIndex === this.props.buckets.length - 1) {
 						newRank = this.props.buckets[this.props.buckets.length - 1]._rank + 1
 						// Last element swapped with next to last
-					} else if (oldIndex === this.props.buckets.length - 1 && newIndex === this.props.buckets.length - 2) {
+					} else if (
+						oldIndex === this.props.buckets.length - 1 &&
+						newIndex === this.props.buckets.length - 2
+					) {
 						newRank = (this.props.buckets[newIndex - 1]._rank + this.props.buckets[newIndex]._rank) / 2
 						// Dragged into any other place
 					} else {
@@ -594,12 +599,15 @@ export const RundownViewBuckets: React.ComponentType<IBucketsProps> = withTransl
 													bucket={bucket}
 													editableName={this.state.editedNameId === bucket._id}
 													editedPiece={
-														this.state.editedPieceName && this.state.editedPieceName.bucketId === bucket._id
+														this.state.editedPieceName &&
+														this.state.editedPieceName.bucketId === bucket._id
 															? this.state.editedPieceName.pieceId
 															: undefined
 													}
 													onPieceNameRename={() => this.beginRenameBucketAdLib(undefined)}
-													onNameChanged={(e, name) => this.finishRenameBucket(e, bucket, name)}
+													onNameChanged={(e, name) =>
+														this.finishRenameBucket(e, bucket, name)
+													}
 													moveBucket={this.moveBucket}
 													findBucket={this.findBucket}
 													onBucketReorder={this.onBucketReorder}

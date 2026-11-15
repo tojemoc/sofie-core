@@ -1,6 +1,4 @@
-import { protectString, ProtectedString } from '../protectedString.js'
 import {
-	FindOptions,
 	makeMongoSortComparator,
 	mongoFindOptions,
 	mongoModify,
@@ -8,6 +6,7 @@ import {
 	MongoQuery,
 	mongoWhere,
 } from '../mongo.js'
+import { ProtectedString, protectString } from '../protectedString.js'
 
 describe('mongoFindOptions', () => {
 	const rawDocs = ['1', '2', '3', '4', '5', '6', '7'].map((s) => ({ _id: protectString(s) }))
@@ -52,7 +51,7 @@ describe('mongoFindOptions', () => {
 		// expect(() => mongoFindOptions(rawDocs, { fields: { _id: 0, val2: 1 } })).not.toThrowError()
 		// expect(() => mongoFindOptions(rawDocs, { fields: { _id: '1', val: 0 } })).not.toThrowError()
 
-		expect(mongoFindOptions(rawDocs2, { fields: { val: 0 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { fields: { val: 0 } })).toEqual([
 			{
 				_id: '1',
 				val2: 'c',
@@ -66,7 +65,7 @@ describe('mongoFindOptions', () => {
 				val2: 'b',
 			},
 		])
-		expect(mongoFindOptions(rawDocs2, { fields: { val: 0, _id: 0 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { fields: { val: 0, _id: 0 } })).toEqual([
 			{
 				val2: 'c',
 			},
@@ -77,7 +76,7 @@ describe('mongoFindOptions', () => {
 				val2: 'b',
 			},
 		])
-		expect(mongoFindOptions(rawDocs2, { fields: { val: 1 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { fields: { val: 1 } })).toEqual([
 			{
 				_id: '1',
 				val: 'a',
@@ -106,7 +105,7 @@ describe('mongoFindOptions', () => {
 	})
 
 	test('fields2', () => {
-		expect(mongoFindOptions(rawDocs2, { sort: { val: 1 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { sort: { val: 1 } })).toEqual([
 			{
 				_id: '1',
 				val: 'a',
@@ -123,7 +122,7 @@ describe('mongoFindOptions', () => {
 				val2: 'c',
 			},
 		])
-		expect(mongoFindOptions(rawDocs2, { sort: { val: -1 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { sort: { val: -1 } })).toEqual([
 			{
 				_id: '2',
 				val: 'x',
@@ -141,7 +140,7 @@ describe('mongoFindOptions', () => {
 			},
 		])
 
-		expect(mongoFindOptions(rawDocs2, { sort: { val2: 1, val: 1 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { sort: { val2: 1, val: 1 } })).toEqual([
 			{
 				_id: '3',
 				val: 'n',
@@ -158,7 +157,7 @@ describe('mongoFindOptions', () => {
 				val2: 'c',
 			},
 		])
-		expect(mongoFindOptions(rawDocs2, { sort: { val2: 1, val: -1 } } as FindOptions<SomeDoc>)).toEqual([
+		expect(mongoFindOptions(rawDocs2, { sort: { val2: 1, val: -1 } })).toEqual([
 			{
 				_id: '3',
 				val: 'n',

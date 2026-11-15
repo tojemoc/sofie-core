@@ -1,7 +1,7 @@
-import * as React from 'react'
-import _ from 'underscore'
 import ClassNames from 'classnames'
+import * as React from 'react'
 import { Manager, Popper, Reference } from 'react-popper'
+import _ from 'underscore'
 
 export interface ColorPickerEvent {
 	selectedValue: string
@@ -120,14 +120,12 @@ export class ColorPicker extends React.Component<IProps, IState> {
 	}
 
 	private onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-		if (
-			!(
-				event.relatedTarget &&
-				event.relatedTarget instanceof HTMLElement &&
-				this._popperRef &&
-				(this._popperRef === event.relatedTarget || this._popperRef.contains(event.relatedTarget))
-			)
-		) {
+		if (!(
+			event.relatedTarget &&
+			event.relatedTarget instanceof HTMLElement &&
+			this._popperRef &&
+			(this._popperRef === event.relatedTarget || this._popperRef.contains(event.relatedTarget))
+		)) {
 			this.setState({
 				expanded: false,
 			})
@@ -154,7 +152,10 @@ export class ColorPicker extends React.Component<IProps, IState> {
 							onClick={this.toggleExpco}
 						>
 							<div className={ClassNames('expco-title focusable-main')} onClick={this.toggleExpco}>
-								<div className="color-preview" style={{ backgroundColor: this.state.selectedValue }}></div>
+								<div
+									className="color-preview"
+									style={{ backgroundColor: this.state.selectedValue }}
+								></div>
 							</div>
 							<a className="action-btn right expco-expand" onClick={this.toggleExpco}>
 								&nbsp;
@@ -200,8 +201,14 @@ export class ColorPicker extends React.Component<IProps, IState> {
 											{_.map(this.props.availableOptions, (value, key) => {
 												return (
 													<div className="expco-item" key={key}>
-														<label className="action-btn" onClick={() => this.handleChange(value)}>
-															<div className="color-preview" style={{ backgroundColor: value }}></div>
+														<label
+															className="action-btn"
+															onClick={() => this.handleChange(value)}
+														>
+															<div
+																className="color-preview"
+																style={{ backgroundColor: value }}
+															></div>
 														</label>
 													</div>
 												)

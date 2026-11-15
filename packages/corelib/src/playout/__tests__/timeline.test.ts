@@ -1,4 +1,5 @@
 import { TSR } from '@sofie-automation/blueprints-integration'
+
 import { TimelineObjGeneric, TimelineObjRundown, TimelineObjType } from '../../dataModel/Timeline.js'
 import { transformTimeline } from '../timeline.js'
 

@@ -1,23 +1,25 @@
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { parseBlueprintDocument, WrappedShowStyleBlueprint, WrappedStudioBlueprint } from '../blueprints/cache.js'
+import deepmerge from 'deepmerge'
 import { ReadonlyDeep } from 'type-fest'
-import { IDirectCollections } from '../db/index.js'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
 import {
 	BlueprintId,
 	ShowStyleBaseId,
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { clone, deepFreeze } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { parseBlueprintDocument, WrappedShowStyleBlueprint, WrappedStudioBlueprint } from '../blueprints/cache.js'
 import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../blueprints/config.js'
 import { DefaultStudioBlueprint } from '../blueprints/defaults/studio.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { clone, deepFreeze } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../logging.js'
-import deepmerge from 'deepmerge'
+import { IDirectCollections } from '../db/index.js'
 import { JobStudio, ProcessedShowStyleBase, ProcessedShowStyleVariant, StudioCacheContext } from '../jobs/index.js'
-import { StudioCacheContextImpl } from './context/StudioCacheContextImpl.js'
 import { convertStudioToJobStudio } from '../jobs/studio.js'
+import { logger } from '../logging.js'
+import { StudioCacheContextImpl } from './context/StudioCacheContextImpl.js'
 
 /**
  * A Wrapper to maintain a cache and provide a context using the cache when appropriate

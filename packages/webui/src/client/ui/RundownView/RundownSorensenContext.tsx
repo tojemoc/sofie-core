@@ -1,6 +1,10 @@
+import { useContext } from 'react'
+
 import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { useContext } from 'react'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
+
 import { isEventInInputField } from '../../lib/lib'
 import { isModalShowing } from '../../lib/ModalDialog'
 import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData'
@@ -9,8 +13,6 @@ import { SorensenContext } from '../../lib/SorensenContext'
 import { TriggersHandler } from '../../lib/triggers/TriggersHandler'
 import { UIParts } from '../Collections'
 import { UserPermissionsContext } from '../UserPermissions'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
 
 interface RundownSorensenContextProps {
 	playlist: DBRundownPlaylist

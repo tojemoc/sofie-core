@@ -1,36 +1,38 @@
+import type {
+	CreateIndexesOptions,
+	IndexDescriptionInfo,
+	FindOptions as MongoFindOptions,
+	Collection as RawCollection,
+} from 'mongodb'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import {
+	FindObserveChangesOptions,
 	MongoBulkWriteOperation,
+	MongoFieldSpecifier,
 	MongoModifier,
 	MongoQuery,
-	ObserveChangesCallbacks,
 	ObserveCallbacks,
-	FindObserveChangesOptions,
+	ObserveChangesCallbacks,
 } from '@sofie-automation/corelib/dist/mongo'
 import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { UpdateOptions, IndexSpecifier, FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
-import type {
-	Collection as RawCollection,
-	CreateIndexesOptions,
-	FindOptions as MongoFindOptions,
-	IndexDescriptionInfo,
-} from 'mongodb'
+import { FindOptions, IndexSpecifier, UpdateOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { MongoFieldSpecifier } from '@sofie-automation/corelib/dist/mongo'
+import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
+import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
+
 import { profiler } from '../../api/profiler'
 import { logger } from '../../logging'
-import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
-import { AsyncOnlyMongoCollection, MinimalMongoCursor } from '../collection'
-import { getMongoClient, getMongoDb } from '../mongoConnection'
-import {
-	observeChangesViaChangeStream,
-	observeViaChangeStream,
-	ObserveMultiplexerDeps,
-} from '../changeStream/observeMultiplexer'
 import { ChangeStreamCursor } from '../changeStream/changeStreamCursor'
 import { subscribeToCollectionChangeFeed } from '../changeStream/collectionChangeFeed'
-import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
+import {
+	observeChangesViaChangeStream,
+	ObserveMultiplexerDeps,
+	observeViaChangeStream,
+} from '../changeStream/observeMultiplexer'
+import { AsyncOnlyMongoCollection, MinimalMongoCursor } from '../collection'
+import { getMongoClient, getMongoDb } from '../mongoConnection'
 import type { LiveQueryHandleSync } from '../../lib/lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 /**
  * Translate a meteor-lib {@link FindOptions} into the options the native `mongodb` driver accepts.

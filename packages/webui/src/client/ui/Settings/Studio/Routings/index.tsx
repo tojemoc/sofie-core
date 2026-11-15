@@ -1,12 +1,14 @@
 import * as React from 'react'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { MappingsSettingsManifests } from '../Mappings.js'
+
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { getAllCurrentAndDeletedItemsFromOverrides } from '../../util/OverrideOpHelper.js'
 import { ExclusivityGroupsTable } from './ExclusivityGroups.js'
 import { RouteSetsTable } from './RouteSets.js'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { useMemo } from 'react'
+import type { MappingsSettingsManifests } from '../Mappings.js'
 
 interface IStudioRoutingsProps {
 	translationNamespaces: string[]

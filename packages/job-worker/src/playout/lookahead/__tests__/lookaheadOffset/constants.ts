@@ -1,9 +1,10 @@
-import { IBlueprintPieceType, TSR, LookaheadMode } from '@sofie-automation/blueprints-integration'
+import { IBlueprintPieceType, LookaheadMode, TSR } from '@sofie-automation/blueprints-integration'
 import { Piece, PieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PlayoutModel } from '../../../model/PlayoutModel.js'
+
 import { JobContext } from '../../../../jobs/index.js'
+import { PlayoutModel } from '../../../model/PlayoutModel.js'
 
 /**
  * Generates a piece with a single timeline object on the given layer.

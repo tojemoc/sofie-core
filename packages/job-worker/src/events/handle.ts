@@ -1,19 +1,21 @@
-import { PartInstanceTimingsProps, RundownDataChangedProps } from '@sofie-automation/corelib/dist/worker/events'
-import { getCurrentTime } from '../lib/index.js'
-import { JobContext } from '../jobs/index.js'
-import { logger } from '../logging.js'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { ReadonlyDeep } from 'type-fest'
-import { RundownDataChangedEventContext, RundownTimingEventContext } from '../blueprints/context/index.js'
-import { IBlueprintExternalMessageQueueObj } from '@sofie-automation/blueprints-integration'
-import { protectString, unDeepString } from '@sofie-automation/corelib/dist/protectedString'
 import _ from 'underscore'
-import { getRandomId, omit, removeNullyProperties } from '@sofie-automation/corelib/dist/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { IBlueprintExternalMessageQueueObj } from '@sofie-automation/blueprints-integration'
 import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
-import { ICollection, MongoModifier } from '../db/index.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { ExternalMessageQueueObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { getRandomId, omit, removeNullyProperties } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unDeepString } from '@sofie-automation/corelib/dist/protectedString'
+import { PartInstanceTimingsProps, RundownDataChangedProps } from '@sofie-automation/corelib/dist/worker/events'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { RundownDataChangedEventContext, RundownTimingEventContext } from '../blueprints/context/index.js'
+import { ICollection, MongoModifier } from '../db/index.js'
+import { JobContext } from '../jobs/index.js'
+import { getCurrentTime } from '../lib/index.js'
+import { logger } from '../logging.js'
 
 async function getBlueprintAndDependencies(context: JobContext, rundown: ReadonlyDeep<DBRundown>) {
 	const pShowStyle = context.getShowStyleCompound(rundown.showStyleVariantId, rundown.showStyleBaseId)

@@ -1,5 +1,11 @@
 import { RundownId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { Parts, RundownPlaylists, Segments, Studios } from '../../collections'
 import { logger } from '../../logging'
+import { observeSelectedPartInstancesBranding } from '../lib/branding'
+import { waitForAllObserversReady } from '../lib/lib'
 import {
 	ContentCache,
 	partFieldSpecifier,
@@ -9,11 +15,6 @@ import {
 	studioFieldSpecifier,
 	StudioSettingsDoc,
 } from './reactiveContentCache'
-import { Parts, RundownPlaylists, Segments, Studios } from '../../collections'
-import { waitForAllObserversReady } from '../lib/lib'
-import { observeSelectedPartInstancesBranding } from '../lib/branding'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 function convertStudioSettingsDoc(doc: Pick<DBStudio, StudioFields>): StudioSettingsDoc {

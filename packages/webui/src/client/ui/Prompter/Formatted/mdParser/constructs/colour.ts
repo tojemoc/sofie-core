@@ -1,5 +1,6 @@
+import { CharHandlerResult } from '../parserState'
 import type { ColourNode } from '../astNodes'
-import { type NodeConstruct, type ParserState, CharHandlerResult } from '../parserState'
+import type { NodeConstruct, ParserState } from '../parserState'
 
 export function colour(): NodeConstruct {
 	function colour(char: string, state: ParserState): CharHandlerResult | void {

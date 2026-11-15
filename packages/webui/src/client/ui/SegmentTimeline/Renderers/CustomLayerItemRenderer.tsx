@@ -1,22 +1,23 @@
-import * as React from 'react'
-
-import type { ISourceLayerUi, IOutputLayerUi, PartUi } from '../SegmentTimelineContainer.js'
-
-import { RundownUtils } from '../../../lib/rundown.js'
 import { faCut } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { PieceLifespan, UserEditingType, type VTContent } from '@sofie-automation/blueprints-integration'
-import type { OffsetPosition } from '../../../utils/positions.js'
-import { LoopingPieceIcon } from '../../../lib/ui/icons/looping.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import { BlueprintAssetIcon } from '../../../lib/Components/BlueprintAssetIcon.js'
+import * as React from 'react'
 import type { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep.js'
+
+import { PieceLifespan, UserEditingType } from '@sofie-automation/blueprints-integration'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
 import type {
 	CoreUserEditingDefinitionAction,
 	CoreUserEditingDefinitionForm,
 	CoreUserEditingDefinitionSofie,
 	CoreUserEditingDefinitionState,
 } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { BlueprintAssetIcon } from '../../../lib/Components/BlueprintAssetIcon.js'
+import { RundownUtils } from '../../../lib/rundown.js'
+import { LoopingPieceIcon } from '../../../lib/ui/icons/looping.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
+import type { IOutputLayerUi, ISourceLayerUi, PartUi } from '../SegmentTimelineContainer.js'
 
 export type SourceDurationLabelAlignment = 'left' | 'right'
 
@@ -108,9 +109,12 @@ export class CustomLayerItemRenderer<IProps extends ICustomLayerItemProps, IStat
 				uiPiece.renderedDuration === null ||
 				vtContent.sourceDuration > (uiPiece.renderedDuration || 0))
 		) {
-			let time = 0
+			let time: number
 			if (uiPiece.renderedDuration === Number.POSITIVE_INFINITY || uiPiece.renderedDuration === null) {
-				time = (uiPiece.renderedInPoint || 0) + vtContent.sourceDuration - ((this.props.partDuration || 0) as number)
+				time =
+					(uiPiece.renderedInPoint || 0) +
+					vtContent.sourceDuration -
+					((this.props.partDuration || 0) as number)
 			} else {
 				time = vtContent.sourceDuration - (uiPiece.renderedDuration || 0)
 			}
@@ -123,7 +127,9 @@ export class CustomLayerItemRenderer<IProps extends ICustomLayerItemProps, IStat
 
 	protected renderLoopIcon(): JSX.Element | null {
 		if (!this.props.piece.instance.piece.content?.loop) return null
-		return <LoopingPieceIcon className="segment-timeline__piece__label-icon" playing={this.props.showPreviewPopUp} />
+		return (
+			<LoopingPieceIcon className="segment-timeline__piece__label-icon" playing={this.props.showPreviewPopUp} />
+		)
 	}
 
 	private operationWithUsefulIcon(
@@ -222,11 +228,13 @@ export class CustomLayerItemRenderer<IProps extends ICustomLayerItemProps, IStat
 					style={{
 						left: this.props.relative
 							? (
-									((vtContent.sourceDuration + postrollDuration - seek) / (this.getItemDuration() || 1)) *
+									((vtContent.sourceDuration + postrollDuration - seek) /
+										(this.getItemDuration() || 1)) *
 									100
 								).toString() + '%'
-							: Math.round((vtContent.sourceDuration + postrollDuration - seek) * this.props.timeScale).toString() +
-								'px',
+							: Math.round(
+									(vtContent.sourceDuration + postrollDuration - seek) * this.props.timeScale
+								).toString() + 'px',
 					}}
 				></div>
 			)

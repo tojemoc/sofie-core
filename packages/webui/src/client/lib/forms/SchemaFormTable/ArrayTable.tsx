@@ -1,29 +1,28 @@
 import { faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { clone, objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type {
-	WrappedOverridableItemNormal,
-	OverrideOpHelperForItemContents,
-} from '../../../ui/Settings/util/OverrideOpHelper.js'
-import { useToggleExpandHelper } from '../../../ui/util/useToggleExpandHelper.js'
-import { doModalDialog } from '../../ModalDialog.js'
-import {
-	getSchemaSummaryFieldsForObject,
-	type SchemaFormSofieEnumDefinition,
-	translateStringIfHasNamespaces,
-} from '../schemaFormUtil.js'
-import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { clone, objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import {
 	getSchemaDefaultValues,
 	getSchemaUIField,
 	SchemaFormUIField,
 } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaUtil'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { useToggleExpandHelper } from '../../../ui/util/useToggleExpandHelper.js'
 import { hasOpWithPath } from '../../Components/util.js'
-import { ArrayTableRow } from './ArrayTableRow.js'
-import { OverrideOpHelperArrayTable } from './ArrayTableOpHelper.js'
+import { doModalDialog } from '../../ModalDialog.js'
 import { SchemaFormSectionHeader } from '../SchemaFormSectionHeader.js'
+import { getSchemaSummaryFieldsForObject, translateStringIfHasNamespaces } from '../schemaFormUtil.js'
+import { OverrideOpHelperArrayTable } from './ArrayTableOpHelper.js'
+import { ArrayTableRow } from './ArrayTableRow.js'
+import type {
+	OverrideOpHelperForItemContents,
+	WrappedOverridableItemNormal,
+} from '../../../ui/Settings/util/OverrideOpHelper.js'
+import type { SchemaFormSofieEnumDefinition } from '../schemaFormUtil.js'
 
 interface SchemaFormArrayTableProps {
 	/** Schema for each row in the table */
@@ -117,7 +116,11 @@ export const SchemaFormArrayTable = ({
 	const description = getSchemaUIField(schema, SchemaFormUIField.Description)
 
 	const titleElement = title && (
-		<SchemaFormSectionHeader title={title} description={description} translationNamespaces={translationNamespaces} />
+		<SchemaFormSectionHeader
+			title={title}
+			description={description}
+			translationNamespaces={translationNamespaces}
+		/>
 	)
 
 	return (
@@ -127,7 +130,11 @@ export const SchemaFormArrayTable = ({
 				<thead>
 					<tr className="hl">
 						{summaryFields.map((col) => {
-							return <th key={col.attr}>{translateStringIfHasNamespaces(col.name, translationNamespaces)}</th>
+							return (
+								<th key={col.attr}>
+									{translateStringIfHasNamespaces(col.name, translationNamespaces)}
+								</th>
+							)
 						})}
 						<th key="action">&nbsp;</th>
 					</tr>
@@ -162,7 +169,12 @@ export const SchemaFormArrayTable = ({
 				</button>
 				&nbsp;
 				{item.defaults && (
-					<button className="btn btn-primary" onClick={resyncTable} title="Reset to default" disabled={!isOverridden}>
+					<button
+						className="btn btn-primary"
+						onClick={resyncTable}
+						title="Reset to default"
+						disabled={!isOverridden}
+					>
 						<span>{t('Reset')}</span>
 						<FontAwesomeIcon icon={faSync} />
 					</button>

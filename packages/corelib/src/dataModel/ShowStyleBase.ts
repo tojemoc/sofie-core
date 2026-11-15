@@ -1,4 +1,5 @@
 import { IBlueprintConfig, IOutputLayer, ISourceLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
+
 import { ObjectWithOverrides } from '../settings/objectWithOverrides.js'
 import { BlueprintHash, LastBlueprintConfig } from './Blueprint.js'
 import { BlueprintId, ShowStyleBaseId } from './Ids.js'

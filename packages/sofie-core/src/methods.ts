@@ -1,7 +1,8 @@
-import { logger } from './logging'
-import { MethodContext } from './api/methodContext'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { isPromise } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { MethodContext } from './api/methodContext'
+import { logger } from './logging'
 
 export type MeteorMethod = (this: MethodContext, ...args: any[]) => any
 

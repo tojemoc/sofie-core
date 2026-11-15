@@ -1,11 +1,14 @@
+import { animate as motionAnimate } from 'motion'
 import { useEffect, useRef } from 'react'
-import { Clock } from '../StudioScreenSaver/Clock.js'
-import { useTracker, useSubscription } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { AnimationPlaybackControls } from 'motion'
+
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { findNextPlaylist } from '../StudioScreenSaver/StudioScreenSaver.js'
 import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { Clock } from '../StudioScreenSaver/Clock.js'
+import { findNextPlaylist } from '../StudioScreenSaver/StudioScreenSaver.js'
 import { useSetDocumentClass } from '../util/useSetDocumentClass.js'
-import { type AnimationPlaybackControls, animate as motionAnimate } from 'motion'
 
 export function OverlayScreenSaver({ studioId }: Readonly<{ studioId: StudioId }>): JSX.Element {
 	const studioNameRef = useRef<HTMLDivElement>(null)
@@ -23,7 +26,7 @@ export function OverlayScreenSaver({ studioId }: Readonly<{ studioId: StudioId }
 
 		if (el) {
 			let i = 0
-			let position = 0
+			let position: number
 			const lastPosition = parseFloat(el.dataset.lastPosition || '0') || 0
 			const { width } = el.getBoundingClientRect()
 			if (width === 0) {

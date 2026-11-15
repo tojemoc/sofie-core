@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser'
+
 import { VmixInputRecord } from './types.js'
 
 interface VmixXmlInputAttributes {
@@ -29,7 +30,7 @@ const xmlParser = new XMLParser({
 function asInputArray(raw: unknown): VmixXmlInputNode[] {
 	if (!raw) return []
 	if (Array.isArray(raw)) return raw as VmixXmlInputNode[]
-	return [raw as VmixXmlInputNode]
+	return [raw]
 }
 
 function readAttr(input: VmixXmlInputNode, key: keyof VmixXmlInputAttributes): string | undefined {

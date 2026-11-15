@@ -1,11 +1,22 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { assertNever, getHash, literal } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ReadonlyDeep } from 'type-fest'
+import { assertNever, getHash, literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	ExternalEventSubscriptionDocument,
+	ExternalEventSubscriptionId,
+	PeripheralDevicePubSub,
+	PeripheralDevicePubSubCollectionsNames,
+} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+import type { PeripheralDeviceExternalEvent } from '@sofie-automation/shared-lib/dist/peripheralDevice/externalEvents'
+
+import { RundownPlaylists, Rundowns } from '../collections'
+import { check } from '../lib/check'
 import {
 	CustomPublish,
 	CustomPublishCollection,
@@ -13,18 +24,9 @@ import {
 	SetupObserversResult,
 	TriggerUpdate,
 } from '../lib/customPublication'
-import type { PublicationRegistry } from '../publicationRegistry'
 import { logger } from '../logging'
-import { RundownPlaylists, Rundowns } from '../collections'
-import {
-	PeripheralDevicePubSub,
-	PeripheralDevicePubSubCollectionsNames,
-	ExternalEventSubscriptionDocument,
-	ExternalEventSubscriptionId,
-} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import type { PeripheralDeviceExternalEvent } from '@sofie-automation/shared-lib/dist/peripheralDevice/externalEvents'
 import { checkAccessAndGetPeripheralDevice } from '../security/check'
-import { check } from '../lib/check'
+import type { PublicationRegistry } from '../publicationRegistry'
 
 type RundownPlaylistFields = '_id' | 'activationId'
 const rundownPlaylistFieldSpecifier = literal<

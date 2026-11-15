@@ -1,18 +1,18 @@
-import {
-	type DBRundownPlaylist,
-	QuickLoopMarkerType,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-
+import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
+import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { RundownTimingCalculator, type RundownTimingContext, findPartInstancesInQuickLoop } from '../rundownTiming.js'
-import { PlaylistTimingType, type SegmentTimingInfo } from '@sofie-automation/blueprints-integration'
-import type { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/src/playout/stateCacheResolver'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { SegmentTimingInfo } from '@sofie-automation/blueprints-integration'
+import type { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+
+import { findPartInstancesInQuickLoop, RundownTimingCalculator } from '../rundownTiming.js'
+import type { RundownTimingContext } from '../rundownTiming.js'
 
 const DEFAULT_DURATION = 0
 const DEFAULT_NONZERO_DURATION = 4000

@@ -1,27 +1,30 @@
-import type * as React from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import _ from 'underscore'
-import { deserializeTimelineBlob, type TimelineHash } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { applyToArray, clone, normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import {
-	type TimelineState,
-	type ResolvedTimelineObjectInstance,
-	type ResolvedTimeline,
-	type ResolvedTimelineObject,
-	type TimelineObjectInstance,
-	resolveTimeline,
-	getResolvedState,
-} from 'superfly-timeline'
-import { type TimelineContentObject, transformTimeline } from '@sofie-automation/corelib/dist/playout/timeline'
-import { useCurrentTime } from '../../lib/lib.js'
-import { useTranslation } from 'react-i18next'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import Classnames from 'classnames'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+import { getResolvedState, resolveTimeline } from 'superfly-timeline'
+import _ from 'underscore'
+import type * as React from 'react'
+import type {
+	ResolvedTimeline,
+	ResolvedTimelineObject,
+	ResolvedTimelineObjectInstance,
+	TimelineObjectInstance,
+	TimelineState,
+} from 'superfly-timeline'
+
+import { deserializeTimelineBlob } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { applyToArray, clone, normalizeArray } from '@sofie-automation/corelib/dist/lib'
+import { transformTimeline } from '@sofie-automation/corelib/dist/playout/timeline'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { TimelineHash } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import type { TimelineContentObject } from '@sofie-automation/corelib/dist/playout/timeline'
+
+import { useCurrentTime } from '../../lib/lib.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
 import { StudioTimeline } from './collections'
 
 export function TimelineView(): JSX.Element {
@@ -318,8 +321,9 @@ function renderTimelineInstances(resolvedTl: ResolvedTimeline, filter: RegExp | 
 			<td>{o.layer}</td>
 			<td>{o.resolved?.parentId ?? ''}</td>
 			<td>
-				{o.resolved?.instances?.map((instance) => <p key={instance.id}>{`${instance.start} - ${instance.end}`}</p>) ??
-					'NONE'}
+				{o.resolved?.instances?.map((instance) => (
+					<p key={instance.id}>{`${instance.start} - ${instance.end}`}</p>
+				)) ?? 'NONE'}
 			</td>
 		</tr>
 	))
@@ -370,7 +374,9 @@ function TimelineChangesLog({ resolvedTl, timelineHash }: Readonly<TimelineChang
 				if (oldObj && !newObj) {
 					newEntries.push({ msg: `Object "${objectId}" removed` })
 				} else if (!oldObj && newObj) {
-					newEntries.push({ msg: `Object "${objectId}" added with ${newObj.resolved.instances.length} instances` })
+					newEntries.push({
+						msg: `Object "${objectId}" added with ${newObj.resolved.instances.length} instances`,
+					})
 					for (const instance of newObj.resolved.instances) {
 						newEntries.push({
 							msg: `Instance "${objectId}${instance.id}" added - start: ${instance.start} end: ${instance.end}`,
@@ -399,7 +405,8 @@ function TimelineChangesLog({ resolvedTl, timelineHash }: Readonly<TimelineChang
 
 							if (newInstance.start !== oldInstance.start)
 								changes += ` start: ${newInstance.start} !== ${oldInstance.start}`
-							if (newInstance.end !== oldInstance.end) changes += ` end: ${newInstance.end} !== ${oldInstance.end}`
+							if (newInstance.end !== oldInstance.end)
+								changes += ` end: ${newInstance.end} !== ${oldInstance.end}`
 
 							if (changes.length > 0) {
 								newEntries.push({ msg: `Instance "${objectId}${oldInstance.id}" changed:${changes}` })

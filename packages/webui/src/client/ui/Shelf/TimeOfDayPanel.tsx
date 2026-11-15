@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutTimeOfDay,
 	RundownLayoutBase,
 	RundownLayoutTimeOfDay,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { dashboardElementStyle } from './DashboardPanel.js'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTranslation } from 'react-i18next'
 import { TimeOfDay } from '../RundownView/RundownTiming/TimeOfDay.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface ITimeOfDayPanelProps {
 	visible?: boolean

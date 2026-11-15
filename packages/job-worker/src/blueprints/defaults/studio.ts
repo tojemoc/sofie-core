@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	BlueprintManifestType,
 	BlueprintResultStudioBaseline,
@@ -9,7 +11,6 @@ import {
 	StudioBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
 import { deepFreeze } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
 
 /**
  * Default minimal Studio Blueprint, to be used when there is no real Blueprint provided for the studio.

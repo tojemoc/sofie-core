@@ -1,13 +1,14 @@
-import { MethodContextAPI } from './methodContext'
-import { MongoAPI } from '@sofie-automation/meteor-lib/dist/api/mongo'
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../logging'
+import { MongoAPI } from '@sofie-automation/meteor-lib/dist/api/mongo'
+
 import { collectionsAllowDenyCache } from '../collections/collection'
 import { Collections } from '../collections/lib'
+import { logger } from '../logging'
 import { checkHasOneOfPermissions, parseConnectionPermissions } from '../security/auth'
 import { triggerWriteAccess } from '../security/securityVerify'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MethodContextAPI } from './methodContext'
 
 const hasOwn = Object.prototype.hasOwnProperty
 const ALLOWED_UPDATE_OPERATIONS = {

@@ -1,14 +1,21 @@
-import * as React from 'react'
-import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as React from 'react'
+import { useMemo } from 'react'
+import Button from 'react-bootstrap/Button'
 import { useTranslation } from 'react-i18next'
-import { EditAttribute } from '../../../lib/EditAttribute.js'
-import { StudioBaselineStatus } from './Baseline.js'
-import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ShowStyleBases, Studios } from '../../../collections/index.js'
 import { useHistory } from 'react-router-dom'
-import { MeteorCall } from '../../../lib/meteorApi.js'
+
+import { ForceQuickLoopAutoNext, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import type { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { ShowStyleBases, Studios } from '../../../collections/index.js'
+import { CheckboxControl } from '../../../lib/Components/Checkbox.js'
+import { DropdownInputControl } from '../../../lib/Components/DropdownInput.js'
+import { FloatInputControl } from '../../../lib/Components/FloatInput.js'
+import { IntInputControl } from '../../../lib/Components/IntInput.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
@@ -16,18 +23,14 @@ import {
 	LabelAndOverridesForDropdown,
 	LabelAndOverridesForInt,
 } from '../../../lib/Components/LabelAndOverrides.js'
-import { catchError } from '../../../lib/lib.js'
-import { ForceQuickLoopAutoNext, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { useOverrideOpHelperForSimpleObject } from '../util/OverrideOpHelper.js'
-import { IntInputControl } from '../../../lib/Components/IntInput.js'
-import { FloatInputControl } from '../../../lib/Components/FloatInput.js'
-import { useMemo } from 'react'
-import { CheckboxControl } from '../../../lib/Components/Checkbox.js'
 import { TextInputControl } from '../../../lib/Components/TextInput.js'
-import { DropdownInputControl, type DropdownInputOption } from '../../../lib/Components/DropdownInput.js'
+import { EditAttribute } from '../../../lib/EditAttribute.js'
+import { catchError } from '../../../lib/lib.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
 import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import Button from 'react-bootstrap/Button'
+import { useOverrideOpHelperForSimpleObject } from '../util/OverrideOpHelper.js'
+import { StudioBaselineStatus } from './Baseline.js'
+import type { DropdownInputOption } from '../../../lib/Components/DropdownInput.js'
 
 interface IStudioGenericPropertiesProps {
 	studio: DBStudio
@@ -455,7 +458,9 @@ function StudioSettings({ studio }: { studio: DBStudio }): JSX.Element {
 				item={wrappedItem}
 				itemKey={'disableBlurBorder'}
 				overrideHelper={overrideHelper}
-				hint={t('Disable the blur border around the Rundown view when it is not in focus and studio mode is enabled')}
+				hint={t(
+					'Disable the blur border around the Rundown view when it is not in focus and studio mode is enabled'
+				)}
 			>
 				{(value, handleUpdate) => <CheckboxControl value={!!value} handleUpdate={handleUpdate} />}
 			</LabelAndOverridesForCheckbox>
@@ -531,7 +536,9 @@ function StudioSettings({ studio }: { studio: DBStudio }): JSX.Element {
 				item={wrappedItem}
 				itemKey={'followOnAirSegmentsHistory'}
 				overrideHelper={overrideHelper}
-				hint={t('How many segments of history to show when scrolling back in time (0 = show current segment only)')}
+				hint={t(
+					'How many segments of history to show when scrolling back in time (0 = show current segment only)'
+				)}
 			>
 				{(value, handleUpdate) => (
 					<IntInputControl

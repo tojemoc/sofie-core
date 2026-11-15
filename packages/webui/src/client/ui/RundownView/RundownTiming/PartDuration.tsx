@@ -1,9 +1,10 @@
 import ClassNames from 'classnames'
 import type { ReactNode } from 'react'
-import { useTiming } from './withTiming.js'
+
 import { RundownUtils } from '../../../lib/rundown.js'
-import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 import { getPartInstanceTimingId } from '../../../lib/rundownTiming.js'
+import { useTiming } from './withTiming.js'
+import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 
 interface IPartDurationProps {
 	part: PartUi
@@ -22,10 +23,11 @@ interface IPartDurationProps {
  */
 export function PartDisplayDuration(props: IPartDurationProps): JSX.Element | null {
 	const timingDurations = useTiming(undefined, undefined, (context) => {
-		return context.partExpectedDurations && context.partExpectedDurations[getPartInstanceTimingId(props.part.instance)]
+		return (
+			context.partExpectedDurations && context.partExpectedDurations[getPartInstanceTimingId(props.part.instance)]
+		)
 	})
 
-	let duration: number | undefined = undefined
 	let budget = 0
 	let playedOut = 0
 
@@ -40,7 +42,7 @@ export function PartDisplayDuration(props: IPartDurationProps): JSX.Element | nu
 		playedOut = (!part.instance.part.untimed ? partPlayed[getPartInstanceTimingId(part.instance)] : 0) || 0
 	}
 
-	duration = budget - playedOut
+	const duration = budget - playedOut
 
 	if (duration !== undefined) {
 		return (

@@ -1,6 +1,8 @@
-const ntpClient: NtpClient = require('ntp-client')
 import { DiffTimeResult } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
 import type { NtpClient } from '../../typings/ntp-client'
+
+const ntpClient: NtpClient = require('ntp-client')
 
 /**
  * Example usage:
@@ -112,12 +114,11 @@ async function getServerTime(host: string, port: number, timeout?: number): Prom
 }
 function standardDeviation(arr: Array<number>): { mean: number; stdDev: number } {
 	let total = 0
-	let mean = 0
 	const diffSqredArr: Array<number> = []
 	for (let i = 0; i < arr.length; i += 1) {
 		total += arr[i]
 	}
-	mean = total / arr.length
+	const mean = total / arr.length
 	for (let j = 0; j < arr.length; j += 1) {
 		diffSqredArr.push(Math.pow(arr[j] - mean, 2))
 	}

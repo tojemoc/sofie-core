@@ -1,3 +1,7 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { TSR } from '@sofie-automation/blueprints-integration'
+import { PieceInstanceId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
 	OnGenerateTimelineObjExt,
 	TimelineContentTypeOther,
@@ -6,15 +10,12 @@ import {
 	TimelineObjRundown,
 	TimelineObjType,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { ReadonlyDeep } from 'type-fest'
-import { TSR } from '@sofie-automation/blueprints-integration'
-import { PieceInstanceId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { clone, literal } from '@sofie-automation/corelib/dist/lib'
 import { getPieceControlObjectId, getPieceGroupId } from '@sofie-automation/corelib/dist/playout/ids'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
 
 export interface PieceTimelineMetadata {
 	/** Indicate that this is a PieceTimeline object */

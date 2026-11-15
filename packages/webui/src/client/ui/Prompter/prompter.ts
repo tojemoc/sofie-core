@@ -1,4 +1,13 @@
-import { type ScriptContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
+import _ from 'underscore'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import {
+	createPartCurrentTimes,
+	processAndPrunePieceInstanceTimings,
+} from '@sofie-automation/corelib/dist/playout/processAndPrune'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ScriptContent } from '@sofie-automation/blueprints-integration'
 import type {
 	PartId,
 	PartInstanceId,
@@ -12,21 +21,15 @@ import type { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import type { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
+import { PieceInstances, Pieces, RundownPlaylists, Segments } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
 import { RundownUtils } from '../../lib/rundown.js'
 import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import {
-	createPartCurrentTimes,
-	processAndPrunePieceInstanceTimings,
-} from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import _ from 'underscore'
-import type { FindOptions } from '../../collections/lib.js'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { PieceInstances, Pieces, RundownPlaylists, Segments } from '../../collections/index.js'
-import { UIShowStyleBases } from '../Collections.js'
 import { getCurrentTime } from '../../lib/systemTime.js'
+import { UIShowStyleBases } from '../Collections.js'
+import type { FindOptions } from '../../collections/lib.js'
 
 // export interface NewPrompterAPI {
 // 	getPrompterData (playlistId: RundownPlaylistId): Promise<PrompterData>

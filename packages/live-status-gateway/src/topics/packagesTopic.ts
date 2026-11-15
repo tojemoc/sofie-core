@@ -1,14 +1,16 @@
+import { Logger } from 'winston'
+import { WebSocket } from 'ws'
+
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { PackagesEvent, PackageStatus } from '@sofie-automation/live-status-gateway-api'
 import { assertNever } from '@sofie-automation/server-core-integration'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
-import { Logger } from 'winston'
-import { WebSocket } from 'ws'
+
 import { CollectionHandlers } from '../liveStatusServer.js'
 import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
-import { PackagesEvent, PackageStatus } from '@sofie-automation/live-status-gateway-api'
 
 const THROTTLE_PERIOD_MS = 200
 

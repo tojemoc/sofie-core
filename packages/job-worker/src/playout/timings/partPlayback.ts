@@ -1,15 +1,16 @@
+import { Time } from '@sofie-automation/blueprints-integration'
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { logger } from '../../logging.js'
+
 import { JobContext } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
+import { logger } from '../../logging.js'
+import { INCORRECT_PLAYING_PART_DEBOUNCE, RESET_IGNORE_ERRORS } from '../constants.js'
 import { PlayoutModel } from '../model/PlayoutModel.js'
 import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
 import { selectNextPart } from '../selectNextPart.js'
 import { setNextPart } from '../setNext.js'
-import { updateTimeline } from '../timeline/generate.js'
-import { getCurrentTime } from '../../lib/index.js'
 import { afterTake, clearQueuedSegmentId, resetPreviousSegmentIfLooping, updatePartInstanceOnTake } from '../take.js'
-import { INCORRECT_PLAYING_PART_DEBOUNCE, RESET_IGNORE_ERRORS } from '../constants.js'
-import { Time } from '@sofie-automation/blueprints-integration'
+import { updateTimeline } from '../timeline/generate.js'
 
 /**
  * Set the playback of a part is confirmed to have started

@@ -1,14 +1,17 @@
-import { useCallback, type JSX } from 'react'
-import type { PartId, PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import classNames from 'classnames'
+import { useCallback } from 'react'
+import type { JSX } from 'react'
+
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownTiming/withTiming.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import classNames from 'classnames'
-import { MediaStatusIndicator } from '../../MediaStatus/MediaStatusIndicator.js'
-import { scrollToPart, scrollToSegment } from '../../../lib/viewPort.js'
+import type { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { PartId, PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { logger } from '../../../lib/logging.js'
+import { RundownUtils } from '../../../lib/rundown.js'
+import { scrollToPart, scrollToSegment } from '../../../lib/viewPort.js'
+import { MediaStatusIndicator } from '../../MediaStatus/MediaStatusIndicator.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from '../RundownTiming/withTiming.js'
 
 interface IMediaStatusPopUpItemProps {
 	partId: PartId | undefined
@@ -95,7 +98,8 @@ export function MediaStatusPopUpItem({
 				<div
 					data-status={status}
 					className={classNames('media-status-popup-item__source-layer-indicator', sourceLayerClassName, {
-						'source-missing': status === PieceStatusCode.SOURCE_MISSING || status === PieceStatusCode.SOURCE_NOT_SET,
+						'source-missing':
+							status === PieceStatusCode.SOURCE_MISSING || status === PieceStatusCode.SOURCE_NOT_SET,
 						'source-unknown-state': status === PieceStatusCode.SOURCE_UNKNOWN_STATE,
 						'source-broken': status === PieceStatusCode.SOURCE_BROKEN,
 						'source-not-ready': status === PieceStatusCode.SOURCE_NOT_READY,

@@ -1,10 +1,12 @@
 import _ from 'underscore'
-import { normalizeArrayToMap, deleteAllUndefinedProperties } from '@sofie-automation/corelib/dist/lib'
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { deleteAllUndefinedProperties, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 import { MongoBulkWriteOperation, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { profiler } from '../api/profiler'
 import { AsyncOnlyMongoCollection } from '../collections/collection'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export interface DBObj {
 	_id: ProtectedString<any>

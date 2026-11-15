@@ -1,20 +1,21 @@
-import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import { ClientAPIMethods } from '@sofie-automation/meteor-lib/dist/api/client'
-import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
-import { setLogLevel } from '../../logging'
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPIMethods } from '@sofie-automation/meteor-lib/dist/api/client'
+import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
+import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
+
 import { setupMockPeripheralDevice, setupMockStudio } from '../../__mocks__/helpers/database'
-import { ServerClientAPIClass } from '../client'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDeviceCommands, UserActionsLog } from '../../collections'
-import { SupressLogMessages } from '../../__mocks__/suppressLogging'
 import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { SupressLogMessages } from '../../__mocks__/suppressLogging'
+import { PeripheralDeviceCommands, UserActionsLog } from '../../collections'
+import { setLogLevel } from '../../logging'
+import { ServerClientAPIClass } from '../client'
 
 const MeteorCall = makeMeteorCallForTest({ methods: ClientAPIMethods, class: ServerClientAPIClass })
 

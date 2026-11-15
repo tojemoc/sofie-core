@@ -1,29 +1,33 @@
-import { type SerializedUserError, UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { UserAction } from '@sofie-automation/meteor-lib/dist/userAction'
-import { doUserAction } from '../../../lib/clientUserAction'
-import { MeteorCall } from '../../../lib/meteorApi'
-import { doModalDialog } from '../../../lib/ModalDialog'
-import { useTranslation } from 'react-i18next'
-import React, { useContext, useEffect, useMemo } from 'react'
-import { type UserPermissions, UserPermissionsContext } from '../../UserPermissions'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { logger } from '../../../lib/logging'
-import type * as i18next from 'i18next'
-import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications'
 import { Meteor } from 'meteor/meteor'
 import { Tracker } from 'meteor/tracker'
-import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { handleRundownPlaylistReloadResponse } from './RundownReloadResponse.js'
-import { scrollToPartInstance } from '../../../lib/viewPort'
-import { hashSingleUseToken } from '../../../lib/lib'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { getCurrentTime } from '../../../lib/systemTime'
+import React, { useContext, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import type * as i18next from 'i18next'
+
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import { REHEARSAL_MARGIN } from '../WarningDisplay'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { UserAction } from '@sofie-automation/meteor-lib/dist/userAction'
 import type { RundownPlaylistTiming } from '@sofie-automation/blueprints-integration'
+import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { SerializedUserError } from '@sofie-automation/corelib/dist/error'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
+
+import { doUserAction } from '../../../lib/clientUserAction'
+import { hashSingleUseToken } from '../../../lib/lib'
+import { logger } from '../../../lib/logging'
+import { MeteorCall } from '../../../lib/meteorApi'
+import { doModalDialog } from '../../../lib/ModalDialog'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications'
+import { getCurrentTime } from '../../../lib/systemTime'
+import { scrollToPartInstance } from '../../../lib/viewPort'
+import { UserPermissionsContext } from '../../UserPermissions'
+import { REHEARSAL_MARGIN } from '../WarningDisplay'
+import { handleRundownPlaylistReloadResponse } from './RundownReloadResponse.js'
+import type { UserPermissions } from '../../UserPermissions'
 
 class RundownPlaylistOperationsService {
 	constructor(
@@ -74,7 +78,8 @@ class RundownPlaylistOperationsService {
 								t,
 								e,
 								UserAction.DEACTIVATE_OTHER_RUNDOWN_PLAYLIST,
-								async (e, ts) => MeteorCall.userAction.forceResetAndActivate(e, ts, this.playlist._id, true),
+								async (e, ts) =>
+									MeteorCall.userAction.forceResetAndActivate(e, ts, this.playlist._id, true),
 								handleResult
 							)
 						},
@@ -93,7 +98,12 @@ class RundownPlaylistOperationsService {
 			})
 		} else {
 			doUserAction(t, e, UserAction.TAKE, async (e, ts) =>
-				MeteorCall.userAction.take(e, ts, this.playlist._id, this.playlist.currentPartInfo?.partInstanceId ?? null)
+				MeteorCall.userAction.take(
+					e,
+					ts,
+					this.playlist._id,
+					this.playlist.currentPartInfo?.partInstanceId ?? null
+				)
 			)
 		}
 	}
@@ -112,7 +122,9 @@ class RundownPlaylistOperationsService {
 				logger.error(err)
 				doModalDialog({
 					title: t('Failed to activate'),
-					message: t('Something went wrong, please contact the system administrator if the problem persists.'),
+					message: t(
+						'Something went wrong, please contact the system administrator if the problem persists.'
+					),
 					acceptOnly: true,
 					warning: true,
 					yes: t('OK'),
@@ -259,7 +271,13 @@ class RundownPlaylistOperationsService {
 									onSuccess()
 								} else if (ClientAPI.isClientResponseError(err)) {
 									if (err.error.key === UserErrorMessage.RundownAlreadyActiveNames) {
-										this.handleAnotherPlaylistActive(t, this.playlist._id, false, err.error, onSuccess)
+										this.handleAnotherPlaylistActive(
+											t,
+											this.playlist._id,
+											false,
+											err.error,
+											onSuccess
+										)
 										return false
 									}
 								}
@@ -655,7 +673,9 @@ export function RundownPlaylistOperationsContextProvider({
 	)
 
 	return (
-		<RundownPlaylistOperationsContext.Provider value={apiObject}>{children}</RundownPlaylistOperationsContext.Provider>
+		<RundownPlaylistOperationsContext.Provider value={apiObject}>
+			{children}
+		</RundownPlaylistOperationsContext.Provider>
 	)
 }
 
@@ -685,7 +705,8 @@ export function checkRundownTimes(playlistTiming: RundownPlaylistTiming): Rundow
 
 	const shouldHaveEnded =
 		currentTime >
-		(PlaylistTiming.getExpectedStart(playlistTiming) || 0) + (PlaylistTiming.getExpectedDuration(playlistTiming) || 0)
+		(PlaylistTiming.getExpectedStart(playlistTiming) || 0) +
+			(PlaylistTiming.getExpectedDuration(playlistTiming) || 0)
 
 	return {
 		shouldHaveStarted: currentTime > (PlaylistTiming.getExpectedStart(playlistTiming) || 0),

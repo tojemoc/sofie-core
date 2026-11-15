@@ -1,55 +1,56 @@
-import React, { useContext, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-
-import ClassNames from 'classnames'
-
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { type Translated, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getElementDocumentOffset } from '../../utils/positions.js'
-import {
-	type DashboardLayoutExternalFrame,
-	RundownLayoutElementType,
-	type RundownLayoutFilter,
-	type RundownLayoutShelfBase,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
-import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
-import { ShelfRundownLayout } from './ShelfRundownLayout.js'
-import { ShelfDashboardLayout } from './ShelfDashboardLayout.js'
-import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { RundownViewBuckets, type BucketAdLibItem } from './RundownViewBuckets.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { ShelfInspector } from './Inspector/ShelfInspector.js'
-import RundownViewEventBus, {
-	type IEventContext,
-	RundownViewEvents,
-	type SelectPieceEvent,
-	type ShelfStateEvent,
-	type SwitchToShelfTabEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import ShelfContextMenu from './ShelfContextMenu.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import type { ShelfDisplayOptions } from '../../lib/shelf.js'
-import { Buckets } from '../../collections'
-import { UserPermissionsContext } from '../UserPermissions'
+import ClassNames from 'classnames'
+import { parse as queryStringParse } from 'query-string'
+import React, { useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
-import type { IStudioSettings, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { DEFAULT_SHELF_DISPLAY_OPTIONS, DEFAULT_POISON_KEY } from '@sofie-automation/shared-lib/dist/core/constants'
-import { getCoreSystemSettings } from '../../collections/index.js'
-import { type ParsedQuery, parse as queryStringParse } from 'query-string'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { ParsedQuery } from 'query-string'
 
+import { RundownLayoutElementType } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
 import { ShelfTabs } from '@sofie-automation/meteor-lib/dist/uiTypes/ShelfTabs'
+import { DEFAULT_POISON_KEY, DEFAULT_SHELF_DISPLAY_OPTIONS } from '@sofie-automation/shared-lib/dist/core/constants'
+import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { IStudioSettings, UIStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type {
+	DashboardLayoutExternalFrame,
+	RundownLayoutFilter,
+	RundownLayoutShelfBase,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type {
+	IEventContext,
+	SelectPieceEvent,
+	ShelfStateEvent,
+	SwitchToShelfTabEvent,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { Buckets } from '../../collections'
+import { getCoreSystemSettings } from '../../collections/index.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
+import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { getElementDocumentOffset } from '../../utils/positions.js'
+import { UserPermissionsContext } from '../UserPermissions'
+import { ShelfInspector } from './Inspector/ShelfInspector.js'
+import { RundownViewBuckets } from './RundownViewBuckets.js'
+import ShelfContextMenu from './ShelfContextMenu.js'
+import { ShelfDashboardLayout } from './ShelfDashboardLayout.js'
+import { ShelfRundownLayout } from './ShelfRundownLayout.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { ShelfDisplayOptions } from '../../lib/shelf.js'
 import type { SelectedElement } from '../RundownView/SelectedElementsContext.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibItem } from './RundownViewBuckets.js'
 
 export { ShelfTabs } from '@sofie-automation/meteor-lib/dist/uiTypes/ShelfTabs'
 
@@ -114,16 +115,16 @@ export class ShelfBase extends React.Component<Translated<IShelfProps>, IState> 
 			? `${100 - Math.min(props.rundownLayout.startingHeight, MAX_HEIGHT)}vh`
 			: '50vh'
 
-		const localStorageName = props.rundownLayout ? `rundownView.shelf_${props.rundownLayout._id}` : `rundownView.shelf`
+		const localStorageName = props.rundownLayout
+			? `rundownView.shelf_${props.rundownLayout._id}`
+			: `rundownView.shelf`
 
 		this.state = {
 			moving: false,
 			shelfHeight: localStorage.getItem(`${localStorageName}.shelfHeight`) ?? defaultHeight,
 			overrideHeight: undefined,
 			selectedTab: UIStateStorage.getItem(`rundownView.${props.playlist._id}`, 'shelfTab', undefined) as
-				| string
-				| ShelfTabs
-				| undefined,
+				string | ShelfTabs | undefined,
 			shouldQueue: false,
 			selectedPiece: undefined,
 			localStorageName,
@@ -330,7 +331,7 @@ export class ShelfBase extends React.Component<Translated<IShelfProps>, IState> 
 			overrideHeight: undefined,
 		}
 
-		let shouldBeExpanded = false
+		let shouldBeExpanded: boolean
 
 		if (Date.now() - this._mouseDown > 350) {
 			if (this.state.overrideHeight && window.innerHeight - this.state.overrideHeight > CLOSE_MARGIN) {
@@ -449,7 +450,8 @@ export class ShelfBase extends React.Component<Translated<IShelfProps>, IState> 
 							holdToDisplay={contextMenuHoldToDisplayTime()}
 						>
 							<ErrorBoundary>
-								{this.props.rundownLayout && RundownLayoutsAPI.isRundownLayout(this.props.rundownLayout) ? (
+								{this.props.rundownLayout &&
+								RundownLayoutsAPI.isRundownLayout(this.props.rundownLayout) ? (
 									<ShelfRundownLayout
 										playlist={this.props.playlist}
 										showStyleBase={this.props.showStyleBase}
@@ -462,7 +464,8 @@ export class ShelfBase extends React.Component<Translated<IShelfProps>, IState> 
 										onSwitchTab={this.switchTab}
 										studio={this.props.studio}
 									/>
-								) : this.props.rundownLayout && RundownLayoutsAPI.isDashboardLayout(this.props.rundownLayout) ? (
+								) : this.props.rundownLayout &&
+								  RundownLayoutsAPI.isDashboardLayout(this.props.rundownLayout) ? (
 									<ShelfDashboardLayout
 										playlist={this.props.playlist}
 										showStyleBase={this.props.showStyleBase}

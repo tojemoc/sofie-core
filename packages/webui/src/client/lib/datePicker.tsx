@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
-import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import { useEffect, useState } from 'react'
+import DatePicker from 'react-datepicker'
+
 import 'react-datepicker/dist/react-datepicker.css'
+
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { useTranslation } from 'react-i18next'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
 
 export function DatePickerFromTo({
 	from,

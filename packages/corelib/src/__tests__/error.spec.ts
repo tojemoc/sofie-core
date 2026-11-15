@@ -1,5 +1,7 @@
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import EJSON from 'ejson'
+
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { SofieError, UserError, UserErrorMessage } from '../error.js'
 
 describe('UserError', () => {

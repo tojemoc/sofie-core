@@ -1,3 +1,8 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import { ExpectedPlayoutItemStudio } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import {
 	PartId,
 	PartInstanceId,
@@ -9,8 +14,14 @@ import {
 	SegmentId,
 	SegmentPlayoutId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { BrandingChangeTarget } from '@sofie-automation/blueprints-integration'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PeripheralDevice, PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import {
+	getPieceInstanceIdForPiece,
+	PieceInstance,
+	PieceInstancePiece,
+} from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import {
 	ABSessionAssignments,
 	ABSessionInfo,
@@ -20,25 +31,13 @@ import {
 	SelectedPartInstance,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import { ReadonlyDeep } from 'type-fest'
-import { JobContext } from '../../../jobs/index.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import {
-	getPieceInstanceIdForPiece,
-	PieceInstance,
-	PieceInstancePiece,
-} from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import {
 	serializeTimelineBlob,
 	TimelineComplete,
 	TimelineCompleteGenerationVersions,
 	TimelineObjGeneric,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import _ from 'underscore'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PlaylistLock } from '../../../jobs/lock.js'
-import { logger } from '../../../logging.js'
 import {
 	clone,
 	getRandomId,
@@ -46,44 +45,47 @@ import {
 	literal,
 	normalizeArrayToMapFunc,
 } from '@sofie-automation/corelib/dist/lib'
-import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
 import { sortRundownIDsInPlaylist } from '@sofie-automation/corelib/dist/playout/playlist'
-import { PlayoutRundownModel } from '../PlayoutRundownModel.js'
-import { PlayoutRundownModelImpl } from './PlayoutRundownModelImpl.js'
-import { PlayoutSegmentModel } from '../PlayoutSegmentModel.js'
-import { PlayoutPartInstanceModelImpl } from './PlayoutPartInstanceModelImpl.js'
-import { PlayoutPartInstanceModel } from '../PlayoutPartInstanceModel.js'
-import { getCurrentTime } from '../../../lib/index.js'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { queuePartInstanceTimingEvent } from '../../timings/events.js'
-import { IS_PRODUCTION } from '../../../environment.js'
-import { DeferredAfterSaveFunction, DeferredFunction, PlayoutModel, PlayoutModelReadonly } from '../PlayoutModel.js'
-import {
-	writePartInstancesAndPieceInstances,
-	writeAdlibTestingSegments,
-	writeExpectedPackagesForPlayoutSources,
-} from './SavePlayoutModel.js'
-import { PlayoutPieceInstanceModel } from '../PlayoutPieceInstanceModel.js'
-import { DatabasePersistedModel } from '../../../modelBase.js'
-import { ExpectedPlayoutItemStudio } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
-import { StudioBaselineHelper } from '../../../studio/model/StudioBaselineHelper.js'
-import { QuickLoopService } from '../services/QuickLoopService.js'
-import { calculatePartTimings, PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
 import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { NotificationsModelHelper } from '../../../notifications/NotificationsModelHelper.js'
+import { calculatePartTimings, PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { getExpectedLatency } from '@sofie-automation/corelib/dist/studio/playout'
-import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { BrandingChangeTarget } from '@sofie-automation/blueprints-integration'
+
+import { IS_PRODUCTION } from '../../../environment.js'
+import { JobContext } from '../../../jobs/index.js'
+import { PlaylistLock } from '../../../jobs/lock.js'
+import { getCurrentTime } from '../../../lib/index.js'
+import { logger } from '../../../logging.js'
+import { DatabasePersistedModel } from '../../../modelBase.js'
+import { NotificationsModelHelper } from '../../../notifications/NotificationsModelHelper.js'
+import { StudioBaselineHelper } from '../../../studio/model/StudioBaselineHelper.js'
 import {
-	getTimelineRundown,
 	flattenAndProcessTimelineObjects,
-	preserveOrReplaceNowTimesInObjects,
-	logAnyRemainingNowTimes,
 	getStudioTimeline,
+	getTimelineRundown,
+	logAnyRemainingNowTimes,
+	preserveOrReplaceNowTimesInObjects,
 } from '../../timeline/generate.js'
 import { deNowifyMultiGatewayTimeline } from '../../timeline/multi-gateway.js'
+import { queuePartInstanceTimingEvent } from '../../timings/events.js'
 import { validateTTimerIndex } from '../../tTimers.js'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { DeferredAfterSaveFunction, DeferredFunction, PlayoutModel, PlayoutModelReadonly } from '../PlayoutModel.js'
+import { PlayoutPartInstanceModel } from '../PlayoutPartInstanceModel.js'
+import { PlayoutPieceInstanceModel } from '../PlayoutPieceInstanceModel.js'
+import { PlayoutRundownModel } from '../PlayoutRundownModel.js'
+import { PlayoutSegmentModel } from '../PlayoutSegmentModel.js'
+import { QuickLoopService } from '../services/QuickLoopService.js'
+import { PlayoutPartInstanceModelImpl } from './PlayoutPartInstanceModelImpl.js'
+import { PlayoutRundownModelImpl } from './PlayoutRundownModelImpl.js'
+import {
+	writeAdlibTestingSegments,
+	writeExpectedPackagesForPlayoutSources,
+	writePartInstancesAndPieceInstances,
+} from './SavePlayoutModel.js'
 
 export class PlayoutModelReadonlyImpl implements PlayoutModelReadonly {
 	public readonly playlistId: RundownPlaylistId
@@ -779,7 +781,7 @@ export class PlayoutModelImpl extends PlayoutModelReadonlyImpl implements Playou
 
 		// Execute deferBeforeSave()'s
 		for (const fn of this.#deferredBeforeSaveFunctions) {
-			await fn(this as any)
+			await fn(this)
 		}
 		this.#deferredBeforeSaveFunctions.length = 0 // clear the array
 
@@ -833,7 +835,7 @@ export class PlayoutModelImpl extends PlayoutModelReadonlyImpl implements Playou
 
 		// Execute deferAfterSave()'s
 		for (const fn of this.#deferredAfterSaveFunctions) {
-			await fn(this as any)
+			await fn(this)
 		}
 		this.#deferredAfterSaveFunctions.length = 0 // clear the array
 

@@ -1,26 +1,26 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type { SourceLayers, UIShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { NotificationCenter, NoticeLevel, Notification } from '../../lib/notifications/notifications'
-import { doUserAction, UserAction } from '../../lib/clientUserAction'
-import { MeteorCall } from '../../lib/meteorApi'
-import type { AdLibPieceUi, AdlibSegmentUi } from '../../lib/shelf'
 import type { ExecuteActionResult } from '@sofie-automation/corelib/dist/worker/studio'
-import type { PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useTranslation } from 'react-i18next'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance'
 import type {
 	RundownLayoutFilterBase,
 	RundownLayoutShelfBase,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import {
-	type MiniShelfQueueAdLibEvent,
-	RundownViewEvents,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { MiniShelfQueueAdLibEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction'
 import { useRundownViewEventBusListener } from '../../lib/lib'
+import { MeteorCall } from '../../lib/meteorApi'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications'
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts'
 import { matchFilter } from '../Shelf/AdLibListView'
 import { useFetchAndFilter } from '../Shelf/AdLibPanel'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance'
+import type { AdLibPieceUi, AdlibSegmentUi } from '../../lib/shelf'
 
 export type QueueMiniShelfAdlibFunction = (e: any, forward: boolean) => void
 

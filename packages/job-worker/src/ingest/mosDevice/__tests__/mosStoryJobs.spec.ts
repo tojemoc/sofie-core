@@ -1,11 +1,14 @@
-import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
-import { clone } from '@sofie-automation/corelib/dist/lib'
 import {
 	IngestChangeType,
 	MOS,
 	NrcsIngestPartChangeDetails,
 	NrcsIngestSegmentChangeDetailsEnum,
 } from '@sofie-automation/blueprints-integration'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+
+import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
+import { IngestUpdateOperationFunction, UpdateIngestRundownChange } from '../../runOperation.js'
 import {
 	handleMosDeleteStory,
 	handleMosFullStory,
@@ -13,8 +16,6 @@ import {
 	handleMosMoveStories,
 	handleMosSwapStories,
 } from '../mosStoryJobs.js'
-import { IngestUpdateOperationFunction, UpdateIngestRundownChange } from '../../runOperation.js'
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
 
 function getDefaultIngestRundown(): IngestRundownWithSource {
 	return {

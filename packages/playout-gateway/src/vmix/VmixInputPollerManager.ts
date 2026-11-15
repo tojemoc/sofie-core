@@ -1,12 +1,13 @@
 import type { DeviceOptionsAny } from 'timeline-state-resolver'
 import type { BaseRemoteDeviceIntegration } from 'timeline-state-resolver/dist/service/remoteDeviceInstance'
-
-const VMIX_DEVICE_TYPE = 'VMIX'
 import type { Logger } from 'winston'
-import type { CoreTSRDeviceHandler } from '../coreHandler.js'
+
 import { VmixExtendedDeviceOptions, VmixPollerConfig } from './types.js'
 import { VmixInputMediaSync } from './VmixInputMediaSync.js'
 import { VmixInputPoller } from './VmixInputPoller.js'
+import type { CoreTSRDeviceHandler } from '../coreHandler.js'
+
+const VMIX_DEVICE_TYPE = 'VMIX'
 
 interface ActivePoller {
 	poller: VmixInputPoller

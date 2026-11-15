@@ -1,28 +1,33 @@
 import { faStar, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
 import ClassNames from 'classnames'
+import React from 'react'
+import { withTranslation } from 'react-i18next'
 import _ from 'underscore'
-import { RundownLayoutsAPI } from '../../../lib/rundownLayouts.js'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import {
-	type DashboardPanelBase,
 	DashboardPanelUnit,
 	PieceDisplayStyle,
-	type RundownLayout,
 	RundownLayoutAdLibRegionRole,
-	type RundownLayoutBase,
-	type RundownLayoutElementBase,
-	type RundownLayoutElementType,
-	type RundownLayoutFilterBase,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { EditAttribute } from '../../../lib/EditAttribute.js'
-import type { Translated } from '../../../lib/ReactMeteorData/react-meteor-data.js'
-import { type IOutputLayer, type ISourceLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { withTranslation } from 'react-i18next'
-import { defaultColorPickerPalette } from '../../../lib/colorPicker.js'
+import type { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type {
+	DashboardPanelBase,
+	RundownLayout,
+	RundownLayoutBase,
+	RundownLayoutElementBase,
+	RundownLayoutElementType,
+	RundownLayoutFilterBase,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { RundownLayouts } from '../../../collections/index.js'
+import { defaultColorPickerPalette } from '../../../lib/colorPicker.js'
 import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../lib/EditAttribute.js'
+import { RundownLayoutsAPI } from '../../../lib/rundownLayouts.js'
+import type { Translated } from '../../../lib/ReactMeteorData/react-meteor-data.js'
 
 interface IProps {
 	item: RundownLayoutBase
@@ -80,7 +85,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{isDashboardLayout && (
@@ -404,7 +414,10 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 								/>
 							</label>
 
-							<label className="field" title="eg. when pieces in current part serve as data stores for adlibing">
+							<label
+								className="field"
+								title="eg. when pieces in current part serve as data stores for adlibing"
+							>
 								{t('Current part can contain next pieces')}
 								<EditAttribute
 									attribute={`filters.${index}.nextInCurrentPart`}
@@ -448,12 +461,22 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
 						<LabelActual label={t('URL')} />
-						<EditAttribute attribute={`filters.${index}.url`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.url`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -468,7 +491,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 
 					<label className="field">
 						<LabelActual label={t('Display Rank')} />
-						<EditAttribute attribute={`filters.${index}.rank`} obj={item} type="float" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.rank`}
+							obj={item}
+							type="float"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{isDashboardLayout && this.renderDashboardLayoutSettings(item, index)}
@@ -482,7 +510,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -498,7 +531,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 
 					<label className="field">
 						<LabelActual label={t('Adlib Rank')} />
-						<EditAttribute attribute={`filters.${index}.adlibRank`} obj={item} type="int" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.adlibRank`}
+							obj={item}
+							type="int"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -584,7 +622,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -628,7 +671,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -673,7 +721,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -843,12 +896,22 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
 						<LabelActual label={t('Text')} />
-						<EditAttribute attribute={`filters.${index}.text`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.text`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{isDashboardLayout && this.renderDashboardLayoutSettings(item, index)}
@@ -862,7 +925,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -886,7 +954,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{isDashboardLayout && this.renderDashboardLayoutSettings(item, index)}
@@ -900,7 +973,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -925,7 +1003,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -947,7 +1030,9 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 							type="checkbox"
 							collection={RundownLayouts}
 						/>
-						<span className="text-s dimmed field-hint">{t('Use color of primary piece as background of panel')}</span>
+						<span className="text-s dimmed field-hint">
+							{t('Use color of primary piece as background of panel')}
+						</span>
 					</label>
 
 					{isDashboardLayout && this.renderDashboardLayoutSettings(item, index)}
@@ -961,7 +1046,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -986,7 +1076,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					<label className="field">
@@ -1100,7 +1195,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 						<label className="field">
 							<LabelActual label={t('X')} />
 							<div className="secondary-control-after">
-								<EditAttribute attribute={`filters.${index}.x`} obj={item} type="float" collection={RundownLayouts} />
+								<EditAttribute
+									attribute={`filters.${index}.x`}
+									obj={item}
+									type="float"
+									collection={RundownLayouts}
+								/>
 								<EditAttribute
 									attribute={`filters.${index}.xUnit`}
 									obj={item}
@@ -1116,7 +1216,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 						<label className="field">
 							<LabelActual label={t('Y')} />
 							<div className="secondary-control-after">
-								<EditAttribute attribute={`filters.${index}.y`} obj={item} type="float" collection={RundownLayouts} />
+								<EditAttribute
+									attribute={`filters.${index}.y`}
+									obj={item}
+									type="float"
+									collection={RundownLayouts}
+								/>
 								<EditAttribute
 									attribute={`filters.${index}.yUnit`}
 									obj={item}
@@ -1173,13 +1278,23 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 					{!options?.scale && (
 						<label className="field">
 							<LabelActual label={t('Scale')} />
-							<EditAttribute attribute={`filters.${index}.scale`} obj={item} type="float" collection={RundownLayouts} />
+							<EditAttribute
+								attribute={`filters.${index}.scale`}
+								obj={item}
+								type="float"
+								collection={RundownLayouts}
+							/>
 						</label>
 					)}
 
 					<label className="field">
 						<LabelActual label={t('Display Rank')} />
-						<EditAttribute attribute={`filters.${index}.rank`} obj={item} type="float" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.rank`}
+							obj={item}
+							type="float"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{!options?.customClasses && (
@@ -1208,7 +1323,12 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 				<React.Fragment>
 					<label className="field">
 						<LabelActual label={t('Name')} />
-						<EditAttribute attribute={`filters.${index}.name`} obj={item} type="text" collection={RundownLayouts} />
+						<EditAttribute
+							attribute={`filters.${index}.name`}
+							obj={item}
+							type="text"
+							collection={RundownLayouts}
+						/>
 					</label>
 
 					{isDashboardLayout && this.renderDashboardLayoutSettings(item, index)}
@@ -1267,7 +1387,10 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 			const isDashboardLayout = RundownLayoutsAPI.isDashboardLayout(this.props.item)
 
 			return (
-				<div className="rundown-layout-editor-filter  card m-2 p-2 grid-buttons-right" key={this.props.filter._id}>
+				<div
+					className="rundown-layout-editor-filter  card m-2 p-2 grid-buttons-right"
+					key={this.props.filter._id}
+				>
 					<div className="properties-grid">
 						<label className="field">
 							<LabelActual label={t('Type')} />
@@ -1305,7 +1428,10 @@ export const FilterEditor: React.ComponentType<IProps> = withTranslation()(
 								<FontAwesomeIcon icon={faStar} />
 							</button>
 						)}
-						<button className="action-btn" onClick={() => this.onRemoveElement(this.props.item, this.props.filter)}>
+						<button
+							className="action-btn"
+							onClick={() => this.onRemoveElement(this.props.item, this.props.filter)}
+						>
 							<FontAwesomeIcon icon={faTrash} />
 						</button>
 					</div>

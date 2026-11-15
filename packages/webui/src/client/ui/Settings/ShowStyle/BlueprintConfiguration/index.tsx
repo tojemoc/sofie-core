@@ -1,18 +1,20 @@
 import { useCallback, useMemo } from 'react'
-import type { JSONSchema } from '@sofie-automation/blueprints-integration'
-import { BlueprintConfigSchemaSettings } from '../../BlueprintConfigSchema/index.js'
-import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ShowStyleBases } from '../../../../collections/index.js'
 import { useTranslation } from 'react-i18next'
-import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import type { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { SelectConfigPreset } from './SelectConfigPreset.js'
-import { SelectBlueprint } from './SelectBlueprint.js'
+
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { JSONSchema } from '@sofie-automation/blueprints-integration'
+import type { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { UIBlueprintUpgradeStatusShowStyle } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+
+import { ShowStyleBases } from '../../../../collections/index.js'
 import { useSubscription, useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { UIBlueprintUpgradeStatuses } from '../../../Collections.js'
+import { BlueprintConfigSchemaSettings } from '../../BlueprintConfigSchema/index.js'
 import { getUpgradeStatusMessage, UpgradeStatusButtons } from '../../Upgrades/Components.js'
-import type { UIBlueprintUpgradeStatusShowStyle } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+import { SelectBlueprint } from './SelectBlueprint.js'
+import { SelectConfigPreset } from './SelectConfigPreset.js'
 
 interface ShowStyleBaseBlueprintConfigurationSettingsProps {
 	showStyleBase: DBShowStyleBase

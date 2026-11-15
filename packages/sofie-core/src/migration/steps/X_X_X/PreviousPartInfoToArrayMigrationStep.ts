@@ -1,6 +1,7 @@
-import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
-import { RundownPlaylists } from '../../../collections'
 import { SelectedPartInstance } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
+
+import { RundownPlaylists } from '../../../collections'
 
 export class PreviousPartInfoToArrayMigrationStep implements Omit<MigrationStepCore, 'version'> {
 	public readonly id = `RundownPlaylist convert previousPartInfo to previousPartsInfo`

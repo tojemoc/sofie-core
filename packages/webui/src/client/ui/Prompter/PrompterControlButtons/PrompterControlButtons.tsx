@@ -1,19 +1,23 @@
-import type React from 'react'
 import Button from 'react-bootstrap/Button'
+import type React from 'react'
+
 import './PrompterControlButtons.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
-import { MeteorCall } from '../../../lib/meteorApi'
-import { doUserAction, UserAction } from '../../../lib/clientUserAction'
-import type { RundownPlaylistId } from '@sofie-automation/corelib/src/dataModel/Ids'
-import type { TFunction } from 'i18next'
+
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown'
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/src/dataModel/RundownPlaylist/RundownPlaylist'
-import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData'
-import { RundownPlaylists } from '../../../collections'
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames'
+import type { TFunction } from 'i18next'
+
+import type { RundownPlaylistId } from '@sofie-automation/corelib/src/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/src/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownPlaylists } from '../../../collections'
+import { doUserAction, UserAction } from '../../../lib/clientUserAction'
+import { MeteorCall } from '../../../lib/meteorApi'
+import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData'
 
 export const PrompterControlButtons: React.FC<{
 	playlistId: RundownPlaylistId
@@ -40,7 +44,9 @@ export const PrompterControlButtons: React.FC<{
 				size="lg"
 				title={t('Move Next backwards')}
 				onClick={(e) => {
-					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) => MeteorCall.userAction.moveNext(e, ts, playlistId, -1, 0))
+					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) =>
+						MeteorCall.userAction.moveNext(e, ts, playlistId, -1, 0)
+					)
 				}}
 			>
 				<FontAwesomeIcon icon={faChevronLeft} />
@@ -51,7 +57,9 @@ export const PrompterControlButtons: React.FC<{
 				size="lg"
 				title={t('Move Next to the previous segment')}
 				onClick={(e) => {
-					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) => MeteorCall.userAction.moveNext(e, ts, playlistId, 0, -1))
+					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) =>
+						MeteorCall.userAction.moveNext(e, ts, playlistId, 0, -1)
+					)
 				}}
 			>
 				<FontAwesomeIcon icon={faChevronUp} />
@@ -62,7 +70,9 @@ export const PrompterControlButtons: React.FC<{
 				size="lg"
 				title={t('Move Next to the following segment')}
 				onClick={(e) => {
-					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) => MeteorCall.userAction.moveNext(e, ts, playlistId, 0, 1))
+					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) =>
+						MeteorCall.userAction.moveNext(e, ts, playlistId, 0, 1)
+					)
 				}}
 			>
 				<FontAwesomeIcon icon={faChevronDown} />
@@ -74,7 +84,9 @@ export const PrompterControlButtons: React.FC<{
 				size="lg"
 				title={t('Move Next forwards')}
 				onClick={(e) => {
-					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) => MeteorCall.userAction.moveNext(e, ts, playlistId, 1, 0))
+					doUserAction(t, e, UserAction.MOVE_NEXT, (e, ts) =>
+						MeteorCall.userAction.moveNext(e, ts, playlistId, 1, 0)
+					)
 				}}
 			>
 				<FontAwesomeIcon icon={faChevronRight} />

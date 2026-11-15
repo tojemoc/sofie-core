@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import {
@@ -18,21 +21,15 @@ import {
 	RundownPlaylistId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { RundownNote } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { Piece, PieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { DBRundown, RundownOrphanedReason, RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { CoreUserEditingDefinition } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
 import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
 import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { JobContext, ProcessedShowStyleBase, ProcessedShowStyleVariant } from '../../../jobs/index.js'
-import { LazyInitialise, LazyInitialiseReadonly } from '../../../lib/lazy.js'
-import { getRundownId, getSegmentId } from '../../lib.js'
-import { PlaylistLock, RundownLock } from '../../../jobs/lock.js'
-import { IngestSegmentModel } from '../IngestSegmentModel.js'
-import { IngestSegmentModelImpl } from './IngestSegmentModelImpl.js'
-import { IngestPartModel } from '../IngestPartModel.js'
+import { CoreUserEditingDefinition } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
 import {
 	assertNever,
 	clone,
@@ -42,23 +39,28 @@ import {
 	groupByToMap,
 	literal,
 } from '@sofie-automation/corelib/dist/lib'
-import { IngestPartModelImpl } from './IngestPartModelImpl.js'
-import { ExpectedPackagesStore } from './ExpectedPackagesStore.js'
-import { ReadonlyDeep } from 'type-fest'
-import { IngestDatabasePersistedModel, IngestModel, IngestReplaceSegmentType } from '../IngestModel.js'
-import { RundownNote } from '@sofie-automation/corelib/dist/dataModel/Notes'
-import { diffAndReturnLatestObjects } from './utils.js'
-import _ from 'underscore'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import type { BlueprintExternalEventSubscription, IBlueprintRundown } from '@sofie-automation/blueprints-integration'
-import { getCurrentTime, getSystemVersion } from '../../../lib/index.js'
+
 import { WrappedShowStyleBlueprint } from '../../../blueprints/cache.js'
-import { SaveIngestModelHelper } from './SaveIngestModel.js'
-import { generateWriteOpsForLazyDocuments } from './DocumentChangeTracker.js'
 import { IS_PRODUCTION } from '../../../environment.js'
+import { JobContext, ProcessedShowStyleBase, ProcessedShowStyleVariant } from '../../../jobs/index.js'
+import { PlaylistLock, RundownLock } from '../../../jobs/lock.js'
+import { getCurrentTime, getSystemVersion } from '../../../lib/index.js'
+import { LazyInitialise, LazyInitialiseReadonly } from '../../../lib/lazy.js'
 import { logger } from '../../../logging.js'
 import { NotificationsModelHelper } from '../../../notifications/NotificationsModelHelper.js'
+import { getRundownId, getSegmentId } from '../../lib.js'
 import { IngestExpectedPackage } from '../IngestExpectedPackage.js'
+import { IngestDatabasePersistedModel, IngestModel, IngestReplaceSegmentType } from '../IngestModel.js'
+import { IngestPartModel } from '../IngestPartModel.js'
+import { IngestSegmentModel } from '../IngestSegmentModel.js'
+import { generateWriteOpsForLazyDocuments } from './DocumentChangeTracker.js'
+import { ExpectedPackagesStore } from './ExpectedPackagesStore.js'
+import { IngestPartModelImpl } from './IngestPartModelImpl.js'
+import { IngestSegmentModelImpl } from './IngestSegmentModelImpl.js'
+import { SaveIngestModelHelper } from './SaveIngestModel.js'
+import { diffAndReturnLatestObjects } from './utils.js'
 
 export interface IngestModelImplExistingData {
 	rundown: DBRundown
@@ -486,13 +488,11 @@ export class IngestModelImpl implements IngestModel, IngestDatabasePersistedMode
 		)
 
 		// Compare and update the adlibPieces
-		const newAdlibPieces = adlibPieces.map(
-			(piece): AdLibPiece => ({
-				...clone(piece),
-				partId: undefined,
-				rundownId: this.rundownId,
-			})
-		)
+		const newAdlibPieces = adlibPieces.map((piece): AdLibPiece => ({
+			...clone(piece),
+			partId: undefined,
+			rundownId: this.rundownId,
+		}))
 		this.#rundownBaselineAdLibPieces.setValue(
 			diffAndReturnLatestObjects(
 				this.#rundownBaselineAdLibPiecesWithChanges,
@@ -502,13 +502,11 @@ export class IngestModelImpl implements IngestModel, IngestDatabasePersistedMode
 		)
 
 		// Compare and update the adlibActions
-		const newAdlibActions = adlibActions.map(
-			(action): RundownBaselineAdLibAction => ({
-				...clone(action),
-				partId: undefined,
-				rundownId: this.rundownId,
-			})
-		)
+		const newAdlibActions = adlibActions.map((action): RundownBaselineAdLibAction => ({
+			...clone(action),
+			partId: undefined,
+			rundownId: this.rundownId,
+		}))
 		this.#rundownBaselineAdLibActions.setValue(
 			diffAndReturnLatestObjects(
 				this.#rundownBaselineAdLibActionsWithChanges,
@@ -518,14 +516,12 @@ export class IngestModelImpl implements IngestModel, IngestDatabasePersistedMode
 		)
 
 		// Compare and update the rundown pieces
-		const newPieces = pieces.map(
-			(piece): Piece => ({
-				...clone(piece),
-				startRundownId: this.rundownId,
-				startPartId: null,
-				startSegmentId: null,
-			})
-		)
+		const newPieces = pieces.map((piece): Piece => ({
+			...clone(piece),
+			startRundownId: this.rundownId,
+			startPartId: null,
+			startSegmentId: null,
+		}))
 		this.#piecesImpl = diffAndReturnLatestObjects(this.#piecesWithChanges, this.#piecesImpl, newPieces)
 
 		// Future: should these be here, or held as part of each adlib?

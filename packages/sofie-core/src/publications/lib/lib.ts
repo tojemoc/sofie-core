@@ -1,9 +1,10 @@
-import { AllPubSubCollections, AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MinimalMongoCursor } from '../../collections/collection'
-import type { LiveQueryHandleSync } from '../../lib/lib'
-import type { DDPClientConnection } from '../../ddp-server/types'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { AllPubSubCollections, AllPubSubTypes } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { MinimalMongoCursor } from '../../collections/collection'
+import type { DDPClientConnection } from '../../ddp-server/types'
+import type { LiveQueryHandleSync } from '../../lib/lib'
 
 /**
  * The context handed to a publication callback.

@@ -1,10 +1,12 @@
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import Moment from 'react-moment'
-import { TimingDataResolution, TimingTickResolution, useTiming } from './RundownTiming/withTiming.js'
-import { RundownUtils } from '../../lib/rundown.js'
 import { useTranslation } from 'react-i18next'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import Moment from 'react-moment'
+
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownUtils } from '../../lib/rundown.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from './RundownTiming/withTiming.js'
 
 interface IProps {
 	rundown: Pick<Rundown, '_id' | 'name' | 'timing'>
@@ -64,7 +66,9 @@ export function RundownDividerHeader({ rundown, playlist }: IProps): JSX.Element
 	return (
 		<div className="rundown-divider-timeline">
 			<h2 className="rundown-divider-timeline__title">{rundown.name}</h2>
-			{rundown.name !== playlist.name && <h3 className="rundown-divider-timeline__playlist-name">{playlist.name}</h3>}
+			{rundown.name !== playlist.name && (
+				<h3 className="rundown-divider-timeline__playlist-name">{playlist.name}</h3>
+			)}
 			{expectedStart ? (
 				<div className="rundown-divider-timeline__expected-start">
 					<span>{t('Planned Start')}</span>&nbsp;

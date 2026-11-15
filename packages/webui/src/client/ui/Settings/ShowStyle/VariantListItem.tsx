@@ -1,12 +1,3 @@
-import React, { useRef } from 'react'
-import classNames from 'classnames'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { type DragSourceMonitor, type DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { EditAttribute } from '../../../lib/EditAttribute.js'
-import { BlueprintConfigSchemaSettings } from '../BlueprintConfigSchema/index.js'
-import { ShowStyleDragDropTypes } from './DragDropTypesShowStyle.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faCheck,
 	faCopy,
@@ -15,19 +6,31 @@ import {
 	faPencilAlt,
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons'
-import {
-	applyAndValidateOverrides,
-	type ObjectWithOverrides,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
+import React, { useRef } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
 import { useTranslation } from 'react-i18next'
+import type { DragSourceMonitor, DropTargetMonitor } from 'react-dnd'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { IBlueprintConfig, JSONSchema } from '@sofie-automation/blueprints-integration'
-import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import type { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { iconDragHandle } from '../../RundownList/icons.js'
-import { ShowStyleVariants } from '../../../collections/index.js'
 import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectWithOverrides,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { ShowStyleVariants } from '../../../collections/index.js'
 import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../lib/EditAttribute.js'
+import { iconDragHandle } from '../../RundownList/icons.js'
+import { BlueprintConfigSchemaSettings } from '../BlueprintConfigSchema/index.js'
+import { ShowStyleDragDropTypes } from './DragDropTypesShowStyle.js'
 
 interface DraggableVariant {
 	id: ShowStyleVariantId
@@ -79,21 +82,23 @@ export const VariantListItem = ({
 	onSaveOverrides: (showStyleVariantId: ShowStyleVariantId, newOps: SomeObjectOverrideOp[]) => void
 }>): JSX.Element => {
 	const ref = useRef<HTMLTableRowElement>(null)
-	const [{ handlerId }, drop] = useDrop<DraggableVariant, DraggableDropResult, { handlerId: string | symbol | null }>({
-		accept: ShowStyleDragDropTypes.VARIANT,
-		collect: (monitor: DropTargetMonitor) => ({ handlerId: monitor.getHandlerId() }),
-		hover(hoverVariant: DraggableVariant) {
-			if (!ref.current) {
-				return
-			}
-			onDragVariant(hoverVariant.id, showStyleVariant._id)
-		},
-		drop: () => {
-			return {
-				overId: showStyleVariant._id,
-			}
-		},
-	})
+	const [{ handlerId }, drop] = useDrop<DraggableVariant, DraggableDropResult, { handlerId: string | symbol | null }>(
+		{
+			accept: ShowStyleDragDropTypes.VARIANT,
+			collect: (monitor: DropTargetMonitor) => ({ handlerId: monitor.getHandlerId() }),
+			hover(hoverVariant: DraggableVariant) {
+				if (!ref.current) {
+					return
+				}
+				onDragVariant(hoverVariant.id, showStyleVariant._id)
+			},
+			drop: () => {
+				return {
+					overId: showStyleVariant._id,
+				}
+			},
+		}
+	)
 
 	const [{ isDragging }, drag] = useDrag<DraggableVariant, DraggableDropResult, { isDragging: boolean }>({
 		type: ShowStyleDragDropTypes.VARIANT,
@@ -131,7 +136,8 @@ export const VariantListItem = ({
 					<th className="settings-studio-showStyleVariant__name c3">
 						<span className="settings-studio-showStyleVariants-table__drag">{iconDragHandle()}</span>
 						{showStyleVariant.name || t('Unnamed variant')}&nbsp;
-						{(!showStyleVariant.blueprintConfigPresetId || showStyleVariant.blueprintConfigPresetIdUnlinked) && (
+						{(!showStyleVariant.blueprintConfigPresetId ||
+							showStyleVariant.blueprintConfigPresetIdUnlinked) && (
 							<FontAwesomeIcon icon={faExclamationTriangle} />
 						)}
 					</th>
@@ -175,7 +181,9 @@ export const VariantListItem = ({
 										collection={ShowStyleVariants}
 									></EditAttribute>
 									<span className="text-s dimmed field-hint">
-										{t('This requires the blueprints to implement the `generateAdlibTestingIngestRundown` method')}
+										{t(
+											'This requires the blueprints to implement the `generateAdlibTestingIngestRundown` method'
+										)}
 									</span>
 								</label>
 
@@ -196,14 +204,17 @@ export const VariantListItem = ({
 									<div>
 										{!showStyleVariant.blueprintConfigPresetId && (
 											<div className="error-notice inline">
-												{t('Config preset not set')} <FontAwesomeIcon icon={faExclamationTriangle} />
+												{t('Config preset not set')}{' '}
+												<FontAwesomeIcon icon={faExclamationTriangle} />
 											</div>
 										)}
-										{showStyleVariant.blueprintConfigPresetIdUnlinked && showStyleVariant.blueprintConfigPresetId && (
-											<div className="error-notice inline">
-												{t('Config preset is missing')} <FontAwesomeIcon icon={faExclamationTriangle} />
-											</div>
-										)}
+										{showStyleVariant.blueprintConfigPresetIdUnlinked &&
+											showStyleVariant.blueprintConfigPresetId && (
+												<div className="error-notice inline">
+													{t('Config preset is missing')}{' '}
+													<FontAwesomeIcon icon={faExclamationTriangle} />
+												</div>
+											)}
 									</div>
 								</label>
 							</div>

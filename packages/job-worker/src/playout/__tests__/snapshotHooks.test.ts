@@ -1,6 +1,7 @@
-import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
 import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { defaultRundown, defaultRundownPlaylist } from '../../__mocks__/defaultCollectionObjects.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'

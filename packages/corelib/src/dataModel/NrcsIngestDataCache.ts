@@ -1,5 +1,6 @@
-import { IngestRundown, IngestSegment, IngestPart } from '@sofie-automation/blueprints-integration'
-import { NrcsIngestDataCacheObjId, RundownId, SegmentId, PartId } from './Ids.js'
+import { IngestPart, IngestRundown, IngestSegment } from '@sofie-automation/blueprints-integration'
+
+import { NrcsIngestDataCacheObjId, PartId, RundownId, SegmentId } from './Ids.js'
 import { RundownSource } from './Rundown.js'
 
 /*
@@ -56,6 +57,4 @@ export interface NrcsIngestDataCacheObjPart extends IngestDataCacheObjBase {
 	data: IngestPart
 }
 export type NrcsIngestDataCacheObj =
-	| NrcsIngestDataCacheObjRundown
-	| NrcsIngestDataCacheObjSegment
-	| NrcsIngestDataCacheObjPart
+	NrcsIngestDataCacheObjRundown | NrcsIngestDataCacheObjSegment | NrcsIngestDataCacheObjPart

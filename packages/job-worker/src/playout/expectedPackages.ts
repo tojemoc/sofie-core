@@ -1,13 +1,14 @@
-import type { CleanupOrphanedExpectedPackageReferencesProps } from '@sofie-automation/corelib/dist/worker/studio'
-import type { JobContext } from '../jobs/index.js'
-import { runWithPlaylistLock } from './lock.js'
 import {
 	ExpectedPackageDB,
 	isPackageReferencedByPlayout,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { ExpectedPackageId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { CleanupOrphanedExpectedPackageReferencesProps } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { MongoBulkWriteOperation } from '../db/collections.js'
+import { runWithPlaylistLock } from './lock.js'
+import type { JobContext } from '../jobs/index.js'
 
 export async function handleCleanupOrphanedExpectedPackageReferences(
 	context: JobContext,

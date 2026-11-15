@@ -1,20 +1,22 @@
-import { StudioId, WorkerId, WorkerThreadId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { assertNever, getRandomString, deferAsync } from '@sofie-automation/corelib/dist/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { startTransaction } from '../profiler.js'
 import { MongoClient } from 'mongodb'
-import { createInvalidateWorkerDataCache, InvalidateWorkerDataCache } from './caches.js'
-import { logger } from '../logging.js'
-import { LocksManager } from '../locks.js'
-import { FORCE_CLEAR_CACHES_JOB } from '@sofie-automation/corelib/dist/worker/shared'
-import { JobManager, JobStream } from '../manager.js'
 import { Promisify, ThreadedClassManager } from 'threadedclass'
+
 import { StatusCode } from '@sofie-automation/blueprints-integration'
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { StudioId, WorkerId, WorkerThreadId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { WorkerThreadStatus } from '@sofie-automation/corelib/dist/dataModel/WorkerThreads'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { assertNever, deferAsync, getRandomString } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { FORCE_CLEAR_CACHES_JOB } from '@sofie-automation/corelib/dist/worker/shared'
 import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { LocksManager } from '../locks.js'
+import { logger } from '../logging.js'
+import { JobManager, JobStream } from '../manager.js'
+import { startTransaction } from '../profiler.js'
+import { createInvalidateWorkerDataCache, InvalidateWorkerDataCache } from './caches.js'
 
 export enum ThreadStatus {
 	Closed = 0,

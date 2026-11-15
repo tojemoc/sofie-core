@@ -1,5 +1,6 @@
-import { type ISourceLayerItemProps, SourceLayerItem } from './SourceLayerItem.js'
+import { SourceLayerItem } from './SourceLayerItem.js'
 import { useContentStatusForPieceInstance } from './withMediaObjectStatus.js'
+import type { ISourceLayerItemProps } from './SourceLayerItem.js'
 
 type IPropsHeader = Omit<ISourceLayerItemProps, 'contentStatus'>
 
