@@ -1,3 +1,13 @@
+import { TSR } from '@sofie-automation/blueprints-integration'
+import { wrapPieceToInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobContext } from '../../../../jobs/index.js'
+import { PlayoutModel } from '../../../model/PlayoutModel.js'
+import { findLargestLookaheadDistance, getLookeaheadObjects } from '../../index.js'
+import { getOrderedPartsAfterPlayhead } from '../../util.js'
+import { baseContext, basePlayoutModel, lookaheadOffsetTestConstants, makePiece, makeSimplePiece } from './constants.js'
+
 jest.mock('../../../../playout/lookahead/index.js', () => {
 	const actual = jest.requireActual('../../../../playout/lookahead/index.js')
 	return {
@@ -7,15 +17,6 @@ jest.mock('../../../../playout/lookahead/index.js', () => {
 	}
 })
 jest.mock('../../../../playout/lookahead/util.js')
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TSR } from '@sofie-automation/blueprints-integration'
-import { JobContext } from '../../../../jobs/index.js'
-import { findLargestLookaheadDistance, getLookeaheadObjects } from '../../index.js'
-import { getOrderedPartsAfterPlayhead } from '../../util.js'
-import { PlayoutModel } from '../../../model/PlayoutModel.js'
-import { SelectedPartInstancesTimelineInfo } from '../../../timeline/generate.js'
-import { wrapPieceToInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { baseContext, basePlayoutModel, makePiece, makeSimplePiece, lookaheadOffsetTestConstants } from './constants.js'
 
 const findLargestLookaheadDistanceMock = jest.mocked(findLargestLookaheadDistance).mockImplementation(() => 0)
 const getOrderedPartsAfterPlayheadMock = jest.mocked(getOrderedPartsAfterPlayhead).mockImplementation(() => [])
@@ -52,11 +53,11 @@ describe('lookahead offset integration', () => {
 					findFetch: findFetchMock,
 				},
 			},
-		} as JobContext
+		}
 
 		const res = await getLookeaheadObjects(context, playoutModel, {
 			previous: [],
-		} as SelectedPartInstancesTimelineInfo)
+		})
 
 		expect(res).toEqual([])
 	})
@@ -76,9 +77,9 @@ describe('lookahead offset integration', () => {
 						...context.directCollections,
 						Pieces: { ...context.directCollections.Pieces, findFetch: findFetchMock },
 					},
-				} as JobContext,
-				{ ...playoutModel, getBrandingForNewPartInstance: () => projectedBrandingId } as PlayoutModel,
-				{ current: undefined, next: undefined, previous: [] } as SelectedPartInstancesTimelineInfo
+				},
+				{ ...playoutModel, getBrandingForNewPartInstance: () => projectedBrandingId },
+				{ current: undefined, next: undefined, previous: [] }
 			)
 		}
 
@@ -140,13 +141,13 @@ describe('lookahead offset integration', () => {
 					findFetch: findFetchMock,
 				},
 			},
-		} as JobContext
+		}
 
 		const res = await getLookeaheadObjects(context, playoutModel, {
 			current: undefined,
 			next: undefined,
 			previous: [],
-		} as SelectedPartInstancesTimelineInfo)
+		})
 
 		expect(res).toHaveLength(2)
 		const obj0 = res[0]
@@ -178,7 +179,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 5000,
 			},
-		} as PlayoutModel
+		}
 		findLargestLookaheadDistanceMock.mockReturnValue(1)
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([
 			{ _id: protectString('p1'), classesForNext: [] } as any,
@@ -194,7 +195,7 @@ describe('lookahead offset integration', () => {
 
 		const res = await getLookeaheadObjects(context, playoutModel, {
 			previous: [],
-		} as SelectedPartInstancesTimelineInfo)
+		})
 
 		expect(res).toHaveLength(2)
 		expect(res[0].lookaheadOffset).toBe(5000)
@@ -207,7 +208,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 5000,
 			},
-		} as PlayoutModel
+		}
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([{ _id: protectString('p1'), classesForNext: [] } as any])
 
 		context.directCollections.Pieces.findFetch = jest
@@ -252,7 +253,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 1000,
 			},
-		} as PlayoutModel
+		}
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([
 			{ ...lookaheadOffsetTestConstants.multiLayerPart, classesForNext: [] } as any,
 		])
@@ -314,7 +315,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 1000,
 			},
-		} as PlayoutModel
+		}
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([
 			{ ...lookaheadOffsetTestConstants.multiLayerPartWhile, classesForNext: [] } as any,
 		])
@@ -369,7 +370,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 1000,
 			},
-		} as PlayoutModel
+		}
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([
 			{ ...lookaheadOffsetTestConstants.singleLayerPart, classesForNext: [] } as any,
 		])
@@ -407,7 +408,7 @@ describe('lookahead offset integration', () => {
 				...playoutModel.playlist,
 				nextTimeOffset: 1000,
 			},
-		} as PlayoutModel
+		}
 		getOrderedPartsAfterPlayheadMock.mockReturnValue([
 			{ ...lookaheadOffsetTestConstants.singleLayerPartWhile, classesForNext: [] } as any,
 		])

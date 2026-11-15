@@ -1,11 +1,12 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { logger } from '../../logging.js'
 import {
 	sanitiseActionBrandingFromBlueprint,
 	sanitisePartBrandingFromBlueprint,
 	sanitisePieceBrandingFromBlueprint,
 } from '../postProcessBranding.js'
-import { logger } from '../../logging.js'
 
 describe('postProcessBranding', () => {
 	const blueprintId = protectString<BlueprintId>('blueprint0')

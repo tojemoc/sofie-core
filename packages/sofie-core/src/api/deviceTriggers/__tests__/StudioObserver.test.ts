@@ -1,4 +1,3 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	RundownId,
 	RundownPlaylistActivationId,
@@ -6,10 +5,11 @@ import {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 
+import { runAllTimers } from '../../../__mocks__/helpers/jest'
 import type { ContentCache as RundownContentCache } from '../reactiveContentCache'
 import type { ContentCache as PieceInstancesContentCache } from '../reactiveContentCacheForPieceInstances'
-import { runAllTimers } from '../../../__mocks__/helpers/jest'
 
 type OnChangedRundown = (cache: RundownContentCache) => () => void
 type OnChangedPieceInstances = (cache: PieceInstancesContentCache) => () => void

@@ -1,17 +1,19 @@
+import type { CreateIndexesOptions, IndexDescriptionInfo } from 'mongodb'
+
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import {
+	FindObserveChangesOptions,
 	FindOptions,
 	MongoBulkWriteOperation,
 	MongoModifier,
 	MongoQuery,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
-	FindObserveChangesOptions,
 } from '@sofie-automation/corelib/dist/mongo'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import type { CreateIndexesOptions, IndexDescriptionInfo } from 'mongodb'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { IndexSpecifier, UpdateOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
 import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
-import { UpdateOptions, IndexSpecifier } from '@sofie-automation/meteor-lib/dist/collections/lib'
+
 import { AsyncOnlyMongoCollection, MinimalMongoCursor } from '../collection'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 

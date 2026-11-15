@@ -1,4 +1,5 @@
 import Agent from 'elastic-apm-node'
+
 import { logger } from './logging.js'
 
 let active = false

@@ -1,5 +1,6 @@
 import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
 import { MethodContextAPI } from '../../methodContext'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 

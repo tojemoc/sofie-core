@@ -1,16 +1,18 @@
+import moment from 'moment'
 import { useCallback, useMemo, useState } from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { Evaluation } from '@sofie-automation/meteor-lib/dist/collections/Evaluations'
-import { DatePickerFromTo } from '../../lib/datePicker.js'
-import moment from 'moment'
-import { getQuestionOptions } from '../AfterBroadcastForm.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
 import { Evaluations } from '../../collections/index.js'
+import { DatePickerFromTo } from '../../lib/datePicker.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { getQuestionOptions } from '../AfterBroadcastForm.js'
 import type { DropdownInputOption } from '../../lib/Components/DropdownInput.js'
-import { useTranslation } from 'react-i18next'
 
 export function EvaluationView(): JSX.Element {
 	const { t } = useTranslation()

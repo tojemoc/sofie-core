@@ -1,19 +1,21 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintPlaylistSnapshotInfo, IBlueprintSystemSnapshotInfo } from '@sofie-automation/blueprints-integration'
-import {
-	OnSystemSnapshotCreatedProps,
-	GeneratePlaylistSnapshotProps,
-} from '@sofie-automation/corelib/dist/worker/studio'
 import { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { ReadonlyDeep } from 'type-fest'
+import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
+import {
+	GeneratePlaylistSnapshotProps,
+	OnSystemSnapshotCreatedProps,
+} from '@sofie-automation/corelib/dist/worker/studio'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { PlaylistSnapshotCreatedContext } from '../blueprints/context/PlaylistSnapshotCreatedContext.js'
 import { SystemSnapshotCreatedContext } from '../blueprints/context/SystemSnapshotCreatedContext.js'
 import { JobContext } from '../jobs/index.js'
 import { logger } from '../logging.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 /**
  * Invokes {@link ShowStyleBlueprintManifest.onPlaylistSnapshotCreated} if defined.

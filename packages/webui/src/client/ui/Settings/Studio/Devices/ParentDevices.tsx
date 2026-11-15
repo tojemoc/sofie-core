@@ -1,40 +1,43 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import type { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useTranslation } from 'react-i18next'
-import {
-	getAllCurrentAndDeletedItemsFromOverrides,
-	type OverrideOpHelper,
-	useOverrideOpHelper,
-	type WrappedOverridableItem,
-	type WrappedOverridableItemDeleted,
-	type WrappedOverridableItemNormal,
-} from '../../util/OverrideOpHelper.js'
-import { faCheck, faPencilAlt, faPlus, faSync, faTrash, faSave, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faPencilAlt, faPlus, faRotateLeft, faSave, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { type JSONBlob, JSONBlobParse, type JSONSchema } from '@sofie-automation/blueprints-integration'
-import { DropdownInputControl, type DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
-import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
 import classNames from 'classnames'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { SchemaFormWithOverrides } from '../../../../lib/forms/SchemaFormWithOverrides.js'
-import { LabelActual, LabelAndOverrides } from '../../../../lib/Components/LabelAndOverrides.js'
-import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
-import type { StudioDeviceSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	type SomeObjectOverrideOp,
-	wrapDefaultObject,
-	type ObjectOverrideSetOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import Tooltip from 'rc-tooltip'
-import { PeripheralDevices, Studios } from '../../../../collections/index.js'
-import { getHelpMode } from '../../../../lib/localStorage.js'
-import { useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import { MomentFromNow } from '../../../../lib/Moment.js'
-import { MeteorCall } from '../../../../lib/meteorApi.js'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { JSONBlobParse } from '@sofie-automation/blueprints-integration'
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { JSONBlob, JSONSchema } from '@sofie-automation/blueprints-integration'
+import type { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { StudioDeviceSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { PeripheralDevices, Studios } from '../../../../collections/index.js'
+import { DropdownInputControl } from '../../../../lib/Components/DropdownInput.js'
+import { LabelActual, LabelAndOverrides } from '../../../../lib/Components/LabelAndOverrides.js'
+import { TextInputControl } from '../../../../lib/Components/TextInput.js'
+import { SchemaFormWithOverrides } from '../../../../lib/forms/SchemaFormWithOverrides.js'
+import { getHelpMode } from '../../../../lib/localStorage.js'
+import { MeteorCall } from '../../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
+import { MomentFromNow } from '../../../../lib/Moment.js'
+import { useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
+import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
+import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
+import type {
+	OverrideOpHelper,
+	WrappedOverridableItem,
+	WrappedOverridableItemDeleted,
+	WrappedOverridableItemNormal,
+} from '../../util/OverrideOpHelper.js'
 
 interface StudioParentDevicesProps {
 	studioId: StudioId
@@ -92,7 +95,8 @@ export function StudioParentDevices({ studioId }: Readonly<StudioParentDevicesPr
 
 	const deviceSettings = useMemo(() => {
 		const base =
-			studio?.peripheralDeviceSettings?.deviceSettings ?? wrapDefaultObject<Record<string, StudioDeviceSettings>>({})
+			studio?.peripheralDeviceSettings?.deviceSettings ??
+			wrapDefaultObject<Record<string, StudioDeviceSettings>>({})
 		if (unsavedOverrides) {
 			return {
 				...base,
@@ -432,7 +436,9 @@ function GenericParentDevicesTable({
 										saveChanges={() => saveItemChanges(item.id)}
 										discardChanges={() => discardItemChanges(item.id)}
 										currentAssignment={
-											item.id in unsavedAssignments ? unsavedAssignments[item.id] : peripheralDevice?._id
+											item.id in unsavedAssignments
+												? unsavedAssignments[item.id]
+												: peripheralDevice?._id
 										}
 										changeAssignment={changeAssignment}
 									/>
@@ -544,7 +550,9 @@ function OrphanedSummaryRow({ configId, device, createItemWithId }: Readonly<Orp
 
 			<th className="settings-studio-device__configID c2 deleted">{configId}</th>
 
-			<th className="settings-studio-device__gateway c2 deleted">{device.deviceName || unprotectString(device._id)}</th>
+			<th className="settings-studio-device__gateway c2 deleted">
+				{device.deviceName || unprotectString(device._id)}
+			</th>
 
 			<th className="settings-studio-device__last_seen c2 deleted">{<MomentFromNow date={device.lastSeen} />}</th>
 
@@ -609,7 +617,11 @@ function ParentDeviceEditRow({
 					{!peripheralDevice && <p>{t('A device must be assigned to the config to edit the settings')}</p>}
 
 					{peripheralDevice && (
-						<ParentDeviceEditForm peripheralDevice={peripheralDevice} item={item} overrideHelper={overrideHelper} />
+						<ParentDeviceEditForm
+							peripheralDevice={peripheralDevice}
+							item={item}
+							overrideHelper={overrideHelper}
+						/>
 					)}
 				</div>
 				<div className="m-1 me-2 text-end">

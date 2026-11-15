@@ -1,20 +1,23 @@
-import React, { useMemo } from 'react'
 import ClassNames from 'classnames'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { StatusCode } from '@sofie-automation/blueprints-integration'
 import {
-	type PeripheralDevice,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { type Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { useTranslation } from 'react-i18next'
-import { StatusCode } from '@sofie-automation/blueprints-integration'
-import type { RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDevices } from '../../collections/index.js'
+import { getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { PeripheralDevices } from '../../collections/index.js'
 import { useCurrentTime } from '../../lib/lib.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 
 interface IMOSStatusProps {
 	lastUpdate: Time

@@ -1,20 +1,17 @@
+import type { CreateIndexesOptions, IndexDescriptionInfo } from 'mongodb'
+
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import {
+	FindObserveChangesOptions,
 	FindOptions,
 	MongoBulkWriteOperation,
 	MongoModifier,
 	MongoQuery,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
-	FindObserveChangesOptions,
 } from '@sofie-automation/corelib/dist/mongo'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
-import type { CreateIndexesOptions, IndexDescriptionInfo } from 'mongodb'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { registerCollection } from './lib'
-import { createMockCollection } from './implementations/mock'
-import { WrappedAsyncMongoCollection } from './implementations/asyncCollection'
-import { WrappedReadOnlyMongoCollection } from './implementations/readonlyWrapper'
 import {
 	FieldNames,
 	IndexSpecifier,
@@ -22,9 +19,14 @@ import {
 	UpdateOptions,
 } from '@sofie-automation/meteor-lib/dist/collections/lib'
 import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
+
 import { isInTestMode } from '../lib'
+import { WrappedAsyncMongoCollection } from './implementations/asyncCollection'
+import { createMockCollection } from './implementations/mock'
+import { WrappedReadOnlyMongoCollection } from './implementations/readonlyWrapper'
+import { registerCollection } from './lib'
 import type { LiveQueryHandleSync } from '../lib/lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export interface CustomMongoAllowRules<DBInterface> {
 	// insert?: (userId: UserId | null, doc: DBInterface) => Promise<boolean> | boolean

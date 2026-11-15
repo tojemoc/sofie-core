@@ -1,11 +1,11 @@
-import { SegmentTimingInfo } from '@sofie-automation/blueprints-integration'
+import * as _ from 'underscore'
+
+import { CountdownType, SegmentTimingInfo } from '@sofie-automation/blueprints-integration'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { SegmentCountdownType, SegmentTiming } from '@sofie-automation/live-status-gateway-api'
-import { CountdownType } from '@sofie-automation/blueprints-integration'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { SegmentCountdownType, SegmentTiming } from '@sofie-automation/live-status-gateway-api'
 import { unprotectString } from '@sofie-automation/server-core-integration'
-import * as _ from 'underscore'
 
 export interface CurrentSegmentTiming extends SegmentTiming {
 	projectedEndTime: number
@@ -71,6 +71,6 @@ function translateSegmentCountdownType(type: CountdownType | undefined): Segment
 		default:
 			assertNever(type)
 			// Cast and return the value anyway, so that the application works
-			return type as any as SegmentCountdownType
+			return type
 	}
 }

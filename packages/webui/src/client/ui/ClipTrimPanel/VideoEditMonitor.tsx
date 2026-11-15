@@ -1,8 +1,9 @@
+import ClassNames from 'classnames'
 import * as React from 'react'
 import { withTranslation } from 'react-i18next'
-import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import ClassNames from 'classnames'
+
 import { catchError } from '../../lib/lib.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 
 export interface IProps {
 	currentTime?: number
@@ -70,7 +71,8 @@ export const VideoEditMonitor: React.ComponentType<IProps> = withTranslation()(
 					this.retryCount = 0
 				}
 
-				const delta = (e.pageX - this.lastPosition) / Math.min(document.body.clientWidth, this.videoEl.clientWidth * 3)
+				const delta =
+					(e.pageX - this.lastPosition) / Math.min(document.body.clientWidth, this.videoEl.clientWidth * 3)
 				const targetTime = Math.max(
 					0,
 					Math.min(

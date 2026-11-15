@@ -1,9 +1,11 @@
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ModalDialog } from '../../lib/ModalDialog'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { useCurrentTime } from '../../lib/lib'
+import { ModalDialog } from '../../lib/ModalDialog'
 
 export const REHEARSAL_MARGIN = 1 * 60 * 1000
 

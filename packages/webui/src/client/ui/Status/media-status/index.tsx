@@ -1,24 +1,22 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type JSX, type CSSProperties } from 'react'
-import {
-	MediaStatus as MediaStatusComponent,
-	type MediaStatusListItem as IMediaStatusListItem,
-	sortItems,
-	type SortBy,
-	type SortOrder,
-} from '../../MediaStatus/MediaStatus.js'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { RundownPlaylists } from '../../../collections/index.js'
-import { Spinner } from '../../../lib/Spinner.js'
-import { MediaStatusListItem } from './MediaStatusListItem.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { useTranslation } from 'react-i18next'
-import { MediaStatusListHeader } from './MediaStatusListHeader.js'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { mapOrFallback, useDebounce } from '../../../lib/lib.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Form from 'react-bootstrap/Form'
+import { useTranslation } from 'react-i18next'
+import type { CSSProperties, JSX } from 'react'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+
+import { RundownPlaylists } from '../../../collections/index.js'
+import { mapOrFallback, useDebounce } from '../../../lib/lib.js'
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { Spinner } from '../../../lib/Spinner.js'
+import { MediaStatus as MediaStatusComponent, sortItems } from '../../MediaStatus/MediaStatus.js'
+import { MediaStatusListHeader } from './MediaStatusListHeader.js'
+import { MediaStatusListItem } from './MediaStatusListItem.js'
+import type { MediaStatusListItem as IMediaStatusListItem, SortBy, SortOrder } from '../../MediaStatus/MediaStatus.js'
 
 export function MediaStatus(): JSX.Element | null {
 	const scrollBox = useRef<HTMLDivElement>(null)
@@ -104,14 +102,17 @@ export function MediaStatus(): JSX.Element | null {
 							{(items) => (
 								<>
 									{mapOrFallback(
-										items.filter((item) => filterItems(item)).sort((a, b) => sortItems(a, b, sortBy, sortOrder)),
+										items
+											.filter((item) => filterItems(item))
+											.sort((a, b) => sortItems(a, b, sortBy, sortOrder)),
 										(item) => (
 											<MediaStatusListItem
 												rundownName={item.playlistName}
 												rundownTo={`/rundown/${item.playlistId}`}
 												status={item.status}
 												isWorkingOn={
-													item.pieceContentStatus?.progress !== undefined && item.pieceContentStatus?.progress > 0
+													item.pieceContentStatus?.progress !== undefined &&
+													item.pieceContentStatus?.progress > 0
 												}
 												statusOverlay={item.pieceContentStatus?.messages
 													.map((message) => translateMessage(message, t))
@@ -129,7 +130,9 @@ export function MediaStatus(): JSX.Element | null {
 										() => (
 											<tr>
 												<td colSpan={6} className="media-status-list-message">
-													{emptyFilter ? t('No Media required by this system') : t('No Media matches this filter')}
+													{emptyFilter
+														? t('No Media required by this system')
+														: t('No Media matches this filter')}
 												</td>
 											</tr>
 										)

@@ -1,17 +1,19 @@
-import { useCallback, useMemo } from 'react'
-import type { VTContent } from '@sofie-automation/blueprints-integration'
-import { VideoEditMonitor } from './VideoEditMonitor.js'
-import { TimecodeEncoder } from './TimecodeEncoder.js'
 import { faUndo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Tooltip from 'rc-tooltip'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useContentStatusForPiece } from '../SegmentTimeline/withMediaObjectStatus.js'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { PieceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Pieces } from '../../collections/index.js'
+
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
+import type { PieceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { Pieces } from '../../collections/index.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { useContentStatusForPiece } from '../SegmentTimeline/withMediaObjectStatus.js'
+import { TimecodeEncoder } from './TimecodeEncoder.js'
+import { VideoEditMonitor } from './VideoEditMonitor.js'
 
 export interface IProps {
 	studio: UIStudio
@@ -211,7 +213,10 @@ export function ClipTrimPanel({
 			<div className="clip-trim-panel__timecode-encoders">
 				<div className="clip-trim-panel__timecode-encoders__input">
 					<Tooltip overlay={t('Remove in-trimming')} placement="top">
-						<button className="action-btn clip-trim-panel__timecode-encoders__input__reset" onClick={onResetIn}>
+						<button
+							className="action-btn clip-trim-panel__timecode-encoders__input__reset"
+							onClick={onResetIn}
+						>
 							<FontAwesomeIcon icon={faUndo} />
 						</button>
 					</Tooltip>
@@ -220,7 +225,10 @@ export function ClipTrimPanel({
 				</div>
 				<div className="clip-trim-panel__timecode-encoders__input">
 					<Tooltip overlay={t('Remove all trimming')} placement="top">
-						<button className="action-btn clip-trim-panel__timecode-encoders__input__reset" onClick={onResetAll}>
+						<button
+							className="action-btn clip-trim-panel__timecode-encoders__input__reset"
+							onClick={onResetAll}
+						>
 							<FontAwesomeIcon icon={faUndo} />
 						</button>
 					</Tooltip>
@@ -234,7 +242,10 @@ export function ClipTrimPanel({
 				</div>
 				<div className="clip-trim-panel__timecode-encoders__input">
 					<Tooltip overlay={t('Remove out-trimming')} placement="top">
-						<button className="action-btn clip-trim-panel__timecode-encoders__input__reset" onClick={onResetOut}>
+						<button
+							className="action-btn clip-trim-panel__timecode-encoders__input__reset"
+							onClick={onResetOut}
+						>
 							<FontAwesomeIcon icon={faUndo} />
 						</button>
 					</Tooltip>

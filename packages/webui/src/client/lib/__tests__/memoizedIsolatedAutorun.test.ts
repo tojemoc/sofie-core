@@ -1,5 +1,6 @@
-import { memoizedIsolatedAutorun } from '../memoizedIsolatedAutorun.js'
 import { Tracker } from 'meteor/tracker'
+
+import { memoizedIsolatedAutorun } from '../memoizedIsolatedAutorun.js'
 
 describe('memoizedIsolatedAutorun', () => {
 	describe('Meteor.isClient', () => {

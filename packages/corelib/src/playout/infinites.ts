@@ -1,5 +1,8 @@
-import { Piece } from '../dataModel/Piece.js'
-import { DBPart } from '../dataModel/Part.js'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+
 import {
 	PartId,
 	PartInstanceId,
@@ -8,16 +11,15 @@ import {
 	SegmentId,
 	ShowStyleBaseId,
 } from '../dataModel/Ids.js'
-import { PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { PieceInstance, PieceInstancePiece, rewrapPieceToInstance } from '../dataModel/PieceInstance.js'
+import { DBPart } from '../dataModel/Part.js'
 import { DBPartInstance } from '../dataModel/PartInstance.js'
+import { Piece } from '../dataModel/Piece.js'
+import { PieceInstance, PieceInstancePiece, rewrapPieceToInstance } from '../dataModel/PieceInstance.js'
 import { DBRundown } from '../dataModel/Rundown.js'
-import { ReadonlyDeep } from 'type-fest'
-import { assertNever, clone, getRandomId, groupByToMapFunc, normalizeArrayToMapFunc } from '../lib.js'
-import { protectString } from '../protectedString.js'
-import _ from 'underscore'
-import { MongoQuery } from '../mongo.js'
 import { DBSegment, SegmentOrphanedReason } from '../dataModel/Segment.js'
+import { assertNever, clone, getRandomId, groupByToMapFunc, normalizeArrayToMapFunc } from '../lib.js'
+import { MongoQuery } from '../mongo.js'
+import { protectString } from '../protectedString.js'
 import { isValidForBranding } from './branding.js'
 
 /**
@@ -267,9 +269,7 @@ export function getPlayheadTrackingInfinitesForPart(
 				PieceLifespan.OutOnShowStyleEnd,
 			]) {
 				const mode = mode0 as
-					| PieceLifespan.OutOnRundownEnd
-					| PieceLifespan.OutOnSegmentEnd
-					| PieceLifespan.OutOnShowStyleEnd
+					PieceLifespan.OutOnRundownEnd | PieceLifespan.OutOnSegmentEnd | PieceLifespan.OutOnShowStyleEnd
 				const pieces = (piecesByInfiniteMode.get(mode) || []).filter(
 					(p) =>
 						p.infinite &&
@@ -719,7 +719,7 @@ function continueShowStyleEndInfinites(
 	previousRundownId: RundownId,
 	targetRundown: ReadonlyDeep<Pick<DBRundown, '_id' | 'showStyleBaseId'>>
 ): boolean {
-	let canContinueShowStyleEndInfinites = true
+	let canContinueShowStyleEndInfinites: boolean
 	if (targetRundown.showStyleBaseId !== rundownsToShowstyles.get(previousRundownId)) {
 		canContinueShowStyleEndInfinites = false
 	} else {

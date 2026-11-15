@@ -1,14 +1,15 @@
-import * as React from 'react'
-import _ from 'underscore'
-import ClassNames from 'classnames'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas, type IconName, type IconPack, type IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { withTranslation } from 'react-i18next'
-import type { Translated } from './ReactMeteorData/ReactMeteorData.js'
-import { Manager, Popper, Reference } from 'react-popper'
+import ClassNames from 'classnames'
+import * as React from 'react'
 import Form from 'react-bootstrap/esm/Form'
+import { withTranslation } from 'react-i18next'
+import { Manager, Popper, Reference } from 'react-popper'
+import _ from 'underscore'
+import type { IconDefinition, IconName, IconPack } from '@fortawesome/free-solid-svg-icons'
+
+import type { Translated } from './ReactMeteorData/ReactMeteorData.js'
 
 library.add(fas)
 
@@ -130,14 +131,12 @@ export const IconPicker: React.ComponentType<IProps> = withTranslation()(
 		}
 
 		private onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-			if (
-				!(
-					event.relatedTarget &&
-					event.relatedTarget instanceof HTMLElement &&
-					this._popperRef &&
-					(this._popperRef === event.relatedTarget || this._popperRef.contains(event.relatedTarget))
-				)
-			) {
+			if (!(
+				event.relatedTarget &&
+				event.relatedTarget instanceof HTMLElement &&
+				this._popperRef &&
+				(this._popperRef === event.relatedTarget || this._popperRef.contains(event.relatedTarget))
+			)) {
 				this.setState({
 					expanded: false,
 				})
@@ -216,12 +215,17 @@ export const IconPicker: React.ComponentType<IProps> = withTranslation()(
 											<div className="expco-list">
 												{!this.state.searchText && (
 													<div className="expco-item">
-														<label className="action-btn" onClick={() => this.handleChange('')}>
+														<label
+															className="action-btn"
+															onClick={() => this.handleChange('')}
+														>
 															&nbsp;
 														</label>
 													</div>
 												)}
-												{Object.entries<IconDefinition | undefined>(this.getFilteredIcons()).map(([key, value]) => {
+												{Object.entries<IconDefinition | undefined>(
+													this.getFilteredIcons()
+												).map(([key, value]) => {
 													if (value) {
 														return (
 															<div className="expco-item" key={key}>

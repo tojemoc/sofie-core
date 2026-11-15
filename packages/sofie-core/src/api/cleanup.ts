@@ -1,17 +1,3 @@
-import { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../lib/lib'
-import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import {
-	getActiveRundownPlaylistsInStudioFromDb,
-	getExpiredRemovedPackageInfos,
-	getOrphanedPackageInfos,
-	removePackageInfos,
-} from './studio/lib'
-import { getCoreSystemAsync } from '../coreSystem/collection'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { DEFAULT_MAXIMUM_DATA_AGE } from '@sofie-automation/shared-lib/dist/core/constants'
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import {
 	BlueprintId,
@@ -24,6 +10,14 @@ import {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
+import { DEFAULT_MAXIMUM_DATA_AGE } from '@sofie-automation/shared-lib/dist/core/constants'
+import { ProtectedString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -36,8 +30,9 @@ import {
 	ExpectedPackageWorkStatuses,
 	ExpectedPlayoutItems,
 	ExternalMessageQueue,
-	NrcsIngestDataCache,
 	MediaObjects,
+	Notifications,
+	NrcsIngestDataCache,
 	PackageContainerPackageStatuses,
 	PackageContainerStatuses,
 	PackageInfos,
@@ -57,6 +52,7 @@ import {
 	ShowStyleBases,
 	ShowStyleVariants,
 	Snapshots,
+	SofieIngestDataCache,
 	Studios,
 	Timeline,
 	TimelineDatastore,
@@ -65,13 +61,18 @@ import {
 	UserActionsLog,
 	Workers,
 	WorkerThreadStatuses,
-	Notifications,
-	SofieIngestDataCache,
 } from '../collections'
 import { AsyncOnlyMongoCollection, AsyncOnlyReadOnlyMongoCollection } from '../collections/collection'
 import { getCollectionKey } from '../collections/lib'
+import { getCoreSystemAsync } from '../coreSystem/collection'
+import { getCurrentTime } from '../lib/lib'
+import {
+	getActiveRundownPlaylistsInStudioFromDb,
+	getExpiredRemovedPackageInfos,
+	getOrphanedPackageInfos,
+	removePackageInfos,
+} from './studio/lib'
 import { generateTranslationBundleOriginId } from './translationsBundles'
-import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
 
 /**
  * If actuallyCleanup=true, cleans up old data. Otherwise just checks what old data there is

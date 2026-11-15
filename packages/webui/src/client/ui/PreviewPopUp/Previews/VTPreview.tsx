@@ -1,8 +1,9 @@
-import { useContext, useEffect, useRef } from 'react'
-import { StyledTimecode } from '../../../lib/StyledTimecode.js'
 import classNames from 'classnames'
-import StudioContext from '../../RundownView/StudioContext.js'
+import { useContext, useEffect, useRef } from 'react'
+
+import { StyledTimecode } from '../../../lib/StyledTimecode.js'
 import { setVideoElementPosition } from '../../../lib/ui/videoPreviewScrub.js'
+import StudioContext from '../../RundownView/StudioContext.js'
 
 interface VTPreviewProps {
 	content: {

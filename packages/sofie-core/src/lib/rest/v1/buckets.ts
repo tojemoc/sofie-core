@@ -1,6 +1,7 @@
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { BucketId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { IngestAdlib } from '@sofie-automation/blueprints-integration'
+import { BucketId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 export interface BucketsRestAPI {

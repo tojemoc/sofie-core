@@ -1,25 +1,27 @@
+import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+
 import {
-	PlaylistTimingType,
 	ExternalMessageQueueObjSlack,
 	IBlueprintExternalMessageQueueType,
+	PlaylistTimingType,
 } from '@sofie-automation/blueprints-integration'
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { getCurrentTime } from '../../lib/index.js'
-import { queueExternalMessages } from '../handle.js'
-import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
-import { ExternalMessageQueueRunner } from '../ExternalMessageQueue.js'
-import { InvalidateWorkerDataCache, WorkerDataCacheWrapper } from '../../workers/caches.js'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
-import { StudioCacheContext } from '../../jobs/index.js'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { defer, MockMongoCollection } from '../../__mocks__/collection.js'
-import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { StudioCacheContext } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
+import { InvalidateWorkerDataCache, WorkerDataCacheWrapper } from '../../workers/caches.js'
+import { ExternalMessageQueueRunner } from '../ExternalMessageQueue.js'
+import { queueExternalMessages } from '../handle.js'
 import { sendSlackMessageToWebhook } from '../integration/slack.js'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 
 describe('Test external message queue static methods', () => {
 	let context: MockJobContext

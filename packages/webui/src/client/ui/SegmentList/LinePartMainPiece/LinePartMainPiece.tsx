@@ -1,24 +1,25 @@
-import { type EvsContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
+import classNames from 'classnames'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { EvsContent } from '@sofie-automation/blueprints-integration'
 // TODO: Move to a shared lib file
 import type { PartId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import classNames from 'classnames'
+import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
 import { getNoticeLevelForPieceStatus } from '../../../lib/notifications/notifications.js'
 import { LoopingPieceIcon } from '../../../lib/ui/icons/looping.js'
 import { PieceStatusIcon } from '../../../lib/ui/PieceStatusIcon.js'
 import { getElementWidth } from '../../../utils/dimensions.js'
-import { getElementDocumentOffset, type OffsetPosition } from '../../../utils/positions.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
 import { getSplitItems } from '../../SegmentContainer/getSplitItems.js'
 import { PieceElement } from '../../SegmentContainer/PieceElement.js'
 import { getPieceSteps, PieceMultistepChevron } from '../../SegmentContainer/PieceMultistepChevron.js'
 import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
-import {
-	convertSourceLayerItemToPreview,
-	type IPreviewPopUpSession,
-	PreviewPopUpContext,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	partId: PartId
@@ -44,7 +45,9 @@ function getPieceDuration(
 		: Math.max(
 				// renderedDuration can be null. If there is a sourceDuration, use that, if not, use timelineBase
 				piece.renderedDuration ??
-					(piece.instance.piece.content?.sourceDuration && !piece.instance.piece.content?.loop ? 0 : timelineBase),
+					(piece.instance.piece.content?.sourceDuration && !piece.instance.piece.content?.loop
+						? 0
+						: timelineBase),
 				piece.instance.piece.content?.sourceDuration ?? 0
 			)
 }
@@ -220,7 +223,9 @@ export function LinePartMainPiece({
 			onPointerMove={onPointerMove}
 		>
 			{piece.sourceLayer?.type === SourceLayerType.SPLITS && (
-				<div className="segment-opl__main-piece__bkg">{getSplitItems(piece, 'segment-opl__main-piece__item')}</div>
+				<div className="segment-opl__main-piece__bkg">
+					{getSplitItems(piece, 'segment-opl__main-piece__item')}
+				</div>
 			)}
 			{anomalies}
 			<div
@@ -230,9 +235,10 @@ export function LinePartMainPiece({
 			>
 				{noticeLevel !== null && <PieceStatusIcon noticeLevel={noticeLevel} />}
 				{multistepChevron}
-				{piece.sourceLayer?.type === SourceLayerType.LOCAL && (piece.instance.piece.content as EvsContent).color && (
-					<ColoredMark color={(piece.instance.piece.content as EvsContent).color} />
-				)}
+				{piece.sourceLayer?.type === SourceLayerType.LOCAL &&
+					(piece.instance.piece.content as EvsContent).color && (
+						<ColoredMark color={(piece.instance.piece.content as EvsContent).color} />
+					)}
 				{piece.instance.piece.name}
 				{piece.instance.piece.content?.loop && (
 					<LoopingPieceIcon className="segment-opl__main-piece__label-icon" playing={hover} />

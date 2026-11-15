@@ -1,32 +1,33 @@
-import { PeripheralDevices, RundownPlaylists } from './collections'
+import { TSR } from '@sofie-automation/blueprints-integration'
+import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
 	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDevice,
 	PeripheralDeviceType,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { getCurrentTime } from './lib/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { logger } from './logging'
-import { TSR } from '@sofie-automation/blueprints-integration'
-import { DEFAULT_TSR_ACTION_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
-import { QueueStudioJob } from './worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { fetchStudioIds } from './optimizations'
-import { internalStoreRundownPlaylistSnapshot } from './api/snapshot'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { deferAsync, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import { getCoreSystemAsync } from './coreSystem/collection'
-import { cleanupOldDataInner } from './api/cleanup'
-import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
-import { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
-import { executePeripheralDeviceFunctionWithCustomTimeout } from './api/peripheralDevice/executeFunction'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
 	interpollateTranslation,
 	isTranslatableMessage,
 	translateMessage,
 } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
+import { DEFAULT_TSR_ACTION_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
+import { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { cleanupOldDataInner } from './api/cleanup'
+import { executePeripheralDeviceFunctionWithCustomTimeout } from './api/peripheralDevice/executeFunction'
+import { internalStoreRundownPlaylistSnapshot } from './api/snapshot'
+import { PeripheralDevices, RundownPlaylists } from './collections'
+import { getCoreSystemAsync } from './coreSystem/collection'
+import { getCurrentTime } from './lib/lib'
+import { logger } from './logging'
+import { fetchStudioIds } from './optimizations'
+import { QueueStudioJob } from './worker/worker'
 
 const lowPrioFcn = (fcn: () => any) => {
 	// Do it at a random time in the future:

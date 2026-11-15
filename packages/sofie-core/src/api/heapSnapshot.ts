@@ -1,13 +1,15 @@
 import * as v8 from 'node:v8'
 import { Readable } from 'stream'
-import Koa from 'koa'
+
 import KoaRouter from '@koa/router'
-import { fixValidPath } from '../lib/lib'
-import { sleep } from '../lib/lib'
+import Koa from 'koa'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { fixValidPath, sleep } from '../lib/lib'
 import { logger } from '../logging'
 import { assertConnectionHasOneOfPermissions, RequestCredentials } from '../security/auth'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 async function retrieveHeapSnapshot(cred: RequestCredentials): Promise<Readable> {
 	assertConnectionHasOneOfPermissions(cred, 'developer')

@@ -1,13 +1,15 @@
 import ClassNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type {
 	DashboardLayoutStudioName,
 	RundownLayoutBase,
 	RundownLayoutStudioName,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { dashboardElementStyle } from './DashboardPanel.js'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTranslation } from 'react-i18next'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IStudioNamePanelProps {
 	layout: RundownLayoutBase

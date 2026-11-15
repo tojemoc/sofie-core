@@ -1,4 +1,6 @@
+import { Blueprints, CoreSystem, ShowStyleBases, Studios } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../lib/lib'
 import {
 	blueprintFieldSpecifier,
 	ContentCache,
@@ -6,8 +8,6 @@ import {
 	showStyleFieldSpecifier,
 	studioFieldSpecifier,
 } from './reactiveContentCache'
-import { Blueprints, CoreSystem, ShowStyleBases, Studios } from '../../collections'
-import { waitForAllObserversReady } from '../lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 export class UpgradesContentObserver {

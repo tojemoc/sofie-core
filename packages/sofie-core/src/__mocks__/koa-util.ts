@@ -1,6 +1,6 @@
-import type Koa from 'koa'
-import type KoaRouter from '@koa/router'
 import { createMockContext, Options as MockContextOptions } from '@shopify/jest-koa-mocks'
+import type KoaRouter from '@koa/router'
+import type Koa from 'koa'
 
 export async function callKoaRoute(
 	router: KoaRouter,

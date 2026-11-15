@@ -1,8 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { Blueprint } from '../dataModel/Blueprint.js'
 import { DBStudio } from '../dataModel/Studio.js'
 import { TimelineComplete } from '../dataModel/Timeline.js'
-import { ReadonlyDeep } from 'type-fest'
 import { unprotectString } from '../protectedString.js'
-import { Blueprint } from '../dataModel/Blueprint.js'
 
 export function shouldUpdateStudioBaselineInner(
 	coreVersion: string,

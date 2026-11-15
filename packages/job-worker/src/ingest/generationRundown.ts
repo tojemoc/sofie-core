@@ -1,3 +1,12 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import {
+	BlueprintResultRundown,
+	ExpectedPackage,
+	ExtendedIngestRundown,
+} from '@sofie-automation/blueprints-integration'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import {
 	ExpectedPackageDBType,
 	ExpectedPackageIngestSourceBaselineAdlibAction,
@@ -10,10 +19,15 @@ import { BlueprintId, RundownId } from '@sofie-automation/corelib/dist/dataModel
 import { RundownNote } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import { Piece, serializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { DBRundown, RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { WrappedShowStyleBlueprint } from '../blueprints/cache.js'
-import { StudioUserContext, GetRundownContext } from '../blueprints/context/index.js'
+import { GetRundownContext, StudioUserContext } from '../blueprints/context/index.js'
+import { convertRundownToBlueprintSegmentRundown, translateUserEditsFromBlueprint } from '../blueprints/context/lib.js'
 import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
 import {
 	postProcessAdLibPieces,
@@ -21,27 +35,15 @@ import {
 	postProcessGlobalPieces,
 	postProcessRundownBaselineItems,
 } from '../blueprints/postProcess.js'
-import { logger } from '../logging.js'
-import _ from 'underscore'
-import { IngestModel } from './model/IngestModel.js'
-import { extendIngestRundownCore, canRundownBeUpdated } from './lib.js'
 import { JobContext } from '../jobs/index.js'
-import { CommitIngestData } from './lock.js'
-import { SelectedShowStyleVariant, selectShowStyleVariant } from './selectShowStyleVariant.js'
+import { logger } from '../logging.js'
 import { updateExpectedMediaAndPlayoutItemsForRundownBaseline } from './expectedPackages.js'
-import { ReadonlyDeep } from 'type-fest'
-import {
-	BlueprintResultRundown,
-	ExpectedPackage,
-	ExtendedIngestRundown,
-} from '@sofie-automation/blueprints-integration'
-import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { convertRundownToBlueprintSegmentRundown, translateUserEditsFromBlueprint } from '../blueprints/context/lib.js'
 import { calculateSegmentsAndRemovalsFromIngestData } from './generationSegment.js'
-import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { canRundownBeUpdated, extendIngestRundownCore } from './lib.js'
+import { CommitIngestData } from './lock.js'
 import { ExpectedPackageCollector, IngestExpectedPackage } from './model/IngestExpectedPackage.js'
+import { IngestModel } from './model/IngestModel.js'
+import { SelectedShowStyleVariant, selectShowStyleVariant } from './selectShowStyleVariant.js'
 
 export enum GenerateRundownMode {
 	Create = 'create',
@@ -251,13 +253,13 @@ export async function regenerateRundownAndBaselineFromIngestData(
 						playlistId: 1,
 					},
 				}
-			) as Promise<Pick<DBRundown, '_id' | 'playlistId'>[]>
+			)
 		},
 		async () => {
 			return ingestModel.rundown
 		}
 	)
-	let rundownRes: BlueprintResultRundown | null = null
+	let rundownRes: BlueprintResultRundown | null
 	try {
 		rundownRes = await showStyleBlueprint.blueprint.getRundown(blueprintContext, extendedIngestRundown)
 	} catch (err) {

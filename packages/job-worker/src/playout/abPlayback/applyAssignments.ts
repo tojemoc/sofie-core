@@ -1,21 +1,23 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
+	AbPlayerId,
+	ABResolverConfiguration,
+	ABTimelineLayerChangeRules,
+	ICommonContext,
 	OnGenerateTimelineObj,
 	TSR,
-	ABResolverConfiguration,
-	ICommonContext,
-	ABTimelineLayerChangeRules,
-	AbPlayerId,
 } from '@sofie-automation/blueprints-integration'
 import {
 	ABSessionAssignment,
 	ABSessionAssignments,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+
 import { logger } from '../../logging.js'
-import _ from 'underscore'
 import { SessionRequest } from './abPlaybackResolver.js'
 import { AbSessionHelper } from './abSessionHelper.js'
-import { ReadonlyDeep } from 'type-fest'
 
 /**
  * Apply the ab assignments for a pool to the timeline

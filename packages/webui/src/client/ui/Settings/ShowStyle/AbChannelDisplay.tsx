@@ -1,17 +1,21 @@
-import { SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { ShowStyleBases } from '../../../collections'
-import { useTranslation } from 'react-i18next'
+import { faSync } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type {
 	DBShowStyleBase,
-	SourceLayers,
 	OutputLayers,
+	SourceLayers,
 } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ColumnPackedGrid, type ColumnPackedGridGroup, type ColumnPackedGridItem } from '../components/ColumnPackedGrid'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSync } from '@fortawesome/free-solid-svg-icons'
+
+import { ShowStyleBases } from '../../../collections'
 import { sourceLayerTypeString } from '../../../lib/rundown.js'
+import { ColumnPackedGrid } from '../components/ColumnPackedGrid'
+import type { ColumnPackedGridGroup, ColumnPackedGridItem } from '../components/ColumnPackedGrid'
+
 import '../components/ColumnPackedGrid.scss'
 import './AbChannelDisplay.scss'
 
@@ -146,7 +150,9 @@ export function AbChannelDisplaySettings({ showStyleBase }: Readonly<AbChannelDi
 							updateConfig({ sourceLayerIds: [...config.sourceLayerIds, id] })
 						}
 					} else {
-						updateConfig({ sourceLayerIds: config.sourceLayerIds.filter((existingId) => existingId !== id) })
+						updateConfig({
+							sourceLayerIds: config.sourceLayerIds.filter((existingId) => existingId !== id),
+						})
 					}
 				},
 			}
@@ -170,7 +176,9 @@ export function AbChannelDisplaySettings({ showStyleBase }: Readonly<AbChannelDi
 							updateConfig({ outputLayerIds: [...config.outputLayerIds, id] })
 						}
 					} else {
-						updateConfig({ outputLayerIds: config.outputLayerIds.filter((existingId) => existingId !== id) })
+						updateConfig({
+							outputLayerIds: config.outputLayerIds.filter((existingId) => existingId !== id),
+						})
 					}
 				},
 			}

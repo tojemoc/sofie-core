@@ -1,22 +1,24 @@
-import { useEffect, useState, useLayoutEffect } from 'react'
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
+import moment from 'moment'
+import { parse as queryStringParse } from 'query-string'
+import Tooltip from 'rc-tooltip'
+import { useEffect, useLayoutEffect, useState } from 'react'
+import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import { DatePickerFromTo } from '../../lib/datePicker.js'
-import moment from 'moment'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { useTranslation } from 'react-i18next'
-import { parse as queryStringParse } from 'query-string'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import classNames from 'classnames'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
 import { getCoreSystem, UserActionsLog } from '../../collections/index.js'
-import Tooltip from 'rc-tooltip'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CollapseJSON } from '../../lib/collapseJSON.js'
-import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { DatePickerFromTo } from '../../lib/datePicker.js'
 import { downloadBlob } from '../../lib/downloadBlob.js'
-import Button from 'react-bootstrap/Button'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
 
 const PARAM_DATE_FORMAT = 'YYYY-MM-DDTHHmm'
 const PARAM_NAME_FROM_DATE = 'fromDate'
@@ -82,7 +84,9 @@ function UserActionsList(props: Readonly<IUserActionsListProps>) {
 											<tr>
 												<td>
 													<Tooltip
-														overlay={t('Time from platform user event to Action received by Core')}
+														overlay={t(
+															'Time from platform user event to Action received by Core'
+														)}
 														placement="topLeft"
 													>
 														<span>{t('GUI')}:</span>
@@ -94,7 +98,10 @@ function UserActionsList(props: Readonly<IUserActionsListProps>) {
 										{msg.executionTime ? (
 											<tr>
 												<td>
-													<Tooltip overlay={t('Core + Worker processing time')} placement="topLeft">
+													<Tooltip
+														overlay={t('Core + Worker processing time')}
+														placement="topLeft"
+													>
 														<span>{t('Core')}:</span>
 													</Tooltip>
 												</td>
@@ -132,7 +139,9 @@ function UserActionsList(props: Readonly<IUserActionsListProps>) {
 							<td className="user-action-log__args">
 								<CollapseJSON json={msg.args} />
 							</td>
-							{props.renderButtons ? <td className="user-action-log__buttons">{props.renderButtons(msg)}</td> : null}
+							{props.renderButtons ? (
+								<td className="user-action-log__buttons">{props.renderButtons(msg)}</td>
+							) : null}
 						</tr>
 					)
 				})}

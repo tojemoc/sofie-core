@@ -1,4 +1,5 @@
 import { PartEndState, Time } from '@sofie-automation/blueprints-integration'
+
 import { PartCalculatedTimings } from '../playout/timings.js'
 import { PartInstanceId, RundownId, RundownPlaylistActivationId, SegmentId, SegmentPlayoutId } from './Ids.js'
 import { DBPart, PartInvalidReason } from './Part.js'

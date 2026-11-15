@@ -1,8 +1,9 @@
-import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
-import * as React from 'react'
-import { TimingDataResolution, TimingTickResolution, useTiming } from './RundownView/RundownTiming/withTiming.js'
-import { useTranslation } from 'react-i18next'
 import { Meteor } from 'meteor/meteor'
+import * as React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
+import { TimingDataResolution, TimingTickResolution, useTiming } from './RundownView/RundownTiming/withTiming.js'
 
 // These are examples of how to write different types of components
 

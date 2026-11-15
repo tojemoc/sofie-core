@@ -1,23 +1,25 @@
 import { z } from 'zod'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { check, zAnyArray } from '../lib/check'
-import { FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
-import { ExpectedPlayoutItems, NrcsIngestDataCache, Rundowns, Segments } from '../collections'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { NrcsIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+
 import {
 	PeripheralDeviceId,
 	RundownId,
 	RundownPlaylistId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
-import { checkAccessAndGetPeripheralDevice } from '../security/check'
-import type { PublicationRegistry } from '../publicationRegistry'
+import { NrcsIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
+import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { ExpectedPlayoutItems, NrcsIngestDataCache, Rundowns, Segments } from '../collections'
+import { check, zAnyArray } from '../lib/check'
+import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
+import type { PublicationRegistry } from '../publicationRegistry'
 
 export function registerRundownPublications(registry: PublicationRegistry): void {
 	registry.publish(

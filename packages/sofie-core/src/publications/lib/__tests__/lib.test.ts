@@ -1,5 +1,6 @@
-import { waitForAllObserversReady } from '../lib'
 import { sleep } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { waitForAllObserversReady } from '../lib'
 import type { LiveQueryHandleSync } from '../../../lib/lib'
 
 describe('waitForAllObserversReady', () => {

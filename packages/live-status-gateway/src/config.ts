@@ -1,5 +1,6 @@
-import { Config } from './connector.js'
 import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { Config } from './connector.js'
 
 // CLI arguments / Environment variables --------------
 let host: string = process.env.CORE_HOST || '127.0.0.1'

@@ -1,6 +1,7 @@
-import type { AbPlayerId, ABResolverOptions } from '@sofie-automation/blueprints-integration'
-import { clone } from '@sofie-automation/corelib/dist/lib'
 import _ from 'underscore'
+
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import type { AbPlayerId, ABResolverOptions } from '@sofie-automation/blueprints-integration'
 
 export interface SessionRequest {
 	readonly id: string

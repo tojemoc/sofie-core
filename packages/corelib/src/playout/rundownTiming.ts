@@ -11,6 +11,8 @@
  * without knowing what particular case you are trying to solve.
  */
 
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	PlaylistTimingBackTime,
 	PlaylistTimingDuration,
@@ -19,7 +21,6 @@ import {
 	PlaylistTimingType,
 	RundownPlaylistTiming,
 } from '@sofie-automation/blueprints-integration'
-import { ReadonlyDeep } from 'type-fest'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PlaylistTiming {

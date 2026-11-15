@@ -1,6 +1,8 @@
-import type { IStudioSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import classNames from 'classnames'
 import { useEffect, useRef } from 'react'
+
+import type { IStudioSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { StyledTimecode } from './StyledTimecode.js'
 
 function setVideoElementPosition(
@@ -55,7 +57,8 @@ export function VideoPreviewPlayer({
 				<div
 					className={classNames('video-preview-player__frame-marker', {
 						'video-preview-player__frame-marker--first-frame': offsetTimePosition === 0,
-						'video-preview-player__frame-marker--last-frame': itemDuration > 0 && offsetTimePosition >= itemDuration,
+						'video-preview-player__frame-marker--last-frame':
+							itemDuration > 0 && offsetTimePosition >= itemDuration,
 					})}
 				>
 					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,3 +1,5 @@
+import _ from 'underscore'
+
 import {
 	getSchemaUIField,
 	IShowStyleConfigPreset,
@@ -12,16 +14,15 @@ import { BlueprintHash } from '@sofie-automation/corelib/dist/dataModel/Blueprin
 import { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { joinObjectPathFragments, objectPathGet } from '@sofie-automation/corelib/dist/lib'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
+import { generateTranslation, joinObjectPathFragments, objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { UIBlueprintUpgradeStatusBase } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { logger } from '../../logging'
 import { CoreSystemFields, ShowStyleBaseFields, StudioFields } from './reactiveContentCache'
-import _ from 'underscore'
-import { UIBlueprintUpgradeStatusBase } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
 
 export interface BlueprintMapEntry {
 	_id: BlueprintId

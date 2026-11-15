@@ -1,16 +1,17 @@
-import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import _ from 'underscore'
-import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
-import { CollectionHandlers } from '../liveStatusServer.js'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { PartInstancesInPlaylistHandler } from './partInstancesInPlaylistHandler.js'
+import { Logger } from 'winston'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PartInstanceId, RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PartInstancesInPlaylist } from './partInstancesInPlaylistHandler.js'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
+import { PartInstancesInPlaylist, PartInstancesInPlaylistHandler } from './partInstancesInPlaylistHandler.js'
 
 /** Playlist fields needed to scope piece-instances to active playlist context. */
 const PLAYLIST_KEYS = ['rundownIdsInOrder', 'activationId'] as const

@@ -1,10 +1,11 @@
-import type { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { TriggeredActions } from '../../collections'
 import { Complete, getRandomId, literal, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import type { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import type { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { IBlueprintTriggeredActions } from '@sofie-automation/blueprints-integration'
+import type { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+import type { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
+
+import { TriggeredActions } from '../../collections'
 
 export async function updateTriggeredActionsForShowStyleBaseId(
 	showStyleBaseId: ShowStyleBaseId | null,

@@ -1,5 +1,6 @@
-import { logger } from '../logging.js'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from '../logging.js'
 
 export type AnyLockEvent = LockEvent | UnLockEvent
 export interface LockEvent {

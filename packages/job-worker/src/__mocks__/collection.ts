@@ -1,3 +1,9 @@
+import { EventEmitter } from 'events'
+
+import { Collection, CountOptions, FindOptions } from 'mongodb'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
@@ -6,8 +12,10 @@ import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLi
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItem } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
+import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import { MediaObjects } from '@sofie-automation/corelib/dist/dataModel/MediaObjects'
 import { NrcsIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
@@ -16,14 +24,16 @@ import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { RundownBaselineObj } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineObj'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { DBTimelineDatastoreEntry } from '@sofie-automation/corelib/dist/dataModel/TimelineDatastore'
 import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { DBTimelineDatastoreEntry } from '@sofie-automation/corelib/dist/dataModel/TimelineDatastore'
 import { clone, literal } from '@sofie-automation/corelib/dist/lib'
 import {
 	FindOptions as CacheFindOptions,
@@ -33,8 +43,8 @@ import {
 	mongoWhere,
 } from '@sofie-automation/corelib/dist/mongo'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { Collection, CountOptions, FindOptions } from 'mongodb'
-import { ReadonlyDeep } from 'type-fest'
+import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+
 import {
 	IChangeStream,
 	IChangeStreamEvents,
@@ -43,13 +53,6 @@ import {
 	MongoModifier,
 	MongoQuery,
 } from '../db/index.js'
-import _ from 'underscore'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
-import { MediaObjects } from '@sofie-automation/corelib/dist/dataModel/MediaObjects'
-import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
-import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
-import { EventEmitter } from 'events'
 
 export interface CollectionOperation {
 	type: string
@@ -105,7 +108,7 @@ export class MockMongoCollection<TDoc extends { _id: ProtectedString<any> }> imp
 
 		let matchedDocs: TDoc[]
 		if (typeof selector._id === 'string') {
-			const doc = this.#documents.get(selector._id as any)
+			const doc = this.#documents.get(selector._id)
 			if (doc && mongoWhere(doc, selector)) {
 				matchedDocs = [doc]
 			} else {
@@ -237,9 +240,9 @@ export class MockMongoCollection<TDoc extends { _id: ProtectedString<any> }> imp
 
 		for (const op of ops) {
 			if ('updateMany' in op) {
-				await this.updateInner(op.updateMany.filter, op.updateMany.update as MongoModifier<TDoc>, false)
+				await this.updateInner(op.updateMany.filter, op.updateMany.update, false)
 			} else if ('updateOne' in op) {
-				await this.updateInner(op.updateOne.filter, op.updateOne.update as MongoModifier<TDoc>, true)
+				await this.updateInner(op.updateOne.filter, op.updateOne.update, true)
 			} else if ('replaceOne' in op) {
 				await this.replace(op.replaceOne.replacement as any)
 			} else if ('insertOne' in op) {

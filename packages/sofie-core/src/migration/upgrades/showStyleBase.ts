@@ -3,21 +3,22 @@ import {
 	JSONBlobParse,
 	ShowStyleBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { FixUpBlueprintConfigContext } from '@sofie-automation/corelib/dist/fixUpBlueprintConfig/context'
 import { normalizeArray } from '@sofie-automation/corelib/dist/lib'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { wrapTranslatableMessageFromBlueprints } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { BlueprintValidateConfigForStudioResult } from '@sofie-automation/corelib/dist/worker/studio'
-import { Blueprints, ShowStyleBases } from '../../collections'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { BlueprintFixUpConfigMessage } from '@sofie-automation/meteor-lib/dist/api/migration'
+
 import { evalBlueprint } from '../../api/blueprints/cache'
+import { Blueprints, ShowStyleBases } from '../../collections'
 import { logger } from '../../logging'
 import { CommonContext } from './context'
-import { FixUpBlueprintConfigContext } from '@sofie-automation/corelib/dist/fixUpBlueprintConfig/context'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { BlueprintFixUpConfigMessage } from '@sofie-automation/meteor-lib/dist/api/migration'
 import { updateTriggeredActionsForShowStyleBaseId } from './lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export async function fixupConfigForShowStyleBase(
 	showStyleBaseId: ShowStyleBaseId

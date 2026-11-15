@@ -1,7 +1,8 @@
 import { SwitchRouteSetProps } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { JobContext } from '../jobs/index.js'
-import { runJobWithStudioPlayoutModel } from './lock.js'
 import { updateTimelineFromStudioPlayoutModel } from '../playout/lib.js'
+import { runJobWithStudioPlayoutModel } from './lock.js'
 
 export async function handleSwitchRouteSet(context: JobContext, data: SwitchRouteSetProps): Promise<void> {
 	await runJobWithStudioPlayoutModel(context, async (studioPlayoutModel) => {

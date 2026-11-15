@@ -1,5 +1,5 @@
+import { PartInstanceId, PieceInstanceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { RundownId, PartInstanceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 
 export interface INotification {

@@ -1,11 +1,12 @@
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { preprocessStudioConfig, retrieveBlueprintConfigRefs } from '../config.js'
-import { getShowStyleConfigRef, getStudioConfigRef } from '../configRefs.js'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { DEFAULT_MINIMUM_TAKE_SPAN } from '@sofie-automation/shared-lib/dist/core/constants'
 import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+import { preprocessStudioConfig, retrieveBlueprintConfigRefs } from '../config.js'
+import { getShowStyleConfigRef, getStudioConfigRef } from '../configRefs.js'
 
 describe('Test blueprint config', () => {
 	test('compileStudioConfig', () => {

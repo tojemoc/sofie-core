@@ -1,9 +1,11 @@
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { Simplify } from 'type-fest'
+
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../../logging'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { MinimalMongoCursor } from '../../collections/collection'
+import { logger } from '../../logging'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 /**

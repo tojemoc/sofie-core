@@ -1,14 +1,16 @@
-import { PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PieceLifespan, IBlueprintPieceType } from '@sofie-automation/blueprints-integration/dist'
-import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
-import { JobContext } from '../jobs/index.js'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import _ from 'underscore'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration/dist'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import { PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobContext } from '../jobs/index.js'
 
 /**
  * Approximate compare Piece start times (for use in .sort())

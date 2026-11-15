@@ -1,20 +1,23 @@
-import * as React from 'react'
-import { type Translated, useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getCurrentTime } from '../../lib/systemTime.js'
-import { invalidateAfter } from '../../lib/invalidatingTime.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import classNames from 'classnames'
+import * as React from 'react'
+import { withTranslation } from 'react-i18next'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { RundownPlaylists } from '../../collections/index.js'
+import { invalidateAfter } from '../../lib/invalidatingTime.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { getCurrentTime } from '../../lib/systemTime.js'
+import { relativeToSiteRootUrl } from '../../url.js'
+import { UIStudios } from '../Collections.js'
 import { Clock } from './Clock.js'
 import { Countdown } from './Countdown.js'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import { UIStudios } from '../Collections.js'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylists } from '../../collections/index.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { withTranslation } from 'react-i18next'
-import { relativeToSiteRootUrl } from '../../url.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 
 interface IProps {
 	// the studio to be displayed in the screen saver
@@ -236,14 +239,16 @@ const StudioScreenSaverContent = withTranslation()(
 					(x + infoElementSize.width > windowWidth - this.FRAME_PIXEL_MARGIN[1] && targetSpeedVector[0] > 0)
 				) {
 					targetSpeedVector = [targetSpeedVector[0] * -1, targetSpeedVector[1]]
-					this.vectorTransitionFrameStepX = (targetSpeedVector[0] - speedVector[0]) / this.VECTOR_TRANSITION_DURATION
+					this.vectorTransitionFrameStepX =
+						(targetSpeedVector[0] - speedVector[0]) / this.VECTOR_TRANSITION_DURATION
 				}
 				if (
 					(y < this.FRAME_PIXEL_MARGIN[0] && targetSpeedVector[1] < 0) ||
 					(y + infoElementSize.height > windowHeight - this.FRAME_PIXEL_MARGIN[2] && targetSpeedVector[1] > 0)
 				) {
 					targetSpeedVector = [targetSpeedVector[0], targetSpeedVector[1] * -1]
-					this.vectorTransitionFrameStepY = (targetSpeedVector[1] - speedVector[1]) / this.VECTOR_TRANSITION_DURATION
+					this.vectorTransitionFrameStepY =
+						(targetSpeedVector[1] - speedVector[1]) / this.VECTOR_TRANSITION_DURATION
 				}
 				if (this.state.targetSpeedVector !== targetSpeedVector) {
 					this.setState({
@@ -252,10 +257,16 @@ const StudioScreenSaverContent = withTranslation()(
 				}
 
 				// If the speedVector differs from the targetSpeedVector by more than the current step, animate the speedVector
-				if (Math.abs(targetSpeedVector[0] - speedVector[0]) > Math.abs(this.vectorTransitionFrameStepX * frameTime)) {
+				if (
+					Math.abs(targetSpeedVector[0] - speedVector[0]) >
+					Math.abs(this.vectorTransitionFrameStepX * frameTime)
+				) {
 					speedVector[0] += this.vectorTransitionFrameStepX * frameTime
 				}
-				if (Math.abs(targetSpeedVector[1] - speedVector[1]) > Math.abs(this.vectorTransitionFrameStepY * frameTime)) {
+				if (
+					Math.abs(targetSpeedVector[1] - speedVector[1]) >
+					Math.abs(this.vectorTransitionFrameStepY * frameTime)
+				) {
 					speedVector[1] += this.vectorTransitionFrameStepY * frameTime
 				}
 
@@ -291,7 +302,7 @@ const StudioScreenSaverContent = withTranslation()(
 		 * @private
 		 */
 		private randomizeDirection = () => {
-			let speedVector: [number, number] = [0, 1]
+			let speedVector: [number, number]
 			let tries = 0
 			do {
 				// take a random number
@@ -354,7 +365,10 @@ const StudioScreenSaverContent = withTranslation()(
 							<>
 								<div className="studio-screen-saver__info__label">{t('Next scheduled show')}</div>
 								<div className="studio-screen-saver__info__rundown">{rundownPlaylist.name}</div>
-								<Countdown className="studio-screen-saver__info__countdown" expectedStart={expectedStart} />
+								<Countdown
+									className="studio-screen-saver__info__countdown"
+									expectedStart={expectedStart}
+								/>
 							</>
 						) : (
 							this.props.studio?.name && (

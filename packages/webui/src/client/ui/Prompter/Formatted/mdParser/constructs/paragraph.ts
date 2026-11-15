@@ -1,5 +1,6 @@
-import { type NodeConstruct, type ParserState, CharHandlerResult } from '../parserState'
+import { CharHandlerResult } from '../parserState'
 import type { ParagraphNode } from '../astNodes'
+import type { NodeConstruct, ParserState } from '../parserState'
 
 export function paragraph(): NodeConstruct {
 	function paragraphStart(char: string, state: ParserState) {

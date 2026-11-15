@@ -1,11 +1,13 @@
-import { PlannedEndComponent, TimeToFromPlannedEndComponent } from '../../../lib/Components/CounterComponents'
-import { useTiming } from '../../RundownView/RundownTiming/withTiming.js'
-import { getPlaylistTimingDiff } from '../../../lib/rundownTiming.js'
+import { useTranslation } from 'react-i18next'
+
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getCurrentTime } from '../../../lib/systemTime.js'
-import { useTranslation } from 'react-i18next'
+
+import { PlannedEndComponent, TimeToFromPlannedEndComponent } from '../../../lib/Components/CounterComponents'
 import { OverUnderChip } from '../../../lib/Components/OverUnderChip.js'
+import { getPlaylistTimingDiff } from '../../../lib/rundownTiming.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { useTiming } from '../../RundownView/RundownTiming/withTiming.js'
 
 export interface DirectorScreenTopProps {
 	playlist: DBRundownPlaylist

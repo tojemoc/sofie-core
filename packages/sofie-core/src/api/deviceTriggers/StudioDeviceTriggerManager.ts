@@ -1,12 +1,11 @@
-import { ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
-import {
-	createAction,
-	ExecutableAction,
-	isPreviewableAction,
-} from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
+
+import { SomeAction, SomeBlueprintTrigger } from '@sofie-automation/blueprints-integration'
+import { ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
 	DeviceActionId,
 	DeviceTriggerMountedActionId,
@@ -14,24 +13,27 @@ import {
 	PreviewWrappedAdLibId,
 	ShiftRegisterActionArguments,
 } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
-import { isDeviceTrigger } from '@sofie-automation/meteor-lib/dist/triggers/triggerTypeSelectors'
 import {
 	DBTriggeredActions,
 	UITriggeredActionsObj,
 } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { StudioActionManager, StudioActionManagers } from './StudioActionManagers'
+import {
+	createAction,
+	ExecutableAction,
+	isPreviewableAction,
+} from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
+import { TriggersContext } from '@sofie-automation/meteor-lib/dist/triggers/triggersContext'
+import { isDeviceTrigger } from '@sofie-automation/meteor-lib/dist/triggers/triggerTypeSelectors'
+import { DeviceActions } from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
+
+import { logger } from '../../logging'
 import { DeviceTriggerMountedActionAdlibsPreview, DeviceTriggerMountedActions } from './observer'
 import { ContentCache } from './reactiveContentCache'
 import { ContentCache as PieceInstancesContentCache } from './reactiveContentCacheForPieceInstances'
-import { logger } from '../../logging'
-import { SomeAction, SomeBlueprintTrigger } from '@sofie-automation/blueprints-integration'
-import { DeviceActions } from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
-import { TriggersContext } from '@sofie-automation/meteor-lib/dist/triggers/triggersContext'
-import { createContextFromCache, TriggersContextFactory } from './triggersContext'
-import { TagsService } from './TagsService'
 import { ResolvedAdLibCache } from './resolvedAdLibCache'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { StudioActionManager, StudioActionManagers } from './StudioActionManagers'
+import { TagsService } from './TagsService'
+import { createContextFromCache, TriggersContextFactory } from './triggersContext'
 
 export class StudioDeviceTriggerManager {
 	#lastShowStyleBaseId: ShowStyleBaseId | null = null

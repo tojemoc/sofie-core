@@ -1,24 +1,21 @@
 import * as React from 'react'
-
-import {
-	type DashboardLayoutActionButton,
-	ActionButtonType,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { DashboardActionButton } from './DashboardActionButton.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
 import { withTranslation } from 'react-i18next'
-import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
+
+import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { ActionButtonType } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DashboardLayoutActionButton } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { hashSingleUseToken } from '../../lib/lib.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
 import { doModalDialog } from '../../lib/ModalDialog.js'
 import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
-import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import {
-	RundownHoldState,
-	type DBRundownPlaylist,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { hashSingleUseToken } from '../../lib/lib.js'
-import { UserError } from '@sofie-automation/corelib/dist/error'
+import { DashboardActionButton } from './DashboardActionButton.js'
+import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
 
 export interface IDashboardButtonGroupProps {
 	buttons: DashboardLayoutActionButton[]
@@ -122,7 +119,8 @@ export const DashboardActionButtonGroup: React.ComponentType<IDashboardButtonGro
 				UserAction.CREATE_SNAPSHOT_FOR_DEBUG,
 				(e, ts) =>
 					MeteorCall.system.generateSingleUseToken().then((tokenResult) => {
-						if (ClientAPI.isClientResponseError(tokenResult)) throw UserError.fromSerialized(tokenResult.error)
+						if (ClientAPI.isClientResponseError(tokenResult))
+							throw UserError.fromSerialized(tokenResult.error)
 						if (!tokenResult.result) throw new Error('Failed to generate token')
 						return MeteorCall.userAction.storeRundownSnapshot(
 							e,
@@ -137,7 +135,12 @@ export const DashboardActionButtonGroup: React.ComponentType<IDashboardButtonGro
 					if (!err && snapshotId) {
 						const noticeLevel: NoticeLevel = NoticeLevel.NOTIFICATION
 						const message: string = t('Successfully stored snapshot')
-						const notification: Notification = new Notification(undefined, noticeLevel, message, 'StoreSnapshot')
+						const notification: Notification = new Notification(
+							undefined,
+							noticeLevel,
+							message,
+							'StoreSnapshot'
+						)
 						NotificationCenter.push(notification)
 					}
 				}

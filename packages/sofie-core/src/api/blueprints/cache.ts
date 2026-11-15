@@ -1,8 +1,10 @@
 import * as vm from 'vm'
-import { logger } from '../../logging'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+
 import { SomeBlueprintManifest } from '@sofie-automation/blueprints-integration'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from '../../logging'
 
 export function evalBlueprint(blueprint: Pick<Blueprint, '_id' | 'name' | 'code'>): SomeBlueprintManifest {
 	const blueprintPath = `db:///blueprint/${blueprint.name || blueprint._id}-bundle.js`

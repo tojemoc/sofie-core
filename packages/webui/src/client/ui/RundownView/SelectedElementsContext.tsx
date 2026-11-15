@@ -1,4 +1,9 @@
+import { Tracker } from 'meteor/tracker'
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import type { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import type {
 	AdLibActionId,
 	PartId,
@@ -8,14 +13,16 @@ import type {
 	RundownId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
 import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import type { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import type { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import type { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
 import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { Tracker } from 'meteor/tracker'
+import type {
+	CoreUserEditingDefinition,
+	CoreUserEditingProperties,
+} from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions.js'
+import type { ITranslatableMessage } from '@sofie-automation/shared-lib/dist/lib/translations.js'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -25,11 +32,6 @@ import {
 	Segments,
 } from '../../collections/index.js'
 import { UIParts } from '../Collections.js'
-import type {
-	CoreUserEditingDefinition,
-	CoreUserEditingProperties,
-} from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions.js'
-import type { ITranslatableMessage } from '@sofie-automation/shared-lib/dist/lib/translations.js'
 
 interface RundownElement {
 	type: 'rundown'
@@ -175,7 +177,8 @@ export const SelectedElementProvider: React.FC<{
 	maxSelections?: number // Optional prop to limit maximum selections
 }> = ({ children, maxSelections = 10 }) => {
 	const [selectedElements, dispatch] = useReducer(
-		(state: Map<ElementId, SelectedElement>, action: SelectionAction) => selectionReducer(state, action, maxSelections),
+		(state: Map<ElementId, SelectedElement>, action: SelectionAction) =>
+			selectionReducer(state, action, maxSelections),
 		new Map()
 	)
 
@@ -284,9 +287,9 @@ export function useSelectedElements(
 	const [adLibPiece, setAdLibPiece] = useState<AdLibPiece | undefined>(undefined)
 	const [rundownBaselineAdLibPiece, setRundownBaselineAdLibPiece] = useState<AdLibPiece | undefined>(undefined)
 	const [adLibAction, setAdLibAction] = useState<AdLibAction | undefined>(undefined)
-	const [rundownBaselineAdLibAction, setRundownBaselineAdLibAction] = useState<RundownBaselineAdLibAction | undefined>(
-		undefined
-	)
+	const [rundownBaselineAdLibAction, setRundownBaselineAdLibAction] = useState<
+		RundownBaselineAdLibAction | undefined
+	>(undefined)
 	const [part, setPart] = useState<DBPart | undefined>(undefined)
 	const [segment, setSegment] = useState<DBSegment | undefined>(undefined)
 	const rundownId = rundownBaselineAdLibAction

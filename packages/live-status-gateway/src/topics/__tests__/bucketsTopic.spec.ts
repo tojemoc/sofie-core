@@ -1,4 +1,13 @@
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
+import { BucketAdLib, BucketAdLibIngestInfo } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import { RundownImportVersions } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { BucketsEvent } from '@sofie-automation/live-status-gateway-api'
 import { protectString } from '@sofie-automation/server-core-integration'
+
+import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
+import { BucketsTopic } from '../bucketsTopic.js'
 import {
 	makeMockHandlers,
 	makeMockLogger,
@@ -7,14 +16,6 @@ import {
 	makeTestPlaylist,
 	makeTestShowStyleBase,
 } from './utils.js'
-import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
-import { BucketsTopic } from '../bucketsTopic.js'
-import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
-import { RundownImportVersions } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { BucketAdLib, BucketAdLibIngestInfo } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
-import { PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { BucketsEvent } from '@sofie-automation/live-status-gateway-api'
 
 describe('BucketsTopic', () => {
 	it('notifies subscribers', async () => {

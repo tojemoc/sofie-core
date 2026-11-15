@@ -1,15 +1,17 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintPlayoutDevice, TSR } from '@sofie-automation/blueprints-integration'
 import { PeripheralDeviceCommandId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PeripheralDevice, PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { ReadonlyDeep } from 'type-fest'
+import { SubdeviceAction } from '@sofie-automation/corelib/dist/deviceConfig'
 import { clone, Complete, getRandomId, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { JobContext } from './jobs/index.js'
 import { getCurrentTime } from './lib/index.js'
 import { logger } from './logging.js'
 import { PlayoutModel } from './playout/model/PlayoutModel.js'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { SubdeviceAction } from '@sofie-automation/corelib/dist/deviceConfig'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 export async function executePeripheralDeviceAction(
 	context: JobContext,

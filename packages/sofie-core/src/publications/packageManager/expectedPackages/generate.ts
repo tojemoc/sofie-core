@@ -1,23 +1,25 @@
+import deepExtend from 'deep-extend'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
-	PackageContainerOnPackage,
 	Accessor,
 	AccessorOnPackage,
 	ExpectedPackage,
+	PackageContainerOnPackage,
 	StudioPackageContainerSettings,
 } from '@sofie-automation/blueprints-integration'
-import { PeripheralDeviceId, ExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ExpectedPackageId, PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { clone, omit } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { getSideEffect } from '@sofie-automation/meteor-lib/dist/collections/ExpectedPackages'
 import {
 	PackageManagerExpectedPackage,
 	PackageManagerExpectedPackageBase,
 	PackageManagerExpectedPackageId,
 } from '@sofie-automation/shared-lib/dist/package-manager/publications'
-import deepExtend from 'deep-extend'
-import { ReadonlyDeep } from 'type-fest'
-import _ from 'underscore'
-import { getSideEffect } from '@sofie-automation/meteor-lib/dist/collections/ExpectedPackages'
-import { StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { clone, omit } from '@sofie-automation/corelib/dist/lib'
+
 import { CustomPublishCollection } from '../../../lib/customPublication'
 import { logger } from '../../../logging'
 import { ExpectedPackageDBCompact, ExpectedPackagesContentCache } from './contentCache'

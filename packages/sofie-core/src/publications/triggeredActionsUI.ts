@@ -1,22 +1,24 @@
-import { z } from 'zod'
-import { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { ReadonlyDeep } from 'type-fest'
+import { z } from 'zod'
+
+import { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import {
 	DBTriggeredActions,
 	UITriggeredActionsObj,
 } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import { Complete, literal } from '@sofie-automation/corelib/dist/lib'
+
+import { TriggeredActions } from '../collections'
+import { check } from '../lib/check'
 import {
 	CustomPublishCollection,
 	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
 } from '../lib/customPublication'
-import { TriggeredActions } from '../collections'
-import { check } from '../lib/check'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 

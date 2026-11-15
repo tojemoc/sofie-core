@@ -1,23 +1,27 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ClassNames from 'classnames'
-import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownUtils } from '../../../lib/rundown.js'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReadonlyDeep } from 'type-fest'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { SourceLayerType, type SplitsContent } from '@sofie-automation/blueprints-integration'
+import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { SplitsContent } from '@sofie-automation/blueprints-integration'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
+import { RundownUtils } from '../../../lib/rundown.js'
 import { PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
 import { useContentStatusForItem } from '../../SegmentTimeline/withMediaObjectStatus.js'
-import { DEFAULT_BUTTON_HEIGHT, DEFAULT_BUTTON_WIDTH, type IDashboardButtonProps } from './types.js'
 import { DashboardButtonTagStrip } from './subcomponents/DashboardButtonTagStrip.js'
-import { HotkeyBadge } from './subcomponents/HotkeyBadge.js'
 import { EditableLabel } from './subcomponents/EditableLabel.js'
+import { HotkeyBadge } from './subcomponents/HotkeyBadge.js'
 import { MediaBox } from './subcomponents/MediaBox.js'
 import {
 	getSplitsTopBoxLayerClassName,
 	SplitButtonLayerBackground,
 } from './subcomponents/SplitButtonLayerBackground.js'
+import { DEFAULT_BUTTON_HEIGHT, DEFAULT_BUTTON_WIDTH } from './types.js'
 import { useDashboardButtonInteractions } from './useDashboardButtonInteractions.js'
+import type { IDashboardButtonProps } from './types.js'
 
 export type DashboardPieceButtonProps = React.PropsWithChildren<IDashboardButtonProps> & {
 	compact?: boolean
@@ -200,14 +204,19 @@ export const DashboardPieceButton = React.forwardRef<HTMLDivElement, DashboardPi
 							list: isList,
 							selected: isNext || isSelected,
 							'dashboard-panel__panel__button--has-hotkey': showHotkey && Boolean(piece.hotkey),
-							'dashboard-panel__panel__button--no-media': showHotkey && Boolean(piece.hotkey) && !hasMediaBox,
+							'dashboard-panel__panel__button--no-media':
+								showHotkey && Boolean(piece.hotkey) && !hasMediaBox,
 							'dashboard-panel__panel__button--no-thumbnail': !hasMediaBox,
 						},
 						RundownUtils.getPieceStatusClassName(contentStatus?.status),
 						...(piece.tags ? piece.tags.map((tag) => `piece-tag--${tag}`) : [])
 					)}
 					style={{
-						width: isList ? 'calc(100% - 8px)' : widthScale ? widthScale * DEFAULT_BUTTON_WIDTH + 'em' : undefined,
+						width: isList
+							? 'calc(100% - 8px)'
+							: widthScale
+								? widthScale * DEFAULT_BUTTON_WIDTH + 'em'
+								: undefined,
 						height: !isList && heightScale ? heightScale * DEFAULT_BUTTON_HEIGHT + 'em' : undefined,
 					}}
 					onClick={interactions.onClick}
@@ -246,7 +255,10 @@ export const DashboardPieceButton = React.forwardRef<HTMLDivElement, DashboardPi
 								contentStatus={contentStatus as ReadonlyDeep<PieceContentStatusObj> | undefined}
 							/>
 							<DashboardButtonTagStrip
-								className={ClassNames(layerTypeClassName, 'dashboard-panel__panel__button__tag-container--inner')}
+								className={ClassNames(
+									layerTypeClassName,
+									'dashboard-panel__panel__button__tag-container--inner'
+								)}
 							>
 								{splitsStripesOnInner ? <SplitButtonLayerBackground piece={piece} /> : null}
 								<div className="dashboard-panel__panel__button__label-container">

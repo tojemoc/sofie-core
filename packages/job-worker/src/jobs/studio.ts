@@ -1,11 +1,11 @@
+import { omit } from '@sofie-automation/corelib/dist/lib'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type {
 	IBlueprintConfig,
 	StudioRouteSet,
 	StudioRouteSetExclusivityGroup,
 } from '@sofie-automation/blueprints-integration'
 import type { DBStudio, IStudioSettings, MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { omit } from '@sofie-automation/corelib/dist/lib'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 
 /**
  * A lightly processed version of DBStudio, with any ObjectWithOverrides<T> pre-flattened

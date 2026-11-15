@@ -1,15 +1,6 @@
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import {
-	RundownPlaylistId,
-	RundownId,
-	BlueprintId,
-	ShowStyleBaseId,
-} from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime, getSystemVersion } from '../lib/index.js'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
 	IBlueprintPieceType,
 	IOutputLayer,
@@ -19,25 +10,36 @@ import {
 	SourceLayerType,
 	StatusCode,
 } from '@sofie-automation/blueprints-integration'
-import { ProcessedShowStyleCompound } from '../jobs/index.js'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import {
+	BlueprintId,
+	RundownId,
+	RundownPlaylistId,
+	ShowStyleBaseId,
+} from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import {
+	PERIPHERAL_SUBTYPE_PROCESS,
+	PeripheralDevice,
+	PeripheralDeviceCategory,
+	PeripheralDeviceSubType,
+	PeripheralDeviceType,
+} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { EmptyPieceTimelineObjectsBlob, Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
 import { getRandomId, literal, normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import _ from 'underscore'
-import { defaultRundownPlaylist } from './defaultCollectionObjects.js'
-import {
-	PeripheralDeviceCategory,
-	PeripheralDeviceType,
-	PeripheralDevice,
-	PeripheralDeviceSubType,
-	PERIPHERAL_SUBTYPE_PROCESS,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { createShowStyleCompound } from '../showStyles.js'
-import { ReadonlyDeep } from 'type-fest'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { processShowStyleBase, processShowStyleVariant } from '../jobs/showStyle.js'
 import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+
+import { ProcessedShowStyleCompound } from '../jobs/index.js'
+import { processShowStyleBase, processShowStyleVariant } from '../jobs/showStyle.js'
+import { getCurrentTime, getSystemVersion } from '../lib/index.js'
+import { createShowStyleCompound } from '../showStyles.js'
 import { MockJobContext } from './context.js'
+import { defaultRundownPlaylist } from './defaultCollectionObjects.js'
 
 export enum LAYER_IDS {
 	SOURCE_CAM0 = 'cam0',

@@ -1,13 +1,14 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { LookaheadMode } from '@sofie-automation/blueprints-integration'
 import {
-	ResultingMappingRoutes,
 	MappingExt,
-	StudioRouteType,
+	ResultingMappingRoutes,
 	StudioRouteSet,
+	StudioRouteType,
 } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { omit } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { ReadonlyDeep } from 'type-fest'
 
 export function getActiveRoutes(routeSets: Record<string, StudioRouteSet>): ResultingMappingRoutes {
 	const routes: ResultingMappingRoutes = {

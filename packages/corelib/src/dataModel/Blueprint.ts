@@ -1,13 +1,14 @@
 import {
 	BlueprintManifestType,
 	IBlueprintConfig,
-	IStudioConfigPreset,
 	IShowStyleConfigPreset,
+	IStudioConfigPreset,
 } from '@sofie-automation/blueprints-integration'
 import { JSONBlob } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
 import { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
-import { BlueprintId } from './Ids.js'
 import type { PackageStatusMessage } from '@sofie-automation/shared-lib/dist/packageStatusMessages'
+
+import { BlueprintId } from './Ids.js'
 
 /** Content hash (or placeholder) for a blueprint code bundle — plain string, like blueprintVersion */
 export type BlueprintHash = string

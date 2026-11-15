@@ -1,15 +1,17 @@
-import type { IBlueprintPartInstance, IPartEventContext, Time } from '@sofie-automation/blueprints-integration'
 import type { ReadonlyDeep } from 'type-fest'
+
+import type { IBlueprintPartInstance, IPartEventContext, Time } from '@sofie-automation/blueprints-integration'
+import type { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
 import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import type { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
 import { getCurrentTime } from '../../lib/index.js'
-import type { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import { convertPartInstanceToBlueprints } from './lib.js'
 import { RundownContext } from './RundownContext.js'
 import { TTimersService } from './services/TTimersService.js'
+import type { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import type { PlayoutModel } from '../../playout/model/PlayoutModel.js'
-import type { IPlaylistTTimer } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
-import type { RundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
 
 export class PartEventContext extends RundownContext implements IPartEventContext {
 	readonly #tTimersService: TTimersService

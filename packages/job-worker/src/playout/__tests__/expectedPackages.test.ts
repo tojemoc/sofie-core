@@ -1,16 +1,17 @@
+import { ExpectedPackageDB, ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import {
 	ExpectedPackageId,
 	PieceInstanceId,
 	RundownId,
 	RundownPlaylistId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { protectString, protectStringArray } from '@sofie-automation/corelib/dist/protectedString'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { handleCleanupOrphanedExpectedPackageReferences } from '../expectedPackages.js'
-import { ExpectedPackageDB, ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { getCurrentTime } from '../../lib/index.js'
+import { handleCleanupOrphanedExpectedPackageReferences } from '../expectedPackages.js'
 
 describe('handleCleanupOrphanedExpectedPackageReferences', () => {
 	let context: MockJobContext

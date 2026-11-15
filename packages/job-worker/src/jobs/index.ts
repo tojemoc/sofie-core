@@ -1,6 +1,5 @@
-import { IDirectCollections } from '../db/index.js'
 import { ReadonlyDeep } from 'type-fest'
-import { WrappedShowStyleBlueprint, WrappedStudioBlueprint } from '../blueprints/cache.js'
+
 import {
 	RundownId,
 	RundownPlaylistId,
@@ -8,16 +7,19 @@ import {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ApmSpan } from '../profiler.js'
-import { IngestJobFunc } from '@sofie-automation/corelib/dist/worker/ingest'
-import { EventsJobFunc } from '@sofie-automation/corelib/dist/worker/events'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../blueprints/config.js'
-import { StudioJobFunc } from '@sofie-automation/corelib/dist/worker/studio'
-import { PlaylistLock, RundownLock } from './lock.js'
-import { BaseModel } from '../modelBase.js'
 import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { ProcessedShowStyleBase, ProcessedShowStyleVariant, ProcessedShowStyleCompound } from './showStyle.js'
+import { EventsJobFunc } from '@sofie-automation/corelib/dist/worker/events'
+import { IngestJobFunc } from '@sofie-automation/corelib/dist/worker/ingest'
+import { StudioJobFunc } from '@sofie-automation/corelib/dist/worker/studio'
+
+import { WrappedShowStyleBlueprint, WrappedStudioBlueprint } from '../blueprints/cache.js'
+import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../blueprints/config.js'
+import { IDirectCollections } from '../db/index.js'
+import { BaseModel } from '../modelBase.js'
+import { ApmSpan } from '../profiler.js'
+import { PlaylistLock, RundownLock } from './lock.js'
+import { ProcessedShowStyleBase, ProcessedShowStyleCompound, ProcessedShowStyleVariant } from './showStyle.js'
 import { JobStudio } from './studio.js'
 
 export { ApmSpan }

@@ -1,9 +1,10 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
-import { PlayoutPartInstanceModelImpl } from '../PlayoutPartInstanceModelImpl.js'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { PlayoutPartInstanceModelImpl } from '../PlayoutPartInstanceModelImpl.js'
 
 describe('PlayoutPartInstanceModelImpl', () => {
 	function createBasicDBPartInstance(): DBPartInstance {

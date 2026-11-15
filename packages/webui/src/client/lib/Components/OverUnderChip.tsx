@@ -1,10 +1,14 @@
-import type { CSSProperties } from 'react'
 import classNames from 'classnames'
+import type { CSSProperties } from 'react'
+
 import { RundownUtils } from '../rundown.js'
+
 import './OverUnderChip.scss'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/src/dataModel/RundownPlaylist/RundownPlaylist.js'
+
 import { useTiming } from '../../ui/RundownView/RundownTiming/withTiming.js'
 import { getPlaylistTimingDiff } from '../rundownTiming.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/src/dataModel/RundownPlaylist/RundownPlaylist.js'
 
 export type OverUnderChipFormat = 'playlistDiff' | 'timerPostfix'
 
@@ -62,7 +66,11 @@ function OverUnderChipInner({ valueMs, format = 'playlistDiff', className, style
 
 	return (
 		<span
-			className={classNames('over-under-chip', isUnder ? 'over-under-chip--under' : 'over-under-chip--over', className)}
+			className={classNames(
+				'over-under-chip',
+				isUnder ? 'over-under-chip--under' : 'over-under-chip--over',
+				className
+			)}
 			style={style}
 		>
 			{isUnder ? '−' : '+'}

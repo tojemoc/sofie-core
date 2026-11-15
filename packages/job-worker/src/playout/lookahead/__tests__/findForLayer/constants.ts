@@ -1,7 +1,8 @@
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { PartInstanceAndPieceInstances, PartAndPieces } from '../../util.js'
-import { createFakePiece } from '../utils.js'
+
 import { TimelinePlayoutState } from '../../../timeline/lib.js'
+import { PartAndPieces, PartInstanceAndPieceInstances } from '../../util.js'
+import { createFakePiece } from '../utils.js'
 
 const layer: string = getRandomString()
 

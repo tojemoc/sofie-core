@@ -1,31 +1,30 @@
-import React, { useCallback, useMemo } from 'react'
-import ClassNames from 'classnames'
-import { faPencilAlt, faTrash, faCheck, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BlueprintManifestType, type JSONSchema } from '@sofie-automation/blueprints-integration'
-import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import ClassNames from 'classnames'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import type { JSONSchema } from '@sofie-automation/blueprints-integration'
+import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids.js'
 import type { DBShowStyleBase, IBranding, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
 import type {
 	ObjectOverrideSetOp,
 	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import {
-	useOverrideOpHelper,
-	getAllCurrentAndDeletedItemsFromOverrides,
-	type OverrideOpHelper,
-	type WrappedOverridableItemNormal,
-} from '../util/OverrideOpHelper.js'
-import { TextInputControl } from '../../../lib/Components/TextInput.js'
-import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
-import { LabelActual, LabelAndOverrides } from '../../../lib/Components/LabelAndOverrides.js'
+
 import { Blueprints, ShowStyleBases } from '../../../collections/index.js'
+import { LabelActual, LabelAndOverrides } from '../../../lib/Components/LabelAndOverrides.js'
+import { TextInputControl } from '../../../lib/Components/TextInput.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
 import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
 import { BlueprintConfigSchemaSettingsForItem } from '../BlueprintConfigSchema/index.js'
-import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids.js'
+import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../util/OverrideOpHelper.js'
+import type { OverrideOpHelper, WrappedOverridableItemNormal } from '../util/OverrideOpHelper.js'
 
 interface IBrandingSettingsProps {
 	showStyleBase: DBShowStyleBase
@@ -70,7 +69,9 @@ export function ShowStyleBrandingSettings({
 
 	const sortedBrandings = useMemo(
 		() =>
-			getAllCurrentAndDeletedItemsFromOverrides(showStyleBase.branding, (a, b) => a[1].name.localeCompare(b[1].name)),
+			getAllCurrentAndDeletedItemsFromOverrides(showStyleBase.branding, (a, b) =>
+				a[1].name.localeCompare(b[1].name)
+			),
 		[showStyleBase.branding]
 	)
 
@@ -113,7 +114,12 @@ export function ShowStyleBrandingSettings({
 				<tbody>
 					{sortedBrandings.map((item) =>
 						item.type === 'deleted' ? (
-							<BrandingDeletedEntry key={item.id} itemId={item.id} item={item.defaults} doUndelete={doUndelete} />
+							<BrandingDeletedEntry
+								key={item.id}
+								itemId={item.id}
+								item={item.defaults}
+								doUndelete={doUndelete}
+							/>
 						) : (
 							<BrandingEntry
 								key={item.id}
@@ -206,7 +212,9 @@ function BrandingEntry({
 			message: (
 				<React.Fragment>
 					<p>
-						{t('Are you sure you want to delete the branding "{{brandingId}}"?', { brandingId: item.computed.name })}
+						{t('Are you sure you want to delete the branding "{{brandingId}}"?', {
+							brandingId: item.computed.name,
+						})}
 					</p>
 					<p>{t('Please note: This action is irreversible!')}</p>
 				</React.Fragment>
@@ -245,12 +253,20 @@ function BrandingEntry({
 				<td className="settings-studio-source-table__id c4">{item.id}</td>
 				<td className="settings-studio-source-table__actions table-item-actions c3">
 					{!item.defaults && (
-						<button className="action-btn" disabled title={t('Branding cannot be reset as it has no default values')}>
+						<button
+							className="action-btn"
+							disabled
+							title={t('Branding cannot be reset as it has no default values')}
+						>
 							<FontAwesomeIcon icon={faSync} />
 						</button>
 					)}
 					{item.defaults && item.overrideOps.length > 0 && (
-						<button className="action-btn" onClick={confirmReset} title={t('Reset branding to default values')}>
+						<button
+							className="action-btn"
+							onClick={confirmReset}
+							title={t('Reset branding to default values')}
+						>
 							<FontAwesomeIcon icon={faSync} />
 						</button>
 					)}
@@ -272,11 +288,17 @@ function BrandingEntry({
 								itemKey={'name'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 							<label className="field">
 								<LabelActual label={t('Internal ID')} />
-								<TextInputControl value={item.id} handleUpdate={doChangeItemId} disabled={!!item.defaults} />
+								<TextInputControl
+									value={item.id}
+									handleUpdate={doChangeItemId}
+									disabled={!!item.defaults}
+								/>
 							</label>
 						</div>
 
@@ -294,7 +316,11 @@ function BrandingEntry({
 
 						<div className="m-1 me-2 text-end">
 							{item.defaults && (
-								<button className="btn btn-primary" onClick={doResetItem} title={t('Reset to defaults')}>
+								<button
+									className="btn btn-primary"
+									onClick={doResetItem}
+									title={t('Reset to defaults')}
+								>
 									<FontAwesomeIcon icon={faSync} />
 								</button>
 							)}

@@ -1,4 +1,4 @@
-import { unprotectString, protectString } from '../../lib/protectedString.js'
+import { protectString, unprotectString } from '../../lib/protectedString.js'
 import type { TSR } from '../../tsr.js'
 import type { MappingsHash, PeripheralDeviceId, StudioId, TimelineBlob, TimelineHash } from './Ids.js'
 

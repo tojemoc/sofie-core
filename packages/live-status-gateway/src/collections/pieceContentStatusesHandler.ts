@@ -1,3 +1,5 @@
+import { Logger } from 'winston'
+
 import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
@@ -5,7 +7,7 @@ import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/Rund
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
 import { PickKeys } from '@sofie-automation/shared-lib/dist/lib/types'
-import { Logger } from 'winston'
+
 import { CoreHandler } from '../coreHandler.js'
 import { CollectionHandlers } from '../liveStatusServer.js'
 import { PublicationCollection } from '../publicationCollection.js'

@@ -1,7 +1,8 @@
-import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
 
 describe('PlayoutSegmentModelImpl', () => {
 	function createBasicDBSegment(): DBSegment {

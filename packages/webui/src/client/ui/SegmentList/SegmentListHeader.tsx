@@ -1,19 +1,21 @@
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
+import type { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
 // import { InView } from 'react-intersection-observer'
 import { contextMenuHoldToDisplayTime } from '../../lib/lib.js'
-import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
-import { SwitchViewModeButton } from '../SegmentContainer/SwitchViewModeButton.js'
-import { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
-import type { PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
+import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
 import { PartCountdown } from '../RundownView/RundownTiming/PartCountdown.js'
 import { SegmentDuration } from '../RundownView/RundownTiming/SegmentDuration.js'
-import type { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useTranslation } from 'react-i18next'
+import { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
+import { SwitchViewModeButton } from '../SegmentContainer/SwitchViewModeButton.js'
 import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
 import type { IContextMenuContext } from '../RundownView.js'
-import { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
+import type { PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 
 export function SegmentListHeader({
 	isDetached,

@@ -1,11 +1,13 @@
-import { PlaylistTimingType } from '@sofie-automation/blueprints-integration/dist/documents/playlistTiming'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { mock, MockProxy } from 'jest-mock-extended'
-import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
+
+import { PlaylistTimingType } from '@sofie-automation/blueprints-integration/dist/documents/playlistTiming'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
 import { CollectionHandlers } from '../../liveStatusServer.js'
 
 const RUNDOWN_1_ID = 'RUNDOWN_1'

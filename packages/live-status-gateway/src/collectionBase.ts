@@ -1,14 +1,16 @@
-import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
-import {
-	StudioId,
-	CoreConnection,
-	ProtectedString,
-	Collection as CoreCollection,
-	CollectionDocCheck,
-} from '@sofie-automation/server-core-integration'
-import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
 import _ from 'underscore'
 import { Logger } from 'winston'
+
+import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
+import {
+	CollectionDocCheck,
+	Collection as CoreCollection,
+	CoreConnection,
+	ProtectedString,
+	StudioId,
+} from '@sofie-automation/server-core-integration'
+import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
+
 import { CoreHandler } from './coreHandler.js'
 import { arePropertiesShallowEqual } from './helpers/equality.js'
 import { CollectionHandlers } from './liveStatusServer.js'

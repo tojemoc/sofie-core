@@ -1,11 +1,12 @@
-import { ControllerAbstract } from './lib.js'
-import { type PrompterViewContent, PrompterConfigMode } from '../PrompterView.js'
+import { PrompterConfigMode } from '../PrompterView.js'
 import {
-	KEYBOARD_VELOCITY_DEFAULTS,
 	dialVelocityStep,
+	KEYBOARD_VELOCITY_DEFAULTS,
 	rememberVelocityStep,
 	velocityStepToSpeed,
 } from './keyboard-velocity.js'
+import { ControllerAbstract } from './lib.js'
+import type { PrompterViewContent } from '../PrompterView.js'
 
 const LOCALSTORAGE_MODE = 'prompter-controller-arrowkeys'
 const LOCALSTORAGE_VELOCITY = 'prompter-controller-keyboard-velocity'

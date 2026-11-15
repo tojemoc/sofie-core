@@ -1,18 +1,20 @@
+import { Meteor } from 'meteor/meteor'
 import React, { useCallback, useMemo } from 'react'
-import { useTracker, useSubscription } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { type ICoreSystem, SofieLogo } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { EditAttribute } from '../../lib/EditAttribute.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import { languageAnd } from '../../lib/language.js'
-import { TriggeredActionsEditor } from './components/triggeredActions/TriggeredActionsEditor.js'
+import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { Meteor } from 'meteor/meteor'
+
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { SofieLogo } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
 import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
-import { CoreSystem } from '../../collections/index.js'
+import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import type { CollectionCleanupResult } from '@sofie-automation/meteor-lib/dist/api/system'
+import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { CoreSystem } from '../../collections/index.js'
+import { CheckboxControl } from '../../lib/Components/Checkbox.js'
+import { DropdownInputControl } from '../../lib/Components/DropdownInput.js'
+import { IntInputControl } from '../../lib/Components/IntInput.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
@@ -21,20 +23,22 @@ import {
 	LabelAndOverridesForInt,
 	LabelAndOverridesForMultiLineText,
 } from '../../lib/Components/LabelAndOverrides.js'
-import { IntInputControl } from '../../lib/Components/IntInput.js'
-import { DropdownInputControl, type DropdownInputOption } from '../../lib/Components/DropdownInput.js'
-import { catchError } from '../../lib/lib.js'
-import { SystemManagementBlueprint } from './SystemManagement/Blueprint.js'
-import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { useOverrideOpHelperForSimpleObject } from './util/OverrideOpHelper.js'
-import { CheckboxControl } from '../../lib/Components/Checkbox.js'
 import {
 	CombinedMultiLineTextInputControl,
 	MultiLineTextInputControl,
 } from '../../lib/Components/MultiLineTextInput.js'
 import { TextInputControl } from '../../lib/Components/TextInput.js'
-import Button from 'react-bootstrap/esm/Button'
+import { EditAttribute } from '../../lib/EditAttribute.js'
+import { languageAnd } from '../../lib/language.js'
+import { catchError } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import { createPrivateApiPath } from '../../url.js'
+import { TriggeredActionsEditor } from './components/triggeredActions/TriggeredActionsEditor.js'
+import { SystemManagementBlueprint } from './SystemManagement/Blueprint.js'
+import { useOverrideOpHelperForSimpleObject } from './util/OverrideOpHelper.js'
+import type { DropdownInputOption } from '../../lib/Components/DropdownInput.js'
 
 interface WithCoreSystemProps {
 	coreSystem: ICoreSystem
@@ -127,7 +131,12 @@ function SystemManagementNotificationMessage({ coreSystem }: Readonly<WithCoreSy
 			<div className="properties-grid">
 				<label className="field">
 					<LabelActual label={t('Message')} />
-					<EditAttribute attribute="systemInfo.message" obj={coreSystem} type="text" collection={CoreSystem} />
+					<EditAttribute
+						attribute="systemInfo.message"
+						obj={coreSystem}
+						type="text"
+						collection={CoreSystem}
+					/>
 				</label>
 				<label className="field">
 					<LabelActual label={t('Enabled')} />
@@ -160,7 +169,9 @@ function SystemManagementSupportPanel({ coreSystem }: Readonly<WithCoreSystemPro
 					overrideHelper={overrideHelper}
 					hint={t('HTML that will be shown in the Support Panel')}
 				>
-					{(value, handleUpdate) => <CombinedMultiLineTextInputControl value={value} handleUpdate={handleUpdate} />}
+					{(value, handleUpdate) => (
+						<CombinedMultiLineTextInputControl value={value} handleUpdate={handleUpdate} />
+					)}
 				</LabelAndOverrides>
 			</div>
 		</>
@@ -204,7 +215,9 @@ function SystemManagementEvaluationsMessage({ coreSystem }: Readonly<WithCoreSys
 					overrideHelper={overrideHelper}
 					hint={t('Message shown to users in the Evaluations form')}
 				>
-					{(value, handleUpdate) => <CombinedMultiLineTextInputControl value={value} handleUpdate={handleUpdate} />}
+					{(value, handleUpdate) => (
+						<CombinedMultiLineTextInputControl value={value} handleUpdate={handleUpdate} />
+					)}
 				</LabelAndOverrides>
 			</div>
 		</>
@@ -229,7 +242,12 @@ function SystemManagementMonitoring({ coreSystem }: Readonly<WithCoreSystemProps
 				</label>
 				<label className="field">
 					<LabelActual label={t('APM Transaction Sample Rate')} />
-					<EditAttribute attribute="apm.transactionSampleRate" obj={coreSystem} type="float" collection={CoreSystem} />
+					<EditAttribute
+						attribute="apm.transactionSampleRate"
+						obj={coreSystem}
+						type="float"
+						collection={CoreSystem}
+					/>
 					<span className="text-s dimmed field-hint">
 						{t(
 							'How many of the transactions to monitor. Set to -1 to log nothing (max performance), 0.5 to log 50% of the transactions, 1 to log all transactions'
@@ -306,7 +324,9 @@ function SystemManagementCronJobs({ coreSystem }: Readonly<WithCoreSystemProps>)
 					item={wrappedItem}
 					itemKey={'maximumDataAge'}
 					overrideHelper={overrideHelper}
-					hint={t('Clean up old data (eg. evaluations, user action logs) that is older than this, in milliseconds')}
+					hint={t(
+						'Clean up old data (eg. evaluations, user action logs) that is older than this, in milliseconds'
+					)}
 				>
 					{(value, handleUpdate) => <IntInputControl value={value} handleUpdate={handleUpdate} />}
 				</LabelAndOverridesForInt>
@@ -406,7 +426,11 @@ function SystemManagementCleanup() {
 					{t('Cleanup old database indexes')}
 				</Button>
 
-				<Button onClick={localCheckForOldDataAndCleanUp} variant="secondary" className="me-1 btn-outline-secondary">
+				<Button
+					onClick={localCheckForOldDataAndCleanUp}
+					variant="secondary"
+					className="me-1 btn-outline-secondary"
+				>
 					{t('Cleanup old data')}
 				</Button>
 			</div>
@@ -544,7 +568,11 @@ function SystemManagementHeapSnapshot() {
 					<span>{t('Preparing, please wait...')}</span>
 				) : displayWarning ? (
 					<>
-						<div>{t(`Are you sure? This will cause the whole Sofie system to be unresponsive several seconds!`)}</div>
+						<div>
+							{t(
+								`Are you sure? This will cause the whole Sofie system to be unresponsive several seconds!`
+							)}
+						</div>
 
 						<a
 							className="btn btn-primary"

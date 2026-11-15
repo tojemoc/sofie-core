@@ -1,16 +1,18 @@
-import type {
-	RundownTTimerIndex,
-	RundownTTimer,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import type { RundownTTimerMode, TimerState } from '@sofie-automation/blueprints-integration'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { getCurrentTime } from '../lib/index.js'
-import type { ReadonlyDeep } from 'type-fest'
 import * as chrono from 'chrono-node'
+import type { ReadonlyDeep } from 'type-fest'
+
 import { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import type { RundownTTimerMode, TimerState } from '@sofie-automation/blueprints-integration'
+import type {
+	RundownTTimer,
+	RundownTTimerIndex,
+} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
 import { JobContext } from '../jobs/index.js'
-import { PlayoutModel } from './model/PlayoutModel.js'
+import { getCurrentTime } from '../lib/index.js'
 import { getOrderedPartsAfterPlayhead } from './lookahead/util.js'
+import { PlayoutModel } from './model/PlayoutModel.js'
 
 export function validateTTimerIndex(index: number): asserts index is RundownTTimerIndex {
 	if (![1, 2, 3].includes(index)) throw new Error(`T-timer index out of range: ${index}`)

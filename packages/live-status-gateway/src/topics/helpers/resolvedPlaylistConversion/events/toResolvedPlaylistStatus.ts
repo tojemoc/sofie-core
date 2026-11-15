@@ -1,17 +1,16 @@
 import type { Logger } from 'winston'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import {
-	PlaylistActivationStatus,
-	ResolvedPlaylistTimingType,
-	type ResolvedPlaylistEvent,
-} from '@sofie-automation/live-status-gateway-api'
-import { createResolvedPlaylistConversionContext, ToResolvedPlaylistStatusProps } from '../context/conversionContext.js'
-import { toResolvedRundownStatus } from '../rundowns/toResolvedRundownStatus.js'
-import { toTTimers } from '../../activePlaylistConversion/timers/toTTimers.js'
-import { toQuickLoopStatus } from '../../activePlaylistConversion/quickLoop/toQuickLoopStatus.js'
+
 import { PlaylistTimingType } from '@sofie-automation/blueprints-integration'
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import { PlaylistActivationStatus, ResolvedPlaylistTimingType } from '@sofie-automation/live-status-gateway-api'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ResolvedPlaylistEvent } from '@sofie-automation/live-status-gateway-api'
+
+import { toQuickLoopStatus } from '../../activePlaylistConversion/quickLoop/toQuickLoopStatus.js'
+import { toTTimers } from '../../activePlaylistConversion/timers/toTTimers.js'
+import { createResolvedPlaylistConversionContext, ToResolvedPlaylistStatusProps } from '../context/conversionContext.js'
+import { toResolvedRundownStatus } from '../rundowns/toResolvedRundownStatus.js'
 
 /** Converts playlist-scoped collection snapshots into the `resolvedPlaylist` websocket event shape. */
 export function toResolvedPlaylistStatus({

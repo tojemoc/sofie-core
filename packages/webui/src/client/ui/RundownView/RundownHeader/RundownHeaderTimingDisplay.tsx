@@ -1,9 +1,11 @@
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import { useTranslation } from 'react-i18next'
-import { useTiming } from '../RundownTiming/withTiming'
-import { getPlaylistTimingDiff } from '../../../lib/rundownTiming'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { OverUnderChip } from '../../../lib/Components/OverUnderChip'
+import { getPlaylistTimingDiff } from '../../../lib/rundownTiming'
+import { useTiming } from '../RundownTiming/withTiming'
 
 export interface IRundownHeaderTimingDisplayProps {
 	playlist: DBRundownPlaylist

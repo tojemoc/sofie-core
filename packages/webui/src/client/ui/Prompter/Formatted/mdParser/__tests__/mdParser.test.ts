@@ -1,5 +1,6 @@
-import createParser, { type Parser } from '../index'
-import type { RootNode, Node } from '../astNodes'
+import createParser from '../index'
+import type { Node, RootNode } from '../astNodes'
+import type { Parser } from '../index'
 
 // The parser uses performance.mark which may not exist in jsdom
 if (typeof performance.mark !== 'function') {

@@ -1,25 +1,27 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintPartOutTransition, IBlueprintPieceType, TSR } from '@sofie-automation/blueprints-integration'
 import { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import {
-	TimelineObjGroupPart,
 	OnGenerateTimelineObjExt,
-	TimelineObjType,
 	TimelineContentTypeOther,
-	TimelineObjRundown,
+	TimelineObjGroupPart,
 	TimelineObjPartAbstract,
+	TimelineObjRundown,
+	TimelineObjType,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
-import { getPartGroupId, getPartFirstObjectId } from '@sofie-automation/corelib/dist/playout/ids'
+import { getPartFirstObjectId, getPartGroupId } from '@sofie-automation/corelib/dist/playout/ids'
 import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { PieceTimelineMetadata } from './pieceGroup.js'
-import { JobContext } from '../../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
-import { getPieceEnableInsidePart, transformPieceGroupAndObjects } from './piece.js'
-import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { SelectedPartInstanceTimelineInfo } from './generate.js'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { PlayoutChangedType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
+import { JobContext } from '../../jobs/index.js'
+import { SelectedPartInstanceTimelineInfo } from './generate.js'
 import { TimelinePlayoutState } from './lib.js'
+import { getPieceEnableInsidePart, transformPieceGroupAndObjects } from './piece.js'
+import { PieceTimelineMetadata } from './pieceGroup.js'
 
 export function transformPartIntoTimeline(
 	context: JobContext,

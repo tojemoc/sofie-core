@@ -1,14 +1,16 @@
-import _ from 'underscore'
-import { ReadonlyDeep } from 'type-fest'
 import fastClone from 'fast-clone'
-import { ProtectedString, protectString } from './protectedString.js'
-import * as objectPath from 'object-path'
-import { Timecode } from './timecode.js'
-import { iterateDeeply, iterateDeeplyEnum, Time } from '@sofie-automation/blueprints-integration'
-import { IStudioSettings } from './dataModel/Studio.js'
 import { customAlphabet as createNanoid } from 'nanoid'
-import type { ITranslatableMessage } from './TranslatableMessage.js'
+import * as objectPath from 'object-path'
+import { ReadonlyDeep } from 'type-fest'
 import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+import _ from 'underscore'
+
+import { iterateDeeply, iterateDeeplyEnum, Time } from '@sofie-automation/blueprints-integration'
+
+import { IStudioSettings } from './dataModel/Studio.js'
+import { ProtectedString, protectString } from './protectedString.js'
+import { Timecode } from './timecode.js'
+import type { ITranslatableMessage } from './TranslatableMessage.js'
 
 /**
  * Limited character set to use for id generation
@@ -140,7 +142,7 @@ export function normalizeArrayFunc<T>(array: Array<T>, getKey: (o: T) => string)
 	for (const obj of array) {
 		normalizedObject[getKey(obj)] = obj
 	}
-	return normalizedObject as { [key: string]: T }
+	return normalizedObject
 }
 /**
  * Convert an array to a object, keyed on an `id` field.

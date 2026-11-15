@@ -1,14 +1,16 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
+
+import { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBShowStyleBase, OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+
+import { CoreHandler } from '../coreHandler.js'
 import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 export interface ShowStyleBaseExt extends DBShowStyleBase {
 	sourceLayerNamesById: ReadonlyMap<string, string>

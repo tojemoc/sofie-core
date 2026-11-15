@@ -1,16 +1,18 @@
+import _ from 'underscore'
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { CollectionHandlers } from '../liveStatusServer.js'
+
+import { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBShowStyleBase, OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 import { ShowStyleBaseExt } from './showStyleBaseHandler.js'
-import _ from 'underscore'
 
 function buildShowStyleBaseExt(showStyleBase: DBShowStyleBase): ShowStyleBaseExt {
 	const sourceLayers: SourceLayers = applyAndValidateOverrides(showStyleBase.sourceLayersWithOverrides).obj
@@ -33,7 +35,7 @@ function buildShowStyleBaseExt(showStyleBase: DBShowStyleBase): ShowStyleBaseExt
 		sourceLayerNamesById,
 		outputLayerNamesById,
 		sourceLayers,
-	} as ShowStyleBaseExt
+	}
 }
 
 /**
@@ -62,7 +64,7 @@ export class ShowStyleBasesHandler extends PublicationCollection<
 
 	private updateAndNotify(): void {
 		const collection = this.getCollectionOrFail()
-		const all = collection.find(undefined) as unknown as DBShowStyleBase[]
+		const all = collection.find(undefined)
 
 		const showStyles = all.map(buildShowStyleBaseExt)
 

@@ -1,6 +1,6 @@
 import type { Time } from '../common.js'
-import type { IBlueprintPartDB } from './part.js'
 import type { ITranslatableMessage } from '../translations.js'
+import type { IBlueprintPartDB } from './part.js'
 
 export type PartEndState = unknown
 

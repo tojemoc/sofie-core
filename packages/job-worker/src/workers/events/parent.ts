@@ -1,10 +1,12 @@
-import { EventsWorkerChild } from './child.js'
-import { InvalidateWorkerDataCache } from '../caches.js'
-import { WorkerJobResult, WorkerParentBase, WorkerParentBaseOptions, WorkerParentOptions } from '../parent-base.js'
-import { AnyLockEvent } from '../locks.js'
-import { getEventsQueueName } from '@sofie-automation/corelib/dist/worker/events'
 import { Promisify, threadedClass, ThreadedClassManager } from 'threadedclass'
+
+import { getEventsQueueName } from '@sofie-automation/corelib/dist/worker/events'
+
 import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../../main.js'
+import { InvalidateWorkerDataCache } from '../caches.js'
+import { AnyLockEvent } from '../locks.js'
+import { WorkerJobResult, WorkerParentBase, WorkerParentBaseOptions, WorkerParentOptions } from '../parent-base.js'
+import { EventsWorkerChild } from './child.js'
 
 const FREEZE_LIMIT = 1000 // how long to wait for a response to a Ping
 const RESTART_TIMEOUT = 10000 // how long to wait for a restart to complete before throwing an error

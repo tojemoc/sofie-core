@@ -1,14 +1,16 @@
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import _ from 'underscore'
-import { omit } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { makeTableOfObject } from '../../lib/utilComponents.js'
-import type { MappingExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { LookaheadMode, TSR } from '@sofie-automation/blueprints-integration'
-import { useTranslation } from 'react-i18next'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+
+import { LookaheadMode, TSR } from '@sofie-automation/blueprints-integration'
+import { omit } from '@sofie-automation/corelib/dist/lib'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { MappingExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { makeTableOfObject } from '../../lib/utilComponents.js'
 import { StudioMappings } from './collections'
 
 export function MappingsView(): JSX.Element {
@@ -76,7 +78,15 @@ function ComponentMappingsTableRow({ id, obj }: Readonly<ComponentMappingsTableR
 			</td>
 			<td>
 				{makeTableOfObject(
-					omit(obj, 'deviceId', 'device', 'lookahead', 'lookaheadDepth', 'lookaheadMaxSearchDistance', 'layerName')
+					omit(
+						obj,
+						'deviceId',
+						'device',
+						'lookahead',
+						'lookaheadDepth',
+						'lookaheadMaxSearchDistance',
+						'layerName'
+					)
 				)}
 			</td>
 		</tr>

@@ -1,11 +1,12 @@
 /* tslint:disable:no-use-before-declare */
-import { PackageInfo } from '../../coreSystem'
-import { shouldUpdateStudioBaselineInner } from '@sofie-automation/corelib/dist/studio/baseline'
-import { Blueprints, RundownPlaylists, Timeline } from '../../collections'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { QueueStudioJob } from '../../worker/worker'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { shouldUpdateStudioBaselineInner } from '@sofie-automation/corelib/dist/studio/baseline'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+
+import { Blueprints, RundownPlaylists, Timeline } from '../../collections'
+import { PackageInfo } from '../../coreSystem'
+import { QueueStudioJob } from '../../worker/worker'
 
 export namespace ServerPlayoutAPI {
 	export async function shouldUpdateStudioBaseline(studio: DBStudio): Promise<string | false> {

@@ -1,21 +1,6 @@
 import { z } from 'zod'
-import { check } from '../lib/check'
-import { literal, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { getCurrentTime } from '../lib/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { logger } from '../logging'
-import { ClientAPI, NewClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import { MethodContext, MethodContextAPI } from './methodContext'
-import { isInTestWrite, triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
-import { endTrace, sendTrace, startTrace } from './integration/influx'
-import { interpollateTranslation, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { UserError } from '@sofie-automation/corelib/dist/error'
-import { StudioJobFunc } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { TSR } from '@sofie-automation/blueprints-integration'
-import { QueueStudioJob } from '../worker/worker'
-import { profiler } from './profiler'
 import {
 	PeripheralDeviceId,
 	RundownId,
@@ -23,17 +8,34 @@ import {
 	StudioId,
 	UserActionsLogItemId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
+import { LeveledLogMethodFixed } from '@sofie-automation/corelib/dist/logging'
+import { interpollateTranslation, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { StudioJobFunc } from '@sofie-automation/corelib/dist/worker/studio'
+import { ClientAPI, NewClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { UserActionsLog } from '../collections'
+import { check } from '../lib/check'
+import { getCurrentTime } from '../lib/lib'
+import { logger } from '../logging'
+import { assertConnectionHasOneOfPermissions } from '../security/auth'
 import {
 	checkAccessToPlaylist,
 	checkAccessToRundown,
 	VerifiedRundownForUserAction,
 	VerifiedRundownPlaylistForUserAction,
 } from '../security/check'
-import { UserActionsLog } from '../collections'
-import { executePeripheralDeviceFunctionWithCustomTimeout } from './peripheralDevice/executeFunction'
+import { isInTestWrite, triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
+import { QueueStudioJob } from '../worker/worker'
+import { endTrace, sendTrace, startTrace } from './integration/influx'
+import { MethodContext, MethodContextAPI } from './methodContext'
 import { resolveActionResult } from './peripheralDevice'
-import { LeveledLogMethodFixed } from '@sofie-automation/corelib/dist/logging'
-import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { executePeripheralDeviceFunctionWithCustomTimeout } from './peripheralDevice/executeFunction'
+import { profiler } from './profiler'
 
 function rewrapError(methodName: string, e: any): ClientAPI.ClientResponseError {
 	const userError = UserError.fromUnknown(e)

@@ -1,8 +1,9 @@
 import _ from 'underscore'
-import { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { SerializedUserError, UserError } from '@sofie-automation/corelib/dist/error'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { TSR } from '@sofie-automation/blueprints-integration'
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SerializedUserError, UserError } from '@sofie-automation/corelib/dist/error'
+import { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
 
 export interface NewClientAPI {
 	clientLogger(type: string, ...args: string[]): Promise<void>
@@ -31,12 +32,12 @@ export interface NewClientAPI {
 }
 
 export enum ClientAPIMethods {
-	'clientLogger' = 'client.clientLogger',
-	'clientErrorReport' = 'client.clientErrorReport',
-	'clientLogNotification' = 'client.clientLogNotification',
-	'callPeripheralDeviceFunction' = 'client.callPeripheralDeviceFunction',
-	'callPeripheralDeviceAction' = 'client.callPeripheralDeviceAction',
-	'callBackgroundPeripheralDeviceFunction' = 'client.callBackgroundPeripheralDeviceFunction',
+	clientLogger = 'client.clientLogger',
+	clientErrorReport = 'client.clientErrorReport',
+	clientLogNotification = 'client.clientLogNotification',
+	callPeripheralDeviceFunction = 'client.callPeripheralDeviceFunction',
+	callPeripheralDeviceAction = 'client.callPeripheralDeviceAction',
+	callBackgroundPeripheralDeviceFunction = 'client.callBackgroundPeripheralDeviceFunction',
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

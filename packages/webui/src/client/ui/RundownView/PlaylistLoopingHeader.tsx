@@ -1,9 +1,10 @@
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
+
+import { RundownUtils } from '../../lib/rundown.js'
 import { LoopingIcon } from '../../lib/ui/icons/looping.js'
 import { useTiming } from './RundownTiming/withTiming.js'
-import { RundownUtils } from '../../lib/rundown.js'
 
 function NextLoopClock({ useWallClock }: { useWallClock?: boolean }) {
 	const timingDurations = useTiming()
@@ -16,7 +17,11 @@ function NextLoopClock({ useWallClock }: { useWallClock?: boolean }) {
 	return (
 		<span>
 			{useWallClock ? (
-				<Moment interval={0} format="HH:mm:ss" date={(timingDurations.currentTime || 0) + (thisPartCountdown || 0)} />
+				<Moment
+					interval={0}
+					format="HH:mm:ss"
+					date={(timingDurations.currentTime || 0) + (thisPartCountdown || 0)}
+				/>
 			) : (
 				RundownUtils.formatTimeToShortTime(
 					thisPartCountdown! // shouldShow will be false if thisPartCountdown is undefined

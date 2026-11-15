@@ -1,13 +1,16 @@
-import { useMemo } from 'react'
-import { useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
-import { BlueprintManifestType, type IShowStyleConfigPreset } from '@sofie-automation/blueprints-integration'
-import { Blueprints, ShowStyleBases } from '../../../../collections/index.js'
-import { useTranslation } from 'react-i18next'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import type { IShowStyleConfigPreset } from '@sofie-automation/blueprints-integration'
 import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
+import { Blueprints, ShowStyleBases } from '../../../../collections/index.js'
 import { LabelActual } from '../../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import { useTracker } from '../../../../lib/ReactMeteorData/react-meteor-data.js'
 
 interface SelectConfigPresetProps {
 	showStyleBase: DBShowStyleBase

@@ -1,18 +1,20 @@
 import { RundownId, RundownPlaylistId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import {
+	AdLibActions,
+	AdLibPieces,
 	PartInstances,
 	Parts,
 	RundownBaselineAdLibActions,
 	RundownBaselineAdLibPieces,
 	RundownPlaylists,
 	Rundowns,
-	AdLibActions,
-	AdLibPieces,
 	Segments,
 	ShowStyleBases,
 	TriggeredActions,
 } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../../publications/lib/lib'
 import {
 	adLibActionFieldSpecifier,
 	adLibPieceFieldSpecifier,
@@ -24,7 +26,6 @@ import {
 	rundownPlaylistFieldSpecifier,
 	segmentFieldSpecifier,
 } from './reactiveContentCache'
-import { waitForAllObserversReady } from '../../publications/lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

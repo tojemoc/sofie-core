@@ -1,44 +1,46 @@
-import { useState, useEffect, useContext, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useSubscription, useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { faCaretDown, faCaretRight, faDownload, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { TriggeredActionEntry, TRIGGERED_ACTION_ENTRY_DRAG_TYPE } from './TriggeredActionEntry.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { TriggersHandler } from '../../../../lib/triggers/TriggersHandler.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { MeteorCall } from '../../../../lib/meteorApi.js'
-import { UploadButton } from '../../../../lib/uploadButton.js'
-import { ErrorBoundary } from '../../../../lib/ErrorBoundary.js'
-import { SorensenContext } from '../../../../lib/SorensenContext.js'
-import Tooltip from 'rc-tooltip'
-import { useDrop } from 'react-dnd'
-import { TriggerType } from '@sofie-automation/blueprints-integration'
-import { keyLabelsToCodes } from '../../../../lib/triggers/codesToKeyLabels.js'
 import classNames from 'classnames'
-import { catchError, fetchFrom } from '../../../../lib/lib.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../../../lib/notifications/notifications.js'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
+import Tooltip from 'rc-tooltip'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import Form from 'react-bootstrap/esm/Form'
+import { useDrop } from 'react-dnd'
+import { useTranslation } from 'react-i18next'
+
+import { TriggerType } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import type {
 	PartId,
 	RundownId,
 	ShowStyleBaseId,
 	TriggeredActionId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
 import { RundownPlaylists, Rundowns, TriggeredActions } from '../../../../collections/index.js'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { SourceLayers, OutputLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { RundownPlaylistCollectionUtil } from '../../../../collections/rundownPlaylistUtil.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { UIPartInstances, UIParts } from '../../../Collections.js'
-import Form from 'react-bootstrap/esm/Form'
-import Button from 'react-bootstrap/esm/Button'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { ErrorBoundary } from '../../../../lib/ErrorBoundary.js'
+import { catchError, fetchFrom } from '../../../../lib/lib.js'
+import { MeteorCall } from '../../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { SorensenContext } from '../../../../lib/SorensenContext.js'
+import { keyLabelsToCodes } from '../../../../lib/triggers/codesToKeyLabels.js'
+import { TriggersHandler } from '../../../../lib/triggers/TriggersHandler.js'
+import { UploadButton } from '../../../../lib/uploadButton.js'
 import { createPrivateApiPath } from '../../../../url.js'
+import { UIPartInstances, UIParts } from '../../../Collections.js'
+import { TRIGGERED_ACTION_ENTRY_DRAG_TYPE, TriggeredActionEntry } from './TriggeredActionEntry.js'
 
 export interface PreviewContext {
 	rundownPlaylist: DBRundownPlaylist | null
@@ -381,7 +383,9 @@ export const TriggeredActionsEditor: React.FC<IProps> = function TriggeredAction
 						onDuplicate={onDuplicateEntry}
 						sourceLayers={sourceLayers}
 						outputLayers={outputLayers}
-						previewContext={rundownPlaylist && selectedTriggeredActionId === triggeredActionId ? previewContext : null}
+						previewContext={
+							rundownPlaylist && selectedTriggeredActionId === triggeredActionId ? previewContext : null
+						}
 						onFocus={setSelectedTriggeredActionId}
 					/>
 				))}
@@ -416,7 +420,9 @@ export const TriggeredActionsEditor: React.FC<IProps> = function TriggeredAction
 										sourceLayers={sourceLayers}
 										outputLayers={outputLayers}
 										previewContext={
-											rundownPlaylist && selectedTriggeredActionId === triggeredActionId ? previewContext : null
+											rundownPlaylist && selectedTriggeredActionId === triggeredActionId
+												? previewContext
+												: null
 										}
 										onFocus={setSelectedTriggeredActionId}
 									/>
@@ -456,14 +462,17 @@ function ImportTriggeredActionsButton({ showStyleBaseId }: { showStyleBaseId: Sh
 	const onUploadActions = useCallback(
 		(uploadFileContents: string) => {
 			function uploadStoredTriggeredActions(replace?: boolean) {
-				fetchFrom(createPrivateApiPath(`actionTriggers/upload/${showStyleBaseId ?? ''}${replace ? '?replace' : ''}`), {
-					method: 'POST',
-					body: uploadFileContents,
-					headers: {
-						'content-type': 'application/json',
-						// authorization: 'id ' + Meteor.userId(),
-					},
-				})
+				fetchFrom(
+					createPrivateApiPath(`actionTriggers/upload/${showStyleBaseId ?? ''}${replace ? '?replace' : ''}`),
+					{
+						method: 'POST',
+						body: uploadFileContents,
+						headers: {
+							'content-type': 'application/json',
+							// authorization: 'id ' + Meteor.userId(),
+						},
+					}
+				)
 					.then(() => {
 						NotificationCenter.push(
 							new Notification(

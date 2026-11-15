@@ -1,10 +1,14 @@
 import classNames from 'classnames'
+
 import './SplitButtonLayerBackground.scss'
+
+import type { ReadonlyDeep } from 'type-fest'
+
 import type { SplitsContent } from '@sofie-automation/blueprints-integration'
 import type { PieceGeneric } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { getSplitPreview, SplitRole } from '../../../../lib/ui/splitPreview.js'
+
 import { RundownUtils } from '../../../../lib/rundown.js'
-import type { ReadonlyDeep } from 'type-fest'
+import { getSplitPreview, SplitRole } from '../../../../lib/ui/splitPreview.js'
 
 /** Layer class for the top DVE box (upper stripe), used as the large-button outer tag-container background. */
 export function getSplitsTopBoxLayerClassName(

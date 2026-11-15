@@ -1,24 +1,27 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import Escape from '../../../lib/Escape'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { type Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { ContextMenu, MenuItem, ContextMenuTrigger, hideMenu, showMenu } from '@jstarpl/react-contextmenu'
-import { contextMenuHoldToDisplayTime, useRundownViewEventBusListener } from '../../../lib/lib'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
-import {
-	type ActivateRundownPlaylistEvent,
-	type DeactivateRundownPlaylistEvent,
-	type IEventContext,
-	RundownViewEvents,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { UserPermissionsContext } from '../../UserPermissions'
-import { checkRundownTimes, useRundownPlaylistOperations } from './useRundownPlaylistOperations.js'
-import { reloadRundownPlaylistClick } from '../RundownNotifier'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ContextMenu, ContextMenuTrigger, hideMenu, MenuItem, showMenu } from '@jstarpl/react-contextmenu'
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+
+import { getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { isAnyLoopMarkerDefined, isLoopLocked } from '@sofie-automation/corelib/src/playout/stateCacheResolver'
+import { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio'
+import type {
+	ActivateRundownPlaylistEvent,
+	DeactivateRundownPlaylistEvent,
+	IEventContext,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import Escape from '../../../lib/Escape'
+import { contextMenuHoldToDisplayTime, useRundownViewEventBusListener } from '../../../lib/lib'
+import { UserPermissionsContext } from '../../UserPermissions'
+import { reloadRundownPlaylistClick } from '../RundownNotifier'
+import { checkRundownTimes, useRundownPlaylistOperations } from './useRundownPlaylistOperations.js'
 
 export const RUNDOWN_CONTEXT_MENU_ID = 'rundown-context-menu'
 
@@ -71,8 +74,14 @@ export function RundownContextMenu({
 	)
 	const eventResync = useCallback((e: IEventContext) => operations.reloadRundownPlaylist(e.context), [operations])
 	const eventTake = useCallback((e: IEventContext) => operations.take(e.context), [operations])
-	const eventResetRundownPlaylist = useCallback((e: IEventContext) => operations.resetRundown(e.context), [operations])
-	const eventCreateSnapshot = useCallback((e: IEventContext) => operations.takeRundownSnapshot(e.context), [operations])
+	const eventResetRundownPlaylist = useCallback(
+		(e: IEventContext) => operations.resetRundown(e.context),
+		[operations]
+	)
+	const eventCreateSnapshot = useCallback(
+		(e: IEventContext) => operations.takeRundownSnapshot(e.context),
+		[operations]
+	)
 
 	useRundownViewEventBusListener(RundownViewEvents.ACTIVATE_RUNDOWN_PLAYLIST, eventActivate)
 	useRundownViewEventBusListener(RundownViewEvents.DEACTIVATE_RUNDOWN_PLAYLIST, eventDeactivate)

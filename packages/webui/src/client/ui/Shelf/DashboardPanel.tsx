@@ -1,40 +1,41 @@
-import React from 'react'
-import _ from 'underscore'
-import { type Translated, useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import ClassNames from 'classnames'
-
-import { Spinner } from '../../lib/Spinner.js'
-import type { ISourceLayer, IBlueprintActionTriggerMode } from '@sofie-automation/blueprints-integration'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
-import {
-	type DashboardLayoutFilter,
-	DashboardPanelUnit,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { type IAdLibPanelProps, type AdLibFetchAndFilterProps, useFetchAndFilter } from './AdLibPanel.js'
-import { AdLibPanelToolbar } from './AdLibPanelToolbar.js'
-import { matchFilter } from './AdLibListView.js'
-import { DashboardPieceButton } from './DashboardPieceButton/DashboardPieceButton.js'
-import { contextMenuHoldToDisplayTime, UserAgentPointer, USER_AGENT_POINTER_PROPERTY } from '../../lib/lib.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { setShelfContextMenuContext, ContextType } from './ShelfContextMenu.js'
+import ClassNames from 'classnames'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { DashboardPanelUnit } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IBlueprintActionTriggerMode, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { DashboardLayoutFilter } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { contextMenuHoldToDisplayTime, USER_AGENT_POINTER_PROPERTY, UserAgentPointer } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
 import { RundownUtils } from '../../lib/rundown.js'
 import {
-	type AdLibPieceUi,
 	getNextPieceInstancesGrouped,
 	getUnfinishedPieceInstancesGrouped,
 	isAdLibDisplayedAsOnAir,
 	isAdLibNext,
 	isAdLibOnAir,
 } from '../../lib/shelf.js'
+import { Spinner } from '../../lib/Spinner.js'
 import { UIStudios } from '../Collections.js'
-import type { PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { useTranslation } from 'react-i18next'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import { matchFilter } from './AdLibListView.js'
+import { useFetchAndFilter } from './AdLibPanel.js'
+import { AdLibPanelToolbar } from './AdLibPanelToolbar.js'
+import { DashboardPieceButton } from './DashboardPieceButton/DashboardPieceButton.js'
+import { ContextType, setShelfContextMenuContext } from './ShelfContextMenu.js'
+import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { AdLibFetchAndFilterProps, IAdLibPanelProps } from './AdLibPanel.js'
 
 export interface IDashboardPanelState {
 	searchFilter: string | undefined
@@ -139,7 +140,14 @@ export function filterOutAdLibsForDashboardPanel(
 	return props.rundownBaselineAdLibs
 		.concat(props.uiSegments.map((seg) => seg.pieces).flat())
 		.filter((item) =>
-			matchFilter(item, props.showStyleBase.sourceLayers, liveSegment, props.filter, state.searchFilter, uniquenessIds)
+			matchFilter(
+				item,
+				props.showStyleBase.sourceLayers,
+				liveSegment,
+				props.filter,
+				state.searchFilter,
+				uniquenessIds
+			)
 		)
 }
 
@@ -267,7 +275,9 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 		const sourceLayer = this.props.sourceLayerLookup && this.props.sourceLayerLookup[adlibPiece.sourceLayerId]
 
 		if (queue && sourceLayer && !sourceLayer.isQueueable) {
-			console.log(`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`)
+			console.log(
+				`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`
+			)
 			return
 		}
 		if (this.props.playlist && this.props.playlist.currentPartInfo) {
@@ -275,16 +285,20 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 			if (!this.isAdLibOnAir(adlibPiece) || !(sourceLayer && sourceLayer.isClearable)) {
 				if (adlibPiece.isAction && adlibPiece.adlibAction) {
 					const action = adlibPiece.adlibAction
-					doUserAction(t, e, adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB, (e, ts) =>
-						MeteorCall.userAction.executeAction(
-							e,
-							ts,
-							this.props.playlist._id,
-							action._id,
-							action.actionId,
-							action.userData,
-							mode?.data
-						)
+					doUserAction(
+						t,
+						e,
+						adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB,
+						(e, ts) =>
+							MeteorCall.userAction.executeAction(
+								e,
+								ts,
+								this.props.playlist._id,
+								action._id,
+								action.actionId,
+								action.userData,
+								mode?.data
+							)
 					)
 				} else if (!adlibPiece.isGlobal && !adlibPiece.isAction) {
 					doUserAction(t, e, UserAction.START_ADLIB, (e, ts) =>
@@ -361,15 +375,19 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 				if (!this.isAdLibOnAir(piece) || !(sourceLayer && sourceLayer.isClearable)) {
 					if (piece.isAction && piece.adlibAction) {
 						const action = piece.adlibAction
-						doUserAction(t, e, piece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB, (e, ts) =>
-							MeteorCall.userAction.executeAction(
-								e,
-								ts,
-								this.props.playlist._id,
-								action._id,
-								action.actionId,
-								action.userData
-							)
+						doUserAction(
+							t,
+							e,
+							piece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB,
+							(e, ts) =>
+								MeteorCall.userAction.executeAction(
+									e,
+									ts,
+									this.props.playlist._id,
+									action._id,
+									action.actionId,
+									action.userData
+								)
 						)
 					} else if (!piece.isGlobal) {
 						doUserAction(t, e, UserAction.START_ADLIB, (e, ts) =>
@@ -456,7 +474,10 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 					>
 						<h4 className="dashboard-panel__header">{this.props.filter.name}</h4>
 						{filter.enableSearch && (
-							<AdLibPanelToolbar onFilterChange={this.onFilterChange} searchFilter={this.state.searchFilter} />
+							<AdLibPanelToolbar
+								onFilterChange={this.onFilterChange}
+								searchFilter={this.state.searchFilter}
+							/>
 						)}
 						<div
 							className={ClassNames('dashboard-panel__panel', {
@@ -485,7 +506,9 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 											piece={adLibPiece}
 											studio={this.props.studio}
 											layer={this.props.showStyleBase.sourceLayers[adLibPiece.sourceLayerId]}
-											outputLayer={this.props.showStyleBase.outputLayers[adLibPiece.outputLayerId]}
+											outputLayer={
+												this.props.showStyleBase.outputLayers[adLibPiece.outputLayerId]
+											}
 											onToggleAdLib={this.onToggleOrSelectAdLib}
 											onSelectAdLib={this.onSelectAdLib}
 											playlist={this.props.playlist}
@@ -496,8 +519,13 @@ export class DashboardPanelInner extends React.Component<Translated<DashboardPan
 											displayStyle={filter.displayStyle}
 											showThumbnailsInList={filter.showThumbnailsInList}
 											disableHoverInspector={filter.disableHoverInspector ?? false}
-											toggleOnSingleClick={filter.toggleOnSingleClick || this.state.singleClickMode}
-											isSelected={this.state.selectedAdLib && adLibPiece._id === this.state.selectedAdLib._id}
+											toggleOnSingleClick={
+												filter.toggleOnSingleClick || this.state.singleClickMode
+											}
+											isSelected={
+												this.state.selectedAdLib &&
+												adLibPiece._id === this.state.selectedAdLib._id
+											}
 											disabled={adLibPiece.disabled}
 										>
 											{adLibPiece.name}

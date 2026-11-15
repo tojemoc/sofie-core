@@ -6,15 +6,16 @@
  * once by `__mocks__/integration-global-setup.js` (change streams require a replica set). Run via
  * `yarn unit:integration`.
  */
-import { MongoClient, ChangeStreamDocument } from 'mongodb'
+import { ChangeStreamDocument, MongoClient } from 'mongodb'
+
 import {
+	ChangeStreamLike,
 	CollectionChangeFeed,
 	createCollectionChangeStream,
-	ChangeStreamLike,
 } from '../../collections/changeStream/collectionChangeFeed'
 import { ObserveMultiplexer, ObserveMultiplexerDeps } from '../../collections/changeStream/observeMultiplexer'
 import { connectSharedMongoClient, freshCollection } from './_integrationDb'
-import { TestDoc, id, waitFor, newSink, makeMultiplexer, subscribeChanges } from './_observeHelpers'
+import { id, makeMultiplexer, newSink, subscribeChanges, TestDoc, waitFor } from './_observeHelpers'
 
 describe('change-stream engine (integration)', () => {
 	let client: MongoClient

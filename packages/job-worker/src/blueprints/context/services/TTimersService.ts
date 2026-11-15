@@ -1,33 +1,35 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import {
+	timerStateToDuration,
+	timerStateToZeroTime,
+} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import type {
 	IPlaylistTTimer,
 	RundownTTimerMode,
 	TimerState,
 } from '@sofie-automation/blueprints-integration/dist/context/tTimersContext'
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type {
 	RundownTTimer,
 	RundownTTimerIndex,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import {
-	timerStateToDuration,
-	timerStateToZeroTime,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import type { PlayoutModel } from '../../../playout/model/PlayoutModel.js'
-import { ReadonlyDeep } from 'type-fest'
+
+import { getCurrentTime } from '../../../lib/index.js'
 import {
 	createCountdownTTimer,
 	createFreeRunTTimer,
 	createTimeOfDayTTimer,
 	pauseTTimer,
+	recalculateTTimerProjections,
 	restartTTimer,
 	resumeTTimer,
 	validateTTimerIndex,
-	recalculateTTimerProjections,
 } from '../../../playout/tTimers.js'
-import { getCurrentTime } from '../../../lib/index.js'
 import type { JobContext } from '../../../jobs/index.js'
+import type { PlayoutModel } from '../../../playout/model/PlayoutModel.js'
 
 export class TTimersService {
 	readonly timers: [PlaylistTTimerImpl, PlaylistTTimerImpl, PlaylistTTimerImpl]

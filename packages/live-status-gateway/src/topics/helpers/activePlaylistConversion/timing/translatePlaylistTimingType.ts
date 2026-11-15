@@ -15,6 +15,6 @@ export function translatePlaylistTimingType(type: PlaylistTimingType): ActivePla
 		default:
 			assertNever(type)
 			// Cast and return the value anyway, so that the application works
-			return type as any as ActivePlaylistTimingMode
+			return type
 	}
 }

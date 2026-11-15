@@ -1,4 +1,5 @@
 import { PackageInfo, Time } from '@sofie-automation/blueprints-integration'
+
 import { protectString } from '../protectedString.js'
 import { ExpectedPackageId, PackageInfoId, PeripheralDeviceId, StudioId } from './Ids.js'
 

@@ -1,7 +1,8 @@
+import type { AbPlayerId } from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
 import type { TimelineObjectAbSessionInfo } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
+
 import type { ICommonContext } from './context/index.js'
 import type { OnGenerateTimelineObj, TSR } from './timeline.js'
-import type { AbPlayerId } from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
 
 export type { AbPlayerId }
 

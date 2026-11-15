@@ -1,18 +1,20 @@
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ClassNames from 'classnames'
+import Tooltip from 'rc-tooltip'
 import * as React from 'react'
-import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { ExpectedPackage, ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import Tooltip from 'rc-tooltip'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import ClassNames from 'classnames'
-import { ExpectedPackage, ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
-import { useTranslation } from 'react-i18next'
+import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
 import { DisplayFormattedTime } from '../../RundownList/DisplayFormattedTime.js'
 import { PackageWorkStatus } from './PackageWorkStatus.js'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 
 /** How long to wait before considering an unchanged package to not be "working" annymore */
 const WORKING_TIMEOUT = 2000
@@ -110,9 +112,16 @@ export const PackageStatus: React.FC<{
 		const allProgress2 = connected ? allProgress : undefined
 		return (
 			<>
-				<Tooltip overlay={offlineReasonMessage || t('The progress of steps required for playout')} placement="top">
+				<Tooltip
+					overlay={offlineReasonMessage || t('The progress of steps required for playout')}
+					placement="top"
+				>
 					<span>
-						<PackageStatusIcon progress={requiredProgress2} label={labelRequiredProgress} isWorking={requiredWorking} />
+						<PackageStatusIcon
+							progress={requiredProgress2}
+							label={labelRequiredProgress}
+							isWorking={requiredWorking}
+						/>
 					</span>
 				</Tooltip>
 				<Tooltip overlay={offlineReasonMessage || t('The progress of all steps')} placement="top">
@@ -153,7 +162,13 @@ export const PackageStatus: React.FC<{
 			</tr>
 			{isOpen
 				? statuses.map((status) => {
-						return <PackageWorkStatus key={unprotectString(status._id)} status={status} connected={connected} />
+						return (
+							<PackageWorkStatus
+								key={unprotectString(status._id)}
+								status={status}
+								connected={connected}
+							/>
+						)
 					})
 				: null}
 		</React.Fragment>

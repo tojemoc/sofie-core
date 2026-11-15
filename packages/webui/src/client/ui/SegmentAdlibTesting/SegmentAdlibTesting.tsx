@@ -1,36 +1,36 @@
+import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
+import classNames from 'classnames'
+import { Meteor } from 'meteor/meteor'
+import { motion } from 'motion/react'
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { NoteSeverity } from '@sofie-automation/blueprints-integration'
+import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type {
+	GoToPartEvent,
+	GoToPartInstanceEvent,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { contextMenuHoldToDisplayTime, useCombinedRefs, useRundownViewEventBusListener } from '../../lib/lib.js'
+import { hidePointerLockCursor, showPointerLockCursor } from '../../lib/PointerLockCursor.js'
+import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
+import { lockPointer, unlockPointer } from '../../lib/viewPort.js'
+import { getElementWidth } from '../../utils/dimensions.js'
+import { StoryboardPart } from '../SegmentStoryboard/StoryboardPart.js'
+import { filterSecondarySourceLayers } from '../SegmentStoryboard/StoryboardPartSecondaryPieces/StoryboardPartSecondaryPieces.js'
+import { HOVER_TIMEOUT } from '../Shelf/DashboardPieceButton/types.js'
 import type { IContextMenuContext } from '../RundownView.js'
 import type { IOutputLayerUi, PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
-import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
-import { contextMenuHoldToDisplayTime, useCombinedRefs, useRundownViewEventBusListener } from '../../lib/lib.js'
-import { useTranslation } from 'react-i18next'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { lockPointer, unlockPointer } from '../../lib/viewPort.js'
-import { StoryboardPart } from '../SegmentStoryboard/StoryboardPart.js'
-import classNames from 'classnames'
-import {
-	type GoToPartEvent,
-	type GoToPartInstanceEvent,
-	RundownViewEvents,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { getElementWidth } from '../../utils/dimensions.js'
-import { Meteor } from 'meteor/meteor'
-import { hidePointerLockCursor, showPointerLockCursor } from '../../lib/PointerLockCursor.js'
-import { motion } from 'motion/react'
-import { filterSecondarySourceLayers } from '../SegmentStoryboard/StoryboardPartSecondaryPieces/StoryboardPartSecondaryPieces.js'
-import type { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import {
-	type DBRundownPlaylist,
-	RundownHoldState,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
-import { HOVER_TIMEOUT } from '../Shelf/DashboardPieceButton/types.js'
 
 interface IProps {
 	id: string
@@ -498,7 +498,11 @@ export const SegmentAdlibTesting = React.memo(
 							<div className="segment-timeline__output-group" key={outputGroup._id}>
 								{filterSecondarySourceLayers(outputGroup.sourceLayers).map((sourceLayer) =>
 									sourceLayer.pieces.length > 0 ? (
-										<div className="segment-timeline__source-layer" key={sourceLayer._id} role="treeitem">
+										<div
+											className="segment-timeline__source-layer"
+											key={sourceLayer._id}
+											role="treeitem"
+										>
 											{sourceLayer.name}
 										</div>
 									) : null
@@ -506,7 +510,11 @@ export const SegmentAdlibTesting = React.memo(
 							</div>
 						))}
 				</div>
-				<div className="segment-storyboard__part-list__container" ref={listRef} onPointerDown={onListPointerDown}>
+				<div
+					className="segment-storyboard__part-list__container"
+					ref={listRef}
+					onPointerDown={onListPointerDown}
+				>
 					<motion.div
 						className={classNames('segment-storyboard__part-list', {
 							loading: !props.subscriptionsReady,
@@ -518,9 +526,13 @@ export const SegmentAdlibTesting = React.memo(
 					>
 						{parts}
 						<div
-							className={classNames('segment-storyboard__part-list', 'segment-storyboard__part-list--squished-parts', {
-								hover: squishedHover !== null,
-							})}
+							className={classNames(
+								'segment-storyboard__part-list',
+								'segment-storyboard__part-list--squished-parts',
+								{
+									hover: squishedHover !== null,
+								}
+							)}
 							style={{
 								minWidth: `${spaceLeft}px`,
 							}}

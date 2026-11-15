@@ -1,13 +1,16 @@
 import { useMemo } from 'react'
-import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { SourceLayerType, type VTContent } from '@sofie-automation/blueprints-integration'
 import type { ReadonlyDeep } from 'type-fest'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { IDashboardButtonProps } from '../types.js'
-import { DashboardButtonSubLabel } from './DashboardButtonSubLabel.js'
-import { DashboardPieceButtonSplitPreview } from '../../DashboardPieceButtonSplitPreview.js'
+import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
 import SplitInputIcon from '../../../PieceIcons/Renderers/SplitInputIcon.js'
+import { DashboardPieceButtonSplitPreview } from '../../DashboardPieceButtonSplitPreview.js'
+import { DashboardButtonSubLabel } from './DashboardButtonSubLabel.js'
+import type { IDashboardButtonProps } from '../types.js'
 
 type Props = Pick<
 	IDashboardButtonProps,
@@ -54,7 +57,10 @@ export function MediaBox(props: Props): JSX.Element | null {
 							{chosenUrl ? <img src={chosenUrl} alt="" /> : null}
 							{sourceDuration ? (
 								<div className="dashboard-panel__panel__button__thumbnail__overlay">
-									<DashboardButtonSubLabel sourceDuration={sourceDuration} studioSettings={studio?.settings} />
+									<DashboardButtonSubLabel
+										sourceDuration={sourceDuration}
+										studioSettings={studio?.settings}
+									/>
 								</div>
 							) : null}
 						</div>

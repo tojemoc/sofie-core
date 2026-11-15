@@ -1,17 +1,20 @@
 import { faQuestionCircle, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
+import classNames from 'classnames'
 import { useCallback } from 'react'
+import Button from 'react-bootstrap/Button'
 import { useTranslation } from 'react-i18next'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
+
+import { findOptionByValue } from './DropdownInput.js'
+import { hasOpWithPath } from './util.js'
 import type {
 	OverrideOpHelperForItemContents,
 	WrappedOverridableItemNormal,
 } from '../../ui/Settings/util/OverrideOpHelper.js'
-import { type DropdownInputOption, findOptionByValue } from './DropdownInput.js'
-import { hasOpWithPath } from './util.js'
-import Button from 'react-bootstrap/Button'
-import classNames from 'classnames'
+import type { DropdownInputOption } from './DropdownInput.js'
 
 export interface LabelAndOverridesProps<T extends object, TValue> {
 	label: string

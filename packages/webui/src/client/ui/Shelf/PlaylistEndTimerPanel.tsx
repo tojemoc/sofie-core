@@ -1,15 +1,17 @@
 import ClassNames from 'classnames'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	DashboardLayoutPlaylistEndTimer,
 	RundownLayoutBase,
 	RundownLayoutPlaylistEndTimer,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { PlaylistEndTiming } from '../RundownView/RundownTiming/PlaylistEndTiming.js'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import { isLoopRunning } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IPlaylistEndTimerPanelProps {
 	visible?: boolean

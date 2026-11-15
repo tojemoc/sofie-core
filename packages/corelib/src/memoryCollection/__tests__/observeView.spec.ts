@@ -1,7 +1,8 @@
-import { protectString, ProtectedString } from '../../protectedString.js'
-import { MongoFieldSpecifier, MongoQuery } from '../../mongo.js'
-import { ObserveView, ObserveViewShape, ObserveViewSink, fieldsFor } from '../observeView.js'
 import type { ChangeStreamDocument } from 'mongodb'
+
+import { MongoFieldSpecifier, MongoQuery } from '../../mongo.js'
+import { ProtectedString, protectString } from '../../protectedString.js'
+import { fieldsFor, ObserveView, ObserveViewShape, ObserveViewSink } from '../observeView.js'
 
 interface Thing {
 	_id: ProtectedString<'ThingId'>
@@ -105,7 +106,7 @@ describe('ObserveView.applySnapshot', () => {
 	})
 
 	test('projection applied so unrelated field changes do not emit', () => {
-		const { view, transitions } = makeView({}, { _id: 1, name: 1 } as MongoFieldSpecifier<Thing>)
+		const { view, transitions } = makeView({}, { _id: 1, name: 1 })
 		view.applySnapshot([thing('a', { name: 'x', rank: 1 })])
 		transitions.length = 0
 		// rank changes but is not in the projection → no transition
@@ -232,7 +233,7 @@ describe('ObserveView windowing (sort/skip/limit)', () => {
 	test('windowed sort uses full docs even when the projection drops the sort field (snapshot)', () => {
 		// Projection excludes `rank`, but the window is ordered by `rank`: ordering must use the unprojected
 		// docs, otherwise the sort key is gone and the wrong docs end up in the window.
-		const { view } = makeView({}, { name: 1 } as MongoFieldSpecifier<Thing>, { sort: { rank: 1 }, limit: 2 })
+		const { view } = makeView({}, { name: 1 }, { sort: { rank: 1 }, limit: 2 })
 		view.applySnapshot([thing('a', { rank: 3 }), thing('b', { rank: 1 }), thing('c', { rank: 2 })])
 		// By rank asc the first two are b(1), c(2) — NOT the _id-order a,b you'd get if rank were projected away.
 		expect(publishedIds(view)).toEqual(['b', 'c'])
@@ -244,7 +245,7 @@ describe('ObserveView windowing (sort/skip/limit)', () => {
 	})
 
 	test('windowed sort uses full docs even when the projection drops the sort field (change)', () => {
-		const { view } = makeView({}, { name: 1 } as MongoFieldSpecifier<Thing>, { sort: { rank: 1 }, limit: 2 })
+		const { view } = makeView({}, { name: 1 }, { sort: { rank: 1 }, limit: 2 })
 		view.applySnapshot([thing('a', { rank: 3 }), thing('b', { rank: 2 })])
 		expect(publishedIds(view)).toEqual(['b', 'a'])
 		// A new doc with a lower rank must enter the window ahead of the others, proving rank survives to the sort.

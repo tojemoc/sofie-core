@@ -1,13 +1,15 @@
+import _ from 'underscore'
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { PlaylistActivationStatus, PlaylistStatus, StudioEvent } from '@sofie-automation/live-status-gateway-api'
 import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { StudioEvent, PlaylistStatus, PlaylistActivationStatus } from '@sofie-automation/live-status-gateway-api'
-import { WebSocketTopicBase, WebSocketTopic } from '../wsHandler.js'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
 import { CollectionHandlers } from '../liveStatusServer.js'
-import _ from 'underscore'
+import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
 
 export class StudioTopic extends WebSocketTopicBase implements WebSocketTopic {
 	private _studio: DBStudio | undefined

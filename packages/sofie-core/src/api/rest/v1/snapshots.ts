@@ -1,22 +1,24 @@
 import { z } from 'zod'
+
 import { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { check } from '../../../lib/check'
-import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
-import { logger } from '../../../logging'
-import { storeRundownPlaylistSnapshot, storeSystemSnapshot } from '../../snapshot'
-import { makeIdempotent, makeRateLimited } from './middlewares'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { playlistSnapshotOptionsFrom, systemSnapshotOptionsFrom } from './typeConversion'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
+import { check } from '../../../lib/check'
 import {
 	APIPlaylistSnapshotOptions,
 	APISnapshotType,
 	APISystemSnapshotOptions,
 	SnapshotsRestAPI,
 } from '../../../lib/rest/v1'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { logger } from '../../../logging'
 import { checkAccessToPlaylist } from '../../../security/check'
+import { storeRundownPlaylistSnapshot, storeSystemSnapshot } from '../../snapshot'
+import { makeIdempotent, makeRateLimited } from './middlewares'
+import { playlistSnapshotOptionsFrom, systemSnapshotOptionsFrom } from './typeConversion'
+import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export class SnapshotsServerAPI implements SnapshotsRestAPI {
 	constructor(private context: ServerAPIContext) {}

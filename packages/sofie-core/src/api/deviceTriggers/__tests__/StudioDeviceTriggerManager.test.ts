@@ -1,17 +1,5 @@
-import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
-import {
-	PartId,
-	PartInstanceId,
-	PieceId,
-	RundownId,
-	RundownPlaylistActivationId,
-	RundownBaselineAdLibActionId,
-	RundownPlaylistId,
-	SegmentId,
-	ShowStyleBaseId,
-	StudioId,
-	TriggeredActionId,
-} from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { TFunction } from 'i18next'
+
 import {
 	IAdLibFilterLink,
 	IBlueprintDeviceTrigger,
@@ -23,23 +11,41 @@ import {
 	SourceLayerType,
 	TriggerType,
 } from '@sofie-automation/blueprints-integration'
-import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import {
+	PartId,
+	PartInstanceId,
+	PieceId,
+	RundownBaselineAdLibActionId,
+	RundownId,
+	RundownPlaylistActivationId,
+	RundownPlaylistId,
+	SegmentId,
+	ShowStyleBaseId,
+	StudioId,
+	TriggeredActionId,
+} from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
 import { MongoFieldSpecifier, mongoProjectDocument } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { IMeteorCall } from '@sofie-automation/meteor-lib/dist/api/methods'
+import { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { TFunction } from 'i18next'
+import { IMeteorCall } from '@sofie-automation/meteor-lib/dist/api/methods'
+import { DeviceActionId } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
+import { DBTriggeredActions } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
 
+import { MongoMock } from '../../../__mocks__/mongo'
+import { RundownPlaylists } from '../../../collections'
+import { DeviceTriggerMountedActionAdlibsPreview, DeviceTriggerMountedActions } from '../observer'
 import {
 	adLibActionFieldSpecifier,
 	adLibPieceFieldSpecifier,
@@ -51,15 +57,10 @@ import {
 	rundownPlaylistFieldSpecifier,
 	segmentFieldSpecifier,
 } from '../reactiveContentCache'
-import { StudioDeviceTriggerManager } from '../StudioDeviceTriggerManager'
-import { createMeteorTriggersContext } from '../triggersContext'
-import { DeviceTriggerMountedActionAdlibsPreview, DeviceTriggerMountedActions } from '../observer'
-import { TagsService } from '../TagsService'
 import { StudioActionManagers } from '../StudioActionManagers'
-import { RundownPlaylists } from '../../../collections'
-import { MongoMock } from '../../../__mocks__/mongo'
-import { DeviceActionId } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
-import { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { StudioDeviceTriggerManager } from '../StudioDeviceTriggerManager'
+import { TagsService } from '../TagsService'
+import { createMeteorTriggersContext } from '../triggersContext'
 
 type AdLibFilterChain = (IRundownPlaylistFilterLink | IGUIContextFilterLink | IAdLibFilterLink)[]
 

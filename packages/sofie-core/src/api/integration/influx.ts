@@ -1,5 +1,7 @@
-import { PackageInfo } from '../../coreSystem'
 import { initInfluxdb } from '@sofie-automation/corelib/dist/influxdb'
+
+import { PackageInfo } from '../../coreSystem'
+
 export { startTrace, endTrace, sendTrace, TimeTrace, FinishedTrace } from '@sofie-automation/corelib/dist/influxdb'
 
 const config = {

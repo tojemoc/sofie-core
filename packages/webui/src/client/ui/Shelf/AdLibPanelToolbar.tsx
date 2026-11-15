@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
 import { faList, faTh, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 interface IToolbarPropsHeader {
 	onFilterChange?: (newFilter: string | undefined) => void

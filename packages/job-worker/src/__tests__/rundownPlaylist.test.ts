@@ -1,22 +1,24 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintResultRundownPlaylist, PlaylistTimingType } from '@sofie-automation/blueprints-integration'
 import { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { protectString, protectStringArray } from '@sofie-automation/corelib/dist/protectedString'
-import { ProcessedShowStyleCompound } from '../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
-import {
-	handleMoveRundownIntoPlaylist,
-	produceRundownPlaylistInfoFromRundown,
-	handleRestoreRundownsInPlaylistToDefaultOrder,
-} from '../rundownPlaylists.js'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../__mocks__/context.js'
-import type { WrappedStudioBlueprint } from '../blueprints/cache.js'
 import {
-	setupDefaultRundownPlaylist,
 	setupDefaultRundown,
+	setupDefaultRundownPlaylist,
 	setupMockShowStyleCompound,
 } from '../__mocks__/presetCollections.js'
+import { ProcessedShowStyleCompound } from '../jobs/index.js'
+import {
+	handleMoveRundownIntoPlaylist,
+	handleRestoreRundownsInPlaylistToDefaultOrder,
+	produceRundownPlaylistInfoFromRundown,
+} from '../rundownPlaylists.js'
+import type { WrappedStudioBlueprint } from '../blueprints/cache.js'
 
 describe('Rundown', () => {
 	let context: MockJobContext
@@ -211,9 +213,8 @@ describe('Rundown', () => {
 			existingPlaylist?: DBRundownPlaylist
 		): Promise<DBRundownPlaylist> {
 			const { playlistId } = await setupDefaultRundownPlaylist(context, showStyle)
-			const playlist =
-				existingPlaylist ??
-				((await context.mockCollections.RundownPlaylists.findOne(playlistId)) as DBRundownPlaylist)
+			const playlist = existingPlaylist ?? (await context.mockCollections.RundownPlaylists.findOne(playlistId))
+			if (!playlist) throw new Error('Playlist not found')
 			const rundowns = await context.mockCollections.Rundowns.findFetch({ playlistId })
 
 			return produceRundownPlaylistInfoFromRundown(

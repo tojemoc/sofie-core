@@ -1,20 +1,4 @@
 import {
-	MosDeleteStoryProps,
-	MosFullStoryProps,
-	MosInsertStoryProps,
-	MosMoveStoryProps,
-	MosSwapStoryProps,
-} from '@sofie-automation/corelib/dist/worker/ingest'
-import { logger } from '../../logging.js'
-import { JobContext } from '../../jobs/index.js'
-import {
-	fixIllegalObject,
-	getMosIngestSegmentExternalId,
-	mosStoryToIngestSegment,
-	parseMosString,
-	updateRanksBasedOnOrder,
-} from './lib.js'
-import {
 	IngestChangeType,
 	IngestSegment,
 	MOS,
@@ -22,9 +6,26 @@ import {
 	NrcsIngestSegmentChangeDetails,
 	NrcsIngestSegmentChangeDetailsEnum,
 } from '@sofie-automation/blueprints-integration'
-import { IngestUpdateOperationFunction } from '../runOperation.js'
-import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import {
+	MosDeleteStoryProps,
+	MosFullStoryProps,
+	MosInsertStoryProps,
+	MosMoveStoryProps,
+	MosSwapStoryProps,
+} from '@sofie-automation/corelib/dist/worker/ingest'
+
+import { JobContext } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
+import { IngestUpdateOperationFunction } from '../runOperation.js'
+import {
+	fixIllegalObject,
+	getMosIngestSegmentExternalId,
+	mosStoryToIngestSegment,
+	parseMosString,
+	updateRanksBasedOnOrder,
+} from './lib.js'
 
 /**
  * Update the payload of a mos story

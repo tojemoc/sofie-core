@@ -1,5 +1,8 @@
 import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { PartInstances, Parts, Rundowns, Segments } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../lib/lib'
 import {
 	ContentCache,
 	partFieldSpecifier,
@@ -7,8 +10,6 @@ import {
 	rundownFieldSpecifier,
 	segmentFieldSpecifier,
 } from './reactiveContentCache'
-import { PartInstances, Parts, Rundowns, Segments } from '../../collections'
-import { waitForAllObserversReady } from '../lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 export class RundownContentObserver {

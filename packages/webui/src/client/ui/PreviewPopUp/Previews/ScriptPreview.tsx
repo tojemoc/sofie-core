@@ -1,8 +1,9 @@
-import { getScriptPreview } from '../../../lib/ui/scriptPreview.js'
+import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
+
+import { getScriptPreview } from '../../../lib/ui/scriptPreview.js'
 import { MdDisplay } from '../../Prompter/Formatted/MdDisplay.js'
-import classNames from 'classnames'
 
 interface ScriptPreviewProps {
 	content: {
@@ -29,7 +30,9 @@ export function ScriptPreview({ content }: ScriptPreviewProps): React.ReactEleme
 					breakScript ? (
 						<>
 							<span className="mini-inspector__full-text text-broken">{startOfScript + '\u2026'}</span>
-							<span className="mini-inspector__full-text text-broken text-end">{'\u2026' + endOfScript}</span>
+							<span className="mini-inspector__full-text text-broken text-end">
+								{'\u2026' + endOfScript}
+							</span>
 						</>
 					) : (
 						<span
@@ -37,7 +40,11 @@ export function ScriptPreview({ content }: ScriptPreviewProps): React.ReactEleme
 								'script-text-formatted': content.scriptFormatted !== undefined,
 							})}
 						>
-							{content.scriptFormatted !== undefined ? <MdDisplay source={content.scriptFormatted} /> : fullScript}
+							{content.scriptFormatted !== undefined ? (
+								<MdDisplay source={content.scriptFormatted} />
+							) : (
+								fullScript
+							)}
 						</span>
 					)
 				) : content.lastWords ? (

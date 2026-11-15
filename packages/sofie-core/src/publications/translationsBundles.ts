@@ -1,7 +1,8 @@
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { TranslationsBundles } from '../collections'
 import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { TranslationsBundle } from '@sofie-automation/meteor-lib/dist/collections/TranslationsBundles'
+
+import { TranslationsBundles } from '../collections'
 import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
 import type { PublicationRegistry } from '../publicationRegistry'
 

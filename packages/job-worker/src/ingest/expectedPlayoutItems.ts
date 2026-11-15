@@ -1,20 +1,22 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { BlueprintResultBaseline, ExpectedPlayoutItemGeneric } from '@sofie-automation/blueprints-integration'
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import {
 	ExpectedPlayoutItemRundown,
 	ExpectedPlayoutItemStudio,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
-import { StudioId, RundownId, PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PartId, RundownId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
 import { clone, getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobContext } from '../jobs/index.js'
 import { PlayoutModel } from '../playout/model/PlayoutModel.js'
 import { StudioPlayoutModel } from '../studio/model/StudioPlayoutModel.js'
-import { BlueprintResultBaseline, ExpectedPlayoutItemGeneric } from '@sofie-automation/blueprints-integration'
-import { JobContext } from '../jobs/index.js'
 import { IngestModel } from './model/IngestModel.js'
-import { ReadonlyDeep } from 'type-fest'
 import { IngestPartModel } from './model/IngestPartModel.js'
 
 function extractExpectedPlayoutItems(

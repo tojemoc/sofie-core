@@ -1,20 +1,22 @@
-import { StudioId, WorkerId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ChangeStream, ChangeStreamDocument, Document, MongoClient } from 'mongodb'
-import { LocksManager } from '../locks.js'
-import { IngestWorkerParent } from './ingest/parent.js'
-import { StudioWorkerParent } from './studio/parent.js'
-import { EventsWorkerParent } from './events/parent.js'
-import { JobManager } from '../manager.js'
-import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../main.js'
-import { WorkerParentBase, WorkerParentOptions } from './parent-base.js'
-import { logger } from '../logging.js'
+
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { StudioId, WorkerId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { LocksManager } from '../locks.js'
+import { logger } from '../logging.js'
+import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../main.js'
+import { JobManager } from '../manager.js'
 import { InvalidateWorkerDataCache } from './caches.js'
+import { EventsWorkerParent } from './events/parent.js'
+import { IngestWorkerParent } from './ingest/parent.js'
+import { WorkerParentBase, WorkerParentOptions } from './parent-base.js'
+import { StudioWorkerParent } from './studio/parent.js'
 
 export class StudioWorkerSet {
 	readonly #threads: WorkerParentBase[]

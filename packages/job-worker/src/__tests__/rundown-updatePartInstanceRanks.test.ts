@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { RundownId, SegmentId, PartId, PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { updatePartInstanceRanksAndOrphanedState } from '../updatePartInstanceRanksAndOrphanedState.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { JobContext } from '../jobs/index.js'
-import { BeforePartMapItem } from '../ingest/commit.js'
 import { mock } from 'jest-mock-extended'
-import { ICollection } from '../db/index.js'
-import { IngestModel } from '../ingest/model/IngestModel.js'
-import { IngestSegmentModel } from '../ingest/model/IngestSegmentModel.js'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { IngestPartModel } from '../ingest/model/IngestPartModel.js'
 import { AnyBulkWriteOperation } from 'mongodb'
 import _ from 'underscore'
+
+import { PartId, PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { ICollection } from '../db/index.js'
+import { BeforePartMapItem } from '../ingest/commit.js'
+import { IngestModel } from '../ingest/model/IngestModel.js'
+import { IngestPartModel } from '../ingest/model/IngestPartModel.js'
+import { IngestSegmentModel } from '../ingest/model/IngestSegmentModel.js'
+import { JobContext } from '../jobs/index.js'
+import { updatePartInstanceRanksAndOrphanedState } from '../updatePartInstanceRanksAndOrphanedState.js'
 
 const mockOptions = {
 	fallbackMockImplementation: () => {
@@ -65,7 +67,7 @@ describe('updatePartInstanceRanks', () => {
 					if (expectedSegmentId && segmentId !== expectedSegmentId) throw new Error('Wrong SegmentId')
 					return mock<IngestSegmentModel>(
 						{
-							parts: partModels.filter((p) => p.part.segmentId === segmentId) as any,
+							parts: partModels.filter((p) => p.part.segmentId === segmentId),
 						},
 						mockOptions
 					)

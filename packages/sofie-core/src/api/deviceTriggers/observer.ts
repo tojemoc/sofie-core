@@ -1,27 +1,29 @@
-import { z } from 'zod'
-import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { TFunction } from 'i18next'
-import { check } from '../../lib/check'
 import _ from 'underscore'
-import { MethodContext } from '../methodContext'
+import { z } from 'zod'
+
+import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import {
 	DeviceTriggerArguments,
 	DeviceTriggerMountedAction,
 	PreviewWrappedAdLib,
 } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
+import { JobQueueWithClasses } from '@sofie-automation/shared-lib/dist/lib/JobQueueWithClasses'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { Studios } from '../../collections'
+import { check } from '../../lib/check'
 import { logger } from '../../logging'
 import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { MethodContext } from '../methodContext'
 import { StudioActionManagers } from './StudioActionManagers'
-import { JobQueueWithClasses } from '@sofie-automation/shared-lib/dist/lib/JobQueueWithClasses'
 import { StudioDeviceTriggerManager } from './StudioDeviceTriggerManager'
 import { StudioObserver } from './StudioObserver'
-import { Studios } from '../../collections'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { TriggersContextFactory } from './triggersContext'
 import { TagsService } from './TagsService'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { TriggersContextFactory } from './triggersContext'
 
 type ObserverAndManager = {
 	observer: StudioObserver

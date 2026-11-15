@@ -1,4 +1,4 @@
-import { JobContext } from '../../jobs/index.js'
+import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
 import {
 	ExpectedPackageDB,
 	ExpectedPackageDBType,
@@ -6,19 +6,19 @@ import {
 	getExpectedPackageId,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItemStudio } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
-import { saveIntoDb } from '../../db/changes.js'
-import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
-import type { IngestExpectedPackage } from '../../ingest/model/IngestExpectedPackage.js'
-import { sanitiseExpectedPackages } from '../../ingest/expectedPackages.js'
 import { ExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { Complete } from '@sofie-automation/corelib/dist/lib'
+
+import { saveIntoDb } from '../../db/changes.js'
+import { sanitiseExpectedPackages } from '../../ingest/expectedPackages.js'
+import { JobContext } from '../../jobs/index.js'
+import type { IngestExpectedPackage } from '../../ingest/model/IngestExpectedPackage.js'
 
 export class StudioBaselineHelper {
 	readonly #context: JobContext
 
 	#pendingExpectedPackages:
-		| Map<ExpectedPackageId, IngestExpectedPackage<ExpectedPackageIngestSourceStudioBaseline>>
-		| undefined
+		Map<ExpectedPackageId, IngestExpectedPackage<ExpectedPackageIngestSourceStudioBaseline>> | undefined
 	#pendingExpectedPlayoutItems: ExpectedPlayoutItemStudio[] | undefined
 
 	constructor(context: JobContext) {

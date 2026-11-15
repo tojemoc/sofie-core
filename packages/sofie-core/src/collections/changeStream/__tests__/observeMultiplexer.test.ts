@@ -1,11 +1,12 @@
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
+
 import {
+	getActiveMultiplexerCount,
+	observeChangesViaChangeStream,
 	ObserveMultiplexer,
 	ObserveMultiplexerDeps,
-	observeChangesViaChangeStream,
-	getActiveMultiplexerCount,
 } from '../observeMultiplexer'
-import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
 
 interface TestDoc {
 	_id: any

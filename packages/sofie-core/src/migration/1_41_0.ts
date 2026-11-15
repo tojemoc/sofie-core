@@ -1,14 +1,15 @@
-import { addMigrationSteps } from './databaseMigration'
 import { serializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { TimelineObjGeneric } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+
 import {
 	AdLibPieces,
 	BucketAdLibs,
-	RundownBaselineAdLibPieces,
-	RundownBaselineObjs,
 	PieceInstances,
 	Pieces,
+	RundownBaselineAdLibPieces,
+	RundownBaselineObjs,
 } from '../collections'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 41
 export const addSteps = addMigrationSteps('1.41.0', [

@@ -1,8 +1,10 @@
-import process from 'process'
 import fs from 'fs'
 import path from 'path'
-import { logger } from './logging'
+import process from 'process'
+
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from './logging'
 
 /**
  * Whether we are running in unit tests.

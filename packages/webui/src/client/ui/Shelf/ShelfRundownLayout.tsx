@@ -1,20 +1,22 @@
-import type { RundownLayout } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { ExternalFramePanel } from './ExternalFramePanel.js'
-import { OverflowingContainer } from './OverflowingContainer.js'
 import ClassNames from 'classnames'
-import { ShelfTabs, DEFAULT_TAB as SHELF_DEFAULT_TAB } from './Shelf.js'
-import { AdLibPanel } from './AdLibPanel.js'
-import type { AdLibPieceUi } from '../../lib/shelf.js'
-import { GlobalAdLibPanel } from './GlobalAdLibPanel.js'
-import { HotkeyHelpPanel } from './HotkeyHelpPanel.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { useTranslation } from 'react-i18next'
-import type { BucketAdLibItem } from './RundownViewBuckets.js'
-import type { IAdLibListItem } from './AdLibListItem.js'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { RundownLayout } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { AdLibPanel } from './AdLibPanel.js'
+import { ExternalFramePanel } from './ExternalFramePanel.js'
+import { GlobalAdLibPanel } from './GlobalAdLibPanel.js'
+import { HotkeyHelpPanel } from './HotkeyHelpPanel.js'
+import { OverflowingContainer } from './OverflowingContainer.js'
+import { DEFAULT_TAB as SHELF_DEFAULT_TAB, ShelfTabs } from './Shelf.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibItem } from './RundownViewBuckets.js'
 
 export interface IShelfRundownLayoutProps {
 	rundownLayout: RundownLayout | undefined
@@ -73,7 +75,8 @@ export function ShelfRundownLayout(props: Readonly<IShelfRundownLayoutProps>): J
 								<button
 									className={ClassNames('rundown-view__shelf__tabs__tab', {
 										selected:
-											(props.selectedTab || SHELF_DEFAULT_TAB) === `${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`,
+											(props.selectedTab || SHELF_DEFAULT_TAB) ===
+											`${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`,
 									})}
 									key={panel._id}
 									onClick={() => onSwitchTab(`${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`)}
@@ -125,7 +128,10 @@ export function ShelfRundownLayout(props: Readonly<IShelfRundownLayoutProps>): J
 						RundownLayoutsAPI.isFilter(panel) ? (
 							<AdLibPanel
 								key={panel._id}
-								visible={(props.selectedTab || SHELF_DEFAULT_TAB) === `${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`}
+								visible={
+									(props.selectedTab || SHELF_DEFAULT_TAB) ===
+									`${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`
+								}
 								includeGlobalAdLibs={true}
 								filter={panel}
 								selectedPiece={props.selectedPiece}
@@ -140,7 +146,10 @@ export function ShelfRundownLayout(props: Readonly<IShelfRundownLayoutProps>): J
 								key={panel._id}
 								panel={panel}
 								layout={rundownLayout}
-								visible={(props.selectedTab || SHELF_DEFAULT_TAB) === `${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`}
+								visible={
+									(props.selectedTab || SHELF_DEFAULT_TAB) ===
+									`${ShelfTabs.ADLIB_LAYOUT_FILTER}_${panel._id}`
+								}
 								playlist={props.playlist}
 							/>
 						) : undefined

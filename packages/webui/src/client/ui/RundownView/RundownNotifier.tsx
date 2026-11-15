@@ -1,35 +1,17 @@
+import { Meteor } from 'meteor/meteor'
+import { ReactiveVar } from 'meteor/reactive-var'
+import { Tracker } from 'meteor/tracker'
 import React, { useContext } from 'react'
 import _ from 'underscore'
-import { Meteor } from 'meteor/meteor'
-import { Tracker } from 'meteor/tracker'
-import {
-	NotificationCenter,
-	NotificationList,
-	type NotifierHandle,
-	Notification,
-	NoticeLevel,
-	getNoticeLevelForPieceStatus,
-	type NotificationsSource,
-} from '../../lib/notifications/notifications.js'
-import { WithManagedTracker } from '../../lib/reactiveData/reactiveDataHelper.js'
-import { reactiveData } from '../../lib/reactiveData/reactiveData.js'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../../lib/systemTime.js'
-import { meteorSubscribe, MeteorCall } from '../../lib/meteorApi.js'
-import { ReactiveVar } from 'meteor/reactive-var'
-import { type Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { i18nTranslator as t } from '../i18n.js'
-import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { PeripheralDevicesAPI } from '../../lib/clientAPI.js'
-import { handleRundownReloadResponse } from './RundownHeader/RundownReloadResponse.js'
-import type { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
-import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+
 import { NoteSeverity, StatusCode } from '@sofie-automation/blueprints-integration'
-import { getIgnorePieceContentStatus } from '../../lib/localStorage.js'
-import { Notifications, RundownPlaylists } from '../../collections/index.js'
+import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type {
 	PartId,
 	PeripheralDeviceId,
@@ -40,18 +22,39 @@ import type {
 	SegmentId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { UIPartInstances, UIPieceContentStatuses, UISegmentPartNotes } from '../Collections.js'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { logger } from '../../lib/logging.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { UserPermissionsContext, type UserPermissions } from '../UserPermissions.js'
-import { statusCodeToString } from '../Status/StatusCodePill.js'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { DBNotificationTargetType } from '@sofie-automation/corelib/dist/dataModel/Notifications'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import type { UIPieceContentStatus } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/src/dataModel/RundownPlaylist/RundownPlaylist.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
+
+import { Notifications, RundownPlaylists } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { PeripheralDevicesAPI } from '../../lib/clientAPI.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { getIgnorePieceContentStatus } from '../../lib/localStorage.js'
+import { logger } from '../../lib/logging.js'
+import { MeteorCall, meteorSubscribe } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import {
+	getNoticeLevelForPieceStatus,
+	NoticeLevel,
+	Notification,
+	NotificationCenter,
+	NotificationList,
+} from '../../lib/notifications/notifications.js'
+import { reactiveData } from '../../lib/reactiveData/reactiveData.js'
+import { WithManagedTracker } from '../../lib/reactiveData/reactiveDataHelper.js'
+import { getCurrentTime } from '../../lib/systemTime.js'
+import { UIPartInstances, UIPieceContentStatuses, UISegmentPartNotes } from '../Collections.js'
+import { i18nTranslator as t } from '../i18n.js'
+import { statusCodeToString } from '../Status/StatusCodePill.js'
+import { UserPermissionsContext } from '../UserPermissions.js'
+import { handleRundownReloadResponse } from './RundownHeader/RundownReloadResponse.js'
+import type { NotificationsSource, NotifierHandle } from '../../lib/notifications/notifications.js'
+import type { UserPermissions } from '../UserPermissions.js'
 
 export const onRONotificationClick = new ReactiveVar<((e: RONotificationEvent) => void) | undefined>(undefined)
 export const reloadRundownPlaylistClick = new ReactiveVar<((e: any) => void) | undefined>(undefined)
@@ -111,7 +114,11 @@ class RundownViewNotifier extends WithManagedTracker {
 	private _unsentExternalMessagesStatus: Notification | undefined = undefined
 	private _unsentExternalMessageStatusDep: Tracker.Dependency
 
-	constructor(playlistId: RundownPlaylistId | undefined, studio: UIStudio, userPermissions: Readonly<UserPermissions>) {
+	constructor(
+		playlistId: RundownPlaylistId | undefined,
+		studio: UIStudio,
+		userPermissions: Readonly<UserPermissions>
+	) {
 		super()
 		this.userPermissions = userPermissions
 
@@ -184,7 +191,8 @@ class RundownViewNotifier extends WithManagedTracker {
 	stop() {
 		super.stop()
 
-		if (this._rundownImportVersionAndConfigInterval) Meteor.clearInterval(this._rundownImportVersionAndConfigInterval)
+		if (this._rundownImportVersionAndConfigInterval)
+			Meteor.clearInterval(this._rundownImportVersionAndConfigInterval)
 
 		this._notifier.stop()
 	}
@@ -205,8 +213,7 @@ class RundownViewNotifier extends WithManagedTracker {
 			const newNoteIds: Array<string> = []
 
 			const playlist = RundownPlaylists.findOne(playlistId, { projection: { _id: 1, notes: 1 } }) as
-				| Pick<DBRundownPlaylist, '_id' | 'notes'>
-				| undefined
+				Pick<DBRundownPlaylist, '_id' | 'notes'> | undefined
 			const rundowns = rRundowns.get()
 
 			if (playlist?.notes) {
@@ -271,7 +278,12 @@ class RundownViewNotifier extends WithManagedTracker {
 													(e, ts) => MeteorCall.userAction.resyncRundown(e, ts, rundown._id),
 													(err, reloadResult) => {
 														if (!err && reloadResult) {
-															handleRundownReloadResponse(t, this.userPermissions, rundown._id, reloadResult)
+															handleRundownReloadResponse(
+																t,
+																this.userPermissions,
+																rundown._id,
+																reloadResult
+															)
 														}
 													}
 												)
@@ -288,7 +300,10 @@ class RundownViewNotifier extends WithManagedTracker {
 						)
 						newNoteIds.push(unsyncedId)
 					}
-					if (unsyncedNotification && !Notification.isEqual(this._rundownStatus[unsyncedId], unsyncedNotification)) {
+					if (
+						unsyncedNotification &&
+						!Notification.isEqual(this._rundownStatus[unsyncedId], unsyncedNotification)
+					) {
 						this._rundownStatus[unsyncedId] = unsyncedNotification
 						this._rundownStatusDep.changed()
 					} else if (!unsyncedNotification && this._rundownStatus[unsyncedId]) {
@@ -299,7 +314,8 @@ class RundownViewNotifier extends WithManagedTracker {
 					const rundownNotesId = rundown._id + '_ronotes_'
 					if (rundown.notes) {
 						rundown.notes.forEach((note) => {
-							const rundownNoteId = rundownNotesId + note.origin.name + '_' + note.message.key + '_' + note.type
+							const rundownNoteId =
+								rundownNotesId + note.origin.name + '_' + note.message.key + '_' + note.type
 							const notificationFromNote = new Notification(
 								rundownNoteId,
 								getNoticeLevelForNoteSeverity(note.type),
@@ -404,7 +420,9 @@ class RundownViewNotifier extends WithManagedTracker {
 	private reactivePeripheralDeviceStatus(studioId: StudioId | undefined) {
 		let oldDevItemIds: PeripheralDeviceId[] = []
 		let reactivePeripheralDevices:
-			| ReactiveVar<Pick<PeripheralDevice, '_id' | 'name' | 'ignore' | 'status' | 'connected' | 'parentDeviceId'>[]>
+			| ReactiveVar<
+					Pick<PeripheralDevice, '_id' | 'name' | 'ignore' | 'status' | 'connected' | 'parentDeviceId'>[]
+			  >
 			| undefined
 		if (studioId) {
 			meteorSubscribe(CorelibPubSub.peripheralDevicesAndSubDevices, studioId)
@@ -416,7 +434,9 @@ class RundownViewNotifier extends WithManagedTracker {
 					connected: 1,
 					parentDeviceId: 1,
 				},
-			}) as ReactiveVar<Pick<PeripheralDevice, '_id' | 'name' | 'ignore' | 'status' | 'connected' | 'parentDeviceId'>[]>
+			}) as ReactiveVar<
+				Pick<PeripheralDevice, '_id' | 'name' | 'ignore' | 'status' | 'connected' | 'parentDeviceId'>[]
+			>
 		}
 		this.autorun(() => {
 			const devices = reactivePeripheralDevices ? reactivePeripheralDevices.get() : []
@@ -471,10 +491,13 @@ class RundownViewNotifier extends WithManagedTracker {
 																	new Notification(
 																		undefined,
 																		NoticeLevel.WARNING,
-																		t('Failed to restart device: "{{deviceName}}": {{errorMessage}}', {
-																			deviceName: parent.name,
-																			errorMessage: err + '',
-																		}),
+																		t(
+																			'Failed to restart device: "{{deviceName}}": {{errorMessage}}',
+																			{
+																				deviceName: parent.name,
+																				errorMessage: err + '',
+																			}
+																		),
 																		'RundownNotifier'
 																	)
 																)
@@ -530,7 +553,9 @@ class RundownViewNotifier extends WithManagedTracker {
 				const { origin, message, type: itemType, rank } = item.note
 				const { pieceId, partId, segmentId, rundownId, name, segmentName } = origin
 
-				const translatedMessage = isTranslatableMessage(message) ? translateMessage(message, t) : String(message)
+				const translatedMessage = isTranslatableMessage(message)
+					? translateMessage(message, t)
+					: String(message)
 
 				const notificationId = `${translatedMessage}-${pieceId || partId || segmentId || rundownId}-${name}-${itemType}`
 
@@ -569,7 +594,10 @@ class RundownViewNotifier extends WithManagedTracker {
 				})
 				newNoteIds.push(notificationId)
 
-				if (!this._notes[notificationId] || !Notification.isEqual(newNotification, this._notes[notificationId])) {
+				if (
+					!this._notes[notificationId] ||
+					!Notification.isEqual(newNotification, this._notes[notificationId])
+				) {
 					this._notes[notificationId] = newNotification
 					this._notesDep.changed()
 				}
@@ -679,7 +707,8 @@ class RundownViewNotifier extends WithManagedTracker {
 	private reactiveVersionAndConfigStatus(playlistId: RundownPlaylistId) {
 		const updatePeriod = 30 * 1000 // every 30s
 
-		if (this._rundownImportVersionAndConfigInterval) Meteor.clearInterval(this._rundownImportVersionAndConfigInterval)
+		if (this._rundownImportVersionAndConfigInterval)
+			Meteor.clearInterval(this._rundownImportVersionAndConfigInterval)
 		this._rundownImportVersionAndConfigInterval = playlistId
 			? Meteor.setInterval(() => this.updateVersionAndConfigStatus(playlistId), updatePeriod)
 			: undefined
@@ -729,7 +758,9 @@ class RundownViewNotifier extends WithManagedTracker {
 					newNotification = new Notification(
 						'rundown_importVersions',
 						NoticeLevel.WARNING,
-						t('The system configuration has been changed since importing this rundown. It might not run correctly'),
+						t(
+							'The system configuration has been changed since importing this rundown. It might not run correctly'
+						),
 						`rundownPlaylist_${playlistId}`,
 						getCurrentTime(),
 						true,

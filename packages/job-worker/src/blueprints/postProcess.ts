@@ -1,20 +1,21 @@
-import {
-	TimelineObjGeneric,
-	TimelineObjRundown,
-	TimelineObjType,
-} from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { validateTimeline } from 'superfly-timeline'
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintActionManifest,
 	IBlueprintAdLibPiece,
 	IBlueprintPiece,
+	IBlueprintPieceType,
+	IBlueprintRundownPiece,
+	ITranslatableMessage,
+	PieceLifespan,
 	TimelineObjectCoreExt,
 	TSR,
-	PieceLifespan,
-	IBlueprintPieceType,
-	ITranslatableMessage,
-	IBlueprintRundownPiece,
 } from '@sofie-automation/blueprints-integration'
+import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
+import { BucketAdLib, BucketAdLibIngestInfo } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import {
 	BlueprintId,
 	BucketAdLibActionId,
@@ -25,31 +26,32 @@ import {
 	RundownId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
 import {
 	EmptyPieceTimelineObjectsBlob,
 	Piece,
 	serializePieceTimelineObjectsBlob,
 } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
-import { ArrayElement, getHash, literal, omit } from '@sofie-automation/corelib/dist/lib'
-import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
 import { RundownImportVersions } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { BucketAdLib, BucketAdLibIngestInfo } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import {
+	TimelineObjGeneric,
+	TimelineObjRundown,
+	TimelineObjType,
+} from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import {
 	CoreUserEditingDefinition,
 	CoreUserEditingProperties,
 } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
+import { ArrayElement, getHash, literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	interpollateTranslation,
 	wrapTranslatableMessageFromBlueprints,
 } from '@sofie-automation/corelib/dist/TranslatableMessage'
+
 import { sanitiseExpectedPackages } from '../ingest/expectedPackages.js'
+import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
 import { logger } from '../logging.js'
-import { validateTimeline } from 'superfly-timeline'
-import { ReadonlyDeep } from 'type-fest'
 import { translateUserEditPropertiesFromBlueprint, translateUserEditsFromBlueprint } from './context/lib.js'
 import { sanitiseActionBrandingFromBlueprint, sanitisePieceBrandingFromBlueprint } from './postProcessBranding.js'
 
@@ -181,7 +183,7 @@ export function postProcessTimelineObjects(
 			objectType: TimelineObjType.RUNDOWN,
 		}
 
-		if (!obj.id) obj.id = getHash(pieceId + '_' + i++)
+		if (!obj.id) obj.id = getHash(pieceId + '_' + i)
 		if (isNow(obj.enable))
 			throw new Error(
 				`Error in blueprint "${blueprintId}" timelineObjs cannot have a start of 'now'! ("${obj.id}")`
@@ -213,7 +215,9 @@ export function postProcessTimelineObjects(
 		// We're using the "strict" mode here, to ensure blueprints are forward compatible with future versions of Timeline.
 		validateTimeline(postProcessedTimeline, true)
 	} catch (err) {
-		throw new Error(`Error in blueprint "${blueprintId}": Validation of timelineObjs failed: ${err}`)
+		throw new Error(`Error in blueprint "${blueprintId}": Validation of timelineObjs failed: ${err}`, {
+			cause: err,
+		})
 	}
 
 	return postProcessedTimeline
@@ -643,18 +647,16 @@ function processAdLibActionITranslatableMessages<
 		},
 		triggerModes:
 			itemOrig.triggerModes &&
-			itemOrig.triggerModes.map(
-				(triggerMode): ArrayElement<BucketAdLibAction['triggerModes']> => ({
-					...triggerMode,
-					display: {
-						...triggerMode.display,
-						label: wrapTranslatableMessageFromBlueprints(triggerMode.display.label, [blueprintId]),
-						description:
-							triggerMode.display.description &&
-							wrapTranslatableMessageFromBlueprints(triggerMode.display.description, [blueprintId]),
-					},
-				})
-			),
+			itemOrig.triggerModes.map((triggerMode): ArrayElement<BucketAdLibAction['triggerModes']> => ({
+				...triggerMode,
+				display: {
+					...triggerMode.display,
+					label: wrapTranslatableMessageFromBlueprints(triggerMode.display.label, [blueprintId]),
+					description:
+						triggerMode.display.description &&
+						wrapTranslatableMessageFromBlueprints(triggerMode.display.description, [blueprintId]),
+				},
+			})),
 		userEditOperations:
 			itemOrig.userEditOperations && translateUserEditsFromBlueprint(itemOrig.userEditOperations, [blueprintId]),
 		userEditProperties:

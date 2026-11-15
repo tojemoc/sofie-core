@@ -1,16 +1,17 @@
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import {
-	MongoQuery,
 	MongoFieldSpecifier,
-	ObserveChangesOptions,
+	MongoQuery,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
+	ObserveChangesOptions,
 } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
-import { observeChangesViaChangeStream, observeViaChangeStream, ObserveMultiplexerDeps } from './observeMultiplexer'
 import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
-import type { MinimalMongoCursor } from '../collection'
+
+import { observeChangesViaChangeStream, ObserveMultiplexerDeps, observeViaChangeStream } from './observeMultiplexer'
 import type { LiveQueryHandleSync } from '../../lib/lib'
+import type { MinimalMongoCursor } from '../collection'
 
 export interface ChangeStreamCursorConfig<TDoc extends { _id: ProtectedString<any> }> {
 	collectionName: string

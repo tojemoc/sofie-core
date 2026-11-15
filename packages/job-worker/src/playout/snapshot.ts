@@ -1,3 +1,4 @@
+import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
 import {
 	ExpectedPackageDB,
 	ExpectedPackageDBType,
@@ -17,27 +18,27 @@ import {
 	ShowStyleVariantId,
 	SnapshotId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import * as PackagesPreR53 from '@sofie-automation/corelib/dist/dataModel/Old/ExpectedPackagesR52'
+import { RundownOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { assertNever, getHash, getRandomId, literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { ProtectedString, protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
 import {
 	GeneratePlaylistSnapshotProps,
 	GeneratePlaylistSnapshotResult,
 	RestorePlaylistSnapshotProps,
 	RestorePlaylistSnapshotResult,
 } from '@sofie-automation/corelib/dist/worker/studio'
-import { getCurrentTime, getSystemVersion } from '../lib/index.js'
-import { JobContext } from '../jobs/index.js'
-import { runWithPlaylistLock } from './lock.js'
-import { CoreRundownPlaylistSnapshot } from '@sofie-automation/corelib/dist/snapshots'
-import { unprotectString, ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { JSONBlobParse, JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+
 import { saveIntoDb } from '../db/changes.js'
 import { getPartId, getSegmentId } from '../ingest/lib.js'
-import { assertNever, getHash, getRandomId, literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { JobContext } from '../jobs/index.js'
+import { getCurrentTime, getSystemVersion } from '../lib/index.js'
 import { logger } from '../logging.js'
+import { runWithPlaylistLock } from './lock.js'
 import { invokeOnPlaylistSnapshotCreated } from './snapshotHooks.js'
-import { JSONBlobParse, JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import { RundownOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
-import * as PackagesPreR53 from '@sofie-automation/corelib/dist/dataModel/Old/ExpectedPackagesR52'
-import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
 
 class IdMapWithGenerator<V extends ProtectedString<any>> extends Map<V, V> {
 	getOrGenerate(key: V): V {

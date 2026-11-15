@@ -1,23 +1,24 @@
 import { IBlueprintConfig, TSR } from '@sofie-automation/blueprints-integration'
-import { ObjectWithOverrides } from '../settings/objectWithOverrides.js'
-import { StudioId, BlueprintId, ShowStyleBaseId, MappingsHash, PeripheralDeviceId } from './Ids.js'
-import { BlueprintHash, LastBlueprintConfig } from './Blueprint.js'
-import { MappingsExt, MappingExt } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
-import {
-	ResultingMappingRoute,
-	RouteMapping,
-	StudioRouteBehavior,
-	ResultingMappingRoutes,
-	StudioRouteSet,
-	StudioRouteSetExclusivityGroup,
-	StudioRouteType,
-	StudioAbPlayerDisabling,
-} from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
 import {
 	StudioPackageContainer,
 	StudioPackageContainerSettings,
 } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+import {
+	ResultingMappingRoute,
+	ResultingMappingRoutes,
+	RouteMapping,
+	StudioAbPlayerDisabling,
+	StudioRouteBehavior,
+	StudioRouteSet,
+	StudioRouteSetExclusivityGroup,
+	StudioRouteType,
+} from '@sofie-automation/shared-lib/dist/core/model/StudioRouteSet'
 import { IStudioSettings } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { MappingExt, MappingsExt } from '@sofie-automation/shared-lib/dist/core/model/Timeline'
+
+import { ObjectWithOverrides } from '../settings/objectWithOverrides.js'
+import { BlueprintHash, LastBlueprintConfig } from './Blueprint.js'
+import { BlueprintId, MappingsHash, PeripheralDeviceId, ShowStyleBaseId, StudioId } from './Ids.js'
 
 export { MappingsExt, MappingExt, MappingsHash, IStudioSettings }
 

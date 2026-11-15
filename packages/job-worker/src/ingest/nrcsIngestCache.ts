@@ -1,23 +1,25 @@
-import { RundownId, SegmentId, NrcsIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SetOptional } from 'type-fest'
+import _ from 'underscore'
+
+import { IngestPart, IngestSegment } from '@sofie-automation/blueprints-integration'
+import { NrcsIngestDataCacheObjId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import {
-	NrcsIngestDataCacheObj,
+	IngestRundownWithSource,
 	NrcsIngestCacheType,
+	NrcsIngestDataCacheObj,
+	NrcsIngestDataCacheObjPart,
 	NrcsIngestDataCacheObjRundown,
 	NrcsIngestDataCacheObjSegment,
-	NrcsIngestDataCacheObjPart,
-	IngestRundownWithSource,
 } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { ProtectedString, protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import _ from 'underscore'
-import { IngestPart, IngestSegment } from '@sofie-automation/blueprints-integration'
-import { JobContext } from '../jobs/index.js'
-import { getPartId, getSegmentId } from './lib.js'
-import { SetOptional } from 'type-fest'
 import { groupByToMap, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
-import { diffAndReturnLatestObjects } from './model/implementation/utils.js'
+import { ProtectedString, protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { ICollection } from '../db/index.js'
+import { JobContext } from '../jobs/index.js'
 import { getCurrentTime } from '../lib/index.js'
+import { getPartId, getSegmentId } from './lib.js'
+import { diffAndReturnLatestObjects } from './model/implementation/utils.js'
 
 /**
  * Represents a Rundown in the NRCSIngestDataCache collection and provides methods for interacting with it.
@@ -152,7 +154,7 @@ export class NrcsIngestRundownDataCache {
 			updates.push({
 				deleteMany: {
 					filter: {
-						_id: { $in: removedIds as any },
+						_id: { $in: removedIds },
 					},
 				},
 			})

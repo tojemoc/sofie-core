@@ -1,16 +1,17 @@
-import { CorelibPubSubTypes, CorelibPubSubCollections } from '@sofie-automation/corelib/dist/pubsub'
+import { Logger } from 'winston'
+
+import { CorelibPubSubCollections, CorelibPubSubTypes } from '@sofie-automation/corelib/dist/pubsub'
 import {
-	SubscriptionId,
-	Observer,
 	CollectionDocCheck,
+	Observer,
+	ParametersOfFunctionOrNever,
 	PeripheralDevicePubSubCollections,
 	ProtectedString,
-	ParametersOfFunctionOrNever,
+	SubscriptionId,
 } from '@sofie-automation/server-core-integration'
-import { Logger } from 'winston'
-import { CollectionBase, DEFAULT_THROTTLE_PERIOD_MS } from './collectionBase.js'
+
+import { CollectionBase, DEFAULT_THROTTLE_PERIOD_MS, ObserverCallback } from './collectionBase.js'
 import { CoreHandler } from './coreHandler.js'
-import { ObserverCallback } from './collectionBase.js'
 
 export abstract class PublicationCollection<
 	T,

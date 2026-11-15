@@ -1,6 +1,6 @@
 import {
-	setReportNotifications as libSetReportNotifications,
 	getReportNotifications as libGetReportNotifications,
+	setReportNotifications as libSetReportNotifications,
 } from './notifications/notifications.js'
 
 export enum LocalStorageProperty {

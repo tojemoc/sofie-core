@@ -1,37 +1,39 @@
-import React, { useContext } from 'react'
-import {
-	type PeripheralDevice,
-	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { useTranslation } from 'react-i18next'
-import type { TFunction } from 'i18next'
-import Moment from 'react-moment'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../../../lib/systemTime.js'
-import { Link } from 'react-router-dom'
-import Tooltip from 'rc-tooltip'
-import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
-import { callPeripheralDeviceAction, PeripheralDevicesAPI } from '../../../lib/clientAPI.js'
-import { NotificationCenter, NoticeLevel, Notification } from '../../../lib/notifications/notifications.js'
-import { getHelpMode } from '../../../lib/localStorage.js'
 import ClassNames from 'classnames'
-import { TSR } from '@sofie-automation/blueprints-integration'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import { DEFAULT_TSR_ACTION_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
-import type { SubdeviceAction } from '@sofie-automation/shared-lib/dist/core/deviceConfigManifest'
-import { StatusCodePill } from '../StatusCodePill.js'
-import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { i18nTranslator } from '../../i18n.js'
-import { SchemaFormInPlace } from '../../../lib/forms/SchemaFormInPlace.js'
-import { PeripheralDevices } from '../../../collections/index.js'
-import { DebugStateTable } from '../DebugState.js'
-import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import { catchError } from '../../../lib/lib.js'
-import { UserPermissionsContext } from '../../UserPermissions.js'
+import Tooltip from 'rc-tooltip'
+import React, { useContext } from 'react'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
+import { Link } from 'react-router-dom'
+import type { TFunction } from 'i18next'
+
+import { TSR } from '@sofie-automation/blueprints-integration'
+import {
+	PERIPHERAL_SUBTYPE_PROCESS,
+	PeripheralDeviceType,
+} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { DEFAULT_TSR_ACTION_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
+import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { SubdeviceAction } from '@sofie-automation/shared-lib/dist/core/deviceConfigManifest'
+
+import { PeripheralDevices } from '../../../collections/index.js'
+import { callPeripheralDeviceAction, PeripheralDevicesAPI } from '../../../lib/clientAPI.js'
+import { SchemaFormInPlace } from '../../../lib/forms/SchemaFormInPlace.js'
+import { catchError } from '../../../lib/lib.js'
+import { getHelpMode } from '../../../lib/localStorage.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { i18nTranslator } from '../../i18n.js'
+import { UserPermissionsContext } from '../../UserPermissions.js'
+import { DebugStateTable } from '../DebugState.js'
+import { StatusCodePill } from '../StatusCodePill.js'
 
 interface IDeviceItemProps {
 	parentDevice: PeripheralDevice | null
@@ -135,7 +137,11 @@ export function DeviceItem({
 								e.stopPropagation()
 								onToggleIgnore(device)
 							}}
-							title={device.ignore ? 'Click to show device status to users' : 'Click to hide device status from users'}
+							title={
+								device.ignore
+									? 'Click to show device status to users'
+									: 'Click to hide device status from users'
+							}
 						>
 							<FontAwesomeIcon icon={faEye} />
 						</Button>
@@ -201,10 +207,13 @@ export function DeviceItem({
 														new Notification(
 															undefined,
 															NoticeLevel.WARNING,
-															t('Failed to restart device: "{{deviceName}}": {{errorMessage}}', {
-																deviceName: device.name,
-																errorMessage: err + '',
-															}),
+															t(
+																'Failed to restart device: "{{deviceName}}": {{errorMessage}}',
+																{
+																	deviceName: device.name,
+																	errorMessage: err + '',
+																}
+															),
 															'SystemStatus'
 														)
 													)
@@ -285,7 +294,11 @@ function onExecuteAction(event: any, t: TFunction, device: PeripheralDevice, act
 			yes: t('Execute'),
 			no: t('Cancel'),
 			message: action.payload ? (
-				<SchemaFormInPlace schema={JSONBlobParse(action.payload)} object={payload} translationNamespaces={namespaces} />
+				<SchemaFormInPlace
+					schema={JSONBlobParse(action.payload)}
+					object={payload}
+					translationNamespaces={namespaces}
+				/>
 			) : (
 				t('Do you want to execute {{actionName}}? This may the disrupt the output', { actionName: action.name })
 			),

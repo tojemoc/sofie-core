@@ -1,58 +1,40 @@
-import { useState, useCallback, useEffect } from 'react'
-import _ from 'underscore'
+import ClassNames from 'classnames'
 import { Meteor } from 'meteor/meteor'
-import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { sortAdlibs } from '@sofie-automation/meteor-lib/dist/adlibs'
+import { findPartInstanceOrWrapToTemporary } from '@sofie-automation/meteor-lib/dist/collections/PartInstances'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IBlueprintActionTriggerMode, ISourceLayer, SomeContent } from '@sofie-automation/blueprints-integration'
+import type { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import type { PartId, PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import type { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import ClassNames from 'classnames'
-
-import { Spinner } from '../../lib/Spinner.js'
 import type {
 	OutputLayers,
 	SourceLayers,
 	UIShowStyleBase,
 } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import {
-	type ISourceLayer,
-	PieceLifespan,
-	type IBlueprintActionTriggerMode,
-	type SomeContent,
-} from '@sofie-automation/blueprints-integration'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type {
+	DashboardLayoutFilter,
 	RundownLayoutFilter,
 	RundownLayoutFilterBase,
-	DashboardLayoutFilter,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
-import { findPartInstanceOrWrapToTemporary } from '@sofie-automation/meteor-lib/dist/collections/PartInstances'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import type { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { RundownUtils } from '../../lib/rundown.js'
-import { ShelfTabs } from './Shelf.js'
-import type { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
-import type { BucketAdLibActionUi, BucketAdLibUi } from './RundownViewBuckets.js'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type RevealInShelfEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { i18nTranslator } from '../i18n.js'
-import type { AdLibPieceUi, AdlibSegmentUi } from '../../lib/shelf.js'
-import { getShelfFollowsOnAir } from '../../lib/localStorage.js'
-import { sortAdlibs } from '@sofie-automation/meteor-lib/dist/adlibs'
-import { AdLibPanelToolbar } from './AdLibPanelToolbar.js'
-import { AdLibListView } from './AdLibListView.js'
-import { UIPartInstances, UIStudios } from '../Collections.js'
-import type { PartId, PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { RevealInShelfEvent } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
 import {
 	AdLibActions,
 	AdLibPieces,
@@ -60,10 +42,23 @@ import {
 	RundownBaselineAdLibPieces,
 } from '../../collections/index.js'
 import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { getShelfFollowsOnAir } from '../../lib/localStorage.js'
+import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownUtils } from '../../lib/rundown.js'
 import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import { Spinner } from '../../lib/Spinner.js'
+import { UIPartInstances, UIStudios } from '../Collections.js'
+import { i18nTranslator } from '../i18n.js'
+import { AdLibListView } from './AdLibListView.js'
+import { AdLibPanelToolbar } from './AdLibPanelToolbar.js'
+import { ShelfTabs } from './Shelf.js'
+import type { AdLibPieceUi, AdlibSegmentUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibActionUi, BucketAdLibUi } from './RundownViewBuckets.js'
 
 export interface IAdLibPanelProps {
 	// liveSegment: Segment | undefined
@@ -154,7 +149,12 @@ export function useFetchAndFilter(
 				? fetchAndFilter({
 						playlist: playlist as Pick<
 							DBRundownPlaylist,
-							'_id' | 'studioId' | 'currentPartInfo' | 'nextPartInfo' | 'previousPartsInfo' | 'rundownIdsInOrder'
+							| '_id'
+							| 'studioId'
+							| 'currentPartInfo'
+							| 'nextPartInfo'
+							| 'previousPartsInfo'
+							| 'rundownIdsInOrder'
 						>,
 						showStyleBase: showStyleBase as Pick<UIShowStyleBase, '_id' | 'sourceLayers' | 'outputLayers'>,
 						filter,
@@ -431,7 +431,7 @@ export function fetchAndFilter(props: IFetchAndFilterProps): AdLibFetchAndFilter
 		})
 	}
 
-	let currentRundown: Rundown | undefined = undefined
+	let currentRundown: Rundown | undefined
 	let rundownBaselineAdLibs: Array<AdLibPieceUi> = []
 	if (
 		props.filter &&
@@ -448,7 +448,8 @@ export function fetchAndFilter(props: IFetchAndFilterProps): AdLibFetchAndFilter
 		})
 
 		currentRundown = rundowns[0]
-		const partInstanceId = props.playlist.currentPartInfo?.partInstanceId || props.playlist.nextPartInfo?.partInstanceId
+		const partInstanceId =
+			props.playlist.currentPartInfo?.partInstanceId || props.playlist.nextPartInfo?.partInstanceId
 		if (partInstanceId) {
 			const partInstance = UIPartInstances.findOne(partInstanceId)
 			if (partInstance) {
@@ -528,7 +529,8 @@ export function fetchAndFilter(props: IFetchAndFilterProps): AdLibFetchAndFilter
 							const uiAdLib: AdLibPieceUi = _.clone(item)
 							uiAdLib.isGlobal = true
 
-							uiAdLib.outputLayer = (item.outputLayerId && outputLayerLookup[item.outputLayerId]) || undefined
+							uiAdLib.outputLayer =
+								(item.outputLayerId && outputLayerLookup[item.outputLayerId]) || undefined
 
 							// always add them to the list
 							return uiAdLib
@@ -637,7 +639,9 @@ export function AdLibPanel({
 					})
 
 					Meteor.setTimeout(() => {
-						const el = document.querySelector(`.adlib-panel__list-view__list__segment__item[data-obj-id="${pieceId}"]`)
+						const el = document.querySelector(
+							`.adlib-panel__list-view__list__segment__item[data-obj-id="${pieceId}"]`
+						)
 						if (el) {
 							el.scrollIntoView({
 								behavior: 'smooth',
@@ -683,22 +687,28 @@ export function AdLibPanel({
 			}
 			const lookup = sourceLayerLookup[adlibPiece.sourceLayerId]
 			if (queue && sourceLayerLookup && lookup && !lookup.isQueueable) {
-				console.log(`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`)
+				console.log(
+					`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`
+				)
 				return
 			}
 			if (currentPartInstanceId) {
 				if (adlibPiece.isAction && adlibPiece.adlibAction) {
 					const action = adlibPiece.adlibAction
-					doUserAction(t, e, adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB, (e, ts) =>
-						MeteorCall.userAction.executeAction(
-							e,
-							ts,
-							playlistId,
-							action._id,
-							action.actionId,
-							action.userData,
-							mode?.data
-						)
+					doUserAction(
+						t,
+						e,
+						adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB,
+						(e, ts) =>
+							MeteorCall.userAction.executeAction(
+								e,
+								ts,
+								playlistId,
+								action._id,
+								action.actionId,
+								action.userData,
+								mode?.data
+							)
 					)
 				} else if (!adlibPiece.isGlobal && !adlibPiece.isAction) {
 					doUserAction(t, e, UserAction.START_ADLIB, (e, ts) =>
@@ -769,7 +779,11 @@ export function AdLibPanel({
 			data-tab-id={filter ? `${ShelfTabs.ADLIB_LAYOUT_FILTER}_${filter._id}` : ShelfTabs.ADLIB}
 		>
 			{withSegments && <ul className="adlib-panel__segments">{renderSegmentList()}</ul>}
-			<AdLibPanelToolbar onFilterChange={setSearchFilter} noSegments={!withSegments} searchFilter={searchFilter} />
+			<AdLibPanelToolbar
+				onFilterChange={setSearchFilter}
+				noSegments={!withSegments}
+				searchFilter={searchFilter}
+			/>
 			<AdLibListView
 				uiSegments={uiSegments}
 				rundownAdLibs={rundownBaselineAdLibs}

@@ -1,9 +1,11 @@
-import { useCallback, type ChangeEvent, type JSX } from 'react'
-import { useTranslation } from 'react-i18next'
-import { SortOrderButton } from '../../MediaStatus/SortOrderButton.js'
-import classNames from 'classnames'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
+import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import type { ChangeEvent, JSX } from 'react'
+
+import { SortOrderButton } from '../../MediaStatus/SortOrderButton.js'
 
 export function MediaStatusPopUpHeader({
 	sortOrder,

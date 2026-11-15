@@ -1,20 +1,22 @@
+import { ReadonlyDeep, SetRequired } from 'type-fest'
+
 import { IBlueprintPieceType, TimelineObjectCoreExt, TSR } from '@sofie-automation/blueprints-integration'
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
+import { deserializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import {
 	OnGenerateTimelineObjExt,
 	TimelineObjRundown,
 	TimelineObjType,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobContext } from '../../jobs/index.js'
-import { PartAndPieces, PieceInstanceWithObjectMap } from './util.js'
-import { deserializePieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { ReadonlyDeep, SetRequired } from 'type-fest'
 import { shouldIncludeObjectOnTimeline, TimelinePlayoutState } from '../timeline/lib.js'
 import { computeLookaheadObject } from './lookaheadOffset.js'
+import { PartAndPieces, PieceInstanceWithObjectMap } from './util.js'
 
 export function getBestPieceInstanceId(piece: ReadonlyDeep<PieceInstance>): string {
 	if (!piece.isTemporary || piece.partInstanceId) {

@@ -1,5 +1,4 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TagsService } from '../TagsService'
+import { ISourceLayer, PieceLifespan, SourceLayerType } from '@sofie-automation/blueprints-integration'
 import {
 	PartInstanceId,
 	PieceInstanceId,
@@ -7,16 +6,18 @@ import {
 	RundownPlaylistId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ContentCache } from '../reactiveContentCacheForPieceInstances'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { literal, normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import { ISourceLayer, PieceLifespan, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { IWrappedAdLib } from '@sofie-automation/meteor-lib/dist/triggers/actionFilterChainCompilers'
+
+import { ContentCache } from '../reactiveContentCacheForPieceInstances'
+import { TagsService } from '../TagsService'
 
 const createTestee = () => new TagsService()
 

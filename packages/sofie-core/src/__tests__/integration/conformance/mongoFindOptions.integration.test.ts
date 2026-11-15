@@ -3,6 +3,7 @@
  * Sort cases are compared positionally (order is the thing under test); the rest are compared as a set.
  */
 import { MongoClient } from 'mongodb'
+
 import { connectSharedMongoClient } from '../_integrationDb'
 import { ConformanceCase, runConformanceTable, SeedDoc } from './_harness'
 

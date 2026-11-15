@@ -1,3 +1,7 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { ABPlayerDefinition, NoteSeverity } from '@sofie-automation/blueprints-integration'
 import { ResolvedPieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import {
 	ABSessionAssignment,
@@ -6,21 +10,19 @@ import {
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { OnGenerateTimelineObjExt } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
+import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
+
 import { WrappedShowStyleBlueprint } from '../../blueprints/cache.js'
-import { ReadonlyDeep } from 'type-fest'
+import { ShowStyleContext } from '../../blueprints/context/index.js'
 import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import { getCurrentTime } from '../../lib/index.js'
+import { logger } from '../../logging.js'
 import { resolveAbAssignmentsFromRequests, SessionRequest } from './abPlaybackResolver.js'
 import { calculateSessionTimeRanges } from './abPlaybackSessions.js'
-import { applyAbPlayerObjectAssignments } from './applyAssignments.js'
 import { AbSessionHelper } from './abSessionHelper.js'
-import { ShowStyleContext } from '../../blueprints/context/index.js'
-import { logger } from '../../logging.js'
-import { ABPlayerDefinition, NoteSeverity } from '@sofie-automation/blueprints-integration'
+import { applyAbPlayerObjectAssignments } from './applyAssignments.js'
 import { abPoolFilterDisabled, findPlayersInRouteSets } from './routeSetDisabling.js'
 import type { INotification } from '../../notifications/NotificationsModel.js'
-import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
-import _ from 'underscore'
 
 export interface ABPlaybackResult {
 	assignments: Record<string, ABSessionAssignments>

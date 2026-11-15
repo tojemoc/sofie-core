@@ -6,19 +6,20 @@ import {
 	isPackageReferencedByPlayout,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItem } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
-import { PieceId, ExpectedPackageId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ExpectedPackageId, PieceId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobContext } from '../../../jobs/index.js'
+import { logger } from '../../../logging.js'
+import { IngestExpectedPackage } from '../IngestExpectedPackage.js'
+import { DocumentChangeTracker } from './DocumentChangeTracker.js'
 import { ExpectedPackagesStore } from './ExpectedPackagesStore.js'
 import { IngestSegmentModelImpl } from './IngestSegmentModelImpl.js'
-import { DocumentChangeTracker } from './DocumentChangeTracker.js'
-import { logger } from '../../../logging.js'
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { IngestExpectedPackage } from '../IngestExpectedPackage.js'
-import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
-import { normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
 
 export class SaveIngestModelHelper {
 	readonly #rundownId: RundownId
@@ -203,14 +204,14 @@ export async function writeExpectedPackagesChangesForRundown(
 	if (idsToDelete.length > 0) {
 		ops.push({
 			deleteMany: {
-				filter: { _id: { $in: idsToDelete as any } },
+				filter: { _id: { $in: idsToDelete } },
 			},
 		})
 	}
 	if (idsToClearSources.length > 0) {
 		ops.push({
 			updateMany: {
-				filter: { _id: { $in: idsToClearSources as any } },
+				filter: { _id: { $in: idsToClearSources } },
 				update: {
 					$set: {
 						ingestSources: [],

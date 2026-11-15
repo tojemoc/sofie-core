@@ -1,5 +1,8 @@
-import React, { type PropsWithChildren, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+
 import Sorensen from '@sofie-automation/sorensen'
+
 import { catchError } from './lib.js'
 
 export const SorensenContext = React.createContext<typeof Sorensen | null>(null)

@@ -1,11 +1,13 @@
 import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { CollectionBase } from '../collectionBase.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { CollectionBase } from '../collectionBase.js'
+import { CoreHandler } from '../coreHandler.js'
 import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 export class PlaylistsHandler extends CollectionBase<DBRundownPlaylist[], CollectionName.RundownPlaylists> {
 	constructor(logger: Logger, coreHandler: CoreHandler) {

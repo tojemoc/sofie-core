@@ -1,23 +1,25 @@
-import { z } from 'zod'
-import { check } from '../lib/check'
-import { NewRundownLayoutsAPI } from '@sofie-automation/meteor-lib/dist/api/rundownLayouts'
-import {
-	RundownLayoutType,
-	RundownLayoutBase,
-	CustomizableRegions,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { literal, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../logging'
-import { MethodContext, MethodContextAPI } from './methodContext'
-import { fetchShowStyleBaseLight } from '../optimizations'
-import { BlueprintId, RundownLayoutId, ShowStyleBaseId, UserId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownLayouts } from '../collections'
 import KoaRouter from '@koa/router'
 import bodyParser from 'koa-bodyparser'
-import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
-import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { z } from 'zod'
+
+import { BlueprintId, RundownLayoutId, ShowStyleBaseId, UserId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { NewRundownLayoutsAPI } from '@sofie-automation/meteor-lib/dist/api/rundownLayouts'
+import {
+	CustomizableRegions,
+	RundownLayoutBase,
+	RundownLayoutType,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
+import { RundownLayouts } from '../collections'
+import { check } from '../lib/check'
+import { logger } from '../logging'
+import { fetchShowStyleBaseLight } from '../optimizations'
+import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { MethodContext, MethodContextAPI } from './methodContext'
 
 const PERMISSIONS_FOR_MANAGE_RUNDOWN_LAYOUTS: Array<keyof UserPermissions> = ['configure']
 

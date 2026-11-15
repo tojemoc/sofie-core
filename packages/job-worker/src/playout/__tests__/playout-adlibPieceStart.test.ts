@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
 import {
 	BucketAdLibId,
 	PartInstanceId,
@@ -5,19 +8,18 @@ import {
 	RundownId,
 	RundownPlaylistId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { handleTakeNextPart } from '../take.js'
-import { handleAdLibPieceStart } from '../adlibJobs.js'
-import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
 import { ProcessedShowStyleCompound } from '../../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
+import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
+import { handleAdLibPieceStart } from '../adlibJobs.js'
+import { handleTakeNextPart } from '../take.js'
 
 jest.mock('../timeline/generate')
 

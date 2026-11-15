@@ -3,8 +3,9 @@
  * by `__mocks__/integration-global-setup.js` (published via `process.env.MONGO_URL`), and hand out a fresh,
  * uniquely-named collection per test so files don't need to reboot mongo or clean up after each other.
  */
-import { MongoClient, Collection, Document } from 'mongodb'
 import { randomBytes } from 'crypto'
+
+import { Collection, Document, MongoClient } from 'mongodb'
 
 /** Open a client against the shared replica set. Each test file should do this once in `beforeAll`. */
 export async function connectSharedMongoClient(): Promise<MongoClient> {

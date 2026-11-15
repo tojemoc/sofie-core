@@ -1,20 +1,21 @@
-import React, { useLayoutEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Escape from './Escape.js'
+import ClassNames from 'classnames'
+import React, { useLayoutEffect, useRef } from 'react'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 // @ts-expect-error type linking issue
 import FocusBounder from 'react-focus-bounder'
 import { useTranslation, withTranslation } from 'react-i18next'
-
-import ClassNames from 'classnames'
-import { logger } from './logging.js'
 import _ from 'underscore'
-import type { Translated } from './ReactMeteorData/ReactMeteorData.js'
-import { EditAttribute, type EditAttributeType, type IEditAttributeBaseProps } from './EditAttribute.js'
-import { DEFAULT_CONFIRM_KEY_CODE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { getCoreSystemSettings } from '../collections/index.js'
 
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
+import { DEFAULT_CONFIRM_KEY_CODE } from '@sofie-automation/shared-lib/dist/core/constants'
+
+import { getCoreSystemSettings } from '../collections/index.js'
+import { EditAttribute } from './EditAttribute.js'
+import Escape from './Escape.js'
+import { logger } from './logging.js'
+import type { EditAttributeType, IEditAttributeBaseProps } from './EditAttribute.js'
+import type { Translated } from './ReactMeteorData/ReactMeteorData.js'
 
 interface IModalDialogAttributes {
 	show?: boolean
@@ -199,7 +200,9 @@ export function ModalDialog({
 							>
 								{secondaryText && (
 									<Button
-										variant={discardAsPrimary ? (warning ? 'danger' : 'primary') : 'outline-secondary'}
+										variant={
+											discardAsPrimary ? (warning ? 'danger' : 'primary') : 'outline-secondary'
+										}
 										className={'discard-btn'}
 										autoFocus={discardAsPrimary}
 										onClick={handleSecondary}
@@ -215,7 +218,11 @@ export function ModalDialog({
 									return (
 										<Button
 											key={i}
-											variant={!(action.classNames || '').match(/btn-/) ? 'outline-secondary' : undefined}
+											variant={
+												!(action.classNames || '').match(/btn-/)
+													? 'outline-secondary'
+													: undefined
+											}
 											className={ClassNames('right me-1', action.classNames)}
 											onClick={(e) => handleAction(e, action.on)}
 											onKeyDown={preventClickOnEnter}

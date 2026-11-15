@@ -1,6 +1,7 @@
 import { ICommonContext, NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { logger } from '../../logging.js'
 import { assertNever, getHash } from '@sofie-automation/corelib/dist/lib'
+
+import { logger } from '../../logging.js'
 
 export interface ContextInfo {
 	/** Short name for the context (eg the blueprint function being called) */

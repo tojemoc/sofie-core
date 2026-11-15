@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { MongoFieldSpecifierOnes } from '@sofie-automation/corelib/dist/mongo'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+
+import { Segments } from '../../collections/index.js'
 import { meteorSubscribe } from '../../lib/meteorApi.js'
 import { useSubscription, useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { SpeechSynthesiser } from '../../lib/speechSynthesis.js'
+import { UIPartInstances, UIParts } from '../Collections.js'
 import {
 	// PartUi,
 	withResolvedSegment,
-	type IResolvedSegmentProps,
-	type ITrackedResolvedSegmentProps,
 } from '../SegmentContainer/withResolvedSegment.js'
-import { SpeechSynthesiser } from '../../lib/speechSynthesis.js'
-import { SegmentAdlibTesting } from './SegmentAdlibTesting.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { LIVELINE_HISTORY_SIZE as TIMELINE_LIVELINE_HISTORY_SIZE } from '../SegmentTimeline/Constants.js'
-import { Segments } from '../../collections/index.js'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import type { MongoFieldSpecifierOnes } from '@sofie-automation/corelib/dist/mongo'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { UIPartInstances, UIParts } from '../Collections.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import { SegmentAdlibTesting } from './SegmentAdlibTesting.js'
+import type { IResolvedSegmentProps, ITrackedResolvedSegmentProps } from '../SegmentContainer/withResolvedSegment.js'
 
 export const LIVELINE_HISTORY_SIZE = TIMELINE_LIVELINE_HISTORY_SIZE
 

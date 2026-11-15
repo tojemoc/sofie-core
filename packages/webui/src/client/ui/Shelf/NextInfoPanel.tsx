@@ -1,18 +1,20 @@
-import _ from 'underscore'
 import ClassNames from 'classnames'
-import type {
-	RundownLayoutBase,
-	DashboardLayoutNextInfo,
-	RundownLayoutNextInfo,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import _ from 'underscore'
+
+import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { dashboardElementStyle } from './DashboardPanel.js'
+import type {
+	DashboardLayoutNextInfo,
+	RundownLayoutBase,
+	RundownLayoutNextInfo,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { Segments } from '../../collections/index.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import { UIPartInstances } from '../Collections.js'
-import type { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface INextInfoPanelProps {
 	visible?: boolean
@@ -40,7 +42,8 @@ export function NextInfoPanel({ visible, layout, panel, playlist }: INextInfoPan
 
 	const nextSegmentId = nextPartInstance?.segmentId
 	const nextSegment = useTracker(
-		() => nextSegmentId && (Segments.findOne(nextSegmentId, { projection: { name: 1 } }) as Pick<DBSegment, 'name'>),
+		() =>
+			nextSegmentId && (Segments.findOne(nextSegmentId, { projection: { name: 1 } }) as Pick<DBSegment, 'name'>),
 		[nextSegmentId]
 	)
 

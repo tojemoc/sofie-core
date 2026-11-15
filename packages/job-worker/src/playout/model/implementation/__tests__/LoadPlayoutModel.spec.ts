@@ -1,18 +1,20 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../../../__mocks__/context.js'
 import {
 	setupDefaultRundown,
 	setupDefaultRundownPlaylist,
 	setupMockShowStyleCompound,
 } from '../../../../__mocks__/presetCollections.js'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../../../__mocks__/context.js'
-import { ProcessedShowStyleCompound } from '../../../../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { createPlayoutModelFromIngestModel, loadPlayoutModelPreInit } from '../LoadPlayoutModel.js'
-import { runWithPlaylistLock } from '../../../../playout/lock.js'
-import { loadIngestModelFromRundown } from '../../../../ingest/model/implementation/LoadIngestModel.js'
 import { runWithRundownLock } from '../../../../ingest/lock.js'
+import { loadIngestModelFromRundown } from '../../../../ingest/model/implementation/LoadIngestModel.js'
 import { IngestModelReadonly } from '../../../../ingest/model/IngestModel.js'
+import { ProcessedShowStyleCompound } from '../../../../jobs/index.js'
+import { runWithPlaylistLock } from '../../../../playout/lock.js'
+import { createPlayoutModelFromIngestModel, loadPlayoutModelPreInit } from '../LoadPlayoutModel.js'
 
 describe('LoadPlayoutModel', () => {
 	let context: MockJobContext

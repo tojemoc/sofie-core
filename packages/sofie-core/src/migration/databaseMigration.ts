@@ -1,35 +1,37 @@
 import * as semver from 'semver'
-import {
-	MigrateFunctionCore,
-	MigrationStep,
-	ValidateFunctionCore,
-	ValidateFunction,
-	MigrateFunction,
-	MigrationStepCore,
-} from '@sofie-automation/meteor-lib/dist/migrations'
 import _ from 'underscore'
+
+import { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getHash, omit } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	GetMigrationStatusResult,
 	MigrationChunk,
 	MigrationStepType,
 	RunMigrationResult,
 } from '@sofie-automation/meteor-lib/dist/api/migration'
-import { logger } from '../logging'
-import { internalStoreSystemSnapshot } from '../api/snapshot'
-import { parseVersion, Version } from '../systemStatus/semverUtils'
 import { GENESIS_SYSTEM_VERSION } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { getHash, omit } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	MigrateFunction,
+	MigrateFunctionCore,
+	MigrationStep,
+	MigrationStepCore,
+	ValidateFunction,
+	ValidateFunctionCore,
+} from '@sofie-automation/meteor-lib/dist/migrations'
+import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { CURRENT_SYSTEM_VERSION } from './currentSystemVersion'
-import { SnapshotId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { MethodContext } from '../api/methodContext'
+import { internalStoreSystemSnapshot } from '../api/snapshot'
 import { Blueprints } from '../collections'
 import { getSystemStorePath } from '../coreSystem'
 import { getCoreSystemAsync, setCoreSystemVersion } from '../coreSystem/collection'
+import { logger } from '../logging'
 import { assertConnectionHasOneOfPermissions } from '../security/auth'
-import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
-import { MethodContext } from '../api/methodContext'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { parseVersion, Version } from '../systemStatus/semverUtils'
+import { CURRENT_SYSTEM_VERSION } from './currentSystemVersion'
 
 export const PERMISSIONS_FOR_MIGRATIONS: Array<keyof UserPermissions> = ['configure']
 

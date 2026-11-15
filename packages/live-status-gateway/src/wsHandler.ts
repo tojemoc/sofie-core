@@ -1,7 +1,8 @@
+import _ from 'underscore'
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
+
 import { AllMessages } from '@sofie-automation/live-status-gateway-api'
-import _ from 'underscore'
 
 export abstract class WebSocketTopicBase {
 	protected _name: string

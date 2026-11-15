@@ -1,23 +1,25 @@
-import { useCallback } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDatabase, faEye, faWarning } from '@fortawesome/free-solid-svg-icons'
-import { MeteorCall } from '../../../lib/meteorApi.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useCallback } from 'react'
+import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { i18nTranslator } from '../../i18n.js'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
+
 import { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { NotificationCenter, NoticeLevel, Notification } from '../../../lib/notifications/notifications.js'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import type {
 	UIBlueprintUpgradeStatusBase,
 	UIBlueprintUpgradeStatusCoreSystem,
 	UIBlueprintUpgradeStatusShowStyle,
 	UIBlueprintUpgradeStatusStudio,
 } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
+
 import { catchError } from '../../../lib/lib.js'
-import Button from 'react-bootstrap/esm/Button'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { i18nTranslator } from '../../i18n.js'
 
 export function getUpgradeStatusMessage(t: TFunction, upgradeResult: UIBlueprintUpgradeStatusBase): string | null {
 	if (upgradeResult.invalidReason)

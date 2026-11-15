@@ -1,4 +1,5 @@
 import { PeripheralDevicePubSubCollectionsNames } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
 import { createSyncPeripheralDeviceCustomPublicationMongoCollection } from '../../collections/lib'
 
 /**

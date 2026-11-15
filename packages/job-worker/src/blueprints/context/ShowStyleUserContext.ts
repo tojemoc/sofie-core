@@ -1,11 +1,13 @@
-import { PackageInfo, IShowStyleUserContext, NoteSeverity } from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
-import { WatchedPackagesHelper } from './watchedPackages.js'
+
+import { IShowStyleUserContext, NoteSeverity, PackageInfo } from '@sofie-automation/blueprints-integration'
 import { INoteBase } from '@sofie-automation/corelib/dist/dataModel/Notes'
+
 import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import { ContextInfo } from './CommonContext.js'
-import { ShowStyleContext } from './ShowStyleContext.js'
 import { getMediaObjectDuration } from './lib.js'
+import { ShowStyleContext } from './ShowStyleContext.js'
+import { WatchedPackagesHelper } from './watchedPackages.js'
 
 export class ShowStyleUserContext extends ShowStyleContext implements IShowStyleUserContext {
 	public readonly notes: INoteBase[] = []

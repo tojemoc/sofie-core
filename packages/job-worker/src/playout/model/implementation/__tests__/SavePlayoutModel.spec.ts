@@ -1,15 +1,7 @@
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { PlayoutRundownModelImpl } from '../PlayoutRundownModelImpl.js'
-import { setupDefaultJobEnvironment } from '../../../../__mocks__/context.js'
-import {
-	writePartInstancesAndPieceInstances,
-	writeAdlibTestingSegments,
-	writeExpectedPackagesForPlayoutSources,
-} from '../SavePlayoutModel.js'
-import { PlayoutPartInstanceModelImpl } from '../PlayoutPartInstanceModelImpl.js'
+import { mock } from 'jest-mock-extended'
+
+import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import { ExpectedPackageDB, getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import {
 	PartInstanceId,
 	PieceInstanceId,
@@ -17,10 +9,20 @@ import {
 	RundownPlaylistId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { mock } from 'jest-mock-extended'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupDefaultJobEnvironment } from '../../../../__mocks__/context.js'
 import { QuickLoopService } from '../../services/QuickLoopService.js'
-import { ExpectedPackageDB, getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import { PlayoutPartInstanceModelImpl } from '../PlayoutPartInstanceModelImpl.js'
+import { PlayoutRundownModelImpl } from '../PlayoutRundownModelImpl.js'
+import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
+import {
+	writeAdlibTestingSegments,
+	writeExpectedPackagesForPlayoutSources,
+	writePartInstancesAndPieceInstances,
+} from '../SavePlayoutModel.js'
 
 describe('SavePlayoutModel', () => {
 	function createRundownModel(segments?: DBSegment[]): PlayoutRundownModelImpl {

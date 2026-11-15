@@ -1,26 +1,27 @@
 import '../../__mocks__/_extendJest.js'
-import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { setupMockPeripheralDevice, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
+
 import {
 	BlueprintResultSegment,
 	IBlueprintSegment,
 	IngestRundown,
 	IngestSegment,
 } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDevice,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundown, RundownSource } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { wrapGenericIngestJob } from '../jobWrappers.js'
-import { handleUpdatedRundown } from '../ingestRundownJobs.js'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { setupDefaultJobEnvironment } from '../../__mocks__/context.js'
+import { setupMockPeripheralDevice, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
 import { logger } from '../../logging.js'
+import { handleUpdatedRundown } from '../ingestRundownJobs.js'
+import { wrapGenericIngestJob } from '../jobWrappers.js'
 
 const handleUpdatedRundownWrapped = wrapGenericIngestJob(handleUpdatedRundown)
 

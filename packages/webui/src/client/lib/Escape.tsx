@@ -1,5 +1,6 @@
-import { useRef, useEffect, type PropsWithChildren } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import type { PropsWithChildren } from 'react'
 
 /**
  * Creates DOM element to be used as React root.

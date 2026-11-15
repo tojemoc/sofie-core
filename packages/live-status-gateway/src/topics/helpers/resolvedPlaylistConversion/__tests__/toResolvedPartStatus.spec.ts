@@ -1,6 +1,8 @@
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { ResolvedPartState } from '@sofie-automation/live-status-gateway-api'
-import { NoteSeverity } from '@sofie-automation/blueprints-integration'
+
+import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 import { toResolvedPartStatus } from '../parts/toResolvedPartStatus.js'
 import {
 	makePartInstance,
@@ -10,7 +12,6 @@ import {
 	makeSegment,
 	makeTestShowStyleBaseExt,
 } from './resolvedPlaylistConversionTestUtils.js'
-import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 
 describe('toResolvedPartStatus', () => {
 	it('maps current part state and nested pieces', () => {

@@ -1,9 +1,10 @@
+import { WorkerId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { interceptLogging, LogEntry, logger } from './logging.js'
 import { FastTrackTimelineFunc, JobSpec, JobWorkerBase } from './main.js'
 import { JobManager, JobStream } from './manager.js'
-import { WorkerId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
 
 /**
  * A very simple implementation of JobManager, that is designed to work via threadedClass over IPC

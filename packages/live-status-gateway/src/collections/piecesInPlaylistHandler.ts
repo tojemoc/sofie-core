@@ -1,13 +1,15 @@
-import { Logger } from 'winston'
-import { CoreHandler } from '../coreHandler.js'
-import { PublicationCollection } from '../publicationCollection.js'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import _ from 'underscore'
+import { Logger } from 'winston'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { CollectionHandlers } from '../liveStatusServer.js'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import throttleToNextTick from '@sofie-automation/shared-lib/dist/lib/throttleToNextTick'
+
+import { CoreHandler } from '../coreHandler.js'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { PublicationCollection } from '../publicationCollection.js'
 
 const PLAYLIST_KEYS = ['rundownIdsInOrder'] as const
 type Playlist = Pick<DBRundownPlaylist, (typeof PLAYLIST_KEYS)[number]>

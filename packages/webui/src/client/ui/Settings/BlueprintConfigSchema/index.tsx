@@ -1,26 +1,24 @@
+import deepmerge from 'deepmerge'
 import { useCallback, useMemo } from 'react'
-import type { MappingExt, MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { type IBlueprintConfig, type ISourceLayer, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
-import { groupByToMapFunc, literal } from '@sofie-automation/corelib/dist/lib'
 import { useTranslation } from 'react-i18next'
+
+import { SchemaFormUIField } from '@sofie-automation/blueprints-integration'
+import { groupByToMapFunc, literal } from '@sofie-automation/corelib/dist/lib'
+import type { IBlueprintConfig, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { MappingExt, MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import type {
 	ObjectWithOverrides,
 	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import {
-	useOverrideOpHelperForSimpleObject,
-	type OverrideOpHelperForItemContents,
-	type WrappedOverridableItemNormal,
-} from '../util/OverrideOpHelper.js'
 import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
-import deepmerge from 'deepmerge'
-import {
-	type SchemaFormSofieEnumDefinition,
-	translateStringIfHasNamespaces,
-} from '../../../lib/forms/schemaFormUtil.js'
+
+import { translateStringIfHasNamespaces } from '../../../lib/forms/schemaFormUtil.js'
 import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
-import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { useOverrideOpHelperForSimpleObject } from '../util/OverrideOpHelper.js'
 import { ConfigCategoryEntry } from './CategoryEntry.js'
+import type { SchemaFormSofieEnumDefinition } from '../../../lib/forms/schemaFormUtil.js'
+import type { OverrideOpHelperForItemContents, WrappedOverridableItemNormal } from '../util/OverrideOpHelper.js'
 
 interface BlueprintConfigSchemaSettingsProps {
 	schema: JSONSchema | undefined
@@ -159,7 +157,9 @@ export function BlueprintConfigSchemaSettingsForItem({
 		if (schema?.type === 'object' && schema.properties) {
 			const groupedMap = groupByToMapFunc(
 				Object.entries<JSONSchema>(schema.properties),
-				(v) => translateStringIfHasNamespaces((v[1] as any)[SchemaFormUIField.Category], translationNamespaces) || null
+				(v) =>
+					translateStringIfHasNamespaces((v[1] as any)[SchemaFormUIField.Category], translationNamespaces) ||
+					null
 			)
 
 			return Array.from(groupedMap.entries())

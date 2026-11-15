@@ -1,12 +1,16 @@
-import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { PlayoutRundownModelImpl } from '../PlayoutRundownModelImpl.js'
-import { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
-import { restartRandomId } from '../../../../__mocks__/nanoid.js'
+
+import { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBSegment, SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { PlayoutRundownModelImpl } from '../PlayoutRundownModelImpl.js'
+import { PlayoutSegmentModelImpl } from '../PlayoutSegmentModelImpl.js'
+
+// importing __mocks__/nanoid directly before nanoid is required leaves jest serving an automock of the mock
+const { restartRandomId } = jest.requireMock<{ restartRandomId: () => void }>('nanoid')
 
 describe('PlayoutRundownModelImpl', () => {
 	function createBasicDBRundown(): DBRundown {

@@ -1,36 +1,38 @@
-import { z } from 'zod'
-import { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
-	CustomPublishCollection,
-	SetupObserversResult,
-} from '../../../lib/customPublication'
-import type { PublicationRegistry } from '../../../publicationRegistry'
-import { literal, omit } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../../../logging'
 import { ReadonlyDeep } from 'type-fest'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { z } from 'zod'
+
 import {
 	ExpectedPackageId,
 	PeripheralDeviceId,
 	PieceInstanceId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Studios } from '../../../collections'
-import { check } from '../../../lib/check'
+import { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
 import { PackageManagerExpectedPackage } from '@sofie-automation/shared-lib/dist/package-manager/publications'
-import { ExpectedPackagesContentObserver } from './contentObserver'
-import { createReactiveContentCache, ExpectedPackagesContentCache } from './contentCache'
-import { buildMappingsToDeviceIdMap } from './util'
-import { updateCollectionForExpectedPackageIds } from './generate'
 import {
 	PeripheralDevicePubSub,
 	PeripheralDevicePubSubCollectionsNames,
 } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { Studios } from '../../../collections'
+import { check } from '../../../lib/check'
+import {
+	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
+	SetupObserversResult,
+	TriggerUpdate,
+} from '../../../lib/customPublication'
+import { logger } from '../../../logging'
 import { checkAccessAndGetPeripheralDevice } from '../../../security/check'
-import { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+import { createReactiveContentCache, ExpectedPackagesContentCache } from './contentCache'
+import { ExpectedPackagesContentObserver } from './contentObserver'
+import { updateCollectionForExpectedPackageIds } from './generate'
+import { buildMappingsToDeviceIdMap } from './util'
+import type { PublicationRegistry } from '../../../publicationRegistry'
 
 interface ExpectedPackagesPublicationArgs {
 	readonly studioId: StudioId
@@ -141,8 +143,7 @@ async function manipulateExpectedPackagesPublicationData(
 	// Reload the studio, and the layerNameToDeviceIds lookup
 	if (!updateProps || updateProps.invalidateStudio) {
 		state.studio = (await Studios.findOneAsync(args.studioId, { projection: studioFieldSpecifier })) as
-			| Pick<DBStudio, StudioFields>
-			| undefined
+			Pick<DBStudio, StudioFields> | undefined
 		if (!state.studio) {
 			logger.warn(`Pub.expectedPackagesForDevice: studio "${args.studioId}" not found!`)
 			state.layerNameToDeviceIds = new Map()

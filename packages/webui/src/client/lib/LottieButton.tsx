@@ -1,6 +1,6 @@
+import Lottie from 'lottie-react'
 import * as React from 'react'
-
-import Lottie, { type LottieComponentProps } from 'lottie-react'
+import type { LottieComponentProps } from 'lottie-react'
 
 interface IProps {
 	inAnimation?: any

@@ -1,11 +1,13 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItemRundown } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import { ExpectedPlayoutItemId, PartId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ReadonlyDeep } from 'type-fest'
+import { clone, deleteAllUndefinedProperties } from '@sofie-automation/corelib/dist/lib'
+
 import { diffAndReturnLatestObjects, DocumentChanges, getDocumentChanges, setValuesAndTrackChanges } from './utils.js'
 import type { IngestExpectedPackage } from '../IngestExpectedPackage.js'
-import { ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { clone, deleteAllUndefinedProperties } from '@sofie-automation/corelib/dist/lib'
-import _ from 'underscore'
 
 export class ExpectedPackagesStore<TPackageSource extends { fromPieceType: ExpectedPackageDBType }> {
 	#expectedPlayoutItems: ExpectedPlayoutItemRundown[]

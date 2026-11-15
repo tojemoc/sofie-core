@@ -1,8 +1,8 @@
 import {
-	type RundownTTimer,
 	getRundownTTimers,
 	timerStateToDuration,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import type { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
 
 /**
  * Calculate the display diff for a T-Timer.

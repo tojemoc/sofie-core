@@ -1,35 +1,36 @@
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type {
 	DashboardLayout,
 	DashboardLayoutFilter,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { TimelineDashboardPanel } from './TimelineDashboardPanel.js'
+import { AdLibRegionPanel } from './AdLibRegionPanel.js'
+import { ColoredBoxPanel } from './ColoredBoxPanel.js'
+import { DashboardActionButtonGroup } from './DashboardActionButtonGroup.js'
 import { DashboardPanel } from './DashboardPanel.js'
 import { ExternalFramePanel } from './ExternalFramePanel.js'
-import { DashboardActionButtonGroup } from './DashboardActionButtonGroup.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { AdLibRegionPanel } from './AdLibRegionPanel.js'
-import { PieceCountdownPanel } from './PieceCountdownPanel.js'
-import type { BucketAdLibItem } from './RundownViewBuckets.js'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import type { AdLibPieceUi } from '../../lib/shelf.js'
 import { MiniRundownPanel } from './MiniRundownPanel.js'
 import { NextInfoPanel } from './NextInfoPanel.js'
-import { PlaylistStartTimerPanel } from './PlaylistStartTimerPanel.js'
-import { PlaylistEndTimerPanel } from './PlaylistEndTimerPanel.js'
-import { SegmentTimingPanel } from './SegmentTimingPanel.js'
-import { PartTimingPanel } from './PartTimingPanel.js'
-import { TextLabelPanel } from './TextLabelPanel.js'
-import { PlaylistNamePanel } from './PlaylistNamePanel.js'
-import { TimeOfDayPanel } from './TimeOfDayPanel.js'
-import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { StudioNamePanel } from './StudioNamePanel.js'
-import { SegmentNamePanel } from './SegmentNamePanel.js'
 import { PartNamePanel } from './PartNamePanel.js'
-import { ColoredBoxPanel } from './ColoredBoxPanel.js'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import { PartTimingPanel } from './PartTimingPanel.js'
+import { PieceCountdownPanel } from './PieceCountdownPanel.js'
+import { PlaylistEndTimerPanel } from './PlaylistEndTimerPanel.js'
+import { PlaylistNamePanel } from './PlaylistNamePanel.js'
+import { PlaylistStartTimerPanel } from './PlaylistStartTimerPanel.js'
+import { SegmentNamePanel } from './SegmentNamePanel.js'
+import { SegmentTimingPanel } from './SegmentTimingPanel.js'
+import { StudioNamePanel } from './StudioNamePanel.js'
+import { TextLabelPanel } from './TextLabelPanel.js'
+import { TimelineDashboardPanel } from './TimelineDashboardPanel.js'
+import { TimeOfDayPanel } from './TimeOfDayPanel.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibItem } from './RundownViewBuckets.js'
 
 export interface IShelfDashboardLayoutProps {
 	rundownLayout: DashboardLayout
@@ -144,7 +145,12 @@ export function ShelfDashboardLayout(props: Readonly<IShelfDashboardLayoutProps>
 							)
 						} else if (RundownLayoutsAPI.isPlaylistEndTimer(panel)) {
 							return (
-								<PlaylistEndTimerPanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+								<PlaylistEndTimerPanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
 							)
 						} else if (RundownLayoutsAPI.isSegmentTiming(panel)) {
 							return (
@@ -168,15 +174,41 @@ export function ShelfDashboardLayout(props: Readonly<IShelfDashboardLayoutProps>
 								/>
 							)
 						} else if (RundownLayoutsAPI.isTextLabel(panel)) {
-							return <TextLabelPanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+							return (
+								<TextLabelPanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
+							)
 						} else if (RundownLayoutsAPI.isPlaylistName(panel)) {
 							return (
-								<PlaylistNamePanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+								<PlaylistNamePanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
 							)
 						} else if (RundownLayoutsAPI.isStudioName(panel)) {
-							return <StudioNamePanel key={panel._id} studio={props.studio} layout={rundownLayout} panel={panel} />
+							return (
+								<StudioNamePanel
+									key={panel._id}
+									studio={props.studio}
+									layout={rundownLayout}
+									panel={panel}
+								/>
+							)
 						} else if (RundownLayoutsAPI.isSegmentName(panel)) {
-							return <SegmentNamePanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+							return (
+								<SegmentNamePanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
+							)
 						} else if (RundownLayoutsAPI.isPartName(panel)) {
 							return (
 								<PartNamePanel
@@ -188,9 +220,23 @@ export function ShelfDashboardLayout(props: Readonly<IShelfDashboardLayoutProps>
 								/>
 							)
 						} else if (RundownLayoutsAPI.isTimeOfDay(panel)) {
-							return <TimeOfDayPanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+							return (
+								<TimeOfDayPanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
+							)
 						} else if (RundownLayoutsAPI.isColoredBox(panel)) {
-							return <ColoredBoxPanel key={panel._id} playlist={props.playlist} layout={rundownLayout} panel={panel} />
+							return (
+								<ColoredBoxPanel
+									key={panel._id}
+									playlist={props.playlist}
+									layout={rundownLayout}
+									panel={panel}
+								/>
+							)
 						} else if (RundownLayoutsAPI.isMiniRundown(panel)) {
 							return (
 								<MiniRundownPanel

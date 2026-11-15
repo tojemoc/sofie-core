@@ -1,15 +1,17 @@
 import { useContext } from 'react'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { Rundown as RundownObj } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { Segments } from '../../../collections/index.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { Segment as SegmentComponent } from './Segment.js'
+
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import type { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown as RundownObj } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+
+import { Segments } from '../../../collections/index.js'
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { UIShowStyleBases } from '../../Collections.js'
 import { RundownToShowStyleContext, StudioContext } from './index.js'
-import type { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Segment as SegmentComponent } from './Segment.js'
 
 interface IProps {
 	playlist: DBRundownPlaylist

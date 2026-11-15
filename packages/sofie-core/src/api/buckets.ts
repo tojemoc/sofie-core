@@ -1,14 +1,10 @@
 import _ from 'underscore'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
-import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
-import { AdLibAction, AdLibActionCommon } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
-import { BucketAdLibActions, BucketAdLibs, Buckets, Rundowns, ShowStyleVariants, Studios } from '../collections'
-import { runIngestOperation } from './ingest/lib'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+
 import { IngestAdlib } from '@sofie-automation/blueprints-integration'
-import { getShowStyleCompound } from './showStyles'
+import { AdLibAction, AdLibActionCommon } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
+import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import {
 	BucketAdLibActionId,
 	BucketAdLibId,
@@ -17,8 +13,14 @@ import {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { fetchStudioLight } from '../optimizations'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+
+import { BucketAdLibActions, BucketAdLibs, Buckets, Rundowns, ShowStyleVariants, Studios } from '../collections'
+import { fetchStudioLight } from '../optimizations'
+import { runIngestOperation } from './ingest/lib'
+import { getShowStyleCompound } from './showStyles'
 
 const DEFAULT_BUCKET_WIDTH = undefined
 
@@ -145,8 +147,7 @@ export namespace BucketsAPI {
 		action: AdLibActionCommon | BucketAdLibAction
 	): Promise<BucketAdLibAction> {
 		const targetBucket = (await Buckets.findOneAsync(bucketId, { projection: { _id: 1, studioId: 1 } })) as
-			| Pick<Bucket, '_id' | 'studioId'>
-			| undefined
+			Pick<Bucket, '_id' | 'studioId'> | undefined
 		if (!targetBucket) throw new SofieError(404, `Bucket "${bucketId}" not found`)
 
 		let adLibAction: BucketAdLibAction

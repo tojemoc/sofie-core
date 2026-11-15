@@ -1,12 +1,13 @@
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { MutableIngestRundownChanges, MutableIngestRundownImpl } from '../MutableIngestRundownImpl.js'
-import { SofieIngestRundownDataCacheGenerator } from '../../../ingest/sofieIngestCache.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getSegmentId } from '../../../ingest/lib.js'
-import { SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MutableIngestSegmentImpl } from '../MutableIngestSegmentImpl.js'
 import { IngestRundown, IngestSegment, SofieIngestSegment } from '@sofie-automation/blueprints-integration'
+import { SofieIngestDataCacheObjId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { SofieIngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { getSegmentId } from '../../../ingest/lib.js'
+import { SofieIngestRundownDataCacheGenerator } from '../../../ingest/sofieIngestCache.js'
+import { MutableIngestRundownChanges, MutableIngestRundownImpl } from '../MutableIngestRundownImpl.js'
+import { MutableIngestSegmentImpl } from '../MutableIngestSegmentImpl.js'
 
 describe('MutableIngestRundownImpl', () => {
 	function getBasicIngestRundown(): SofieIngestRundownWithSource<any> {

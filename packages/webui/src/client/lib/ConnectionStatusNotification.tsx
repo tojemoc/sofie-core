@@ -1,28 +1,22 @@
 import { Meteor } from 'meteor/meteor'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+import type { TFunction } from 'i18next'
 import type { DDP } from 'meteor/ddp'
 import type * as React from 'react'
-import _ from 'underscore'
-import { MomentFromNow } from './Moment.js'
-import {
-	NotificationCenter,
-	NoticeLevel,
-	Notification,
-	NotificationList,
-	type NotifierHandle,
-} from './notifications/notifications.js'
-import { WithManagedTracker } from './reactiveData/reactiveDataHelper.js'
-import { useTranslation } from 'react-i18next'
-import { NotificationCenterPopUps } from './notifications/NotificationCenterPanel.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import {
-	type ICoreSystem,
-	type ServiceMessage,
-	Criticality,
-} from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import type { TFunction } from 'i18next'
+
 import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { Criticality } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import type { ICoreSystem, ServiceMessage } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
 import { CoreSystem } from '../collections/index.js'
-import { useEffect } from 'react'
+import { MomentFromNow } from './Moment.js'
+import { NotificationCenterPopUps } from './notifications/NotificationCenterPanel.js'
+import { NoticeLevel, Notification, NotificationCenter, NotificationList } from './notifications/notifications.js'
+import { WithManagedTracker } from './reactiveData/reactiveDataHelper.js'
+import type { NotifierHandle } from './notifications/notifications.js'
 
 export class ConnectionStatusNotifier extends WithManagedTracker {
 	private _notificationList: NotificationList
@@ -134,7 +128,11 @@ export class ConnectionStatusNotifier extends WithManagedTracker {
 					</span>
 				)
 			case 'offline':
-				return <span>{t('Your machine is offline and cannot connect to the {{platformName}}.', { platformName })}</span>
+				return (
+					<span>
+						{t('Your machine is offline and cannot connect to the {{platformName}}.', { platformName })}
+					</span>
+				)
 			case 'connected':
 				return <span>{t('Connected to the {{platformName}}.', { platformName })}</span>
 		}

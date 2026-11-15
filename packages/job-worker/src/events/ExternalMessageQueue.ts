@@ -1,20 +1,23 @@
+import { stringify } from 'querystring'
+
+import pTimeout from 'p-timeout'
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	ExternalMessageQueueObjRabbitMQ,
 	IBlueprintExternalMessageQueueType,
 	Time,
 } from '@sofie-automation/blueprints-integration'
 import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
-import { IChangeStream, IDirectCollections } from '../db/index.js'
-import { getCurrentTime } from '../lib/index.js'
-import { sendRabbitMQMessage } from './integration/rabbitMQ.js'
-import { stringify } from 'querystring'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { sendSlackMessageToWebhook } from './integration/slack.js'
+
+import { IChangeStream, IDirectCollections } from '../db/index.js'
 import { StudioCacheContext } from '../jobs/index.js'
-import { InvalidateWorkerDataCache, WorkerDataCacheWrapper } from '../workers/caches.js'
-import { ReadonlyDeep } from 'type-fest'
-import pTimeout from 'p-timeout'
+import { getCurrentTime } from '../lib/index.js'
 import { logger } from '../logging.js'
+import { InvalidateWorkerDataCache, WorkerDataCacheWrapper } from '../workers/caches.js'
+import { sendRabbitMQMessage } from './integration/rabbitMQ.js'
+import { sendSlackMessageToWebhook } from './integration/slack.js'
 
 const TRIGGER_DELAY_DEFAULT = 1000 // TODO: Now that this is in its own thread, does it need a delay?
 const TRIGGER_DELAY_STARTUP = 5000

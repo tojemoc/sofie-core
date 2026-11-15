@@ -1,14 +1,16 @@
-import type { IContextMenuContext } from '../../RundownView.js'
-import type { IOutputLayerUi, PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
+import classNames from 'classnames'
+
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { DEBUG_MODE } from '../SegmentTimelineDebugMode.js'
 import { FlattenedSourceLayers } from './FlattenedSourceLayers.js'
 import { SourceLayer } from './SourceLayer.js'
-import classNames from 'classnames'
-import { DEBUG_MODE } from '../SegmentTimelineDebugMode.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { IContextMenuContext } from '../../RundownView.js'
+import type { IOutputLayerUi, PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
 
 interface IOutputGroupProps {
 	layer: IOutputLayerUi
@@ -131,7 +133,8 @@ export function OutputGroup(props: Readonly<IOutputGroupProps>): JSX.Element {
 			className={classNames(
 				'segment-timeline__output-group',
 				{
-					collapsible: props.layer.sourceLayers && props.layer.sourceLayers.length > 1 && !props.layer.isFlattened,
+					collapsible:
+						props.layer.sourceLayers && props.layer.sourceLayers.length > 1 && !props.layer.isFlattened,
 					collapsed: isCollapsed,
 					flattened: props.layer.isFlattened,
 				},

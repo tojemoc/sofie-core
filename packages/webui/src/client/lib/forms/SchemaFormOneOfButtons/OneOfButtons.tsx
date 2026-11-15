@@ -1,22 +1,27 @@
 import { faQuestionCircle, faSync } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getSchemaUIField, type JSONSchema, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
-import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
-import { TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
 import classNames from 'classnames'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import { useTranslation } from 'react-i18next'
 import _ from 'underscore'
+
+import { getSchemaUIField, SchemaFormUIField } from '@sofie-automation/blueprints-integration'
+import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
+import { TypeName } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+import type { JSONSchema } from '@sofie-automation/blueprints-integration'
+
+import { BlueprintAssetIcon } from '../../Components/BlueprintAssetIcon.js'
+import { LabelActual } from '../../Components/LabelAndOverrides.js'
+import { hasOpWithPath } from '../../Components/util.js'
+import { translateStringIfHasNamespaces } from '../schemaFormUtil.js'
+import { SchemaFormWithState } from '../SchemaFormWithState.js'
 import type {
 	OverrideOpHelperForItemContents,
 	WrappedOverridableItemNormal,
 } from '../../../ui/Settings/util/OverrideOpHelper.js'
-import { BlueprintAssetIcon } from '../../Components/BlueprintAssetIcon.js'
-import { LabelActual, type LabelAndOverridesProps } from '../../Components/LabelAndOverrides.js'
-import { hasOpWithPath } from '../../Components/util.js'
-import { type SchemaFormCommonProps, translateStringIfHasNamespaces } from '../schemaFormUtil.js'
-import { SchemaFormWithState } from '../SchemaFormWithState.js'
+import type { LabelAndOverridesProps } from '../../Components/LabelAndOverrides.js'
+import type { SchemaFormCommonProps } from '../schemaFormUtil.js'
 
 export const OneOfButtonsWithOverrides = (
 	props: Readonly<SchemaFormCommonProps> & {
@@ -42,7 +47,9 @@ export const OneOfButtonsWithOverrides = (
 			translationNamespaces: props.translationNamespaces,
 			commonAttrs: {
 				label: translateStringIfHasNamespaces(title, props.translationNamespaces),
-				hint: description ? translateStringIfHasNamespaces(description, props.translationNamespaces) : undefined,
+				hint: description
+					? translateStringIfHasNamespaces(description, props.translationNamespaces)
+					: undefined,
 				item: props.item,
 				itemKey: props.attr,
 				overrideHelper: props.overrideHelper,

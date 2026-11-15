@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor'
 import { Tracker } from 'meteor/tracker'
-import type { Time } from '@sofie-automation/blueprints-integration'
-import { getCurrentTime } from './systemTime.js'
+
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { Time } from '@sofie-automation/blueprints-integration'
+
 import { MeteorCall } from '../lib/meteorApi.js'
+import { getCurrentTime } from './systemTime.js'
 
 interface LoggedError {
 	location: string

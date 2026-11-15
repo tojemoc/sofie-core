@@ -3,12 +3,14 @@
  * Extracted from the original `engine.integration.test.ts` so both can drive the real change-stream
  * multiplexer the same way.
  */
-import { MongoClient, Collection, ChangeStreamDocument } from 'mongodb'
-import { protectString, ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { MongoQuery, MongoFieldSpecifier } from '@sofie-automation/corelib/dist/mongo'
+import { ChangeStreamDocument, Collection, MongoClient } from 'mongodb'
+
+import { MongoFieldSpecifier, MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
+
 import { CollectionChangeFeed, createCollectionChangeStream } from '../../collections/changeStream/collectionChangeFeed'
 import { ObserveMultiplexer, ObserveMultiplexerDeps } from '../../collections/changeStream/observeMultiplexer'
-import type { ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
 
 export interface TestDoc {
 	_id: ProtectedString<any>

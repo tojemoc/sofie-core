@@ -1,13 +1,15 @@
-import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
-import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RundownLayoutsAPI } from '../../../../lib/rundownLayouts.js'
-import { RundownLayouts } from '../../../../collections/index.js'
-import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { RundownLayouts } from '../../../../collections/index.js'
 import { LabelActual } from '../../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import { RundownLayoutsAPI } from '../../../../lib/rundownLayouts.js'
 
 function filterLayouts(
 	rundownLayouts: RundownLayoutBase[],
@@ -128,7 +130,9 @@ export default function RundownViewLayoutSettings({ sourceLayers, item, layouts 
 					type="checkbox"
 					collection={RundownLayouts}
 				/>
-				<span className="text-s dimmed field-hint">{t('All additional source layers must have active pieces')}</span>
+				<span className="text-s dimmed field-hint">
+					{t('All additional source layers must have active pieces')}
+				</span>
 			</label>
 
 			<label className="field">
@@ -139,7 +143,9 @@ export default function RundownViewLayoutSettings({ sourceLayers, item, layouts 
 					type="checkbox"
 					collection={RundownLayouts}
 				></EditAttribute>
-				<span className="text-s dimmed field-hint">{t('Hide rundown divider between rundowns in a playlist')}</span>
+				<span className="text-s dimmed field-hint">
+					{t('Hide rundown divider between rundowns in a playlist')}
+				</span>
 			</label>
 
 			<label className="field">

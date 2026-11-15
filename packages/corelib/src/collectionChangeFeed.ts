@@ -1,4 +1,5 @@
 import type { ChangeStreamDocument, Db, MongoClient } from 'mongodb'
+
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 export const CHANGE_FEED_RESTART_BACKOFF_MS = 5000

@@ -1,17 +1,18 @@
-import * as React from 'react'
-import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import Tooltip from 'rc-tooltip'
+import { faChevronDown, faChevronRight, faExclamation, faRedo, faStopCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRedo, faStopCircle, faChevronDown, faChevronRight, faExclamation } from '@fortawesome/free-solid-svg-icons'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import { doUserAction, UserAction } from '../../../lib/clientUserAction.js'
+import Tooltip from 'rc-tooltip'
+import * as React from 'react'
+import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
+import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
+
+import { doUserAction, UserAction } from '../../../lib/clientUserAction.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
 import { DisplayFormattedTime } from '../../RundownList/DisplayFormattedTime.js'
 import { JobStatusIcon } from './JobStatusIcon.js'
-import type { ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
-import { useTranslation } from 'react-i18next'
-import { useCallback } from 'react'
 
 export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; connected: boolean }> =
 	function PackageWorkStatus({ status, connected }) {
@@ -22,7 +23,12 @@ export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; co
 		const restartExpectation = useCallback(
 			(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, status: ExpectedPackageWorkStatus) => {
 				doUserAction(t, e, UserAction.PACKAGE_MANAGER_RESTART_WORK, (e, ts) =>
-					MeteorCall.userAction.packageManagerRestartExpectation(e, ts, status.deviceId, unprotectString(status._id))
+					MeteorCall.userAction.packageManagerRestartExpectation(
+						e,
+						ts,
+						status.deviceId,
+						unprotectString(status._id)
+					)
 				)
 			},
 			[status.deviceId, status._id]
@@ -30,7 +36,12 @@ export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; co
 		const abortExpectation = useCallback(
 			(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, status: ExpectedPackageWorkStatus) => {
 				doUserAction(t, e, UserAction.PACKAGE_MANAGER_RESTART_WORK, (e, ts) =>
-					MeteorCall.userAction.packageManagerAbortExpectation(e, ts, status.deviceId, unprotectString(status._id))
+					MeteorCall.userAction.packageManagerAbortExpectation(
+						e,
+						ts,
+						status.deviceId,
+						unprotectString(status._id)
+					)
 				)
 			},
 			[status.deviceId, status._id]
@@ -62,7 +73,11 @@ export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; co
 						</span>
 						<span className="package-job__description">
 							<span className="package__chevron">
-								{isOpen ? <FontAwesomeIcon icon={faChevronDown} /> : <FontAwesomeIcon icon={faChevronRight} />}
+								{isOpen ? (
+									<FontAwesomeIcon icon={faChevronDown} />
+								) : (
+									<FontAwesomeIcon icon={faChevronRight} />
+								)}
 							</span>
 							<span>{status.label}</span>
 						</span>
@@ -109,7 +124,9 @@ export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; co
 												})}
 												placement="bottom"
 											>
-												<span>{status.statusReason.user ?? JSON.stringify(status.statusReason)}</span>
+												<span>
+													{status.statusReason.user ?? JSON.stringify(status.statusReason)}
+												</span>
 											</Tooltip>
 										</td>
 									</tr>
@@ -118,23 +135,23 @@ export const PackageWorkStatus: React.FC<{ status: ExpectedPackageWorkStatus; co
 										<td>
 											<ul>
 												{status.prevStatusReasons &&
-													Object.entries<ExpectedPackageStatusAPI.Reason>(status.prevStatusReasons).map(
-														([key, reason]) => {
-															return (
-																<li key={key}>
-																	{key}:
-																	<Tooltip
-																		overlay={t('Technical reason: {{reason}}', {
-																			reason: reason.tech,
-																		})}
-																		placement="bottom"
-																	>
-																		<span>{reason.user ?? JSON.stringify(reason)}</span>
-																	</Tooltip>
-																</li>
-															)
-														}
-													)}
+													Object.entries<ExpectedPackageStatusAPI.Reason>(
+														status.prevStatusReasons
+													).map(([key, reason]) => {
+														return (
+															<li key={key}>
+																{key}:
+																<Tooltip
+																	overlay={t('Technical reason: {{reason}}', {
+																		reason: reason.tech,
+																	})}
+																	placement="bottom"
+																>
+																	<span>{reason.user ?? JSON.stringify(reason)}</span>
+																</Tooltip>
+															</li>
+														)
+													})}
 											</ul>
 										</td>
 									</tr>

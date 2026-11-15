@@ -1,7 +1,8 @@
-import { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+
+import { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 
 /**
  * Wrap a Segment and its Parts in a readonly and simplified view for Playout operations

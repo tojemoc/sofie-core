@@ -1,47 +1,43 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { faCopy, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	PlayoutActions,
-	type SomeAction,
-	type SomeBlueprintTrigger,
-	SourceLayerType,
-	TriggerType,
-} from '@sofie-automation/blueprints-integration'
 import classNames from 'classnames'
-import type { DBBlueprintTrigger } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import { useTracker, useTrackerAsync } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { ActionEditor } from './actionEditors/ActionEditor.js'
-import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import { useTranslation } from 'react-i18next'
+
+import { PlayoutActions, SourceLayerType, TriggerType } from '@sofie-automation/blueprints-integration'
 import { flatten, getRandomString } from '@sofie-automation/corelib/dist/lib'
 import {
-	createAction,
-	isPreviewableAction,
-	type PlainActionContext,
-} from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
-import type { PreviewContext } from './TriggeredActionsEditor.js'
-import type { IWrappedAdLib } from '@sofie-automation/meteor-lib/dist/triggers/actionFilterChainCompilers'
-import { useTranslation } from 'react-i18next'
-import { TriggerEditor } from './triggerEditors/TriggerEditor.js'
-import { EditAttribute } from '../../../../lib/EditAttribute.js'
-import { iconDragHandle } from '../../../RundownList/icons.js'
-import { useDrag, useDrop } from 'react-dnd'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import {
 	applyAndValidateOverrides,
-	type ObjectOverrideSetOp,
-	type SomeObjectOverrideOp,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import type { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { createAction, isPreviewableAction } from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
 import { isHotkeyTrigger } from '@sofie-automation/meteor-lib/dist/triggers/triggerTypeSelectors'
-import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
-import { TriggeredActions } from '../../../../collections/index.js'
-import { catchError } from '../../../../lib/lib.js'
-import { toTriggersComputation, UiTriggersContext } from '../../../../lib/triggers/triggersContext.js'
 import { last, literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+import type { SomeAction, SomeBlueprintTrigger } from '@sofie-automation/blueprints-integration'
+import type { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { OutputLayers, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { DBBlueprintTrigger } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
+import type { PlainActionContext } from '@sofie-automation/meteor-lib/dist/triggers/actionFactory'
+import type { IWrappedAdLib } from '@sofie-automation/meteor-lib/dist/triggers/actionFilterChainCompilers'
+
+import { TriggeredActions } from '../../../../collections/index.js'
 import { LabelActual } from '../../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../../lib/EditAttribute.js'
+import { catchError } from '../../../../lib/lib.js'
+import { useTracker, useTrackerAsync } from '../../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { RundownUtils } from '../../../../lib/rundown.js'
+import { toTriggersComputation, UiTriggersContext } from '../../../../lib/triggers/triggersContext.js'
+import { iconDragHandle } from '../../../RundownList/icons.js'
+import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
+import { ActionEditor } from './actionEditors/ActionEditor.js'
+import { TriggerEditor } from './triggerEditors/TriggerEditor.js'
+import type { PreviewContext } from './TriggeredActionsEditor.js'
 
 interface IProps {
 	sourceLayers: SourceLayers | undefined
@@ -201,9 +197,8 @@ export const TriggeredActionEntry: React.FC<IProps> = React.memo(function Trigge
 
 				return flatten(
 					await Promise.all(
-						executableActions.map(
-							async (action): Promise<IWrappedAdLib[]> =>
-								isPreviewableAction(action) ? action.preview(actionCtx, triggerComputation) : []
+						executableActions.map(async (action): Promise<IWrappedAdLib[]> =>
+							isPreviewableAction(action) ? action.preview(actionCtx, triggerComputation) : []
 						)
 					)
 				)
@@ -399,7 +394,10 @@ export const TriggeredActionEntry: React.FC<IProps> = React.memo(function Trigge
 	const sortedWrappedTriggers = useMemo(
 		() =>
 			triggeredAction
-				? getAllCurrentAndDeletedItemsFromOverrides<SomeBlueprintTrigger>(triggeredAction.triggersWithOverrides, null)
+				? getAllCurrentAndDeletedItemsFromOverrides<SomeBlueprintTrigger>(
+						triggeredAction.triggersWithOverrides,
+						null
+					)
 				: [],
 		[triggeredAction]
 	)
@@ -506,7 +504,11 @@ export const TriggeredActionEntry: React.FC<IProps> = React.memo(function Trigge
 				>
 					<FontAwesomeIcon icon={faCopy} />
 				</button>
-				<button className="action-btn" onClick={(e) => onEdit(triggeredActionId, e)} title={t('Edit Action Trigger')}>
+				<button
+					className="action-btn"
+					onClick={(e) => onEdit(triggeredActionId, e)}
+					title={t('Edit Action Trigger')}
+				>
 					<FontAwesomeIcon icon={faPencilAlt} />
 				</button>
 				<button
@@ -536,7 +538,9 @@ export const TriggeredActionEntry: React.FC<IProps> = React.memo(function Trigge
 									})}
 								</span>
 							) : (
-								<span className="dimmed">{t('No matching Rundowns available to be used for preview')}</span>
+								<span className="dimmed">
+									{t('No matching Rundowns available to be used for preview')}
+								</span>
 							)
 						) : null}
 					</ul>
@@ -551,7 +555,9 @@ export const TriggeredActionEntry: React.FC<IProps> = React.memo(function Trigge
 									attribute="name"
 									mutateDisplayValue={(val) => (typeof val === 'object' ? undefined : val)}
 									mutateUpdateValue={(val) =>
-										val === '' && typeof triggeredAction.name === 'object' ? triggeredAction.name : val
+										val === '' && typeof triggeredAction.name === 'object'
+											? triggeredAction.name
+											: val
 									}
 									label={
 										typeof triggeredAction.name === 'object'

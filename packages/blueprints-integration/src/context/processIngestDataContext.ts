@@ -1,6 +1,7 @@
 import type { IngestRundown, IngestSegment } from '@sofie-automation/shared-lib/dist/peripheralDevice/ingest'
-import type { IStudioContext } from './studioContext.js'
+
 import type { IngestDefaultChangesOptions, MutableIngestRundown, NrcsIngestChangeDetails } from '../ingest.js'
+import type { IStudioContext } from './studioContext.js'
 
 export interface IProcessIngestDataContext extends IStudioContext {
 	/**

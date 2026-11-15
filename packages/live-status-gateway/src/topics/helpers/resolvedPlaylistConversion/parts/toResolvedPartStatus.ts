@@ -1,11 +1,14 @@
-import { toResolvedPieceStatus } from '../pieces/toResolvedPieceStatus.js'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { ResolvedPlaylistConversionContext } from '../context/conversionContext.js'
-import type { PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
-import type { PartInvalidReason as CorePartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PartInvalidReason, ResolvedPart, ResolvedPartState } from '@sofie-automation/live-status-gateway-api'
 import { interpollateTranslation } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { PartInvalidReason, ResolvedPart, ResolvedPartState } from '@sofie-automation/live-status-gateway-api'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type {
+	PartInvalidReason as CorePartInvalidReason,
+	PartExtended,
+} from '@sofie-automation/corelib/dist/dataModel/Part'
+
 import { toNotificationSeverity } from '../../notification/toNotificationStatus.js'
+import { ResolvedPlaylistConversionContext } from '../context/conversionContext.js'
+import { toResolvedPieceStatus } from '../pieces/toResolvedPieceStatus.js'
 
 /** Converts a resolved `PartExtended` model into the gateway API `ResolvedPart` shape. */
 export function toResolvedPartStatus(ctx: ResolvedPlaylistConversionContext, partExtended: PartExtended): ResolvedPart {

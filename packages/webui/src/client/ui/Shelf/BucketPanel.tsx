@@ -1,78 +1,31 @@
+import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
+import ClassNames from 'classnames'
+import update from 'immutability-helper'
 import { Meteor } from 'meteor/meteor'
 import * as React from 'react'
-import {
-	type Translated,
-	useSubscription,
-	useSubscriptions,
-	useTracker,
-} from '../../lib/ReactMeteorData/react-meteor-data.js'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import ClassNames from 'classnames'
-import {
-	DragSource,
-	DropTarget,
-	type ConnectDragSource,
-	type ConnectDropTarget,
-	type DragSourceMonitor,
-	type DropTargetMonitor,
-	type ConnectDragPreview,
-} from 'react-dnd'
+import { DragSource, DropTarget } from 'react-dnd'
+import { withTranslation } from 'react-i18next'
+import _ from 'underscore'
 import type {
-	OutputLayers,
-	SourceLayers,
-	UIShowStyleBase,
-} from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import {
-	type ISourceLayer,
-	PieceLifespan,
-	type IBlueprintActionTriggerMode,
-	type SomeContent,
-} from '@sofie-automation/blueprints-integration'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { doUserAction, getEventTimestamp, UserAction } from '../../lib/clientUserAction.js'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
+	ConnectDragPreview,
+	ConnectDragSource,
+	ConnectDropTarget,
+	DragSourceMonitor,
+	DropTargetMonitor,
+} from 'react-dnd'
+
+import { PieceLifespan } from '@sofie-automation/blueprints-integration'
 import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString, protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { contextMenuHoldToDisplayTime, UserAgentPointer, USER_AGENT_POINTER_PROPERTY } from '../../lib/lib.js'
-import type { IDashboardPanelTrackedProps } from './DashboardPanel.js'
-import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
-import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { Events as MOSEvents } from '../../lib/data/mos/plugin-support.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import { DragDropItemTypes } from '../DragDropItemTypes.js'
-import { BucketPieceButton, type IBucketPieceDropResult } from './BucketPieceButton.js'
-import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import update from 'immutability-helper'
-import type { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
-import { RundownUtils } from '../../lib/rundown.js'
-import {
-	type BucketAdLibItem,
-	type BucketAdLibActionUi,
-	isAdLibAction,
-	isAdLib,
-	type BucketAdLibUi,
-} from './RundownViewBuckets.js'
-import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import RundownViewEventBus, {
-	RundownViewEvents,
-	type RevealInShelfEvent,
-	type ToggleShelfDropzoneEvent,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { setShelfContextMenuContext, ContextType } from './ShelfContextMenu.js'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { i18nTranslator } from '../i18n.js'
-import {
-	type AdLibPieceUi,
-	getNextPieceInstancesGrouped,
-	getUnfinishedPieceInstancesGrouped,
-	isAdLibDisplayedAsOnAir,
-	isAdLibOnAir,
-} from '../../lib/shelf.js'
-import type { MongoFieldSpecifierOnes } from '@sofie-automation/corelib/dist/mongo'
-import { BucketAdLibActions, BucketAdLibs, Rundowns } from '../../collections/index.js'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { UIPartInstances, UIStudios } from '../Collections.js'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IBlueprintActionTriggerMode, ISourceLayer, SomeContent } from '@sofie-automation/blueprints-integration'
+import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+import type { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
+import type { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import type {
 	AdLibActionId,
 	BucketId,
@@ -80,15 +33,51 @@ import type {
 	ShowStyleBaseId,
 	ShowStyleVariantId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { withTranslation } from 'react-i18next'
-import { useRundownAndShowStyleIdsForPlaylist } from '../util/useRundownAndShowStyleIdsForPlaylist.js'
-import _ from 'underscore'
-import { BucketHandle } from '../../lib/ui/icons/shelf.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type {
+	OutputLayers,
+	SourceLayers,
+	UIShowStyleBase,
+} from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import type { MongoFieldSpecifierOnes } from '@sofie-automation/corelib/dist/mongo'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type {
+	RevealInShelfEvent,
+	ToggleShelfDropzoneEvent,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { BucketAdLibActions, BucketAdLibs, Rundowns } from '../../collections/index.js'
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { doUserAction, getEventTimestamp, UserAction } from '../../lib/clientUserAction.js'
+import { Events as MOSEvents } from '../../lib/data/mos/plugin-support.js'
+import { contextMenuHoldToDisplayTime, USER_AGENT_POINTER_PROPERTY, UserAgentPointer } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useSubscription, useSubscriptions, useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import {
+	getNextPieceInstancesGrouped,
+	getUnfinishedPieceInstancesGrouped,
+	isAdLibDisplayedAsOnAir,
+	isAdLibOnAir,
+} from '../../lib/shelf.js'
+import { BucketHandle } from '../../lib/ui/icons/shelf.js'
+import { UIPartInstances, UIStudios } from '../Collections.js'
+import { DragDropItemTypes } from '../DragDropItemTypes.js'
+import { i18nTranslator } from '../i18n.js'
+import { useRundownAndShowStyleIdsForPlaylist } from '../util/useRundownAndShowStyleIdsForPlaylist.js'
+import { BucketPieceButton } from './BucketPieceButton.js'
+import { isAdLib, isAdLibAction } from './RundownViewBuckets.js'
+import { ContextType, setShelfContextMenuContext } from './ShelfContextMenu.js'
+import type { Translated } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import type { AdLibPieceUi } from '../../lib/shelf.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { IBucketPieceDropResult } from './BucketPieceButton.js'
+import type { IDashboardPanelTrackedProps } from './DashboardPanel.js'
+import type { BucketAdLibActionUi, BucketAdLibItem, BucketAdLibUi } from './RundownViewBuckets.js'
 
 interface IBucketPanelDragObject {
 	id: BucketId
@@ -294,7 +283,12 @@ export const BucketPanel = React.memo(
 		const { showStyleBaseIds, showStyleVariantIds } = useRundownAndShowStyleIdsForPlaylist(props.playlist._id)
 
 		useSubscription(CorelibPubSub.bucketAdLibPieces, props.playlist.studioId, props.bucket._id, showStyleVariantIds)
-		useSubscription(CorelibPubSub.bucketAdLibActions, props.playlist.studioId, props.bucket._id, showStyleVariantIds)
+		useSubscription(
+			CorelibPubSub.bucketAdLibActions,
+			props.playlist.studioId,
+			props.bucket._id,
+			showStyleVariantIds
+		)
 
 		useSubscriptions(
 			MeteorPubSub.uiShowStyleBase,
@@ -321,7 +315,10 @@ export const BucketPanel = React.memo(
 						},
 					}) as Pick<Rundown, 'showStyleVariantId' | 'showStyleBaseId'> | undefined
 					if (rundown) {
-						return { showStyleBaseId: rundown.showStyleBaseId, showStyleVariantId: rundown.showStyleVariantId }
+						return {
+							showStyleBaseId: rundown.showStyleBaseId,
+							showStyleVariantId: rundown.showStyleVariantId,
+						}
 					}
 				}
 
@@ -466,7 +463,9 @@ const BucketPanelContent = withTranslation()(
 
 						if (found) {
 							Meteor.setTimeout(() => {
-								const el = document.querySelector(`.dashboard-panel__panel__button[data-obj-id="${pieceId}"]`)
+								const el = document.querySelector(
+									`.dashboard-panel__panel__button[data-obj-id="${pieceId}"]`
+								)
 								if (el) {
 									el.scrollIntoView({
 										behavior: 'smooth',
@@ -513,7 +512,12 @@ const BucketPanelContent = withTranslation()(
 					}
 				}
 
-				onToggleAdLib = (piece: BucketAdLibItem, queue: boolean, e: any, mode?: IBlueprintActionTriggerMode) => {
+				onToggleAdLib = (
+					piece: BucketAdLibItem,
+					queue: boolean,
+					e: any,
+					mode?: IBlueprintActionTriggerMode
+				) => {
 					const { t } = this.props
 
 					queue = queue || this.props.shouldQueue
@@ -544,7 +548,9 @@ const BucketPanelContent = withTranslation()(
 					const sourceLayer = this.props.sourceLayers && this.props.sourceLayers[piece.sourceLayerId]
 
 					if (queue && sourceLayer && !sourceLayer.isQueueable) {
-						console.log(`Item "${piece._id}" is on sourceLayer "${piece.sourceLayerId}" that is not queueable.`)
+						console.log(
+							`Item "${piece._id}" is on sourceLayer "${piece.sourceLayerId}" that is not queueable.`
+						)
 						return
 					}
 					if (this.props.playlist && this.props.playlist.currentPartInfo) {
@@ -562,7 +568,10 @@ const BucketPanelContent = withTranslation()(
 								)
 							)
 						} else {
-							if (!this.isAdLibOnAir(piece as any as AdLibPieceUi) || !(sourceLayer && sourceLayer.isClearable)) {
+							if (
+								!this.isAdLibOnAir(piece as any as AdLibPieceUi) ||
+								!(sourceLayer && sourceLayer.isClearable)
+							) {
 								const currentPartInstanceId = this.props.playlist.currentPartInfo.partInstanceId
 
 								doUserAction(t, e, UserAction.START_BUCKET_ADLIB, (e) =>
@@ -722,34 +731,48 @@ const BucketPanelContent = withTranslation()(
 								oldIndex === this.props.adLibPieces.length - 1 &&
 								newIndex === this.props.adLibPieces.length - 2
 							) {
-								newRank = (this.props.adLibPieces[newIndex - 1]._rank + this.props.adLibPieces[newIndex]._rank) / 2
+								newRank =
+									(this.props.adLibPieces[newIndex - 1]._rank +
+										this.props.adLibPieces[newIndex]._rank) /
+									2
 								// Dragged into any other place
 							} else {
-								newRank = (this.props.adLibPieces[newIndex]._rank + this.props.adLibPieces[newIndex + 1]._rank) / 2
+								newRank =
+									(this.props.adLibPieces[newIndex]._rank +
+										this.props.adLibPieces[newIndex + 1]._rank) /
+									2
 							}
 
 							if (isAdLib(draggedB)) {
-								doUserAction(t, { type: 'drop', timeStamp: performance.now() }, UserAction.MODIFY_BUCKET, (e) =>
-									MeteorCall.userAction.bucketsModifyBucketAdLib(
-										e,
-										getEventTimestamp(e),
-										draggedB._id,
-										literal<Partial<BucketAdLib>>({
-											_rank: newRank,
-										})
-									)
+								doUserAction(
+									t,
+									{ type: 'drop', timeStamp: performance.now() },
+									UserAction.MODIFY_BUCKET,
+									(e) =>
+										MeteorCall.userAction.bucketsModifyBucketAdLib(
+											e,
+											getEventTimestamp(e),
+											draggedB._id,
+											literal<Partial<BucketAdLib>>({
+												_rank: newRank,
+											})
+										)
 								)
 							} else if (isAdLibAction(draggedB)) {
-								doUserAction(t, { type: 'drop', timeStamp: performance.now() }, UserAction.MODIFY_BUCKET, (e) =>
-									MeteorCall.userAction.bucketsModifyBucketAdLibAction(
-										e,
-										getEventTimestamp(e),
-										draggedB.adlibAction._id,
-										literal<Partial<BucketAdLibAction>>({
-											//@ts-expect-error deep property
-											'display._rank': newRank,
-										})
-									)
+								doUserAction(
+									t,
+									{ type: 'drop', timeStamp: performance.now() },
+									UserAction.MODIFY_BUCKET,
+									(e) =>
+										MeteorCall.userAction.bucketsModifyBucketAdLibAction(
+											e,
+											getEventTimestamp(e),
+											draggedB.adlibAction._id,
+											literal<Partial<BucketAdLibAction>>({
+												//@ts-expect-error deep property
+												'display._rank': newRank,
+											})
+										)
 								)
 							}
 						}
@@ -762,26 +785,34 @@ const BucketPanelContent = withTranslation()(
 						const draggedB = this.props.adLibPieces.find((b) => b._id === draggedId)
 
 						if (draggedB && isAdLib(draggedB)) {
-							doUserAction(t, { type: 'drop', timeStamp: performance.now() }, UserAction.MODIFY_BUCKET_ADLIB, (e) =>
-								MeteorCall.userAction.bucketsModifyBucketAdLib(
-									e,
-									getEventTimestamp(e),
-									draggedB._id,
-									literal<Partial<BucketAdLib>>({
-										bucketId,
-									})
-								)
+							doUserAction(
+								t,
+								{ type: 'drop', timeStamp: performance.now() },
+								UserAction.MODIFY_BUCKET_ADLIB,
+								(e) =>
+									MeteorCall.userAction.bucketsModifyBucketAdLib(
+										e,
+										getEventTimestamp(e),
+										draggedB._id,
+										literal<Partial<BucketAdLib>>({
+											bucketId,
+										})
+									)
 							)
 						} else if (draggedB && isAdLibAction(draggedB)) {
-							doUserAction(t, { type: 'drop', timeStamp: performance.now() }, UserAction.MODIFY_BUCKET_ADLIB, (e) =>
-								MeteorCall.userAction.bucketsModifyBucketAdLibAction(
-									e,
-									getEventTimestamp(e),
-									draggedB.adlibAction._id,
-									literal<Partial<BucketAdLibAction>>({
-										bucketId,
-									})
-								)
+							doUserAction(
+								t,
+								{ type: 'drop', timeStamp: performance.now() },
+								UserAction.MODIFY_BUCKET_ADLIB,
+								(e) =>
+									MeteorCall.userAction.bucketsModifyBucketAdLibAction(
+										e,
+										getEventTimestamp(e),
+										draggedB.adlibAction._id,
+										literal<Partial<BucketAdLibAction>>({
+											bucketId,
+										})
+									)
 							)
 						}
 					}
@@ -793,7 +824,8 @@ const BucketPanelContent = withTranslation()(
 						const style = window.getComputedStyle(this._panel)
 						// check if a special variable is set through CSS to indicate that we shouldn't expect
 						// double clicks to trigger AdLibs
-						const value = style.getPropertyValue(USER_AGENT_POINTER_PROPERTY) as UserAgentPointer | undefined
+						const value = style.getPropertyValue(USER_AGENT_POINTER_PROPERTY) as
+							UserAgentPointer | undefined
 						if (this.state.singleClickMode !== (value === UserAgentPointer.NO_POINTER)) {
 							this.setState({
 								singleClickMode: value === UserAgentPointer.NO_POINTER,
@@ -855,7 +887,8 @@ const BucketPanelContent = withTranslation()(
 									className={ClassNames('dashboard-panel', 'dashboard-panel__panel--bucket', {
 										'dashboard-panel__panel--bucket-active': this.state.dropActive,
 										'dashboard-panel__panel--sort-dragging':
-											(this.props.isDragging || this.state.dropFrameActive) && !this.state.dropActive,
+											(this.props.isDragging || this.state.dropFrameActive) &&
+											!this.state.dropActive,
 									})}
 									data-bucket-id={this.props.bucket._id}
 									ref={this.setRef}

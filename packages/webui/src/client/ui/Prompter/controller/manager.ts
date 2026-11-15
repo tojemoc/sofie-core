@@ -1,12 +1,13 @@
-import { type PrompterViewContent, PrompterConfigMode } from '../PrompterView.js'
-import { MouseIshController } from './mouse-ish-device.js'
-import { MidiPedalController } from './midi-pedal-device.js'
-import type { ControllerAbstract } from './lib.js'
+import { PrompterConfigMode } from '../PrompterView.js'
+import { CustomizableShuttleWebHidController } from './customizable-shuttle-webhid-device.js'
 import { JoyConController } from './joycon-device.js'
 import { KeyboardController } from './keyboard-device.js'
+import { MidiPedalController } from './midi-pedal-device.js'
+import { MouseIshController } from './mouse-ish-device.js'
 import { ShuttleKeyboardController } from './shuttle-keyboard-device.js'
 import { XboxController } from './xbox-controller-device.js'
-import { CustomizableShuttleWebHidController } from './customizable-shuttle-webhid-device.js'
+import type { PrompterViewContent } from '../PrompterView.js'
+import type { ControllerAbstract } from './lib.js'
 
 export class PrompterControlManager {
 	private _view: PrompterViewContent

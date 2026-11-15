@@ -1,4 +1,10 @@
+import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { AdLibsEvent } from '@sofie-automation/live-status-gateway-api'
 import { protectString, unprotectString } from '@sofie-automation/server-core-integration'
+
+import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
+import { AdLibsTopic } from '../adLibsTopic.js'
 import {
 	makeMockHandlers,
 	makeMockLogger,
@@ -7,11 +13,6 @@ import {
 	makeTestPlaylist,
 	makeTestShowStyleBase,
 } from './utils.js'
-import { AdLibsTopic } from '../adLibsTopic.js'
-import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
-import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
-import { AdLibsEvent } from '@sofie-automation/live-status-gateway-api'
 
 function makeTestAdLibActions(): AdLibAction[] {
 	return [

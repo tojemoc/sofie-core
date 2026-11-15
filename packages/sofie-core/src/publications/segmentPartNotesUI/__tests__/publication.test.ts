@@ -1,12 +1,13 @@
 import { RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
+
 import { CustomPublishCollection } from '../../../lib/customPublication'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import * as generateNotesForSegment from '../generateNotesForSegment'
 import { manipulateUISegmentPartNotesPublicationData, UISegmentPartNotesState } from '../publication'
 import { ContentCache } from '../reactiveContentCache'
-import * as generateNotesForSegment from '../generateNotesForSegment'
-import { literal } from '@sofie-automation/corelib/dist/lib'
 
 jest.spyOn(generateNotesForSegment, 'generateNotesForSegment').mockImplementation((playlistId, segment) => {
 	return literal<UISegmentPartNote[]>([

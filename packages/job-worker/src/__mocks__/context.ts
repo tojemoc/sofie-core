@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	BlueprintManifestType,
 	BlueprintResultPart,
@@ -10,14 +12,13 @@ import {
 	IBlueprintPiece,
 	IBlueprintRundown,
 	IBlueprintSegment,
+	IngestSegment,
 	ISegmentUserContext,
 	IShowStyleContext,
-	IngestSegment,
 	PlaylistTimingType,
 	ShowStyleBlueprintManifest,
 	StudioBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
-import type { IStudioSettings } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
 import {
 	RundownId,
 	RundownPlaylistId,
@@ -26,20 +27,25 @@ import {
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+// import _ from 'underscore'
+import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { clone } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { EventsJobFunc } from '@sofie-automation/corelib/dist/worker/events'
 import { IngestJobFunc } from '@sofie-automation/corelib/dist/worker/ingest'
 import { StudioJobFunc, StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { ReadonlyDeep } from 'type-fest'
+import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import type { IStudioSettings } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import { WrappedShowStyleBlueprint, WrappedStudioBlueprint } from '../blueprints/cache.js'
 import {
-	ProcessedShowStyleConfig,
-	ProcessedStudioConfig,
 	preprocessShowStyleConfig,
 	preprocessStudioConfig,
+	ProcessedShowStyleConfig,
+	ProcessedStudioConfig,
 } from '../blueprints/config.js'
 import { IDirectCollections } from '../db/index.js'
+import { removeRundownPlaylistFromDb } from '../ingest/__tests__/lib.js'
 import {
 	ApmSpan,
 	JobContext,
@@ -50,16 +56,12 @@ import {
 	QueueJobOptions,
 } from '../jobs/index.js'
 import { PlaylistLock, RundownLock } from '../jobs/lock.js'
+import { processShowStyleBase, processShowStyleVariant } from '../jobs/showStyle.js'
+import { convertStudioToJobStudio } from '../jobs/studio.js'
 import { BaseModel } from '../modelBase.js'
 import { createShowStyleCompound } from '../showStyles.js'
-import { IMockCollections, getMockCollections } from './collection.js'
-// import _ from 'underscore'
-import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import { removeRundownPlaylistFromDb } from '../ingest/__tests__/lib.js'
-import { processShowStyleBase, processShowStyleVariant } from '../jobs/showStyle.js'
+import { getMockCollections, IMockCollections } from './collection.js'
 import { defaultStudio } from './defaultCollectionObjects.js'
-import { convertStudioToJobStudio } from '../jobs/studio.js'
 
 export function setupDefaultJobEnvironment(
 	studioId?: StudioId,

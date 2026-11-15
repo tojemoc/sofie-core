@@ -1,8 +1,9 @@
-import type { IBlueprintTriggeredActions } from '../triggers.js'
-import type { BlueprintManifestBase, BlueprintManifestType } from './base.js'
-import type { ICoreSystemApplyConfigContext } from '../context/systemApplyConfigContext.js'
 import type { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
 import type { SystemErrorCode } from '@sofie-automation/shared-lib/dist/systemErrorMessages'
+
+import type { ICoreSystemApplyConfigContext } from '../context/systemApplyConfigContext.js'
+import type { IBlueprintTriggeredActions } from '../triggers.js'
+import type { BlueprintManifestBase, BlueprintManifestType } from './base.js'
 
 // Re-export so blueprints can import from blueprints-integration
 export { SystemErrorCode } from '@sofie-automation/shared-lib/dist/systemErrorMessages'

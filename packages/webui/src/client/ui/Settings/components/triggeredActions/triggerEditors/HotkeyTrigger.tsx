@@ -1,6 +1,7 @@
 import classNames from 'classnames'
-import { useState, useEffect, useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import { SorensenContext } from '../../../../../lib/SorensenContext.js'
 import { codesToKeyLabels } from '../../../../../lib/triggers/codesToKeyLabels.js'
 

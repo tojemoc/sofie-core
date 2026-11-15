@@ -1,9 +1,10 @@
+import type { ReadonlyDeep } from 'type-fest'
+
 import type {
 	IBlueprintActionManifestBranding,
 	IBlueprintPartBranding,
 	IBlueprintPieceBranding,
 } from '@sofie-automation/blueprints-integration'
-import type { ReadonlyDeep } from 'type-fest'
 
 /**
  * The portion of a document which describes how it varies with the selected Branding.

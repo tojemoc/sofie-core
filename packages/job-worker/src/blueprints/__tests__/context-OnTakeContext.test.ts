@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { IBlueprintMutatablePart, IBlueprintPart, IBlueprintPiece } from '@sofie-automation/blueprints-integration'
-import { WatchedPackagesHelper } from '../context/watchedPackages.js'
-import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
 import { mock } from 'jest-mock-extended'
-import { PartAndPieceInstanceActionService } from '../context/services/PartAndPieceInstanceActionService.js'
-import { OnTakeContext } from '../context/index.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+
+import { IBlueprintPart, IBlueprintPiece } from '@sofie-automation/blueprints-integration'
 import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PlayoutModelImpl } from '../../playout/model/implementation/PlayoutModelImpl.js'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { PlayoutModelImpl } from '../../playout/model/implementation/PlayoutModelImpl.js'
+import { OnTakeContext } from '../context/index.js'
+import { PartAndPieceInstanceActionService } from '../context/services/PartAndPieceInstanceActionService.js'
+import { WatchedPackagesHelper } from '../context/watchedPackages.js'
 
 describe('Test blueprint api context', () => {
 	async function getTestee(rehearsal?: boolean, partInstances?: { current?: object | null; next?: object | null }) {
@@ -138,7 +139,7 @@ describe('Test blueprint api context', () => {
 						segmentId: protectString<SegmentId>('seg1'),
 						expectedDurationWithTransition: 1000,
 						userEditOperations: [],
-					} as DBPart,
+					},
 					{
 						_id: protectString<PartId>('part2'),
 						title: 'Part 2',
@@ -150,7 +151,7 @@ describe('Test blueprint api context', () => {
 						segmentId: protectString<SegmentId>('seg1'),
 						expectedDurationWithTransition: 1000,
 						userEditOperations: [],
-					} as unknown as DBPart,
+					},
 				])
 			)
 
@@ -169,7 +170,7 @@ describe('Test blueprint api context', () => {
 		test('updatePieceInstance', async () => {
 			const { context, mockActionService } = await getTestee()
 
-			await context.updatePieceInstance('pieceId', { name: 'My Piece' } as IBlueprintPiece<unknown>)
+			await context.updatePieceInstance('pieceId', { name: 'My Piece' })
 			expect(mockActionService.updatePieceInstance).toHaveBeenCalledTimes(1)
 			expect(mockActionService.updatePieceInstance).toHaveBeenCalledWith('pieceId', { name: 'My Piece' })
 		})
@@ -205,7 +206,7 @@ describe('Test blueprint api context', () => {
 		test('updatePartInstance', async () => {
 			const { context, mockActionService } = await getTestee()
 
-			await context.updatePartInstance('next', { title: 'My Part' } as Partial<IBlueprintMutatablePart<unknown>>)
+			await context.updatePartInstance('next', { title: 'My Part' })
 			expect(mockActionService.updatePartInstance).toHaveBeenCalledTimes(1)
 			expect(mockActionService.updatePartInstance).toHaveBeenCalledWith('next', { title: 'My Part' }, {})
 		})
@@ -213,11 +214,7 @@ describe('Test blueprint api context', () => {
 		test('updatePartInstance with instanceProps', async () => {
 			const { context, mockActionService } = await getTestee()
 
-			await context.updatePartInstance(
-				'next',
-				{ title: 'My Part' } as Partial<IBlueprintMutatablePart<unknown>>,
-				{ invalidReason: { key: 'test' } }
-			)
+			await context.updatePartInstance('next', { title: 'My Part' }, { invalidReason: { key: 'test' } })
 			expect(mockActionService.updatePartInstance).toHaveBeenCalledTimes(1)
 			expect(mockActionService.updatePartInstance).toHaveBeenCalledWith(
 				'next',

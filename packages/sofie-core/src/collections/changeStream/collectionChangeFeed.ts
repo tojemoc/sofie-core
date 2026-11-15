@@ -1,13 +1,14 @@
 import type { ChangeStreamDocument } from 'mongodb'
-import {
-	CollectionChangeFeed,
-	createCollectionChangeStream,
-	type ChangeStreamFactory,
-	type ChangeStreamLike,
-	type CollectionFeedHandle,
+
+import { CollectionChangeFeed, createCollectionChangeStream } from '@sofie-automation/corelib/dist/collectionChangeFeed'
+import type {
+	ChangeStreamFactory,
+	ChangeStreamLike,
+	CollectionFeedHandle,
 } from '@sofie-automation/corelib/dist/collectionChangeFeed'
-import { getMongoClient, getMongoDb } from '../mongoConnection'
+
 import { logger } from '../../logging'
+import { getMongoClient, getMongoDb } from '../mongoConnection'
 
 // The change-stream feed primitive lives in corelib (so it can be reused, e.g. by the job-worker).
 // This module is the meteor-side wiring: it supplies the mongo connection + logger and owns the

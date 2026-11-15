@@ -1,26 +1,30 @@
+import { faCheck, faPencilAlt, faRotateLeft, faSave, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
 import React, { useCallback, useMemo } from 'react'
-import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { useTranslation } from 'react-i18next'
+
+import { JSONBlobParse } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { JSONBlob, JSONSchema } from '@sofie-automation/blueprints-integration'
+import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { SubdeviceManifest } from '@sofie-automation/corelib/dist/deviceConfig'
+
+import { DropdownInputControl } from '../../../../lib/Components/DropdownInput.js'
+import { LabelActual, LabelAndOverridesForDropdown } from '../../../../lib/Components/LabelAndOverrides.js'
+import { TextInputControl } from '../../../../lib/Components/TextInput.js'
+import { SchemaFormWithOverrides } from '../../../../lib/forms/SchemaFormWithOverrides.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
+import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
+import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
 import type {
 	OverrideOpHelper,
 	WrappedOverridableItem,
 	WrappedOverridableItemDeleted,
 	WrappedOverridableItemNormal,
 } from '../../util/OverrideOpHelper.js'
-import { faCheck, faPencilAlt, faSync, faTrash, faSave, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { type JSONBlob, JSONBlobParse, type JSONSchema } from '@sofie-automation/blueprints-integration'
-import { DropdownInputControl, type DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
-import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
-import classNames from 'classnames'
-import type { SubdeviceManifest } from '@sofie-automation/corelib/dist/deviceConfig'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import { SchemaFormWithOverrides } from '../../../../lib/forms/SchemaFormWithOverrides.js'
-import { LabelActual, LabelAndOverridesForDropdown } from '../../../../lib/Components/LabelAndOverrides.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 
 interface PeripheralDeviceTranslated {
 	_id: PeripheralDeviceId
@@ -135,7 +139,8 @@ export function GenericSubDevicesTable({
 				{subDevices.map((item) => {
 					if (item.type === 'deleted') {
 						const peripheralDevice =
-							item.defaults.peripheralDeviceId && peripheralDevicesMap.get(item.defaults.peripheralDeviceId)
+							item.defaults.peripheralDeviceId &&
+							peripheralDevicesMap.get(item.defaults.peripheralDeviceId)
 						return (
 							<DeletedSummaryRow
 								key={item.id}
@@ -146,7 +151,8 @@ export function GenericSubDevicesTable({
 						)
 					} else {
 						const peripheralDevice =
-							item.computed.peripheralDeviceId && peripheralDevicesMap.get(item.computed.peripheralDeviceId)
+							item.computed.peripheralDeviceId &&
+							peripheralDevicesMap.get(item.computed.peripheralDeviceId)
 
 						return (
 							<React.Fragment key={item.id}>
@@ -204,7 +210,9 @@ function SummaryRow({
 		? (peripheralDevice.subdeviceManifest?.[item.computed.options.type]?.displayName ?? '-')
 		: '-'
 
-	const idChanged = Array.from(updatedIds?.entries() || []).some(([key, value]) => value === item.id || key === item.id)
+	const idChanged = Array.from(updatedIds?.entries() || []).some(
+		([key, value]) => value === item.id || key === item.id
+	)
 
 	return (
 		<tr
@@ -327,7 +335,11 @@ function SubDeviceEditRow({
 					</LabelAndOverridesForDropdown>
 					<label className="field">
 						<LabelActual label={t('Device ID')} />
-						<TextInputControl value={idToShowInInput} handleUpdate={handleUpdateId} disabled={!!item.defaults} />
+						<TextInputControl
+							value={idToShowInInput}
+							handleUpdate={handleUpdateId}
+							disabled={!!item.defaults}
+						/>
 					</label>
 
 					{!item.computed.peripheralDeviceId && (
@@ -337,7 +349,11 @@ function SubDeviceEditRow({
 					{!peripheralDevice && item.computed.peripheralDeviceId && <p>{t('Parent device is missing')}</p>}
 
 					{peripheralDevice && (
-						<SubDeviceEditForm peripheralDevice={peripheralDevice} item={item} overrideHelper={overrideHelper} />
+						<SubDeviceEditForm
+							peripheralDevice={peripheralDevice}
+							item={item}
+							overrideHelper={overrideHelper}
+						/>
 					)}
 				</div>
 				<div className="m-1 me-2 text-end">

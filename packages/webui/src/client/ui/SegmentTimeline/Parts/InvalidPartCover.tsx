@@ -1,6 +1,9 @@
 import { useContext, useEffect, useRef } from 'react'
+
 import type { PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { type IPreviewPopUpSession, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+
+import { PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	className?: string

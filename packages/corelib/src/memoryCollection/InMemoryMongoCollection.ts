@@ -1,27 +1,28 @@
 import type { ChangeStreamDocument } from 'mongodb'
-import { isProtectedString, ProtectedString } from '../protectedString.js'
+
 import { clone, getRandomId, omit } from '../lib.js'
 import {
-	FindOptions,
+	FindObserveChangesOptions,
 	FindOneOptions,
-	MongoQuery,
-	MongoModifier,
+	FindOptions,
 	MongoBulkWriteOperation,
 	MongoFieldSpecifier,
+	mongoFindOptions,
+	MongoModifier,
+	mongoModify,
+	MongoQuery,
+	mongoWhere,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
-	mongoWhere,
-	mongoFindOptions,
-	mongoModify,
-	FindObserveChangesOptions,
 } from '../mongo.js'
+import { isProtectedString, ProtectedString } from '../protectedString.js'
 import {
-	ObserveView,
-	ObserveViewShape,
+	makeObserveChangesSink,
+	makeObserveSink,
 	MongoLiveQueryHandle,
 	ObserverDeliveryScheduler,
-	makeObserveSink,
-	makeObserveChangesSink,
+	ObserveView,
+	ObserveViewShape,
 } from './observeView.js'
 
 type Doc = { _id: ProtectedString<any> }
@@ -97,8 +98,8 @@ export class InMemoryMongoCollection<TDoc extends Doc> {
 	// --- internals --------------------------------------------------------------------------------
 
 	#normalizeSelector(selector: MongoQuery<TDoc> | TDoc['_id'] | undefined): MongoQuery<TDoc> {
-		if (selector === undefined || selector === null) return {} as MongoQuery<TDoc>
-		if (typeof selector === 'string') return { _id: selector } as MongoQuery<TDoc>
+		if (selector === undefined || selector === null) return {}
+		if (typeof selector === 'string') return { _id: selector }
 		return selector
 	}
 
@@ -206,14 +207,14 @@ export class InMemoryMongoCollection<TDoc extends Doc> {
 			if ('insertOne' in op) {
 				this.insert(op.insertOne.document as TDoc)
 			} else if ('updateOne' in op) {
-				this.update(op.updateOne.filter as any, op.updateOne.update, { multi: false })
+				this.update(op.updateOne.filter, op.updateOne.update, { multi: false })
 			} else if ('updateMany' in op) {
-				this.update(op.updateMany.filter as any, op.updateMany.update, { multi: true })
+				this.update(op.updateMany.filter, op.updateMany.update, { multi: true })
 			} else if ('deleteOne' in op) {
-				const docs = this.#findMatching(this.#normalizeSelector(op.deleteOne.filter as any))
+				const docs = this.#findMatching(this.#normalizeSelector(op.deleteOne.filter))
 				if (docs.length) this.remove(docs[0]._id)
 			} else if ('deleteMany' in op) {
-				this.remove(op.deleteMany.filter as any)
+				this.remove(op.deleteMany.filter)
 			} else if ('replaceOne' in op) {
 				const filter = op.replaceOne.filter as any
 				const replacement = op.replaceOne.replacement as any as TDoc
@@ -221,12 +222,12 @@ export class InMemoryMongoCollection<TDoc extends Doc> {
 				// document that satisfies the whole filter, preserving that document's `_id`.
 				const matching = this.#findMatching(this.#normalizeSelector(filter))
 				if (matching.length > 0) {
-					this.replace({ ...replacement, _id: matching[0]._id } as TDoc)
+					this.replace({ ...replacement, _id: matching[0]._id })
 				} else if (op.replaceOne.upsert) {
 					// Without `upsert`, replaceOne is a no-op when nothing matches. With upsert, insert the
 					// replacement (with an `_id` taken from the replacement or the filter).
 					const newId = (replacement._id ?? filter?._id) as TDoc['_id']
-					this.replace({ ...replacement, _id: newId } as TDoc)
+					this.replace({ ...replacement, _id: newId })
 				}
 			}
 		}
@@ -357,7 +358,7 @@ export class InMemoryMongoCollection<TDoc extends Doc> {
 }
 
 function projectionOf<TDoc>(options: FindOptions<TDoc> | undefined): MongoFieldSpecifier<TDoc> | undefined {
-	return (options?.projection ?? options?.fields) as MongoFieldSpecifier<TDoc> | undefined
+	return options?.projection ?? options?.fields
 }
 
 /**

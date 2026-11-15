@@ -1,18 +1,20 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	BlueprintExternalEventSubscription,
 	RundownPlaylistTiming,
 	Time,
 } from '@sofie-automation/blueprints-integration'
+
 import {
-	RundownId,
-	StudioId,
-	ShowStyleBaseId,
 	PeripheralDeviceId,
+	RundownId,
 	RundownPlaylistId,
+	ShowStyleBaseId,
 	ShowStyleVariantId,
+	StudioId,
 } from './Ids.js'
 import { RundownNote } from './Notes.js'
-import { ReadonlyDeep } from 'type-fest'
 import { CoreUserEditingDefinition } from './UserEditingDefinitions.js'
 
 export enum RundownOrphanedReason {
@@ -97,11 +99,7 @@ export interface Rundown {
 
 /** A description of where a Rundown originated from */
 export type RundownSource =
-	| RundownSourceNrcs
-	| RundownSourceSnapshot
-	| RundownSourceHttp
-	| RundownSourceTesting
-	| RundownSourceRestApi
+	RundownSourceNrcs | RundownSourceSnapshot | RundownSourceHttp | RundownSourceTesting | RundownSourceRestApi
 
 /** A description of the external NRCS source of a Rundown */
 export interface RundownSourceNrcs {

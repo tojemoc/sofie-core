@@ -1,6 +1,8 @@
 import { z } from 'zod'
-import { check, disableChecks, enableChecks, zAnyArray, zPlainObject } from '../check'
+
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+
+import { check, disableChecks, enableChecks, zAnyArray, zPlainObject } from '../check'
 
 describe('lib/check', () => {
 	test('check basic', () => {

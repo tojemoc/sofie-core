@@ -35,12 +35,12 @@ describe('toTTimers', () => {
 	})
 
 	it('is index-aware (out-of-order input lands in correct slots)', () => {
-		const result = toTTimers([makeTimer(3), makeTimer(1)] as any)
+		const result = toTTimers([makeTimer(3), makeTimer(1)])
 		expect(result.map((t) => t.label)).toEqual(['Timer 1', '', 'Timer 3'])
 	})
 
 	it('uses first timer when duplicate indices occur', () => {
-		const result = toTTimers([makeTimer(2, { label: 'First' }), makeTimer(2, { label: 'Second' })] as any)
+		const result = toTTimers([makeTimer(2, { label: 'First' }), makeTimer(2, { label: 'Second' })])
 		expect(result[1].label).toBe('First')
 	})
 

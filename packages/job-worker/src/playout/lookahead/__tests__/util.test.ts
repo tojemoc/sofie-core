@@ -1,18 +1,20 @@
-import { RundownPlaylistId, SegmentId, PartId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../../../lib/index.js'
-import { LookaheadMode, PlaylistTimingType, TSR } from '@sofie-automation/blueprints-integration'
-import { getOrderedPartsAfterPlayhead } from '../util.js'
-import { MockJobContext, setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
-import { runJobWithPlayoutModel } from '../../../playout/lock.js'
-import { defaultRundownPlaylist } from '../../../__mocks__/defaultCollectionObjects.js'
 import _ from 'underscore'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { LookaheadMode, PlaylistTimingType, TSR } from '@sofie-automation/blueprints-integration'
+import { PartId, RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
+import { defaultRundownPlaylist } from '../../../__mocks__/defaultCollectionObjects.js'
+import { getCurrentTime } from '../../../lib/index.js'
+import { runJobWithPlayoutModel } from '../../../playout/lock.js'
+import { getOrderedPartsAfterPlayhead } from '../util.js'
 
 describe('getOrderedPartsAfterPlayhead', () => {
 	let context!: MockJobContext

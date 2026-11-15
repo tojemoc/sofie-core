@@ -1,7 +1,7 @@
 import type {
 	IngestPart,
-	SofieIngestPart,
 	IngestSegment,
+	SofieIngestPart,
 	SofieIngestSegment,
 } from '@sofie-automation/blueprints-integration'
 import type { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'

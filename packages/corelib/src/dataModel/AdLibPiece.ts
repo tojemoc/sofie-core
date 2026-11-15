@@ -1,5 +1,6 @@
 import { IBlueprintAdLibPiece, SomeContent } from '@sofie-automation/blueprints-integration'
-import { RundownId, PartId } from './Ids.js'
+
+import { PartId, RundownId } from './Ids.js'
 import { PieceGeneric } from './Piece.js'
 
 export interface AdLibPiece

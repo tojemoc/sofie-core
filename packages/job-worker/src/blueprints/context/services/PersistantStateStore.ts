@@ -1,6 +1,7 @@
+import { clone } from '@sofie-automation/corelib/dist/lib'
 import type { TimelinePersistentState } from '@sofie-automation/blueprints-integration'
 import type { BlueprintPlayoutPersistentStore } from '@sofie-automation/blueprints-integration/dist/context/playoutStore'
-import { clone } from '@sofie-automation/corelib/dist/lib'
+
 import type { PlayoutModel } from '../../../playout/model/PlayoutModel.js'
 
 export class PersistentPlayoutStateStore implements BlueprintPlayoutPersistentStore {

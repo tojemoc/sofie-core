@@ -1,14 +1,16 @@
-import { StatusResponse, NewSystemStatusAPI } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { getDebugStates, getSystemStatus } from './systemStatus'
+import KoaRouter from '@koa/router'
+import Koa from 'koa'
+
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { getPrometheusMetricsString, PrometheusHTTPContentType } from '@sofie-automation/corelib/dist/prometheus'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { NewSystemStatusAPI, StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
+
 import { MethodContextAPI } from '../api/methodContext'
 import { profiler } from '../api/profiler'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PrometheusHTTPContentType, getPrometheusMetricsString } from '@sofie-automation/corelib/dist/prometheus'
-import { collectWorkerPrometheusMetrics } from '../worker/worker'
-import Koa from 'koa'
-import KoaRouter from '@koa/router'
 import { bindKoaRouter } from '../api/rest/koa'
+import { collectWorkerPrometheusMetrics } from '../worker/worker'
+import { getDebugStates, getSystemStatus } from './systemStatus'
 
 const apmNamespace = 'http'
 

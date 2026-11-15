@@ -1,5 +1,7 @@
-import { useCallback, type MouseEvent } from 'react'
+import { useCallback } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import type { MouseEvent } from 'react'
+
 import { catchError } from '../../lib/lib.js'
 
 interface FullscreenLinkProps {

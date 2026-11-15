@@ -1,11 +1,13 @@
-import React, { useContext, useMemo } from 'react'
-import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import classNames from 'classnames'
-import { CanvasSizeContext } from './index.js'
-import { PieceElement } from '../../SegmentContainer/PieceElement.js'
-import { getSplitItems } from '../../SegmentContainer/getSplitItems.js'
-import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+import React, { useContext, useMemo } from 'react'
+
+import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { getSplitItems } from '../../SegmentContainer/getSplitItems.js'
+import { PieceElement } from '../../SegmentContainer/PieceElement.js'
+import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+import { CanvasSizeContext } from './index.js'
 
 const PIECE_TYPE_INDICATOR_BORDER_RADIUS = 11
 

@@ -1,9 +1,10 @@
-jest.mock('../../findObjects')
-import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
 import { findLookaheadForLayer } from '../../findForLayer.js'
+import { findLookaheadObjectsForPart } from '../../findObjects.js'
 import { expectInstancesToMatch } from '../utils.js'
 import { findForLayerTestConstants } from './constants.js'
-import { findLookaheadObjectsForPart } from '../../findObjects.js'
+import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
+
+jest.mock('../../findObjects')
 
 const findLookaheadObjectsForPartMockBase = findLookaheadObjectsForPart as TfindLookaheadObjectsForPart
 const findLookaheadObjectsForPartMock = findLookaheadObjectsForPartMockBase.mockImplementation(() => []) // Default mock
@@ -22,8 +23,8 @@ const layer = findForLayerTestConstants.layer
 describe('findLookaheadForLayer – timing', () => {
 	test('current part with timed next part (all goes into timed)', () => {
 		findLookaheadObjectsForPartMock
-			.mockReturnValueOnce([] as any)
-			.mockReturnValueOnce([] as any)
+			.mockReturnValueOnce([])
+			.mockReturnValueOnce([])
 			.mockReturnValueOnce(['cur0', 'cur1'] as any)
 			.mockReturnValueOnce(['nT0', 'nT1'] as any)
 
@@ -48,8 +49,8 @@ describe('findLookaheadForLayer – timing', () => {
 
 	test('current part with un-timed next part (next goes into future)', () => {
 		findLookaheadObjectsForPartMock
-			.mockReturnValueOnce([] as any)
-			.mockReturnValueOnce([] as any)
+			.mockReturnValueOnce([])
+			.mockReturnValueOnce([])
 			.mockReturnValueOnce(['cur0', 'cur1'] as any)
 			.mockReturnValueOnce(['nF0', 'nF1'] as any)
 

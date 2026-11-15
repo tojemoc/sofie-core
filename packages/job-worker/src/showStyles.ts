@@ -1,8 +1,10 @@
-import { IBlueprintConfig } from '@sofie-automation/blueprints-integration'
-import { deepFreeze } from '@sofie-automation/corelib/dist/lib'
 import deepmerge from 'deepmerge'
 import { ReadonlyDeep } from 'type-fest'
-import { ProcessedShowStyleBase, ProcessedShowStyleVariant, ProcessedShowStyleCompound } from './jobs/index.js'
+
+import { IBlueprintConfig } from '@sofie-automation/blueprints-integration'
+import { deepFreeze } from '@sofie-automation/corelib/dist/lib'
+
+import { ProcessedShowStyleBase, ProcessedShowStyleCompound, ProcessedShowStyleVariant } from './jobs/index.js'
 
 export function createShowStyleCompound(
 	showStyleBase: ReadonlyDeep<ProcessedShowStyleBase>,

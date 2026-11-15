@@ -1,16 +1,14 @@
-import {
-	type SomeObjectOverrideOp,
-	type ObjectWithOverrides,
-	applyAndValidateOverrides,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { useRef, useEffect, useCallback, useMemo } from 'react'
-import {
-	type OverrideOpHelper,
-	OverrideOpHelperImpl,
-	type WrappedOverridableItemNormal,
-} from '@sofie-automation/corelib/dist/overrideOpHelper'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import type { ReadonlyDeep } from 'type-fest/source/readonly-deep'
+
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import { OverrideOpHelperImpl } from '@sofie-automation/corelib/dist/overrideOpHelper'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { OverrideOpHelper, WrappedOverridableItemNormal } from '@sofie-automation/corelib/dist/overrideOpHelper'
+import type {
+	ObjectWithOverrides,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 
 export type * from '@sofie-automation/corelib/dist/overrideOpHelper'
 export {

@@ -1,21 +1,23 @@
+import { mock } from 'jest-mock-extended'
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintSegmentDB } from '@sofie-automation/blueprints-integration'
-import { PartEventContext, RundownDataChangedEventContext, RundownTimingEventContext } from '../context/index.js'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { wrapPartToTemporaryInstance } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
-import { ReadonlyDeep } from 'type-fest'
-import { convertPartInstanceToBlueprints } from '../context/lib.js'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { PartEventContext, RundownDataChangedEventContext, RundownTimingEventContext } from '../context/index.js'
+import { convertPartInstanceToBlueprints } from '../context/lib.js'
 import type { PlayoutModel } from '../../playout/model/PlayoutModel.js'
-import { mock } from 'jest-mock-extended'
 
 describe('Test blueprint api context', () => {
 	async function generateSparsePieceInstances(rundown: DBRundown) {

@@ -1,5 +1,6 @@
 import { ExpectedPlayoutItemGeneric } from '@sofie-automation/blueprints-integration'
-import { ExpectedPlayoutItemId, StudioId, RundownId, PartId } from './Ids.js'
+
+import { ExpectedPlayoutItemId, PartId, RundownId, StudioId } from './Ids.js'
 
 export interface ExpectedPlayoutItemBase extends ExpectedPlayoutItemGeneric {
 	/** Globally unique id of the item */

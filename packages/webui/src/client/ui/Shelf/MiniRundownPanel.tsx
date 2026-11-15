@@ -1,21 +1,23 @@
+import ClassNames from 'classnames'
+import { Meteor } from 'meteor/meteor'
 import { memo, useEffect } from 'react'
 import _ from 'underscore'
-import ClassNames from 'classnames'
-import type {
-	RundownLayoutBase,
-	DashboardLayoutMiniRundown,
-	RundownLayoutMiniRundown,
-} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+
+import type { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { Meteor } from 'meteor/meteor'
-import type { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { UIPartInstances } from '../Collections.js'
-import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
 import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type {
+	DashboardLayoutMiniRundown,
+	RundownLayoutBase,
+	RundownLayoutMiniRundown,
+} from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
+import { UIPartInstances } from '../Collections.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface IMiniRundownPanelProps {
 	visible?: boolean
@@ -76,12 +78,19 @@ export const MiniRundownPanel = memo(
 		const isDashboardLayout = RundownLayoutsAPI.isDashboardLayout(props.layout)
 		const style = getElementStyle(props, isDashboardLayout)
 
-		const miniRundowns: MiniRundownSegment[] = getMiniRundownList(allSegments, currentPartInstance, nextPartInstance)
+		const miniRundowns: MiniRundownSegment[] = getMiniRundownList(
+			allSegments,
+			currentPartInstance,
+			nextPartInstance
+		)
 
 		return (
 			<div
 				key={'miniRundownContainer'}
-				className={ClassNames('dashboard-panel mini-rundown-panel', getContainerClass(props, isDashboardLayout))}
+				className={ClassNames(
+					'dashboard-panel mini-rundown-panel',
+					getContainerClass(props, isDashboardLayout)
+				)}
 				style={getContainerStyle(props, isDashboardLayout)}
 			>
 				<span className="mini-rundown-panel__name" style={style} key={'miniRundownHeader'}>
@@ -156,9 +165,12 @@ function getContainerClass(props: IMiniRundownPanelProps, isDashboardLayout: boo
 }
 
 function getContainerStyle(props: IMiniRundownPanelProps, isDashboardLayout: boolean): React.CSSProperties {
-	return _.extend(isDashboardLayout ? dashboardElementStyle({ ...(props.panel as DashboardLayoutMiniRundown) }) : {}, {
-		visibility: props.visible ? 'visible' : 'hidden',
-	})
+	return _.extend(
+		isDashboardLayout ? dashboardElementStyle({ ...(props.panel as DashboardLayoutMiniRundown) }) : {},
+		{
+			visibility: props.visible ? 'visible' : 'hidden',
+		}
+	)
 }
 
 function getElementStyle(props: IMiniRundownPanelProps, isDashboardLayout: boolean) {

@@ -2,6 +2,7 @@ import { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import { setupDefaultRundownPlaylist, setupMockShowStyleCompound } from '../../__mocks__/presetCollections.js'
 import { runWithRundownLock } from '../../ingest/lock.js'
@@ -9,8 +10,8 @@ import { executePeripheralDeviceFunction } from '../../peripheralDevice.js'
 import { removeRundownFromDb } from '../../rundownPlaylists.js'
 import { activateRundownPlaylist } from '../activePlaylistActions.js'
 import { handleDeactivateRundownPlaylist } from '../activePlaylistJobs.js'
-import { runJobWithPlayoutModel } from '../lock.js'
 import { handleActivateAdlibTesting } from '../adlibTesting.js'
+import { runJobWithPlayoutModel } from '../lock.js'
 
 jest.mock('../../peripheralDevice')
 type TexecutePeripheralDeviceFunction = jest.MockedFunction<typeof executePeripheralDeviceFunction>

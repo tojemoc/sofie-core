@@ -1,27 +1,29 @@
-import _ from 'underscore'
 import ClassNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+import _ from 'underscore'
+
+import type { PartId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type {
 	DashboardLayoutSegmentCountDown,
 	RundownLayoutBase,
 	RundownLayoutSegmentTiming,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { withTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { RundownUtils } from '../../lib/rundown.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { SegmentDuration } from '../RundownView/RundownTiming/SegmentDuration.js'
+
+import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
 import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
 import { slowDownReactivity } from '../../lib/reactiveData/reactiveDataHelper.js'
-import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { dashboardElementStyle } from './DashboardPanel.js'
-import { RundownLayoutsAPI, getIsFilterActive } from '../../lib/rundownLayouts.js'
-import type { PartId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
+import { withTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import { getIsFilterActive, RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
 import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import { useTranslation } from 'react-i18next'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import { SegmentDuration } from '../RundownView/RundownTiming/SegmentDuration.js'
+import { dashboardElementStyle } from './DashboardPanel.js'
 
 interface ISegmentTimingPanelProps {
 	visible?: boolean
@@ -95,9 +97,15 @@ export const SegmentTimingPanel = withTracker<ISegmentTimingPanelProps, {}, ISeg
 						memoizedIsolatedAutorun(
 							(_playlistId: RundownPlaylistId) =>
 								(
-									RundownPlaylistClientUtil.getSegmentsAndPartsSync(props.playlist, undefined, undefined, undefined, {
-										fields: { _id: 1 },
-									}).parts as Pick<DBPart, '_id'>[]
+									RundownPlaylistClientUtil.getSegmentsAndPartsSync(
+										props.playlist,
+										undefined,
+										undefined,
+										undefined,
+										{
+											fields: { _id: 1 },
+										}
+									).parts as Pick<DBPart, '_id'>[]
 								).map((part) => part._id),
 							'playlist.getAllOrderedParts',
 							props.playlist._id

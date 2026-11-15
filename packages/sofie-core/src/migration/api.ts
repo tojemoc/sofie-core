@@ -1,14 +1,19 @@
 import { z } from 'zod'
-import { check, zAnyArray } from '../lib/check'
+
+import { CoreSystemId, ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { BlueprintValidateConfigForStudioResult } from '@sofie-automation/corelib/dist/worker/studio'
 import {
-	MigrationChunk,
-	NewMigrationAPI,
 	BlueprintFixUpConfigMessage,
 	GetMigrationStatusResult,
+	MigrationChunk,
+	NewMigrationAPI,
 	RunMigrationResult,
 } from '@sofie-automation/meteor-lib/dist/api/migration'
-import * as Migrations from './databaseMigration'
+
 import { MethodContextAPI } from '../api/methodContext'
+import { check, zAnyArray } from '../lib/check'
+import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import * as Migrations from './databaseMigration'
 import {
 	fixupConfigForShowStyleBase,
 	fixupConfigForStudio,
@@ -19,10 +24,7 @@ import {
 	validateConfigForShowStyleBase,
 	validateConfigForStudio,
 } from './upgrades'
-import { CoreSystemId, ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { BlueprintValidateConfigForStudioResult } from '@sofie-automation/corelib/dist/worker/studio'
 import { runUpgradeForCoreSystem } from './upgrades/system'
-import { assertConnectionHasOneOfPermissions } from '../security/auth'
 
 export class ServerMigrationAPI extends MethodContextAPI implements NewMigrationAPI {
 	async getMigrationStatus(): Promise<GetMigrationStatusResult> {

@@ -1,6 +1,7 @@
-import type { MongoQuery, MongoModifier } from '@sofie-automation/corelib/src/mongo'
+import type { MongoModifier, MongoQuery } from '@sofie-automation/corelib/src/mongo'
 import type { ProtectedString } from '@sofie-automation/corelib/src/protectedString'
-import type { FindOptions, FindOneOptions, UpdateOptions, UpsertOptions } from './lib'
+
+import type { FindOneOptions, FindOptions, UpdateOptions, UpsertOptions } from './lib'
 
 export interface MongoReadOnlyCollection<DBInterface extends { _id: ProtectedString<any> }> {
 	/**

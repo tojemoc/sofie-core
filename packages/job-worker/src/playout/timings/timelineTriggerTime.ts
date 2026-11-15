@@ -1,18 +1,20 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { PartInstanceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { OnTimelineTriggerTimeProps } from '@sofie-automation/corelib/dist/worker/studio'
-import { logger } from '../../logging.js'
-import { JobContext } from '../../jobs/index.js'
-import { runJobWithPlaylistLock } from '../lock.js'
-import { applyToArray, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { deserializeTimelineBlob } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { applyToArray, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { OnTimelineTriggerTimeProps } from '@sofie-automation/corelib/dist/worker/studio'
+
+import { MongoBulkWriteOperation } from '../../db/collections.js'
+import { JobContext } from '../../jobs/index.js'
+import { logger } from '../../logging.js'
 import { runJobWithStudioPlayoutModel } from '../../studio/lock.js'
 import { StudioPlayoutModel } from '../../studio/model/StudioPlayoutModel.js'
+import { runJobWithPlaylistLock } from '../lock.js'
 import { PieceTimelineMetadata } from '../timeline/pieceGroup.js'
-import { deserializeTimelineBlob } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { ReadonlyDeep } from 'type-fest'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { MongoBulkWriteOperation } from '../../db/collections.js'
 
 /**
  * Called from Playout-gateway when the trigger-time of a timeline object has updated
@@ -106,7 +108,7 @@ async function writePieceInstanceChangesToMongo(context: JobContext, changes: Pi
 		updates.push({
 			deleteMany: {
 				filter: {
-					_id: { $in: changes.removeIds as any },
+					_id: { $in: changes.removeIds },
 				},
 			},
 		})

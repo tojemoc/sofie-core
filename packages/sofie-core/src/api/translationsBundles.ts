@@ -1,15 +1,8 @@
 import {
-	Translation,
-	TranslationsBundle as DBTranslationsBundle,
-} from '@sofie-automation/meteor-lib/dist/collections/TranslationsBundles'
-import { TranslationsBundles as TranslationsBundleCollection } from '../collections'
-import {
-	I18NextData,
 	TranslationsBundle as BlueprintTranslationsbundle,
+	I18NextData,
 	TranslationsBundleType,
 } from '@sofie-automation/blueprints-integration'
-import { getHash } from '@sofie-automation/corelib/dist/lib'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	BlueprintId,
 	PeripheralDeviceId,
@@ -17,6 +10,14 @@ import {
 	TranslationsBundleOriginId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getHash } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	TranslationsBundle as DBTranslationsBundle,
+	Translation,
+} from '@sofie-automation/meteor-lib/dist/collections/TranslationsBundles'
+
+import { TranslationsBundles as TranslationsBundleCollection } from '../collections'
 
 /**
  * Insert or update translation bundles in the database.

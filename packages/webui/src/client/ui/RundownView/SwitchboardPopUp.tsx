@@ -1,15 +1,14 @@
-import type * as React from 'react'
-import { useTranslation } from 'react-i18next'
-import {
-	type StudioRouteSet,
-	type StudioRouteSetExclusivityGroup,
-	StudioRouteBehavior,
-} from '@sofie-automation/corelib/dist/dataModel/Studio'
 import classNames from 'classnames'
-import { RouteSetOverrideIcon } from '../../lib/ui/icons/switchboard.js'
 import Tooltip from 'rc-tooltip'
-import { TOOLTIP_DEFAULT_DELAY } from '../../lib/lib.js'
+import { useTranslation } from 'react-i18next'
+import type * as React from 'react'
+
+import { StudioRouteBehavior } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type { StudioRouteSet, StudioRouteSetExclusivityGroup } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { ToggleSwitchControl } from '../../lib/Components/ToggleSwitch.js'
+import { TOOLTIP_DEFAULT_DELAY } from '../../lib/lib.js'
+import { RouteSetOverrideIcon } from '../../lib/ui/icons/switchboard.js'
 import { PopUpPanel } from './PopUpPanel.js'
 
 interface IProps {
@@ -51,7 +50,10 @@ export function SwitchboardPopUp(props: Readonly<IProps>): JSX.Element {
 						{routeSets.length === 2 &&
 						routeSets[0][1].behavior === StudioRouteBehavior.ACTIVATE_ONLY &&
 						routeSets[1][1].behavior === StudioRouteBehavior.ACTIVATE_ONLY ? (
-							<div key={routeSets[0][0]} className="switchboard-pop-up-panel__group__controls dual mx-4 mb-2">
+							<div
+								key={routeSets[0][0]}
+								className="switchboard-pop-up-panel__group__controls dual mx-4 mb-2"
+							>
 								<span
 									className={classNames({
 										'switchboard-pop-up-panel__group__controls__active': routeSets[0][1].active,
@@ -116,7 +118,10 @@ export function SwitchboardPopUp(props: Readonly<IProps>): JSX.Element {
 										classNames="switch-nocolor switch-lg"
 										value={routeSet.active}
 										handleUpdate={(_state, e) =>
-											!(routeSet.active && routeSet.behavior === StudioRouteBehavior.ACTIVATE_ONLY) &&
+											!(
+												routeSet.active &&
+												routeSet.behavior === StudioRouteBehavior.ACTIVATE_ONLY
+											) &&
 											props.onStudioRouteSetSwitch &&
 											props.onStudioRouteSetSwitch(e, id, routeSet, !routeSet.active)
 										}
@@ -130,19 +135,20 @@ export function SwitchboardPopUp(props: Readonly<IProps>): JSX.Element {
 									>
 										{routeSet.name}
 									</span>
-									{routeSet.defaultActive !== undefined && routeSet.active !== routeSet.defaultActive && (
-										<span className="switchboard-pop-up-panel__group__controls__notice">
-											<Tooltip
-												mouseEnterDelay={TOOLTIP_DEFAULT_DELAY}
-												overlay={t("This is not in it's normal setting")}
-												placement="top"
-											>
-												<span>
-													<RouteSetOverrideIcon />
-												</span>
-											</Tooltip>
-										</span>
-									)}
+									{routeSet.defaultActive !== undefined &&
+										routeSet.active !== routeSet.defaultActive && (
+											<span className="switchboard-pop-up-panel__group__controls__notice">
+												<Tooltip
+													mouseEnterDelay={TOOLTIP_DEFAULT_DELAY}
+													overlay={t("This is not in it's normal setting")}
+													placement="top"
+												>
+													<span>
+														<RouteSetOverrideIcon />
+													</span>
+												</Tooltip>
+											</span>
+										)}
 								</div>
 							))
 						)}

@@ -1,41 +1,43 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
-import { getRoutedTimeline } from '@sofie-automation/meteor-lib/dist/collections/Timeline'
+
+import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { ResultingMappingRoutes, StudioLight } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import {
-	RoutedTimeline,
-	TimelineComplete,
-	TimelineHash,
 	deserializeTimelineBlob,
+	RoutedTimeline,
 	serializeTimelineBlob,
 	TimelineBlob,
+	TimelineComplete,
+	TimelineHash,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { DBTimelineDatastoreEntry } from '@sofie-automation/corelib/dist/dataModel/TimelineDatastore'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { FindOptions } from '@sofie-automation/meteor-lib/dist/collections/lib'
+import { getActiveRoutes } from '@sofie-automation/meteor-lib/dist/collections/Studios'
+import { getRoutedTimeline } from '@sofie-automation/meteor-lib/dist/collections/Timeline'
+import {
+	PeripheralDevicePubSub,
+	PeripheralDevicePubSubCollectionsNames,
+} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { Studios, Timeline, TimelineDatastore } from '../collections'
+import { check } from '../lib/check'
 import {
 	CustomPublish,
 	SetupObserversResult,
 	setUpOptimizedObserverArray,
 	TriggerUpdate,
 } from '../lib/customPublication'
-import { getActiveRoutes } from '@sofie-automation/meteor-lib/dist/collections/Studios'
-import { fetchStudioIds, fetchStudioLight } from '../optimizations'
-import { FastTrackObservers, setupFastTrackObserver } from './fastTrack'
 import { logger } from '../logging'
-import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { ReadonlyDeep } from 'type-fest'
-import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBTimelineDatastoreEntry } from '@sofie-automation/corelib/dist/dataModel/TimelineDatastore'
-import { Studios, Timeline, TimelineDatastore } from '../collections'
-import { check } from '../lib/check'
-import { ResultingMappingRoutes, StudioLight } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import {
-	PeripheralDevicePubSub,
-	PeripheralDevicePubSubCollectionsNames,
-} from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { fetchStudioIds, fetchStudioLight } from '../optimizations'
 import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { FastTrackObservers, setupFastTrackObserver } from './fastTrack'
 import type { PublicationRegistry } from '../publicationRegistry'
 
 export function registerTimelinePublications(registry: PublicationRegistry): void {

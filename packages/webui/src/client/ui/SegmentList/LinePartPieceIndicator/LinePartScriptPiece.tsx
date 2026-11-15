@@ -1,12 +1,11 @@
-import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { useContext, useEffect, useMemo, useRef } from 'react'
-import {
-	PreviewPopUpContext,
-	type IPreviewPopUpSession,
-	convertSourceLayerItemToPreview,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	pieces: PieceExtended[]
@@ -85,7 +84,9 @@ export function LinePartScriptPiece({ pieces }: IProps): JSX.Element {
 			onMouseLeave={onMouseLeave}
 		>
 			{hasPiece && (
-				<div className="segment-opl__piece-indicator segment-opl__piece-indicator--script script">{scriptLabel}</div>
+				<div className="segment-opl__piece-indicator segment-opl__piece-indicator--script script">
+					{scriptLabel}
+				</div>
 			)}
 			{!hasPiece && <div className="segment-opl__piece-indicator"></div>}
 		</div>

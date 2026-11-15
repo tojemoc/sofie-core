@@ -1,13 +1,15 @@
 import _ from 'underscore'
-import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
-import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../logging'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { objectPathGet } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
+
 import { AsyncOnlyMongoCollection } from '../collections/collection'
 import { Collections } from '../collections/lib'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { logger } from '../logging'
 
 /**
  * Returns a migration step that ensures the provided property is set in the collection

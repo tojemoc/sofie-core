@@ -1,7 +1,8 @@
 import { ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBStudio, StudioLight } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+
 import { ShowStyleBases, Studios } from './collections'
 
 /**

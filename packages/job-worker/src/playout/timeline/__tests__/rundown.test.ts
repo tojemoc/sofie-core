@@ -1,25 +1,26 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import {
 	DBRundownPlaylist,
 	SelectedPartInstance,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
-import { buildTimelineObjsForRundown, RundownTimelineResult, RundownTimelineTimingContext } from '../rundown.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { SelectedPartInstancesTimelineInfo, SelectedPartInstanceTimelineInfo } from '../generate.js'
-import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { transformTimeline } from '@sofie-automation/corelib/dist/playout/timeline'
 import { deleteAllUndefinedProperties, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { getPartGroupId } from '@sofie-automation/corelib/dist/playout/ids'
 import {
 	createPartCurrentTimes,
 	PieceInstanceWithTimings,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { IBlueprintPieceType, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { getPartGroupId } from '@sofie-automation/corelib/dist/playout/ids'
+import { transformTimeline } from '@sofie-automation/corelib/dist/playout/timeline'
+import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
+import { SelectedPartInstancesTimelineInfo, SelectedPartInstanceTimelineInfo } from '../generate.js'
+import { buildTimelineObjsForRundown, RundownTimelineResult, RundownTimelineTimingContext } from '../rundown.js'
 
 const DEFAULT_PART_TIMINGS: PartCalculatedTimings = Object.freeze({
 	inTransitionStart: null,

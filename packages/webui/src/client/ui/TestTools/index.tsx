@@ -1,16 +1,18 @@
-import { useTranslation } from 'react-i18next'
-import { useSubscription } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
-import { TimelineView } from './Timeline.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { MappingsView } from './Mappings.js'
-import { TimelineDatastoreView } from './TimelineDatastore.js'
-import { DeviceTriggersDeviceSelect, DeviceTriggersView } from './DeviceTriggers.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { IngestRundownStatusSelect, IngestRundownStatusView } from './IngestRundownStatus'
 import Container from 'react-bootstrap/esm/Container'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
+
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { useSubscription } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { DeviceTriggersDeviceSelect, DeviceTriggersView } from './DeviceTriggers.js'
+import { IngestRundownStatusSelect, IngestRundownStatusView } from './IngestRundownStatus'
+import { MappingsView } from './Mappings.js'
+import { TimelineView } from './Timeline.js'
+import { TimelineDatastoreView } from './TimelineDatastore.js'
 
 function StatusMenu() {
 	const { t } = useTranslation()
@@ -74,9 +76,15 @@ export default function Status(): JSX.Element {
 							<Route path="/testTools/timeline" component={TimelineView} />
 							<Route path="/testTools/mappings" component={MappingsView} />
 							<Route path="/testTools/timelinedatastore" component={TimelineDatastoreView} />
-							<Route path="/testTools/devicetriggers/:peripheralDeviceId" component={DeviceTriggersView} />
+							<Route
+								path="/testTools/devicetriggers/:peripheralDeviceId"
+								component={DeviceTriggersView}
+							/>
 							<Route path="/testTools/devicetriggers" component={DeviceTriggersDeviceSelect} />
-							<Route path="/testTools/ingestRundownStatus/:peripheralDeviceId" component={IngestRundownStatusView} />
+							<Route
+								path="/testTools/ingestRundownStatus/:peripheralDeviceId"
+								component={IngestRundownStatusView}
+							/>
 							<Route path="/testTools/ingestRundownStatus" component={IngestRundownStatusSelect} />
 							<Redirect to="/testTools/timeline" />
 						</Switch>

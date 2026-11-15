@@ -1,20 +1,22 @@
-import { MarkerPosition, compareMarkerPositions } from '@sofie-automation/corelib/dist/playout/playlist'
-import { PlayoutModelReadonly } from '../PlayoutModel.js'
+import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+
+import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import {
 	QuickLoopMarker,
 	QuickLoopMarkerType,
 	QuickLoopProps,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { PlayoutPartInstanceModel } from '../PlayoutPartInstanceModel.js'
-import { JobContext } from '../../../jobs/index.js'
 import { clone } from '@sofie-automation/corelib/dist/lib'
+import { compareMarkerPositions, MarkerPosition } from '@sofie-automation/corelib/dist/playout/playlist'
 import { DEFAULT_FALLBACK_PART_DURATION } from '@sofie-automation/shared-lib/dist/core/constants'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { JobContext } from '../../../jobs/index.js'
 import { getCurrentTime } from '../../../lib/index.js'
+import { PlayoutModelReadonly } from '../PlayoutModel.js'
+import { PlayoutPartInstanceModel } from '../PlayoutPartInstanceModel.js'
 
 export class QuickLoopService {
 	constructor(
@@ -330,7 +332,7 @@ export class QuickLoopService {
 	 * @param marker Marker to find
 	 */
 	private doesMarkerExist(marker: QuickLoopMarker) {
-		let found = false
+		let found: boolean
 
 		if (marker.type === QuickLoopMarkerType.PART) {
 			found = !!this.playoutModel.findPart(marker.id)

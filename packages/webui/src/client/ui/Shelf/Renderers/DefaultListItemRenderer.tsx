@@ -1,7 +1,8 @@
 import ClassNames from 'classnames'
-import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
-import { ActionAdLibHotkeyPreview } from '../../../lib/triggers/ActionAdLibHotkeyPreview.js'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import { ActionAdLibHotkeyPreview } from '../../../lib/triggers/ActionAdLibHotkeyPreview.js'
+import type { ILayerItemRendererProps } from './ItemRendererFactory.js'
 
 export const DefaultListItemRenderer: React.FunctionComponent<ILayerItemRendererProps> = (
 	props: Readonly<ILayerItemRendererProps>

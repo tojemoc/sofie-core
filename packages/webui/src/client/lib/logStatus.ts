@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor'
 import { Tracker } from 'meteor/tracker'
+
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { logger } from './logging.js'
+
 import { getLocalAllowStudio } from './localStorage.js'
+import { logger } from './logging.js'
 
 /*
  * This file sets up logging of the connection status, for troubleshooting purposes.

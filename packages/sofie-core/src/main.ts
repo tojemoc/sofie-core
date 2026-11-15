@@ -3,41 +3,27 @@
  */
 
 // Setup logging
-import { logger } from './logging'
-console.log('startup')
 
 // App imports
 import * as fs from 'fs/promises'
-import { MethodRegistry } from './methodRegistry'
-import { registerAllApiMethods } from './methodRegistrations'
-import { PublicationRegistry } from './publicationRegistry'
-import { registerAllPublications } from './publicationRegistrations'
-import { bindRestApiRouter } from './api/rest/api'
-import { startupVerifyAllMethods } from './security/securityVerify'
-import { createDdpConnectionRegistry, startStandaloneDdpServer } from './ddp-server'
-import { makeMeteorCallForRegistry } from './api/meteorCall'
-import { createMeteorTriggersContext } from './api/deviceTriggers/triggersContext'
-import { startDeviceTriggersObserver } from './api/deviceTriggers/observer'
-import { bindLogoRouter } from './logo'
+
 import { setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
-import { startCronjobs } from './cronjobs'
-import { startTimeJumpDetector } from './systemTime'
-import { bindWebManifestRouter } from './webmanifest'
-import { startPerformanceMonitor } from './performanceMonitor'
-import { createIndexes } from './api/system'
-import { startMediaObjectDurationMonitor } from './api/ingest/rundownInput'
-import { startStudioMappingsHashObserver } from './api/studio/api'
-import { describeRunMode, isInDevelopmentMode, isInTestMode } from './lib'
-import { connectMongo } from './collections/mongoConnection'
-import { bindServiceMessagesRouter } from './api/serviceMessages/api'
-import { bindSystemStatusRouter } from './systemStatus/api'
-import { startRundownVersionHashObservers } from './collections'
-import { startJobWorkerParent } from './worker/worker'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { startBlueprintConfigPresetObservers } from './api/blueprintConfigPresets'
+import { startDeviceTriggersObserver } from './api/deviceTriggers/observer'
+import { createMeteorTriggersContext } from './api/deviceTriggers/triggersContext'
 import { startExternalMessageQueueStatusMonitor } from './api/ExternalMessageQueue'
-import { markAllPeripheralDevicesOffline } from './Connections'
+import { startMediaObjectDurationMonitor } from './api/ingest/rundownInput'
+import { makeMeteorCallForRegistry } from './api/meteorCall'
+import { bindRestApiRouter } from './api/rest/api'
 import { createKoaApp } from './api/rest/koa'
-import { createHttpServer, listenHttpServer } from './httpServer'
+import { bindServiceMessagesRouter } from './api/serviceMessages/api'
+import { startStudioMappingsHashObserver } from './api/studio/api'
+import { createIndexes } from './api/system'
+import { startRundownVersionHashObservers } from './collections'
+import { connectMongo } from './collections/mongoConnection'
+import { markAllPeripheralDevicesOffline } from './Connections'
 import {
 	getSystemStorePath,
 	initializeCoreSystem,
@@ -46,12 +32,29 @@ import {
 	startApmInstrumenting,
 	updateLoggerLevel,
 } from './coreSystem'
+import { startCronjobs } from './cronjobs'
+import { createDdpConnectionRegistry, startStandaloneDdpServer } from './ddp-server'
+import { createHttpServer, listenHttpServer } from './httpServer'
+import { describeRunMode, isInDevelopmentMode, isInTestMode } from './lib'
+import { logger } from './logging'
+import { bindLogoRouter } from './logo'
+import { registerAllApiMethods } from './methodRegistrations'
+import { MethodRegistry } from './methodRegistry'
 import { CURRENT_SYSTEM_VERSION } from './migration/currentSystemVersion'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-
+import { startPerformanceMonitor } from './performanceMonitor'
+import { registerAllPublications } from './publicationRegistrations'
+import { PublicationRegistry } from './publicationRegistry'
+import { startupVerifyAllMethods } from './security/securityVerify'
+import { bindSystemStatusRouter } from './systemStatus/api'
+import { startTimeJumpDetector } from './systemTime'
+import { bindWebManifestRouter } from './webmanifest'
+import { startJobWorkerParent } from './worker/worker'
 // Register all migration steps
 import './migration/migrations'
+
 import { USER_PERMISSIONS_HEADER } from './security/auth'
+
+console.log('startup')
 
 // Build and populate the method registry
 const methodRegistry = new MethodRegistry()

@@ -1,13 +1,15 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintBrandingInfo,
 	IOutputLayer,
 	IShowStyleContext,
 	ISourceLayer,
 } from '@sofie-automation/blueprints-integration'
-import { ReadonlyDeep } from 'type-fest'
-import { ProcessedStudioConfig, ProcessedShowStyleConfig } from '../config.js'
-import { getShowStyleConfigRef } from '../configRefs.js'
+
 import { JobStudio, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { ProcessedShowStyleConfig, ProcessedStudioConfig } from '../config.js'
+import { getShowStyleConfigRef } from '../configRefs.js'
 import { ContextInfo } from './CommonContext.js'
 import { StudioContext } from './StudioContext.js'
 

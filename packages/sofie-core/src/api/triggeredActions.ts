@@ -1,27 +1,29 @@
+import KoaRouter from '@koa/router'
+import bodyParser from 'koa-bodyparser'
 import { z } from 'zod'
-import { check, zAnyArray, zPlainObject } from '../lib/check'
-import { ReplaceOptionalWithNullInMethodArguments } from '../methods'
-import { literal, getRandomId, Complete } from '@sofie-automation/corelib/dist/lib'
+
+import { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { Complete, getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { logger } from '../logging'
-import { MethodContext, MethodContextAPI } from './methodContext'
-import { DBTriggeredActions, TriggeredActionsObj } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
-import {
-	CreateTriggeredActionsContent,
-	NewTriggeredActionsAPI,
-} from '@sofie-automation/meteor-lib/dist/api/triggeredActions'
-import { fetchShowStyleBaseLight } from '../optimizations'
 import {
 	convertObjectIntoOverrides,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { TriggeredActions } from '../collections'
-import KoaRouter from '@koa/router'
-import bodyParser from 'koa-bodyparser'
+import {
+	CreateTriggeredActionsContent,
+	NewTriggeredActionsAPI,
+} from '@sofie-automation/meteor-lib/dist/api/triggeredActions'
+import { DBTriggeredActions, TriggeredActionsObj } from '@sofie-automation/meteor-lib/dist/collections/TriggeredActions'
 import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
+import { TriggeredActions } from '../collections'
+import { check, zAnyArray, zPlainObject } from '../lib/check'
+import { logger } from '../logging'
+import { ReplaceOptionalWithNullInMethodArguments } from '../methods'
+import { fetchShowStyleBaseLight } from '../optimizations'
 import { assertConnectionHasOneOfPermissions } from '../security/auth'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MethodContext, MethodContextAPI } from './methodContext'
 
 const PERMISSIONS_FOR_TRIGGERED_ACTIONS: Array<keyof UserPermissions> = ['configure']
 

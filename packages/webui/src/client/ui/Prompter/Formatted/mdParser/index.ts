@@ -1,4 +1,3 @@
-import type { ParentNodeBase, RootNode, Node } from './astNodes'
 import { colour } from './constructs/colour'
 import { emphasisAndStrong } from './constructs/emphasisAndStrong'
 import { escape } from './constructs/escape'
@@ -6,7 +5,9 @@ import { paragraph } from './constructs/paragraph'
 import { reverse } from './constructs/reverse'
 import { screenMarker } from './constructs/screenMarker'
 import { underlineOrHide } from './constructs/underlineOrHide'
-import { type CharHandler, CharHandlerResult, type NodeConstruct, type ParserState } from './parserState'
+import { CharHandlerResult } from './parserState'
+import type { Node, ParentNodeBase, RootNode } from './astNodes'
+import type { CharHandler, NodeConstruct, ParserState } from './parserState'
 
 export class ParserStateImpl implements ParserState {
 	readonly nodeStack: ParentNodeBase[] = []
@@ -114,7 +115,6 @@ export default function createParser(): Parser {
 			if (!preventOthers && charHandlers[char]) {
 				const result = runAll(charHandlers[char], char, state)
 				if (result === CharHandlerResult.StopProcessingNoBuffer) continue
-				if (result === CharHandlerResult.StopProcessing) preventOthers = true
 			}
 			state.buffer += char
 		}

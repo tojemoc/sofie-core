@@ -4,20 +4,22 @@
  * You should generally use the latest REST API for integrating with Sofie.
  */
 
+import KoaRouter from '@koa/router'
+import Koa from 'koa'
 import _ from 'underscore'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
+import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
+
+import { logger } from '../../../logging'
+import { MethodContext } from '../../methodContext'
 import type { MethodRegistry } from '../../../methodRegistry'
 import type { PublicationRegistry } from '../../../publicationRegistry'
 import type { PublicationContext } from '../../../publications/lib/lib'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { UserActionAPIMethods } from '@sofie-automation/meteor-lib/dist/api/userActions'
-import { logger } from '../../../logging'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import Koa from 'koa'
-import KoaRouter from '@koa/router'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { PeripheralDevicePubSub } from '@sofie-automation/shared-lib/dist/pubsub/peripheralDevice'
-import { MethodContext } from '../../methodContext'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 const LEGACY_API_VERSION = 0
 
@@ -140,9 +142,7 @@ export function createLegacyApiRouter(
 				try {
 					const convArgs = typeConvertUrlParameters(args)
 					const cursor = (await f({ ...legacyRestPublicationContext, signal: abort.signal }, ...convArgs)) as
-						| { fetch: () => unknown }
-						| null
-						| undefined
+						{ fetch: () => unknown } | null | undefined
 
 					if (cursor) return cursor.fetch()
 					return []

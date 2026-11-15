@@ -1,12 +1,13 @@
-import type { ActivePlaylistQuickLoop, QuickLoopMarker } from '@sofie-automation/live-status-gateway-api'
-import { QuickLoopMarkerType } from '@sofie-automation/live-status-gateway-api'
+import type { Logger } from 'winston'
+
 import { QuickLoopMarkerType as CoreQuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { QuickLoopMarkerType } from '@sofie-automation/live-status-gateway-api'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type {
 	QuickLoopMarker as CoreQuickLoopMarker,
 	QuickLoopProps,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { Logger } from 'winston'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ActivePlaylistQuickLoop, QuickLoopMarker } from '@sofie-automation/live-status-gateway-api'
 
 type ToQuickLoopStatusProps = {
 	quickLoop: QuickLoopProps | undefined

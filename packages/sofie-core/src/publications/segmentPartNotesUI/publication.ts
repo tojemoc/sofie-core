@@ -1,14 +1,19 @@
-import { z } from 'zod'
-import { RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
 import { ReadonlyDeep } from 'type-fest'
-import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { z } from 'zod'
+
+import { RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { Rundown, getRundownNrcsName } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { getRundownNrcsName, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { groupByToMap, literal, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { UISegmentPartNote } from '@sofie-automation/meteor-lib/dist/api/rundownNotifications'
+
+import { RundownPlaylists } from '../../collections'
+import { check } from '../../lib/check'
 import {
 	CustomPublishCollection,
 	setUpCollectionOptimizedObserver,
@@ -16,6 +21,9 @@ import {
 	TriggerUpdate,
 } from '../../lib/customPublication'
 import { logger } from '../../logging'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
+import { RundownsObserver } from '../lib/rundownsObserver'
+import { generateNotesForSegment } from './generateNotesForSegment'
 import {
 	ContentCache,
 	createReactiveContentCache,
@@ -24,13 +32,7 @@ import {
 	RundownFields,
 	SegmentFields,
 } from './reactiveContentCache'
-import { RundownsObserver } from '../lib/rundownsObserver'
 import { RundownContentObserver } from './rundownContentObserver'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { generateNotesForSegment } from './generateNotesForSegment'
-import { RundownPlaylists } from '../../collections'
-import { check } from '../../lib/check'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
 import type { PublicationRegistry } from '../../publicationRegistry'
 
 interface UISegmentPartNotesArgs {

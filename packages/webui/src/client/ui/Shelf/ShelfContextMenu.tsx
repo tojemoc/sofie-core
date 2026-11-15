@@ -1,21 +1,23 @@
-import { useTranslation } from 'react-i18next'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import Escape from './../../lib/Escape.js'
 import { ContextMenu, MenuItem } from '@jstarpl/react-contextmenu'
 import { ReactiveVar } from 'meteor/reactive-var'
-import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import type { BucketAdLibItem, BucketAdLibActionUi } from './RundownViewBuckets.js'
-import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import type { IAdLibListItem } from './AdLibListItem.js'
-import { isActionItem } from './Inspector/ItemRenderers/ActionItemRenderer.js'
-import type { AdLibPieceUi, ShelfDisplayOptions } from '../../lib/shelf.js'
-import type { IBlueprintActionTriggerMode } from '@sofie-automation/blueprints-integration'
+import { useTranslation } from 'react-i18next'
+
 import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import RundownViewEventBus, { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import type { IBlueprintActionTriggerMode } from '@sofie-automation/blueprints-integration'
+import type { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
+
 import { BlueprintAssetIcon } from '../../lib/Components/BlueprintAssetIcon.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownUtils } from '../../lib/rundown.js'
 import { CreateNewBucket, Delete, EmptyBucket, Rename } from '../../lib/ui/icons/shelf.js'
 import { hasUserEditableContent } from '../UserEditOperations/PropertiesPanel.js'
+import Escape from './../../lib/Escape.js'
+import { isActionItem } from './Inspector/ItemRenderers/ActionItemRenderer.js'
+import type { AdLibPieceUi, ShelfDisplayOptions } from '../../lib/shelf.js'
 import type { SelectedElement } from '../RundownView/SelectedElementsContext.js'
-import { RundownUtils } from '../../lib/rundown.js'
+import type { IAdLibListItem } from './AdLibListItem.js'
+import type { BucketAdLibActionUi, BucketAdLibItem } from './RundownViewBuckets.js'
 
 export enum ContextType {
 	BUCKET = 'bucket',
@@ -69,9 +71,7 @@ export interface ShelfContextMenuContextAdLib extends ShelfContextMenuContextBas
 }
 
 type ShelfContextMenuContext =
-	| ShelfContextMenuContextBucket
-	| ShelfContextMenuContextBucketAdLib
-	| ShelfContextMenuContextAdLib
+	ShelfContextMenuContextBucket | ShelfContextMenuContextBucketAdLib | ShelfContextMenuContextAdLib
 
 const shelfContextMenuContext: ReactiveVar<ShelfContextMenuContext | undefined> = new ReactiveVar(undefined)
 
@@ -130,7 +130,8 @@ export default function ShelfContextMenu(props: Readonly<ShelfContextMenuProps>)
 						}}
 						disabled={item.disabled}
 					>
-						{(adLibAction?.display.triggerLabel && translateMessage(adLibAction?.display.triggerLabel, t)) ??
+						{(adLibAction?.display.triggerLabel &&
+							translateMessage(adLibAction?.display.triggerLabel, t)) ??
 							t('Execute')}
 					</MenuItem>
 				) : null)
@@ -196,8 +197,13 @@ export default function ShelfContextMenu(props: Readonly<ShelfContextMenuProps>)
 						{pieceHasEditableContent && context.details.adLib && (
 							<MenuItem
 								onClick={() => {
-									if (RundownUtils.isAdLibActionItem(context.details.adLib) && context.details.adLib.adlibAction) {
-										if (RundownUtils.isRundownBaselineAdLibAction(context.details.adLib.adlibAction)) {
+									if (
+										RundownUtils.isAdLibActionItem(context.details.adLib) &&
+										context.details.adLib.adlibAction
+									) {
+										if (
+											RundownUtils.isRundownBaselineAdLibAction(context.details.adLib.adlibAction)
+										) {
 											onEditProps({
 												type: 'rundownBaselineAdLibAction',
 												elementId: context.details.adLib.adlibAction?._id,
@@ -212,7 +218,10 @@ export default function ShelfContextMenu(props: Readonly<ShelfContextMenuProps>)
 										if (context.details.adLib.partId) {
 											onEditProps({ type: 'adLibPiece', elementId: context.details.adLib._id })
 										} else {
-											onEditProps({ type: 'rundownBaselineAdLibPiece', elementId: context.details.adLib._id })
+											onEditProps({
+												type: 'rundownBaselineAdLibPiece',
+												elementId: context.details.adLib._id,
+											})
 										}
 									}
 								}}

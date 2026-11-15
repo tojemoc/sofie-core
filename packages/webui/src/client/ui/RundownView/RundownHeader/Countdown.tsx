@@ -1,6 +1,7 @@
+import classNames from 'classnames'
 import React from 'react'
 import Moment from 'react-moment'
-import classNames from 'classnames'
+
 import './Countdown.scss'
 
 const THRESHOLDS = [3600000, 60000, 1] // hours, minutes, seconds
@@ -26,7 +27,9 @@ function DimmedValue({ value, ms }: { readonly value: string; readonly ms?: numb
 				const isDimmed = !isOvertime && absDiff < THRESHOLDS[i + offset] && parseInt(p, 10) === 0
 				return (
 					<React.Fragment key={`${i}:${p}`}>
-						<span className={classNames('countdown__digit', { 'countdown__digit--dimmed': isDimmed })}>{p}</span>
+						<span className={classNames('countdown__digit', { 'countdown__digit--dimmed': isDimmed })}>
+							{p}
+						</span>
 						{i < parts.length - 1 && (
 							<span
 								className={classNames('countdown__sep', {

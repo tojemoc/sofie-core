@@ -75,12 +75,11 @@
 		"@types/semver": "^7.7.1",
 		"@types/ws": "^8.18.1",
 		"fast-clone": "^1.5.13",
-		"glob": "^13.0.6",
+		"glob": "^14.0.0",
 		"i18next-cli": "^1.66.2",
-		"i18next-conv": "^16.0.0",
+		"i18next-conv": "^17.0.0",
 		"jest-util": "^30.4.1",
 		"mongodb-memory-server": "^10.1.4",
 		"tsx": "^4.23.1"
-	},
-	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json"
+	}
 }

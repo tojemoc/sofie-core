@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react'
-import type { WrappedOverridableItemNormal } from '../../../ui/Settings/util/OverrideOpHelper.js'
-import { SchemaFormTableEditRow } from './TableEditRow.js'
-import { SchemaTableSummaryRow } from '../SchemaTableSummaryRow.js'
+import type { ReadonlyDeep } from 'type-fest'
+
 import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
 import type { JSONSchema } from '@sofie-automation/blueprints-integration'
-import type { SchemaSummaryField, SchemaFormSofieEnumDefinition } from '../schemaFormUtil.js'
+
+import { SchemaTableSummaryRow } from '../SchemaTableSummaryRow.js'
+import { SchemaFormTableEditRow } from './TableEditRow.js'
+import type { WrappedOverridableItemNormal } from '../../../ui/Settings/util/OverrideOpHelper.js'
+import type { SchemaFormSofieEnumDefinition, SchemaSummaryField } from '../schemaFormUtil.js'
 import type { OverrideOpHelperArrayTable } from './ArrayTableOpHelper.js'
-import type { ReadonlyDeep } from 'type-fest'
 
 interface ArrayTableRowProps {
 	columns: Record<string, JSONSchema | undefined>

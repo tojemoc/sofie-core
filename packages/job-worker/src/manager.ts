@@ -1,6 +1,7 @@
 import type { WorkerId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { JobSpec } from './main.js'
+
 import type { QueueJobOptions } from './jobs/index.js'
+import type { JobSpec } from './main.js'
 
 export interface JobManager {
 	jobFinished: (

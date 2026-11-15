@@ -1,30 +1,32 @@
-import { useCallback, useEffect, useState } from 'react'
-import { faTrash, faPlus, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	BlueprintManifestType,
-	type IShowStyleConfigPreset,
-	type IShowStyleVariantConfigPreset,
-	type JSONSchema,
-} from '@sofie-automation/blueprints-integration'
-import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import update from 'immutability-helper'
+import { useCallback, useEffect, useState } from 'react'
+import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
-import { MeteorCall } from '../../../lib/meteorApi.js'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type {
+	IShowStyleConfigPreset,
+	IShowStyleVariantConfigPreset,
+	JSONSchema,
+} from '@sofie-automation/blueprints-integration'
+import type { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
-import type { ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { NoticeLevel, NotificationCenter, Notification } from '../../../lib/notifications/notifications.js'
-import { UploadButton } from '../../../lib/uploadButton.js'
-import update from 'immutability-helper'
-import { VariantListItem } from './VariantListItem.js'
-import { downloadBlob } from '../../../lib/downloadBlob.js'
+import type { MappingsExt } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+
 import { Blueprints, ShowStyleVariants } from '../../../collections/index.js'
-import Button from 'react-bootstrap/esm/Button'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { downloadBlob } from '../../../lib/downloadBlob.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { UploadButton } from '../../../lib/uploadButton.js'
+import { VariantListItem } from './VariantListItem.js'
 
 interface IShowStyleVariantsProps {
 	showStyleBase: DBShowStyleBase

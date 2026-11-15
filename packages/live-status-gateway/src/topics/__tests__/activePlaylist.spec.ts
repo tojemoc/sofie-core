@@ -1,3 +1,19 @@
+import { PartialDeep } from 'type-fest'
+
+import { CountdownType } from '@sofie-automation/blueprints-integration'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import {
+	ActivePlaylistEvent,
+	ActivePlaylistTimingMode,
+	SegmentCountdownType,
+} from '@sofie-automation/live-status-gateway-api'
+import { protectString, unprotectString, unprotectStringArray } from '@sofie-automation/server-core-integration'
+
+import { SelectedPartInstances } from '../../collections/partInstancesHandler.js'
+import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
 import { ActivePlaylistTopic } from '../activePlaylistTopic.js'
 import {
 	makeMockHandlers,
@@ -6,20 +22,6 @@ import {
 	makeTestPlaylist,
 	makeTestShowStyleBase,
 } from './utils.js'
-import { ShowStyleBaseExt } from '../../collections/showStyleBaseHandler.js'
-import { SelectedPartInstances } from '../../collections/partInstancesHandler.js'
-import { protectString, unprotectString, unprotectStringArray } from '@sofie-automation/server-core-integration'
-import { PartialDeep } from 'type-fest'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { CountdownType } from '@sofie-automation/blueprints-integration'
-import {
-	ActivePlaylistEvent,
-	ActivePlaylistTimingMode,
-	SegmentCountdownType,
-} from '@sofie-automation/live-status-gateway-api'
 
 const DEFAULT_UNCONFIGURED_T_TIMERS: ActivePlaylistEvent['tTimers'] = [
 	{ index: 1, label: '', configured: false, mode: null, state: null, projected: null, anchorPartId: null },

@@ -1,5 +1,18 @@
-import { UserErrorMessage, SofieError } from '@sofie-automation/corelib/dist/error'
 import { z } from 'zod'
+
+import { ShowStyleBaseId, ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { SofieError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
+import { checkValidation } from '.'
+import { RundownPlaylists, Rundowns, ShowStyleBases, ShowStyleVariants } from '../../../collections'
+import { check, zPlainObject } from '../../../lib/check'
 import {
 	APIShowStyleBase,
 	APIShowStyleVariant,
@@ -8,13 +21,7 @@ import {
 	ShowStylesRestAPI,
 } from '../../../lib/rest/v1'
 import { logger } from '../../../logging'
-import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
-import { ShowStyleBaseId, ShowStyleVariantId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { check, zPlainObject } from '../../../lib/check'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { RundownPlaylists, Rundowns, ShowStyleBases, ShowStyleVariants } from '../../../collections'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { runUpgradeForShowStyleBase, validateConfigForShowStyleBase } from '../../../migration/upgrades'
 import {
 	APIShowStyleBaseFrom,
 	APIShowStyleVariantFrom,
@@ -22,12 +29,7 @@ import {
 	showStyleVariantFrom,
 	validateAPIBlueprintConfigForShowStyle,
 } from './typeConversion'
-import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { runUpgradeForShowStyleBase, validateConfigForShowStyleBase } from '../../../migration/upgrades'
-import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { checkValidation } from '.'
+import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 class ShowStylesServerAPI implements ShowStylesRestAPI {

@@ -1,7 +1,8 @@
-import { StudioRouteBehavior, StudioRouteSet } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { abPoolFilterDisabled, findPlayersInRouteSets } from '../routeSetDisabling.js'
 import { ABPlayerDefinition } from '@sofie-automation/blueprints-integration'
+import { StudioRouteBehavior, StudioRouteSet } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { clone } from '@sofie-automation/corelib/dist/lib'
+
+import { abPoolFilterDisabled, findPlayersInRouteSets } from '../routeSetDisabling.js'
 
 describe('route set disabling ab players', () => {
 	const POOL_NAME = '_test_'

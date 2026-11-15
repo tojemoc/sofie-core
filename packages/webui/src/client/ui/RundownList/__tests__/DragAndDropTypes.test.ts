@@ -1,4 +1,5 @@
 import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
 import { isRundownDragObject, isRundownPlaylistUiAction, RundownPlaylistUiActionTypes } from '../DragAndDropTypes.js'
 
 describe('ui/RundownList/DragAndDropTypes', () => {

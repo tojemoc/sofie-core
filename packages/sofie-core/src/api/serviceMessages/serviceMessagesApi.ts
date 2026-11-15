@@ -1,8 +1,9 @@
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { ServiceMessage } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { CoreSystem } from '../../collections'
 import { getCoreSystemAsync } from '../../coreSystem/collection'
 import { logger } from '../../logging'
-import { CoreSystem } from '../../collections'
 
 export interface WriteStatus {
 	isUpdate?: boolean
@@ -50,7 +51,7 @@ export async function writeMessage(message: ServiceMessage): Promise<WriteStatus
 		return { isUpdate }
 	} catch (error) {
 		logger.error(stringifyError(error))
-		throw new Error(`Unable to store service message: ${stringifyError(error)}`)
+		throw new Error(`Unable to store service message: ${stringifyError(error)}`, { cause: error })
 	}
 }
 
@@ -73,6 +74,6 @@ export async function deleteMessage(id: string): Promise<ServiceMessage> {
 		}
 	} catch (error) {
 		logger.error(stringifyError(error))
-		throw new Error(`Unable to delete service message ${id}: ${stringifyError(error)}`)
+		throw new Error(`Unable to delete service message ${id}: ${stringifyError(error)}`, { cause: error })
 	}
 }

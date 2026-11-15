@@ -1,15 +1,16 @@
 import {
+	GroupPartsInMosRundownAndChangesResult,
+	IngestChangeType,
+	IngestRundown,
 	NrcsIngestChangeDetails,
 	NrcsIngestPartChangeDetails,
 	NrcsIngestRundownChangeDetails,
 	NrcsIngestSegmentChangeDetailsEnum,
-	IngestRundown,
-	GroupPartsInMosRundownAndChangesResult,
-	IngestChangeType,
 } from '@sofie-automation/blueprints-integration'
-import { Complete, clone } from '@sofie-automation/corelib/dist/lib'
-import { groupMosPartsIntoIngestSegments, groupPartsInRundownAndChanges } from '../groupPartsInRundownAndChanges.js'
+import { clone, Complete } from '@sofie-automation/corelib/dist/lib'
+
 import { updateRanksBasedOnOrder } from '../../../ingest/mosDevice/lib.js'
+import { groupMosPartsIntoIngestSegments, groupPartsInRundownAndChanges } from '../groupPartsInRundownAndChanges.js'
 
 describe('groupPartsInMosRundownAndChanges', () => {
 	function groupMosPartsInRundownAndChanges(

@@ -1,10 +1,11 @@
-import { PeripheralDeviceCommandId, PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { getCurrentTime, LiveQueryHandleSync } from '../../lib/lib'
-import { PeripheralDeviceCommands } from '../../collections'
-import { logger } from '../../logging'
 import { TSR } from '@sofie-automation/blueprints-integration'
+import { getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { PeripheralDeviceCommandId, PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { PeripheralDeviceCommands } from '../../collections'
+import { getCurrentTime, LiveQueryHandleSync } from '../../lib/lib'
+import { logger } from '../../logging'
 
 export async function executePeripheralDeviceFunctionWithCustomTimeout(
 	deviceId: PeripheralDeviceId,

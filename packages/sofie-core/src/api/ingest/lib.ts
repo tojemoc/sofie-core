@@ -1,14 +1,3 @@
-import { getHash } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../../lib/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { PeripheralDevice, PeripheralDeviceCategory } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { Rundown, RundownSourceNrcs } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { logger } from '../../logging'
-import { profiler } from '../profiler'
-import { IngestJobFunc } from '@sofie-automation/corelib/dist/worker/ingest'
-import { QueueIngestJob } from '../../worker/worker'
-import { checkStudioExists } from '../../optimizations'
 import {
 	PartId,
 	PeripheralDeviceId,
@@ -16,9 +5,21 @@ import {
 	SegmentId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PeripheralDevices } from '../../collections'
-import { getStudioIdFromDevice } from '../studio/lib'
+import { PeripheralDevice, PeripheralDeviceCategory } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { Rundown, RundownSourceNrcs } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getHash } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { IngestJobFunc } from '@sofie-automation/corelib/dist/worker/ingest'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { PeripheralDevices } from '../../collections'
+import { getCurrentTime } from '../../lib/lib'
+import { logger } from '../../logging'
+import { checkStudioExists } from '../../optimizations'
+import { QueueIngestJob } from '../../worker/worker'
+import { profiler } from '../profiler'
+import { getStudioIdFromDevice } from '../studio/lib'
 
 /**
  * Run an ingest operation via the worker.

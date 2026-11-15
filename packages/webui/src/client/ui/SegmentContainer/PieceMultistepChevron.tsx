@@ -1,6 +1,8 @@
-import { type NoraContent, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece'
 import React from 'react'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { NoraContent } from '@sofie-automation/blueprints-integration'
+import type { PieceExtended } from '@sofie-automation/corelib/src/dataModel/Piece'
 
 export const PieceMultistepChevron = React.forwardRef<
 	HTMLSpanElement,

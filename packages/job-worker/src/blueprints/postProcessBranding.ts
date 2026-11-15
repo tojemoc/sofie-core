@@ -1,3 +1,7 @@
+import {
+	isTranslatableMessage,
+	wrapTranslatableMessageFromBlueprints,
+} from '@sofie-automation/corelib/dist/TranslatableMessage'
 import type {
 	IBlueprintActionManifestBranding,
 	IBlueprintBrandableActionManifestDisplay,
@@ -5,10 +9,7 @@ import type {
 	IBlueprintPieceBranding,
 } from '@sofie-automation/blueprints-integration'
 import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import {
-	isTranslatableMessage,
-	wrapTranslatableMessageFromBlueprints,
-} from '@sofie-automation/corelib/dist/TranslatableMessage'
+
 import { logger } from '../logging.js'
 
 /*

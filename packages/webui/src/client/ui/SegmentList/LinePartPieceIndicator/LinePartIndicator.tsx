@@ -1,10 +1,12 @@
 import classNames from 'classnames'
 import { useCallback, useEffect, useState } from 'react'
-import type { AdLibPieceUi } from '../../../lib/shelf.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import type { AdLibPieceUi } from '../../../lib/shelf.js'
 
 interface IProps {
 	overlay?: (ref: HTMLDivElement | null, setIsOver: (isOver: boolean) => void) => React.ReactNode
@@ -82,7 +84,9 @@ export function LinePartIndicator({
 				onDoubleClick={onDoubleClick}
 			>
 				{count === 0 && (
-					<div className={classNames('segment-opl__piece-indicator', 'segment-opl__piece-indicator--no-piece')}></div>
+					<div
+						className={classNames('segment-opl__piece-indicator', 'segment-opl__piece-indicator--no-piece')}
+					></div>
 				)}
 				{count > 1 && <div className={classNames('segment-opl__piece-indicator', typeClass)}></div>}
 				{count > 0 && (

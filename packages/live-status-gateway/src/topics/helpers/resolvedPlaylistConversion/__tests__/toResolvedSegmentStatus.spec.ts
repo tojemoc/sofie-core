@@ -1,5 +1,7 @@
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { getResolvedSegment } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 import { toResolvedSegmentStatus } from '../segments/toResolvedSegmentStatus.js'
 import {
 	makePart,
@@ -10,7 +12,6 @@ import {
 	makeSegment,
 	makeTestShowStyleBaseExt,
 } from './resolvedPlaylistConversionTestUtils.js'
-import { createResolvedPlaylistConversionContext } from '../context/conversionContext.js'
 
 jest.mock('@sofie-automation/corelib/dist/playout/stateCacheResolver', () => ({
 	getResolvedSegment: jest.fn(),

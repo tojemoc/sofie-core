@@ -1,17 +1,19 @@
-import { useSubscription } from '../lib/ReactMeteorData/react-meteor-data.js'
-import { useTranslation } from 'react-i18next'
-import { Route, Switch, Redirect, NavLink } from 'react-router-dom'
-import { SystemStatus } from './Status/SystemStatus/SystemStatus.js'
-import { ExternalMessages } from './Status/ExternalMessages.js'
-import { UserActivity } from './Status/UserActivity.js'
-import { EvaluationView } from './Status/Evaluations.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { ExpectedPackagesStatus } from './Status/package-status/index.js'
-import { MediaStatus } from './Status/media-status/index.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/esm/Container'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
+
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { useSubscription } from '../lib/ReactMeteorData/react-meteor-data.js'
+import { EvaluationView } from './Status/Evaluations.js'
+import { ExternalMessages } from './Status/ExternalMessages.js'
+import { MediaStatus } from './Status/media-status/index.js'
+import { ExpectedPackagesStatus } from './Status/package-status/index.js'
+import { SystemStatus } from './Status/SystemStatus/SystemStatus.js'
+import { UserActivity } from './Status/UserActivity.js'
 
 function StatusMenu(): JSX.Element {
 	const { t } = useTranslation()

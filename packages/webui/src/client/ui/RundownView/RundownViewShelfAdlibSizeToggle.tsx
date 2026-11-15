@@ -1,4 +1,5 @@
 import Tooltip from 'rc-tooltip'
+
 import { CompactViewIcon, LargeViewIcon } from '../../lib/ui/icons/shelf'
 
 export interface RundownViewShelfAdlibSizeToggleProps {

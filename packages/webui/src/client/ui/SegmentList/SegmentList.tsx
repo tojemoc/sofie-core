@@ -1,29 +1,32 @@
-import React, { type ReactNode, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
-import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
-import type { PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
-import type { IContextMenuContext } from '../RundownView.js'
-import { useCombinedRefs } from '../../lib/lib.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { LinePart } from './LinePart.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import type { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
-import { SegmentListHeader } from './SegmentListHeader.js'
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { getHeaderHeight } from '../../lib/viewPort.js'
-import type { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { ReactNode } from 'react'
+
+import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import {
+	isEntirePlaylistLooping as getIsEntirePlaylistLooping,
+	isLoopRunning as getIsLoopRunning,
+	isQuickLoopEnd as getIsQuickLoopEnd,
+	isQuickLoopStart as getIsQuickLoopStart,
+} from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
 import type { NoteSeverity } from '@sofie-automation/blueprints-integration'
+import type { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 import type { ISourceLayerExtended } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import {
-	isLoopRunning as getIsLoopRunning,
-	isQuickLoopStart as getIsQuickLoopStart,
-	isQuickLoopEnd as getIsQuickLoopEnd,
-	isEntirePlaylistLooping as getIsEntirePlaylistLooping,
-} from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+
+import { useCombinedRefs } from '../../lib/lib.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { getHeaderHeight } from '../../lib/viewPort.js'
+import { LinePart } from './LinePart.js'
+import { SegmentListHeader } from './SegmentListHeader.js'
+import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
+import type { IContextMenuContext } from '../RundownView.js'
+import type { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
+import type { PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	id: string

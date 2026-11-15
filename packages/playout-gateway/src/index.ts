@@ -1,9 +1,10 @@
-import { Connector } from './connector.js'
-import { config, logPath, disableWatchdog, logLevel } from './config.js'
-import { loadTSRPlugins } from './tsrDeviceRegistry.js'
-
 import * as Winston from 'winston'
+
 import { stringifyError } from '@sofie-automation/server-core-integration'
+
+import { config, disableWatchdog, logLevel, logPath } from './config.js'
+import { Connector } from './connector.js'
+import { loadTSRPlugins } from './tsrDeviceRegistry.js'
 
 console.log('process started') // This is a message all Sofie processes log upon startup
 

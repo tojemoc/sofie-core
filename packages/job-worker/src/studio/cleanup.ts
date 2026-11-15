@@ -1,8 +1,9 @@
-import { runJobWithPlaylistLock } from '../playout/lock.js'
-import { JobContext } from '../jobs/index.js'
-import { runJobWithStudioPlayoutModel } from './lock.js'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
+import { JobContext } from '../jobs/index.js'
+import { runJobWithPlaylistLock } from '../playout/lock.js'
 import { removePlaylistFromDb } from '../rundownPlaylists.js'
+import { runJobWithStudioPlayoutModel } from './lock.js'
 
 /**
  * Cleanup any RundownPlaylists that contain no Rundowns

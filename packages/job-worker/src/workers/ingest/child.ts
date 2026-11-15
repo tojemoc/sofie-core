@@ -1,8 +1,16 @@
-import { ingestJobHandlers } from './jobs.js'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { MongoClient } from 'mongodb'
-import { createMongoConnection, getMongoCollections, IDirectCollections } from '../../db/index.js'
+
+import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { UserError } from '@sofie-automation/corelib/dist/error'
+import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
+import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { getIngestQueueName } from '@sofie-automation/corelib/dist/worker/ingest'
+
+import { createMongoConnection, getMongoCollections, IDirectCollections } from '../../db/index.js'
+import { setupInfluxDb } from '../../influx.js'
+import { interceptLogging, logger } from '../../logging.js'
+import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../../main.js'
 import { setupApmAgent, startTransaction } from '../../profiler.js'
 import {
 	InvalidateWorkerDataCache,
@@ -13,14 +21,8 @@ import {
 import { JobContextImpl } from '../context/JobContextImpl.js'
 import { QueueJobFunc } from '../context/util.js'
 import { AnyLockEvent, LocksManager } from '../locks.js'
-import { FastTrackTimelineFunc, LogLineWithSourceFunc } from '../../main.js'
-import { interceptLogging, logger } from '../../logging.js'
-import { setupInfluxDb } from '../../influx.js'
-import { getIngestQueueName } from '@sofie-automation/corelib/dist/worker/ingest'
 import { WorkerJobResult } from '../parent-base.js'
-import { endTrace, sendTrace, startTrace } from '@sofie-automation/corelib/dist/influxdb'
-import { getPrometheusMetricsString, setupPrometheusMetrics } from '@sofie-automation/corelib/dist/prometheus'
-import { UserError } from '@sofie-automation/corelib/dist/error'
+import { ingestJobHandlers } from './jobs.js'
 
 interface StaticData {
 	readonly mongoClient: MongoClient

@@ -1,5 +1,6 @@
-import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
 import { SubdeviceAction } from '@sofie-automation/shared-lib/dist/core/deviceConfigManifest'
+import { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+
 import { TSR } from './timeline.js'
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>

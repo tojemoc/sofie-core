@@ -1,15 +1,17 @@
+import _ from 'underscore'
+
 import { PartInstanceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { ExpectedPackages, PieceInstances, RundownPlaylists } from '../../../collections'
 import { logger } from '../../../logging'
+import { waitForAllObserversReady } from '../../lib/lib'
+import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
 import {
 	ExpectedPackagesContentCache,
-	rundownPlaylistFieldSpecifier,
 	pieceInstanceFieldsSpecifier,
+	rundownPlaylistFieldSpecifier,
 } from './contentCache'
-import { ExpectedPackages, PieceInstances, RundownPlaylists } from '../../../collections'
-import { ReactiveMongoObserverGroup, ReactiveMongoObserverGroupHandle } from '../../lib/observerGroup'
-import _ from 'underscore'
-import { equivalentArrays } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { waitForAllObserversReady } from '../../lib/lib'
 import type { LiveQueryHandleSync } from '../../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

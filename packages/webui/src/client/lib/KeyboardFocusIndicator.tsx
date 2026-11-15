@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor'
 import * as React from 'react'
 
 import { MeteorCall } from '../lib/meteorApi.js'
-import { getCurrentTime } from './systemTime.js'
 import { catchError } from './lib.js'
+import { getCurrentTime } from './systemTime.js'
 import type { UserPermissions } from '../ui/UserPermissions.js'
 
 interface IKeyboardFocusIndicatorState {
@@ -71,7 +71,10 @@ export class KeyboardFocusIndicator extends React.Component<
 	}
 
 	render(): React.ReactNode {
-		if ((this.state.inFocus && !this.props.showWhenFocused) || (!this.state.inFocus && this.props.showWhenFocused)) {
+		if (
+			(this.state.inFocus && !this.props.showWhenFocused) ||
+			(!this.state.inFocus && this.props.showWhenFocused)
+		) {
 			return null
 		} else {
 			return this.props.children

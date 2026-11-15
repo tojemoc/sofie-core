@@ -1,9 +1,5 @@
 import '../__mocks__/_extendJest'
-import { runAllTimers, waitUntil } from '../__mocks__/helpers/jest'
-import { logger } from '../logging'
-import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { SnapshotType } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+
 import {
 	IBlueprintPieceType,
 	PieceLifespan,
@@ -11,30 +7,72 @@ import {
 	StatusCode,
 	TSR,
 } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import {
-	PeripheralDeviceType,
-	PeripheralDeviceCategory,
-	PeripheralDevice,
-	PERIPHERAL_SUBTYPE_PROCESS,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import * as lib from '../lib/lib'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
 	NrcsIngestDataCacheObjId,
-	SofieIngestDataCacheObjId,
 	PartId,
 	PeripheralDeviceId,
 	RundownId,
+	RundownPlaylistId,
 	SegmentId,
 	SnapshotId,
-	UserActionsLogItemId,
+	SofieIngestDataCacheObjId,
 	StudioId,
-	RundownPlaylistId,
+	UserActionsLogItemId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import {
+	PERIPHERAL_SUBTYPE_PROCESS,
+	PeripheralDevice,
+	PeripheralDeviceCategory,
+	PeripheralDeviceType,
+} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { SnapshotType } from '@sofie-automation/meteor-lib/dist/collections/Snapshots'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { runAllTimers, waitUntil } from '../__mocks__/helpers/jest'
+import * as lib from '../lib/lib'
+import { logger } from '../logging'
+
+import '../cronjobs'
+
+import { NrcsIngestCacheType } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { SofieIngestCacheType } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { ObjectOverrideSetOp, ObjectWithOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { PeripheralDeviceAPIMethods } from '@sofie-automation/server-core-integration'
+import { DEFAULT_MAXIMUM_DATA_AGE } from '@sofie-automation/shared-lib/dist/core/constants'
+import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+
+import {
+	DefaultEnvironment,
+	setupDefaultRundownPlaylist,
+	setupDefaultStudioEnvironment,
+} from '../__mocks__/helpers/database'
+import { getMethodContext } from '../__mocks__/helpers/methods'
+import { ServerPeripheralDeviceAPIClass } from '../api/peripheralDevice'
+import {
+	CoreSystem,
+	NrcsIngestDataCache,
+	PartInstances,
+	Parts,
+	PeripheralDeviceCommands,
+	PeripheralDevices,
+	PieceInstances,
+	RundownPlaylists,
+	Segments,
+	Snapshots,
+	SofieIngestDataCache,
+	Studios,
+	UserActionsLog,
+} from '../collections'
+import { startCronjobs } from '../cronjobs'
+import { MethodRegistry } from '../methodRegistry'
 
 // Set up mocks for tests in this suite
 let mockCurrentTime = 0
@@ -44,40 +82,6 @@ jest.mock('../logging')
 jest.mock('../api/deviceTriggers/observer')
 
 const MAX_WAIT_TIME = 4 * 1000
-
-import '../cronjobs'
-import {
-	CoreSystem,
-	NrcsIngestDataCache,
-	PartInstances,
-	Parts,
-	PeripheralDeviceCommands,
-	PeripheralDevices,
-	PieceInstances,
-	Snapshots,
-	UserActionsLog,
-	Segments,
-	SofieIngestDataCache,
-	Studios,
-	RundownPlaylists,
-} from '../collections'
-import { NrcsIngestCacheType } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import {
-	DefaultEnvironment,
-	setupDefaultRundownPlaylist,
-	setupDefaultStudioEnvironment,
-} from '../__mocks__/helpers/database'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { DEFAULT_MAXIMUM_DATA_AGE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { SofieIngestCacheType } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
-import { ObjectOverrideSetOp, ObjectWithOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { MethodRegistry } from '../methodRegistry'
-import { PeripheralDeviceAPIMethods } from '@sofie-automation/server-core-integration'
-import { ServerPeripheralDeviceAPIClass } from '../api/peripheralDevice'
-import { getMethodContext } from '../__mocks__/helpers/methods'
-import { startCronjobs } from '../cronjobs'
 
 describe('cronjobs', () => {
 	let env: DefaultEnvironment

@@ -1,50 +1,42 @@
-import ClassNames from 'classnames'
-import React, { useCallback, useMemo } from 'react'
-import Tooltip from 'rc-tooltip'
-import { getActiveRoutes } from '@sofie-automation/meteor-lib/dist/collections/Studios'
-import type { DBStudio, MappingExt, ResultingMappingRoutes } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { faCheck, faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPencilAlt, faCheck, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
+import ClassNames from 'classnames'
+import Tooltip from 'rc-tooltip'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { ReadonlyDeep } from 'type-fest'
+
 import { LookaheadMode, TSR } from '@sofie-automation/blueprints-integration'
-import { LOOKAHEAD_DEFAULT_SEARCH_DISTANCE } from '@sofie-automation/shared-lib/dist/core/constants'
-import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
-import {
-	getAllCurrentAndDeletedItemsFromOverrides,
-	type OverrideOpHelper,
-	useOverrideOpHelper,
-	type WrappedOverridableItemNormal,
-} from '../util/OverrideOpHelper.js'
-import {
-	applyAndValidateOverrides,
-	type ObjectOverrideSetOp,
-	type SomeObjectOverrideOp,
-} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { literal, objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { TextInputControl } from '../../../lib/Components/TextInput.js'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { getActiveRoutes } from '@sofie-automation/meteor-lib/dist/collections/Studios'
+import { LOOKAHEAD_DEFAULT_SEARCH_DISTANCE } from '@sofie-automation/shared-lib/dist/core/constants'
+import type { DBStudio, MappingExt, ResultingMappingRoutes } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
+} from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { Studios } from '../../../collections/index.js'
+import { DropdownInputControl, getDropdownInputOptions } from '../../../lib/Components/DropdownInput.js'
 import { IntInputControl } from '../../../lib/Components/IntInput.js'
-import {
-	DropdownInputControl,
-	type DropdownInputOption,
-	getDropdownInputOptions,
-} from '../../../lib/Components/DropdownInput.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
 	LabelAndOverridesForDropdown,
 	LabelAndOverridesForInt,
 } from '../../../lib/Components/LabelAndOverrides.js'
-import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+import { TextInputControl } from '../../../lib/Components/TextInput.js'
+import { getSchemaSummaryFields, translateStringIfHasNamespaces } from '../../../lib/forms/schemaFormUtil.js'
 import { SchemaFormWithOverrides } from '../../../lib/forms/SchemaFormWithOverrides.js'
-import {
-	getSchemaSummaryFields,
-	type SchemaSummaryField,
-	translateStringIfHasNamespaces,
-} from '../../../lib/forms/schemaFormUtil.js'
-import { Studios } from '../../../collections/index.js'
-import type { ReadonlyDeep } from 'type-fest'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { useToggleExpandHelper } from '../../util/useToggleExpandHelper.js'
+import { getAllCurrentAndDeletedItemsFromOverrides, useOverrideOpHelper } from '../util/OverrideOpHelper.js'
+import type { DropdownInputOption } from '../../../lib/Components/DropdownInput.js'
+import type { SchemaSummaryField } from '../../../lib/forms/schemaFormUtil.js'
+import type { OverrideOpHelper, WrappedOverridableItemNormal } from '../util/OverrideOpHelper.js'
 
 export interface MappingsSettingsManifest {
 	displayName: string
@@ -117,7 +109,8 @@ export function StudioMappings({
 	)
 
 	const sortedMappings = useMemo(
-		() => getAllCurrentAndDeletedItemsFromOverrides(studio.mappingsWithOverrides, (a, b) => a[0].localeCompare(b[0])),
+		() =>
+			getAllCurrentAndDeletedItemsFromOverrides(studio.mappingsWithOverrides, (a, b) => a[0].localeCompare(b[0])),
 		[studio.mappingsWithOverrides]
 	)
 
@@ -232,7 +225,11 @@ function MappingDeletedEntry({
 			<td className="settings-studio-device__id c2 deleted">{manifestNames[mapping.device] ?? mapping.device}</td>
 			<td className="settings-studio-device__id c2 deleted">{unprotectString(mapping.deviceId)}</td>
 			<td className="settings-studio-device__id c4 deleted">
-				<MappingSummary translationNamespaces={translationNamespaces} fields={mappingSummaryFields} mapping={mapping} />
+				<MappingSummary
+					translationNamespaces={translationNamespaces}
+					fields={mappingSummaryFields}
+					mapping={mapping}
+				/>
 			</td>
 			<td className="settings-studio-output-table__actions table-item-actions c3">
 				<button className="action-btn" onClick={doUndeleteItem} title="Restore to defaults">
@@ -279,7 +276,11 @@ function StudioMappingsEntry({
 			},
 			message: (
 				<React.Fragment>
-					<p>{t('Are you sure you want to remove mapping for layer "{{mappingId}}"?', { mappingId: item.id })}</p>
+					<p>
+						{t('Are you sure you want to remove mapping for layer "{{mappingId}}"?', {
+							mappingId: item.id,
+						})}
+					</p>
 					<p>{t('Please note: This action is irreversible!')}</p>
 				</React.Fragment>
 			),
@@ -383,7 +384,9 @@ function StudioMappingsEntry({
 						</Tooltip>
 					) : null}
 				</th>
-				<td className="settings-studio-device__id c2">{manifestNames[item.computed.device] ?? item.computed.device}</td>
+				<td className="settings-studio-device__id c2">
+					{manifestNames[item.computed.device] ?? item.computed.device}
+				</td>
 				<td className="settings-studio-device__id c2">{unprotectString(item.computed.deviceId)}</td>
 				<td className="settings-studio-device__id c4">
 					<MappingSummary
@@ -396,11 +399,18 @@ function StudioMappingsEntry({
 				<td className="settings-studio-device__actions table-item-actions c3">
 					{!item.defaults && (
 						<button className="action-btn" disabled>
-							<FontAwesomeIcon icon={faSync} title={t('Mapping cannot be reset as it has no default values')} />
+							<FontAwesomeIcon
+								icon={faSync}
+								title={t('Mapping cannot be reset as it has no default values')}
+							/>
 						</button>
 					)}
 					{item.defaults && item.overrideOps.length > 0 && (
-						<button className="action-btn" onClick={confirmReset} title={t('Reset mapping to default values')}>
+						<button
+							className="action-btn"
+							onClick={confirmReset}
+							title={t('Reset mapping to default values')}
+						>
 							<FontAwesomeIcon icon={faSync} />
 						</button>
 					)}
@@ -418,8 +428,14 @@ function StudioMappingsEntry({
 						<div className="properties-grid">
 							<label className="field">
 								<LabelActual label={t('Layer ID')} />
-								<TextInputControl value={item.id} handleUpdate={doChangeItemId} disabled={!!item.defaults} />
-								<span className="text-s dimmed field-hint">{t('ID of the timeline-layer to map to some output')}</span>
+								<TextInputControl
+									value={item.id}
+									handleUpdate={doChangeItemId}
+									disabled={!!item.defaults}
+								/>
+								<span className="text-s dimmed field-hint">
+									{t('ID of the timeline-layer to map to some output')}
+								</span>
 							</label>
 
 							<LabelAndOverrides
@@ -429,7 +445,9 @@ function StudioMappingsEntry({
 								itemKey={'layerName'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 
 							<LabelAndOverridesForDropdown
@@ -441,18 +459,26 @@ function StudioMappingsEntry({
 								options={deviceTypeOptions}
 							>
 								{(value, handleUpdate, options) => (
-									<DropdownInputControl options={options} value={value + ''} handleUpdate={handleUpdate} />
+									<DropdownInputControl
+										options={options}
+										value={value + ''}
+										handleUpdate={handleUpdate}
+									/>
 								)}
 							</LabelAndOverridesForDropdown>
 
 							<LabelAndOverrides
 								label={t('Device ID')}
-								hint={t('ID of the device (corresponds to the device ID in the peripheralDevice settings)')}
+								hint={t(
+									'ID of the device (corresponds to the device ID in the peripheralDevice settings)'
+								)}
 								item={item}
 								itemKey={'deviceId'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 
 							<LabelAndOverridesForDropdown
@@ -498,7 +524,11 @@ function StudioMappingsEntry({
 										options={mappingTypeOptions}
 									>
 										{(value, handleUpdate, options) => (
-											<DropdownInputControl options={options} value={value + ''} handleUpdate={handleUpdate} />
+											<DropdownInputControl
+												options={options}
+												value={value + ''}
+												handleUpdate={handleUpdate}
+											/>
 										)}
 									</LabelAndOverridesForDropdown>
 

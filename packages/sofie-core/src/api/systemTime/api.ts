@@ -1,4 +1,5 @@
 import { TimeDiff } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
 import { getCurrentTime } from '../../lib/lib'
 
 export function getTimeDiff(): TimeDiff {

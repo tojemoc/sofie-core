@@ -1,6 +1,11 @@
-import { PieceId, PieceInstanceId, RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { IBlueprintPieceType, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
+import { PieceId, PieceInstanceId, RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart, PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import {
 	getPieceInstanceIdForPiece,
 	omitPiecePropertiesForInstance,
@@ -8,26 +13,23 @@ import {
 	PieceInstancePiece,
 } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { clone, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { getCurrentTime } from '../../../lib/index.js'
-import { setupPieceInstanceInfiniteProperties } from '../../pieces.js'
 import {
 	calculatePartExpectedDurationWithTransition,
 	PartCalculatedTimings,
 } from '@sofie-automation/corelib/dist/playout/timings'
-import { IBlueprintPieceType, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { PlayoutMutatablePartSampleKeys } from '../../../blueprints/context/lib.js'
+import { getCurrentTime } from '../../../lib/index.js'
+import { setupPieceInstanceInfiniteProperties } from '../../pieces.js'
 import {
 	PlayoutMutatablePart,
 	PlayoutPartInstanceModel,
 	PlayoutPartInstanceModelSnapshot,
 } from '../PlayoutPartInstanceModel.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { PlayoutPieceInstanceModel } from '../PlayoutPieceInstanceModel.js'
-import { PlayoutPieceInstanceModelImpl } from './PlayoutPieceInstanceModelImpl.js'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import _ from 'underscore'
-import { DBPart, PartInvalidReason } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PlayoutMutatablePartSampleKeys } from '../../../blueprints/context/lib.js'
 import { QuickLoopService } from '../services/QuickLoopService.js'
+import { PlayoutPieceInstanceModelImpl } from './PlayoutPieceInstanceModelImpl.js'
 
 /**
  * time in ms before an autotake when we don't accept takes/updates

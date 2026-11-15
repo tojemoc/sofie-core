@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/react-meteor-data.js'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { useTranslation } from 'react-i18next'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { NotificationCenter, NoticeLevel, Notification } from '../../../lib/notifications/notifications.js'
-import type { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import { CoreSystem, PeripheralDevices } from '../../../collections/index.js'
-import type { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
-import { logger } from '../../../lib/logging.js'
+
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import type { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
+import type { PeripheralDeviceId } from '@sofie-automation/shared-lib/dist/core/model/Ids'
+
+import { CoreSystem, PeripheralDevices } from '../../../collections/index.js'
+import { logger } from '../../../lib/logging.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/react-meteor-data.js'
+import { useDebugStatesForPlayoutDevice } from '../../Settings/components/useDebugStatesForPlayoutDevice.js'
 import { CoreItem } from './CoreItem.js'
 import { DeviceItem } from './DeviceItem.js'
-import { useDebugStatesForPlayoutDevice } from '../../Settings/components/useDebugStatesForPlayoutDevice.js'
 
 export function SystemStatus(): JSX.Element {
 	const { t } = useTranslation()
@@ -155,7 +157,11 @@ function DeviceItemWithChildren({ playoutDebugStates, device, parentDevice }: De
 					<ul className="childlist">
 						{device.children.map((child) => (
 							<li key={unprotectString(child.device._id)} className="child-device-li">
-								<DeviceItemWithChildren playoutDebugStates={playoutDebugStates} parentDevice={device} device={child} />
+								<DeviceItemWithChildren
+									playoutDebugStates={playoutDebugStates}
+									parentDevice={device}
+									device={child}
+								/>
 							</li>
 						))}
 					</ul>

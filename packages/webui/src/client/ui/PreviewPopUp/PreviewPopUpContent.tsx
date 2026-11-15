@@ -1,16 +1,18 @@
-import { WarningIconSmall } from '../../lib/ui/icons/notifications.js'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
-import { VTPreviewElement } from './Previews/VTPreview.js'
-import { IFramePreview } from './Previews/IFramePreview.js'
-import { BoxLayoutPreview } from './Previews/BoxLayoutPreview.js'
-import { ScriptPreview } from './Previews/ScriptPreview.js'
-import { RundownUtils } from '../../lib/rundown.js'
-import type { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import type { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+
 import { PieceLifespan } from '@sofie-automation/blueprints-integration'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+
+import { RundownUtils } from '../../lib/rundown.js'
+import { WarningIconSmall } from '../../lib/ui/icons/notifications.js'
+import { BoxLayoutPreview } from './Previews/BoxLayoutPreview.js'
+import { IFramePreview } from './Previews/IFramePreview.js'
 import { LayerInfoPreview } from './Previews/LayerInfoPreview.js'
+import { ScriptPreview } from './Previews/ScriptPreview.js'
+import { VTPreviewElement } from './Previews/VTPreview.js'
 import type { PreviewContentUI } from './PreviewPopUpContext.js'
 
 interface PreviewPopUpContentProps {
@@ -84,7 +86,8 @@ export function PreviewPopUpContent({ content, time }: PreviewPopUpContentProps)
 		case 'timing':
 			return (
 				<div className="preview-popUp__timing">
-					<span className="label">IN: </span> {RundownUtils.formatTimeToShortTime(content.timeAsRendered?.in || 0)}
+					<span className="label">IN: </span>{' '}
+					{RundownUtils.formatTimeToShortTime(content.timeAsRendered?.in || 0)}
 					&nbsp; <span className="label">DURATION: </span>
 					{getDurationText(t, content.lifespan, content.timeAsRendered, content.enable)}
 				</div>

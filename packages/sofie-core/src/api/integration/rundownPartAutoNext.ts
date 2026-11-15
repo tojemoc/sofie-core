@@ -1,14 +1,16 @@
 import { z } from 'zod'
-import { check } from '../../lib/check'
-import { MethodContext } from '../methodContext'
-import { checkAccessAndGetPeripheralDevice } from '../../security/check'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+
 import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import {
 	RundownPartAutoNextItem,
 	RundownPartAutoNextResponse,
 } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartAutoNext'
+
 import { Parts, Rundowns } from '../../collections'
+import { check } from '../../lib/check'
+import { checkAccessAndGetPeripheralDevice } from '../../security/check'
+import { MethodContext } from '../methodContext'
 
 export namespace RundownPartAutoNextIntegration {
 	/**

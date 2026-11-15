@@ -1,7 +1,8 @@
-import type * as React from 'react'
-import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
 import { useTranslation } from 'react-i18next'
+import type * as React from 'react'
+
 import { ExpectedPackageStatusAPI } from '@sofie-automation/blueprints-integration'
+import type { ExpectedPackageWorkStatus } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackageWorkStatuses'
 
 export const JobStatusIcon: React.FC<{ status: ExpectedPackageWorkStatus; connected: boolean }> = ({
 	status,

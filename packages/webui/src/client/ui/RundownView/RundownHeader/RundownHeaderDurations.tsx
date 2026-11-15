@@ -1,10 +1,12 @@
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { useTranslation } from 'react-i18next'
-import { Countdown } from './Countdown'
-import { useTiming } from '../RundownTiming/withTiming'
-import { RundownUtils } from '../../../lib/rundown.js'
+
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
+import { RundownUtils } from '../../../lib/rundown.js'
 import { getCurrentTime } from '../../../lib/systemTime'
+import { useTiming } from '../RundownTiming/withTiming'
+import { Countdown } from './Countdown'
 
 export function RundownHeaderDurations({
 	playlist,
@@ -34,13 +36,41 @@ export function RundownHeaderDurations({
 	return (
 		<div className="rundown-header__show-timers-endtimes">
 			{!simplified && expectedDuration ? (
-				<Countdown label={t('Plan. Dur')} className="rundown-header__show-timers-countdown" ms={expectedDuration}>
-					{RundownUtils.formatDiffToTimecode(expectedDuration, false, true, true, true, true, undefined, true, true)}
+				<Countdown
+					label={t('Plan. Dur')}
+					className="rundown-header__show-timers-countdown"
+					ms={expectedDuration}
+				>
+					{RundownUtils.formatDiffToTimecode(
+						expectedDuration,
+						false,
+						true,
+						true,
+						true,
+						true,
+						undefined,
+						true,
+						true
+					)}
 				</Countdown>
 			) : null}
 			{clampedEstDuration !== undefined ? (
-				<Countdown label={t('Rem. Dur')} className="rundown-header__show-timers-countdown" ms={clampedEstDuration}>
-					{RundownUtils.formatDiffToTimecode(-clampedEstDuration, false, true, true, true, true, '', true, true)}
+				<Countdown
+					label={t('Rem. Dur')}
+					className="rundown-header__show-timers-countdown"
+					ms={clampedEstDuration}
+				>
+					{RundownUtils.formatDiffToTimecode(
+						-clampedEstDuration,
+						false,
+						true,
+						true,
+						true,
+						true,
+						'',
+						true,
+						true
+					)}
 				</Countdown>
 			) : null}
 		</div>

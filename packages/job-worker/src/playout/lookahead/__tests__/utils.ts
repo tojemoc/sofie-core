@@ -1,11 +1,13 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { ReadonlyDeep } from 'type-fest'
-import { PartInstanceAndPieceInstances, PartAndPieces } from '../util.js'
+
+import { TimelinePlayoutState } from '../../timeline/lib.js'
+import { PartAndPieces, PartInstanceAndPieceInstances } from '../util.js'
 import { findForLayerTestConstants } from './findForLayer/constants.js'
 import { context, TfindLookaheadObjectsForPart } from './findForLayer/helpers/mockSetup.js'
-import { TimelinePlayoutState } from '../../timeline/lib.js'
 
 export function expectInstancesToMatch(
 	findLookaheadObjectsForPartMock: TfindLookaheadObjectsForPart,

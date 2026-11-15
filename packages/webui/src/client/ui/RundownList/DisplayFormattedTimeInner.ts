@@ -1,5 +1,6 @@
-import type { TFunction } from 'i18next'
 import moment from 'moment'
+import type { TFunction } from 'i18next'
+
 import { getCurrentTime } from '../../lib/systemTime.js'
 
 export function DisplayFormattedTimeInner(

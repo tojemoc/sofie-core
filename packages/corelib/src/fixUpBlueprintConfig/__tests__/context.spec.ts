@@ -1,12 +1,13 @@
+import { ICommonContext, JSONSchema } from '@sofie-automation/blueprints-integration'
+
+import { literal } from '../../lib.js'
 import {
 	ObjectOverrideDeleteOp,
 	ObjectOverrideSetOp,
 	ObjectWithOverrides,
 	wrapDefaultObject,
 } from '../../settings/objectWithOverrides.js'
-import { literal } from '../../lib.js'
 import { FixUpBlueprintConfigContext } from '../context.js'
-import { ICommonContext, JSONSchema } from '@sofie-automation/blueprints-integration'
 
 function createSimpleConfigBlob() {
 	return literal<ObjectWithOverrides<any>>({

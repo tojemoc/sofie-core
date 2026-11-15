@@ -1,12 +1,14 @@
-import { useState, useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
+
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { RundownUtils } from '../../../lib/rundown.js'
-import type { PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
-import { SegmentTimelinePart } from '../Parts/SegmentTimelinePart.js'
 import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { RundownUtils } from '../../../lib/rundown.js'
+import { SegmentTimelinePart } from '../Parts/SegmentTimelinePart.js'
+import type { RundownViewPlaylist } from '../../../lib/rundownPlaylistProjection.js'
+import type { PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
 
 export const SegmentTimelinePartHoverPreview = ({
 	showMiniInspector,
@@ -65,7 +67,9 @@ export const SegmentTimelinePartHoverPreview = ({
 			ref={setInspectorRef}
 		>
 			<div className="segment-timeline__mini-inspector--small-parts__duration">
-				<span className="segment-timeline__mini-inspector--small-parts__duration__label">{t('Parts Duration')}</span>
+				<span className="segment-timeline__mini-inspector--small-parts__duration__label">
+					{t('Parts Duration')}
+				</span>
 				{RundownUtils.formatDiffToTimecode(actualPartsDuration, false, false, true, false, true)}
 			</div>
 			<div className="segment-timeline__mini-inspector__mini-timeline">

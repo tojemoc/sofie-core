@@ -1,28 +1,27 @@
-import React, { type PropsWithChildren } from 'react'
 import { Meteor } from 'meteor/meteor'
-import { withTracker } from '../../../lib/ReactMeteorData/react-meteor-data.js'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { RundownTiming, type TimeEventArgs } from './RundownTiming.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import {
-	type MinimalPartInstance,
-	RundownTimingCalculator,
-	type RundownTimingContext,
-	type TimingId,
-	findPartInstancesInQuickLoop,
-} from '../../../lib/rundownTiming.js'
-import type { PartId, PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import React from 'react'
+import type { PropsWithChildren } from 'react'
 
 import { sortPartInstancesInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
-import { RundownPlaylistClientUtil } from '../../../lib/rundownPlaylistUtil.js'
-import { getCurrentTime } from '../../../lib/systemTime.js'
-import { type IRundownTimingProviderValues, RundownTimingProviderContext } from './withTiming.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import {
 	deduplicatePartInstancesForQuickLoop,
 	wrapPartToTemporaryInstance,
 } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PartId, PartInstanceId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+
+import { withTracker } from '../../../lib/ReactMeteorData/react-meteor-data.js'
+import { RundownPlaylistClientUtil } from '../../../lib/rundownPlaylistUtil.js'
+import { findPartInstancesInQuickLoop, RundownTimingCalculator } from '../../../lib/rundownTiming.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { RundownTiming } from './RundownTiming.js'
+import { RundownTimingProviderContext } from './withTiming.js'
+import type { MinimalPartInstance, RundownTimingContext, TimingId } from '../../../lib/rundownTiming.js'
+import type { TimeEventArgs } from './RundownTiming.js'
+import type { IRundownTimingProviderValues } from './withTiming.js'
 
 const TIMING_DEFAULT_REFRESH_INTERVAL = 1000 / 60 // the interval for high-resolution events (timeupdateHR)
 const LOW_RESOLUTION_TIMING_DECIMATOR = 15
@@ -111,7 +110,7 @@ export const RundownTimingProvider = withTracker<
 		playlist.previousPartsInfo?.[0]?.partInstanceId
 	)
 
-	let partInstances: MinimalPartInstance[] = []
+	let partInstances: MinimalPartInstance[]
 
 	const allPartIds: Set<PartId> = new Set()
 
@@ -215,8 +214,10 @@ export const RundownTimingProvider = withTracker<
 			}
 			if (
 				prevProps.partInstances !== this.props.partInstances ||
-				prevProps.playlist?.nextPartInfo?.partInstanceId !== this.props.playlist?.nextPartInfo?.partInstanceId ||
-				prevProps.playlist?.currentPartInfo?.partInstanceId !== this.props.playlist?.currentPartInfo?.partInstanceId
+				prevProps.playlist?.nextPartInfo?.partInstanceId !==
+					this.props.playlist?.nextPartInfo?.partInstanceId ||
+				prevProps.playlist?.currentPartInfo?.partInstanceId !==
+					this.props.playlist?.currentPartInfo?.partInstanceId
 			) {
 				this.refreshDecimator = 0 // Force LR update
 				this.lastSyncedTime = 0 // Force synced update

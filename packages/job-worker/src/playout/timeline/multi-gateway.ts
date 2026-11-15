@@ -2,13 +2,14 @@ import { Time } from '@sofie-automation/blueprints-integration'
 import { PieceInstanceInfiniteId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { TimelineObjRundown } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { normalizeArray } from '@sofie-automation/corelib/dist/lib'
-import { PieceTimelineMetadata } from './pieceGroup.js'
+import { getPieceControlObjectId } from '@sofie-automation/corelib/dist/playout/ids'
+
 import { logger } from '../../logging.js'
 import { PlayoutModel } from '../model/PlayoutModel.js'
-import { RundownTimelineTimingContext, getInfinitePartGroupId } from './rundown.js'
 import { PlayoutPartInstanceModel } from '../model/PlayoutPartInstanceModel.js'
 import { PlayoutPieceInstanceModel } from '../model/PlayoutPieceInstanceModel.js'
-import { getPieceControlObjectId } from '@sofie-automation/corelib/dist/playout/ids'
+import { PieceTimelineMetadata } from './pieceGroup.js'
+import { getInfinitePartGroupId, RundownTimelineTimingContext } from './rundown.js'
 
 /**
  * We want it to be possible to generate a timeline without it containing any `start: 'now'`.

@@ -1,5 +1,7 @@
-import { unprotectString } from '@sofie-automation/server-core-integration'
 import * as Influx from 'influx'
+
+import { unprotectString } from '@sofie-automation/server-core-integration'
+
 import { config } from './config.js'
 
 export interface InfluxConfig {

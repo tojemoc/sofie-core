@@ -1,27 +1,12 @@
 import ClassNames from 'classnames'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { PartUi } from '../SegmentTimeline/SegmentTimelineContainer.js'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { useTiming } from '../RundownView/RundownTiming/withTiming.js'
-import {
-	useSubscription,
-	useSubscriptions,
-	useSubscriptionIfEnabled,
-	useTracker,
-} from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getCurrentTime } from '../../lib/systemTime.js'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { PieceIconContainer } from '../PieceIcons/PieceIcon.js'
-import { PieceNameContainer } from '../PieceIcons/PieceName.js'
-import { Timediff } from './Timediff.js'
-import { RundownUtils } from '../../lib/rundown.js'
+import { parse as queryStringParse } from 'query-string'
+
 import { CountdownType, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PieceCountdownContainer } from '../PieceIcons/PieceCountdown.js'
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
-import type { DashboardLayout, RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type {
 	RundownId,
 	RundownLayoutId,
@@ -30,13 +15,16 @@ import type {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
-import { ShelfDashboardLayout } from '../Shelf/ShelfDashboardLayout.js'
-import { parse as queryStringParse } from 'query-string'
-import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
-import type { RundownTimingContext } from '../../lib/rundownTiming.js'
-import { UIShowStyleBases, UIStudios } from '../Collections.js'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
+import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type { DashboardLayout, RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
 import {
 	PieceInstances,
 	RundownLayouts,
@@ -45,16 +33,30 @@ import {
 	ShowStyleVariants,
 } from '../../collections/index.js'
 import { RundownPlaylistCollectionUtil } from '../../collections/rundownPlaylistUtil.js'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { useSetDocumentClass, useSetDocumentDarkTheme } from '../util/useSetDocumentClass.js'
-import { useRundownAndShowStyleIdsForPlaylist } from '../util/useRundownAndShowStyleIdsForPlaylist.js'
-import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
-import { CurrentPartOrSegmentRemaining } from '../RundownView/RundownHeader/CurrentPartOrSegmentRemaining.js'
-import { RundownStatusBar } from './RundownStatusBar.js'
-import type { UIShowStyleBase } from '@sofie-automation/corelib/src/dataModel/ShowStyleBase.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance.js'
 import { OverUnderChip } from '../../lib/Components/OverUnderChip.js'
+import {
+	useSubscription,
+	useSubscriptionIfEnabled,
+	useSubscriptions,
+	useTracker,
+} from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import { RundownUtils } from '../../lib/rundown.js'
+import { RundownLayoutsAPI } from '../../lib/rundownLayouts.js'
+import { RundownPlaylistClientUtil } from '../../lib/rundownPlaylistUtil.js'
+import { getCurrentTime } from '../../lib/systemTime.js'
+import { UIShowStyleBases, UIStudios } from '../Collections.js'
+import { PieceCountdownContainer } from '../PieceIcons/PieceCountdown.js'
+import { PieceIconContainer } from '../PieceIcons/PieceIcon.js'
+import { PieceNameContainer } from '../PieceIcons/PieceName.js'
+import { CurrentPartOrSegmentRemaining } from '../RundownView/RundownHeader/CurrentPartOrSegmentRemaining.js'
+import { useTiming } from '../RundownView/RundownTiming/withTiming.js'
+import { ShelfDashboardLayout } from '../Shelf/ShelfDashboardLayout.js'
+import { useRundownAndShowStyleIdsForPlaylist } from '../util/useRundownAndShowStyleIdsForPlaylist.js'
+import { useSetDocumentClass, useSetDocumentDarkTheme } from '../util/useSetDocumentClass.js'
+import { RundownStatusBar } from './RundownStatusBar.js'
+import { Timediff } from './Timediff.js'
+import type { RundownTimingContext } from '../../lib/rundownTiming.js'
+import type { PartUi } from '../SegmentTimeline/SegmentTimelineContainer.js'
 
 // TODO: We have another definition of this in the Director screen, and there is also another SegmentUI type. We should look into clearing this up.
 interface SegmentUi extends DBSegment {
@@ -111,9 +113,7 @@ function getShowStyleBaseIdSegmentPartUi(
 	segment: SegmentUi | undefined
 	partInstance: PartUi | undefined
 } {
-	let showStyleBaseId: ShowStyleBaseId | undefined = undefined
 	let showStyleBase: UIShowStyleBase | undefined = undefined
-	let showStyleVariantId: ShowStyleVariantId | undefined = undefined
 	let showStyleVariant: DBShowStyleVariant | undefined = undefined
 	let segment: SegmentUi | undefined = undefined
 	let partInstanceUi: PartUi | undefined = undefined
@@ -127,8 +127,8 @@ function getShowStyleBaseIdSegmentPartUi(
 			timing: 1,
 		},
 	})
-	showStyleBaseId = currentRundown?.showStyleBaseId
-	showStyleVariantId = currentRundown?.showStyleVariantId
+	const showStyleBaseId = currentRundown?.showStyleBaseId
+	const showStyleVariantId = currentRundown?.showStyleVariantId
 
 	const segmentIndex = orderedSegmentsAndParts.segments.findIndex((s) => s._id === partInstance.segmentId)
 	if (currentRundown && segmentIndex >= 0) {
@@ -255,7 +255,11 @@ export const getPresenterScreenReactive = (
 				},
 				'infinite.fromPreviousPart': false,
 				'piece.lifespan': {
-					$in: [PieceLifespan.OutOnRundownEnd, PieceLifespan.OutOnRundownChange, PieceLifespan.OutOnShowStyleEnd],
+					$in: [
+						PieceLifespan.OutOnRundownEnd,
+						PieceLifespan.OutOnRundownChange,
+						PieceLifespan.OutOnShowStyleEnd,
+					],
 				},
 				reset: {
 					$ne: true,
@@ -313,7 +317,9 @@ export const getPresenterScreenReactive = (
 		nextPartInstance: nextPartInstanceUi,
 		nextShowStyleBaseId,
 		rundownLayouts:
-			rundowns.length > 0 ? RundownLayouts.find({ showStyleBaseId: rundowns[0].showStyleBaseId }).fetch() : undefined,
+			rundowns.length > 0
+				? RundownLayouts.find({ showStyleBaseId: rundowns[0].showStyleBaseId }).fetch()
+				: undefined,
 		presenterLayoutId,
 		margin,
 		fontSize,
@@ -518,7 +524,10 @@ function PresenterScreenContentDefaultLayout({
 		return (
 			<div className="presenter-screen">
 				<div className="presenter-screen__part presenter-screen__part--current-part">
-					<OverUnderChip className="screen-timing-clock over-under-chip--overlay" rundownPlaylist={playlist} />
+					<OverUnderChip
+						className="screen-timing-clock over-under-chip--overlay"
+						rundownPlaylist={playlist}
+					/>
 					<div
 						className={ClassNames('presenter-screen__segment-name', {
 							live: currentSegment !== undefined,
@@ -546,7 +555,8 @@ function PresenterScreenContentDefaultLayout({
 								/>
 							</div>
 							<div className="presenter-screen__part__piece-countdown">
-								{currentSegment?.segmentTiming?.countdownType === CountdownType.SEGMENT_BUDGET_DURATION ? (
+								{currentSegment?.segmentTiming?.countdownType ===
+								CountdownType.SEGMENT_BUDGET_DURATION ? (
 									<CurrentPartOrSegmentRemaining
 										currentPartInstanceId={currentPartInstance.instance._id}
 										heavyClassName="overtime"
@@ -560,7 +570,9 @@ function PresenterScreenContentDefaultLayout({
 										partExpectedDuration={calculatePartInstanceExpectedDurationWithTransition(
 											currentPartInstance.instance
 										)}
-										partStartedPlayback={currentPartInstance.instance.timings?.plannedStartedPlayback}
+										partStartedPlayback={
+											currentPartInstance.instance.timings?.plannedStartedPlayback
+										}
 										playlistActivationId={playlist?.activationId}
 									/>
 								)}

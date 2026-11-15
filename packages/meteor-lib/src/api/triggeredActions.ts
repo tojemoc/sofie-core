@@ -1,5 +1,6 @@
 import { ITranslatableMessage, SomeAction } from '@sofie-automation/blueprints-integration'
 import { ShowStyleBaseId, TriggeredActionId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { DBBlueprintTrigger } from '../collections/TriggeredActions.js'
 
 export interface NewTriggeredActionsAPI {
@@ -19,6 +20,6 @@ export interface CreateTriggeredActionsContent {
 }
 
 export enum TriggeredActionsAPIMethods {
-	'removeTriggeredActions' = 'triggeredActions.removeTriggeredActions',
-	'createTriggeredActions' = 'triggeredActions.createTriggeredActions',
+	removeTriggeredActions = 'triggeredActions.removeTriggeredActions',
+	createTriggeredActions = 'triggeredActions.createTriggeredActions',
 }

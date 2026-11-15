@@ -1,5 +1,6 @@
-import { useCurrentTime } from '../lib' // Adjust the import path as needed
 import { act, renderHook } from '@testing-library/react'
+
+import { useCurrentTime } from '../lib' // Adjust the import path as needed
 
 describe('useCurrentTime Hook', () => {
 	it('should return the current time in milliseconds initially', () => {

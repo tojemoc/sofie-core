@@ -1,7 +1,17 @@
-import { BlueprintId, ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
-import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { BlueprintId, ShowStyleBaseId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import {
+	UIBlueprintUpgradeStatus,
+	UIBlueprintUpgradeStatusId,
+} from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
 import {
 	CustomPublish,
 	CustomPublishCollection,
@@ -9,7 +19,8 @@ import {
 	SetupObserversResult,
 	TriggerUpdate,
 } from '../../lib/customPublication'
-import type { PublicationRegistry } from '../../publicationRegistry'
+import { assertConnectionHasOneOfPermissions } from '../../security/auth'
+import { BlueprintMapEntry, checkDocUpgradeStatus, checkSystemUpgradeStatus } from './checkStatus'
 import {
 	ContentCache,
 	CoreSystemFields,
@@ -18,16 +29,7 @@ import {
 	StudioFields,
 } from './reactiveContentCache'
 import { UpgradesContentObserver } from './upgradesContentObserver'
-import { BlueprintMapEntry, checkDocUpgradeStatus, checkSystemUpgradeStatus } from './checkStatus'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import {
-	UIBlueprintUpgradeStatus,
-	UIBlueprintUpgradeStatusId,
-} from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
-import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { assertConnectionHasOneOfPermissions } from '../../security/auth'
+import type { PublicationRegistry } from '../../publicationRegistry'
 
 type BlueprintUpgradeStatusArgs = Record<string, never>
 

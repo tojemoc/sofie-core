@@ -1,3 +1,9 @@
+import { ReadonlyDeep } from 'type-fest'
+import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+import _ from 'underscore'
+
+import { NoteSeverity, PartEndState, VTContent } from '@sofie-automation/blueprints-integration'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
@@ -5,46 +11,40 @@ import {
 	SelectedPartInstance,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { logger } from '../logging.js'
-import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
-import { PlayoutModel } from './model/PlayoutModel.js'
-import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
-import { resetPartInstancesWithPieceInstances } from './lib.js'
-import { selectNextPart } from './selectNextPart.js'
-import { setNextPart } from './setNext.js'
-import { getCurrentTime } from '../lib/index.js'
-import { NoteSeverity, PartEndState, VTContent } from '@sofie-automation/blueprints-integration'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { ReadonlyDeep } from 'type-fest'
-import { getResolvedPiecesForCurrentPartInstance } from './resolvedPieces.js'
-import { resolvePieceInstancesForBranding } from './branding.js'
 import { clone, generateTranslation, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { updateTimeline } from './timeline/generate.js'
-import { OnTakeContext, PartEventContext, RundownContext } from '../blueprints/context/index.js'
-import { WrappedShowStyleBlueprint } from '../blueprints/cache.js'
-import { innerStopPieces, insertQueuedPartWithPieces } from './adlibUtils.js'
-import { reportPartInstanceHasStarted, reportPartInstanceHasStopped } from './timings/partPlayback.js'
-import { convertPartInstanceToBlueprints, convertResolvedPieceInstanceToBlueprints } from '../blueprints/context/lib.js'
 import {
 	createPartCurrentTimes,
 	processAndPrunePieceInstanceTimings,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
-import { TakeNextPartProps } from '@sofie-automation/corelib/dist/worker/studio'
-import { runJobWithPlayoutModel } from './lock.js'
-import _ from 'underscore'
-import { ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
-import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
+import { TakeNextPartProps, TakeNextPartResult } from '@sofie-automation/corelib/dist/worker/studio'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { WrappedShowStyleBlueprint } from '../blueprints/cache.js'
+import { OnTakeContext, PartEventContext, RundownContext } from '../blueprints/context/index.js'
+import { convertPartInstanceToBlueprints, convertResolvedPieceInstanceToBlueprints } from '../blueprints/context/lib.js'
 import {
+	applyActionSideEffects,
 	PartAndPieceInstanceActionService,
 	QueueablePartAndPieces,
-	applyActionSideEffects,
 } from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
-import { PlayoutRundownModel } from './model/PlayoutRundownModel.js'
-import { convertNoteToNotification } from '../notifications/util.js'
 import { PersistentPlayoutStateStore } from '../blueprints/context/services/PersistantStateStore.js'
-
-import { TakeNextPartResult } from '@sofie-automation/corelib/dist/worker/studio'
+import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
+import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
+import { getCurrentTime } from '../lib/index.js'
+import { logger } from '../logging.js'
+import { convertNoteToNotification } from '../notifications/util.js'
+import { innerStopPieces, insertQueuedPartWithPieces } from './adlibUtils.js'
+import { resolvePieceInstancesForBranding } from './branding.js'
+import { resetPartInstancesWithPieceInstances } from './lib.js'
+import { runJobWithPlayoutModel } from './lock.js'
+import { PlayoutModel } from './model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
+import { PlayoutRundownModel } from './model/PlayoutRundownModel.js'
+import { getResolvedPiecesForCurrentPartInstance } from './resolvedPieces.js'
+import { selectNextPart } from './selectNextPart.js'
+import { setNextPart } from './setNext.js'
+import { updateTimeline } from './timeline/generate.js'
+import { reportPartInstanceHasStarted, reportPartInstanceHasStopped } from './timings/partPlayback.js'
 
 /**
  * Take the currently Next:ed Part (start playing it)

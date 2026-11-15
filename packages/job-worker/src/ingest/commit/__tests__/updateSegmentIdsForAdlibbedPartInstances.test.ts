@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { updateSegmentIdsForAdlibbedPartInstances } from '../updateSegmentIdsForAdlibbedPartInstances.js'
-import { BeforePartMapItem } from '../../commit.js'
+import { mock } from 'jest-mock-extended'
+import { AnyBulkWriteOperation } from 'mongodb'
+import { PartialDeep } from 'type-fest'
+import _ from 'underscore'
+
 import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { mock } from 'jest-mock-extended'
+import { clone, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { ICollection } from '../../../db/index.js'
 import { JobContext } from '../../../jobs/index.js'
-import { clone, literal } from '@sofie-automation/corelib/dist/lib'
-import { PartialDeep } from 'type-fest'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { BeforePartMapItem } from '../../commit.js'
 import { IngestModel } from '../../model/IngestModel.js'
 import { IngestPartModel } from '../../model/IngestPartModel.js'
-import _ from 'underscore'
-import { AnyBulkWriteOperation } from 'mongodb'
+import { updateSegmentIdsForAdlibbedPartInstances } from '../updateSegmentIdsForAdlibbedPartInstances.js'
 
 const mockOptions = {
 	fallbackMockImplementation: () => {

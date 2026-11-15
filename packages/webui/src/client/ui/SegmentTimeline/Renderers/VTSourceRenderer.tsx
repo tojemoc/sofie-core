@@ -1,25 +1,27 @@
+import ClassNames from 'classnames'
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-
-import { getElementWidth } from '../../../utils/dimensions.js'
-
-import ClassNames from 'classnames'
-import { CustomLayerItemRenderer, type ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
-
-import { withTranslation, type WithTranslation, type WithTranslationProps } from 'react-i18next'
-import type { VTContent } from '@sofie-automation/blueprints-integration'
-import { PieceStatusIcon } from '../../../lib/ui/PieceStatusIcon.js'
-import { type NoticeLevel, getNoticeLevelForPieceStatus } from '../../../lib/notifications/notifications.js'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { FreezeFrameIcon } from '../../../lib/ui/icons/freezeFrame.js'
-import StudioContext from '../../RundownView/StudioContext.js'
-import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { HourglassIconSmall } from '../../../lib/ui/icons/notifications.js'
-import { logger } from '../../../lib/logging.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import { withTranslation } from 'react-i18next'
+import type { WithTranslation, WithTranslationProps } from 'react-i18next'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { logger } from '../../../lib/logging.js'
+import { getNoticeLevelForPieceStatus } from '../../../lib/notifications/notifications.js'
+import { RundownUtils } from '../../../lib/rundown.js'
+import { FreezeFrameIcon } from '../../../lib/ui/icons/freezeFrame.js'
+import { HourglassIconSmall } from '../../../lib/ui/icons/notifications.js'
+import { PieceStatusIcon } from '../../../lib/ui/PieceStatusIcon.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import StudioContext from '../../RundownView/StudioContext.js'
+import { CustomLayerItemRenderer } from './CustomLayerItemRenderer.js'
+import type { NoticeLevel } from '../../../lib/notifications/notifications.js'
+import type { ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
 
 interface IProps extends ICustomLayerItemProps {
 	studio: UIStudio | undefined
@@ -291,7 +293,11 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 		const duration = this.renderDuration()
 
 		return !this.props.piece.hasOriginInPreceedingPart || this.props.isLiveLine ? (
-			<span className="segment-timeline__piece__label" ref={this.setLeftLabelRef} style={this.getItemLabelOffsetLeft()}>
+			<span
+				className="segment-timeline__piece__label"
+				ref={this.setLeftLabelRef}
+				style={this.getItemLabelOffsetLeft()}
+			>
 				{noticeLevel !== null && <PieceStatusIcon noticeLevel={noticeLevel} />}
 				{this.props.contentStatus?.status === PieceStatusCode.SOURCE_NOT_READY && (
 					<div className="piece__status-icon type-hourglass">
@@ -357,7 +363,8 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 			isLiveLine &&
 			this.countdownContainer &&
 			livePositionInPart >= (uiPiece.renderedInPoint || 0) &&
-			livePositionInPart < (uiPiece.renderedInPoint || 0) + (uiPiece.renderedDuration || Number.POSITIVE_INFINITY) &&
+			livePositionInPart <
+				(uiPiece.renderedInPoint || 0) + (uiPiece.renderedDuration || Number.POSITIVE_INFINITY) &&
 			vtContent &&
 			vtContent.sourceDuration !== undefined &&
 			!vtContent.loop &&
@@ -397,7 +404,17 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 						}}
 					>
 						<span className="segment-timeline__liveline__appendage--piece-countdown__content">
-							{RundownUtils.formatDiffToTimecode(counter || 0, false, false, true, false, true, '', false, false)}
+							{RundownUtils.formatDiffToTimecode(
+								counter || 0,
+								false,
+								false,
+								true,
+								false,
+								true,
+								'',
+								false,
+								false
+							)}
 						</span>
 						<FreezeFrameIcon className="segment-timeline__liveline__appendage--piece-countdown__icon" />
 					</div>
@@ -434,7 +451,9 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 										<span
 											className="segment-timeline__piece__scene-marker"
 											key={i}
-											style={{ left: Math.round((i - seek) * this.props.timeScale).toString() + 'px' }}
+											style={{
+												left: Math.round((i - seek) * this.props.timeScale).toString() + 'px',
+											}}
 										></span>
 									)
 							)}
@@ -447,10 +466,13 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 											className="segment-timeline__piece__anomaly-marker"
 											key={i.start}
 											style={{
-												left: Math.round((i.start - seek) * this.props.timeScale).toString() + 'px',
+												left:
+													Math.round((i.start - seek) * this.props.timeScale).toString() +
+													'px',
 												width:
 													Math.round(
-														Math.min(itemDuration - i.start + seek, i.duration) * this.props.timeScale
+														Math.min(itemDuration - i.start + seek, i.duration) *
+															this.props.timeScale
 													).toString() + 'px',
 											}}
 										></span>
@@ -467,8 +489,10 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 											style={{
 												left: ((i.start - seek) * this.props.timeScale).toString() + 'px',
 												width:
-													(Math.min(itemDuration - i.start + seek, i.duration) * this.props.timeScale).toString() +
-													'px',
+													(
+														Math.min(itemDuration - i.start + seek, i.duration) *
+														this.props.timeScale
+													).toString() + 'px',
 											}}
 										></span>
 									)
@@ -487,6 +511,8 @@ class VTSourceRendererBase extends CustomLayerItemRenderer<IProps & WithTranslat
 export const VTSourceRenderer: React.ComponentType<Omit<IProps, 'studio'> & WithTranslationProps> = withTranslation()(
 	// withStudioPackageContainers<IProps & WithTranslation, {}>()(VTSourceRendererBase)
 	(props: Omit<IProps, 'studio'> & WithTranslation) => (
-		<StudioContext.Consumer>{(studio) => <VTSourceRendererBase {...props} studio={studio} />}</StudioContext.Consumer>
+		<StudioContext.Consumer>
+			{(studio) => <VTSourceRendererBase {...props} studio={studio} />}
+		</StudioContext.Consumer>
 	)
 )

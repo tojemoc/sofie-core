@@ -1,9 +1,12 @@
-import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { EventEmitter } from 'events'
-import { AnyBulkWriteOperation, ChangeStream, Collection as MongoCollection, FindOptions, CountOptions } from 'mongodb'
-import { IChangeStreamEvents } from './index.js'
+
+import { ChangeStream, CountOptions, FindOptions, Collection as MongoCollection } from 'mongodb'
+
+import { ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { startSpanManual } from '../profiler.js'
 import { IChangeStream, ICollection, MongoBulkWriteOperation, MongoModifier, MongoQuery } from './collections.js'
+import { IChangeStreamEvents } from './index.js'
 
 /** Wrap some APM and better error small query modifications around a Mongo.Collection */
 class WrappedCollection<TDoc extends { _id: ProtectedString<any> }> implements ICollection<TDoc> {
@@ -36,7 +39,7 @@ class WrappedCollection<TDoc extends { _id: ProtectedString<any> }> implements I
 				query: JSON.stringify(selector),
 			})
 		}
-		const res = await this.#collection.find(selector as any, options).toArray()
+		const res = await this.#collection.find(selector, options).toArray()
 		if (span) span.end()
 		return res as any
 	}
@@ -66,7 +69,7 @@ class WrappedCollection<TDoc extends { _id: ProtectedString<any> }> implements I
 				query: JSON.stringify(selector),
 			})
 		}
-		const res = await this.#collection.countDocuments(selector as any, options)
+		const res = await this.#collection.countDocuments(selector, options)
 		if (span) span.end()
 		return res
 	}
@@ -165,7 +168,7 @@ class WrappedCollection<TDoc extends { _id: ProtectedString<any> }> implements I
 		}
 
 		if (ops.length > 0) {
-			const bulkWriteResult = await this.#collection.bulkWrite(ops as AnyBulkWriteOperation<TDoc>[], {
+			const bulkWriteResult = await this.#collection.bulkWrite(ops, {
 				ordered: false,
 			})
 			if (bulkWriteResult && bulkWriteResult.hasWriteErrors()) {

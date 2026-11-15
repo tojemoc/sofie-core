@@ -1,6 +1,7 @@
-import { PublicationRegistry } from '../publicationRegistry'
-import { registerAllPublications } from '../publicationRegistrations'
 import { AllPubSubNames } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { registerAllPublications } from '../publicationRegistrations'
+import { PublicationRegistry } from '../publicationRegistry'
 
 describe('PublicationRegistry', () => {
 	test('registers all publications without error', () => {

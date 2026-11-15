@@ -1,4 +1,4 @@
-import { DDPClient, type DDPConnectorOptions } from '../../index.js'
+import { DDPClient } from '../../index.js'
 jest.mock('ws')
 
 const wait = async (t: number): Promise<void> =>
@@ -15,7 +15,7 @@ it('Creates a DDP Client with options', () => {
 	const ddp = new DDPClient({
 		host: '127.0.0.99',
 		port: 3210,
-	} as DDPConnectorOptions)
+	})
 	expect(ddp).toBeTruthy()
 	expect(ddp.port).toBe(3210)
 	expect(ddp.host).toBe('127.0.0.99')

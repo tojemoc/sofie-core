@@ -1,4 +1,3 @@
-import { TrackedNote } from '@sofie-automation/corelib/dist/dataModel/Notes'
 import {
 	BucketAdLibActionId,
 	BucketAdLibId,
@@ -7,9 +6,10 @@ import {
 	RundownPlaylistId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { TrackedNote } from '@sofie-automation/corelib/dist/dataModel/Notes'
+import { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 
 export type UISegmentPartNoteId = ProtectedString<'UISegmentPartNote'>
 export interface UISegmentPartNote {

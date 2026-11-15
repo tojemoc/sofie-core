@@ -1,17 +1,19 @@
 import _ from 'underscore'
+
 import { IngestRundown, IngestSegment } from '@sofie-automation/blueprints-integration'
-import { logger } from '../../logging'
-import { profiler } from '../profiler'
 import { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { NrcsIngestDataCache } from '../../collections'
 import {
 	NrcsIngestCacheType,
 	NrcsIngestDataCacheObj,
 	NrcsIngestDataCacheObjRundown,
 	NrcsIngestDataCacheObjSegment,
 } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { groupByToMap } from '@sofie-automation/corelib/dist/lib'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { groupByToMap } from '@sofie-automation/corelib/dist/lib'
+
+import { NrcsIngestDataCache } from '../../collections'
+import { logger } from '../../logging'
+import { profiler } from '../profiler'
 
 /**
  * This class provides a few convenience methods for fetching IngestRundown

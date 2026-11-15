@@ -1,9 +1,11 @@
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { useTranslation } from 'react-i18next'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
 import { TimelineDatastore } from './collections'
 
 export function TimelineDatastoreView(): JSX.Element {

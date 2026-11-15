@@ -1,16 +1,17 @@
-import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
-import { WatchedPackagesHelper } from '../watchedPackages.js'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { PackageInfo } from '@sofie-automation/blueprints-integration'
 import { ExpectedPackageDB, ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
+import {
+	BucketId,
+	ExpectedPackageId,
+	PeripheralDeviceId,
+	RundownId,
+} from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
 import { literal } from '@sofie-automation/corelib/dist/lib'
-import { PackageInfo } from '@sofie-automation/blueprints-integration'
-import {
-	ExpectedPackageId,
-	RundownId,
-	BucketId,
-	PeripheralDeviceId,
-} from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { setupDefaultJobEnvironment } from '../../../__mocks__/context.js'
+import { WatchedPackagesHelper } from '../watchedPackages.js'
 
 describe('WatchedPackagesHelper', () => {
 	const mockDeviceId = protectString<PeripheralDeviceId>('device1')

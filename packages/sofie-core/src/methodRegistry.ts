@@ -1,15 +1,16 @@
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { MethodContext, MethodContextAPI } from './api/methodContext'
 import { extractFunctionSignature } from './lib'
 import { logger } from './logging'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import {
-	MeteorMethod,
 	MeteorDebugMethod,
+	MeteorMethod,
 	ReplaceOptionalWithNullInMethodArguments,
 	wrapMethodForExecution,
 } from './methods'
 import { assertConnectionHasOneOfPermissions } from './security/auth'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export type MethodWrapper = (
 	methodContext: MethodContext,

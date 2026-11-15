@@ -1,5 +1,6 @@
-import { encodeMessage, decodeMessage } from '../wireCodec'
 import { ServerMessage } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
+
+import { decodeMessage, encodeMessage } from '../wireCodec'
 
 describe('wireCodec', () => {
 	test('encodes a server message to a JSON string and round-trips back', () => {

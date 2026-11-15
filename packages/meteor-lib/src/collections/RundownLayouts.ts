@@ -1,5 +1,5 @@
 import { ISourceLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { RundownLayoutId, UserId, ShowStyleBaseId, BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { BlueprintId, RundownLayoutId, ShowStyleBaseId, UserId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 
 /**
  * The view targeted by this layout:

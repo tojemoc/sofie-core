@@ -1,11 +1,22 @@
 import { z } from 'zod'
-import { check } from '../../lib/check'
-import { NewStudiosAPI } from '@sofie-automation/meteor-lib/dist/api/studios'
+
+import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { literal, getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { lazyIgnore } from '../../lib/lib'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { NewStudiosAPI } from '@sofie-automation/meteor-lib/dist/api/studios'
+import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+import {
+	DEFAULT_DISPLAY_DURATION,
+	DEFAULT_MINIMUM_TAKE_SPAN,
+	DEFAULT_SHELF_DISPLAY_OPTIONS,
+	DEFAULT_TIME_SCALE,
+} from '@sofie-automation/shared-lib/dist/core/constants'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import {
 	ExpectedPackages,
 	ExpectedPackageWorkStatuses,
@@ -20,20 +31,11 @@ import {
 	Studios,
 	Timeline,
 } from '../../collections'
-import { MethodContextAPI, MethodContext } from '../methodContext'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { check } from '../../lib/check'
+import { lazyIgnore } from '../../lib/lib'
 import { logger } from '../../logging'
-import {
-	DEFAULT_MINIMUM_TAKE_SPAN,
-	DEFAULT_DISPLAY_DURATION,
-	DEFAULT_SHELF_DISPLAY_OPTIONS,
-	DEFAULT_TIME_SCALE,
-} from '@sofie-automation/shared-lib/dist/core/constants'
-import { UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
 import { assertConnectionHasOneOfPermissions } from '../../security/auth'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { MethodContext, MethodContextAPI } from '../methodContext'
 
 const PERMISSIONS_FOR_MANAGE_STUDIOS: Array<keyof UserPermissions> = ['configure']
 

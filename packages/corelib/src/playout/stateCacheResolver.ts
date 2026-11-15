@@ -1,41 +1,41 @@
+import { ReadonlyDeep } from 'type-fest'
 import _ from 'underscore'
 
 import {
-	PieceLifespan,
 	IBlueprintActionManifestDisplay,
 	IBlueprintActionManifestDisplayContent,
 	IOutputLayer,
 	ISourceLayer,
+	PieceLifespan,
 } from '@sofie-automation/blueprints-integration'
-import { SegmentId, RundownId, PartId, PieceId, RundownPlaylistActivationId } from '../dataModel/Ids.js'
+import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+
+import { PartId, PieceId, RundownId, RundownPlaylistActivationId, SegmentId } from '../dataModel/Ids.js'
 import { DBPart, PartExtended } from '../dataModel/Part.js'
+import { PartInstance, PartInstanceLimited } from '../dataModel/PartInstance.js'
 import { Piece, PieceExtended } from '../dataModel/Piece.js'
 import { PieceInstance, PieceInstancePiece } from '../dataModel/PieceInstance.js'
 import { DBRundownPlaylist, QuickLoopMarkerType } from '../dataModel/RundownPlaylist/RundownPlaylist.js'
 import { DBSegment, SegmentExtended, SegmentOrphanedReason } from '../dataModel/Segment.js'
-import { literal, groupByToMap, Complete } from '../lib.js'
-import { FindOptions, mongoWhereFilter } from '../mongo.js'
-import { protectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import {
-	createPartCurrentTimes,
-	processAndPrunePieceInstanceTimings,
-	resolvePrunedPieceInstance,
-} from './processAndPrune.js'
-import { calculatePartInstanceExpectedDurationWithTransition } from './timings.js'
-import {
-	buildPastInfinitePiecesForThisPartQuery,
-	buildPiecesStartingInThisPartQuery,
-	getPieceInstancesForPart,
-} from './infinites.js'
 import {
 	DBShowStyleBase,
 	IOutputLayerExtended,
 	ISourceLayerExtended,
 	UIShowStyleBase,
 } from '../dataModel/ShowStyleBase.js'
+import { Complete, groupByToMap, literal } from '../lib.js'
+import { FindOptions, mongoWhereFilter } from '../mongo.js'
 import { applyAndValidateOverrides } from '../settings/objectWithOverrides.js'
-import { PartInstance, PartInstanceLimited } from '../dataModel/PartInstance.js'
-import { ReadonlyDeep } from 'type-fest'
+import {
+	buildPastInfinitePiecesForThisPartQuery,
+	buildPiecesStartingInThisPartQuery,
+	getPieceInstancesForPart,
+} from './infinites.js'
+import {
+	createPartCurrentTimes,
+	processAndPrunePieceInstanceTimings,
+	resolvePrunedPieceInstance,
+} from './processAndPrune.js'
 import {
 	GetPieceInstancesForPartInstanceParams,
 	GetResolvedSegmentParams,
@@ -43,6 +43,7 @@ import {
 	PiecesFind,
 	ResolvedSegmentResult,
 } from './stateCacheResolverTypes.js'
+import { calculatePartInstanceExpectedDurationWithTransition } from './timings.js'
 
 /** Resolve segment parts/pieces into timeline-friendly UI data. */
 export function getResolvedSegment({
@@ -241,12 +242,12 @@ export function getResolvedSegment({
 				nextPartIsAfterCurrentPart,
 				currentPartInstance,
 				currentSegment: currentPartInstance
-					? (segmentsFindOne(currentPartInstance.segmentId, {
+					? segmentsFindOne(currentPartInstance.segmentId, {
 							projection: {
 								_id: 1,
 								orphaned: 1,
 							},
-						}) as Pick<DBSegment, '_id' | 'orphaned'> | undefined)
+						})
 					: undefined,
 				currentPartInstancePieceInstances: currentPartInstance
 					? pieceInstancesFind(

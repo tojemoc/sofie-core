@@ -1,13 +1,15 @@
+import _ from 'underscore'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { getHash } from '@sofie-automation/corelib/dist/hash'
+import { stringifyObjects } from '@sofie-automation/corelib/dist/lib'
 import { MongoFieldSpecifierOnes } from '@sofie-automation/corelib/dist/mongo'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import _ from 'underscore'
-import { stringifyObjects } from '@sofie-automation/corelib/dist/lib'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { logger } from '../logging'
 import { AsyncOnlyMongoCollection, AsyncOnlyReadOnlyMongoCollection } from './collection'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 const ObserveChangeBufferTimeout = 2000
 

@@ -1,24 +1,25 @@
-import { addMigrationSteps } from './databaseMigration'
-import { CoreSystem, PeripheralDevices, Studios, TriggeredActions } from '../collections'
+import {
+	IStudioSettings,
+	StudioDeviceSettings,
+	StudioPackageContainer,
+	StudioRouteSet,
+	StudioRouteSetExclusivityGroup,
+} from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	convertObjectIntoOverrides,
 	ObjectOverrideSetOp,
 	ObjectWithOverrides,
 	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import {
-	StudioRouteSet,
-	StudioRouteSetExclusivityGroup,
-	StudioPackageContainer,
-	IStudioSettings,
-	StudioDeviceSettings,
-} from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { DEFAULT_CORE_TRIGGER_IDS } from './upgrades/defaultSystemActionTriggers'
 import { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
 import { ICoreSystemSettings } from '@sofie-automation/shared-lib/dist/core/model/CoreSystemSettings'
+
+import { CoreSystem, PeripheralDevices, Studios, TriggeredActions } from '../collections'
 import { logger } from '../logging'
-import { assertNever, literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { addMigrationSteps } from './databaseMigration'
+import { DEFAULT_CORE_TRIGGER_IDS } from './upgrades/defaultSystemActionTriggers'
 
 // Release 52
 

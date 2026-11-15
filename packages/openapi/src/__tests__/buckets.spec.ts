@@ -1,4 +1,4 @@
-import { Configuration, BucketsApi } from '../../client/ts/index.js'
+import { BucketsApi, Configuration } from '../../client/ts/index.js'
 import { checkServer } from '../checkServer.js'
 import Logging from '../httpLogging.js'
 

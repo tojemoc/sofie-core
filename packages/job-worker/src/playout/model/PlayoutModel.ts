@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+
+import { Time } from '@sofie-automation/blueprints-integration'
 import {
 	BucketAdLibId,
 	PartId,
@@ -10,8 +13,10 @@ import {
 	SegmentId,
 	SegmentPlayoutId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { BrandingChangeTarget } from '@sofie-automation/blueprints-integration'
-import { BaseModel } from '../../modelBase.js'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import {
 	ABSessionAssignments,
 	ABSessionInfo,
@@ -20,21 +25,18 @@ import {
 	RundownHoldState,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import { ReadonlyDeep } from 'type-fest'
-import { StudioPlayoutModelBase, StudioPlayoutModelBaseReadonly } from '../../studio/model/StudioPlayoutModel.js'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { PlaylistLock } from '../../jobs/lock.js'
-import { PlayoutRundownModel } from './PlayoutRundownModel.js'
-import { PlayoutSegmentModel } from './PlayoutSegmentModel.js'
-import { PlayoutPartInstanceModel } from './PlayoutPartInstanceModel.js'
-import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { PlayoutPieceInstanceModel } from './PlayoutPieceInstanceModel.js'
 import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
+import type { BrandingChangeTarget } from '@sofie-automation/blueprints-integration'
+
+import { PlaylistLock } from '../../jobs/lock.js'
+import { BaseModel } from '../../modelBase.js'
+import { StudioPlayoutModelBase, StudioPlayoutModelBaseReadonly } from '../../studio/model/StudioPlayoutModel.js'
+import { PlayoutPartInstanceModel } from './PlayoutPartInstanceModel.js'
+import { PlayoutPieceInstanceModel } from './PlayoutPieceInstanceModel.js'
+import { PlayoutRundownModel } from './PlayoutRundownModel.js'
+import { PlayoutSegmentModel } from './PlayoutSegmentModel.js'
 import type { INotificationsModel } from '../../notifications/NotificationsModel.js'
-import { Time } from '@sofie-automation/blueprints-integration'
 
 export type DeferredFunction = (playoutModel: PlayoutModel) => void | Promise<void>
 export type DeferredAfterSaveFunction = (playoutModel: PlayoutModelReadonly) => void | Promise<void>

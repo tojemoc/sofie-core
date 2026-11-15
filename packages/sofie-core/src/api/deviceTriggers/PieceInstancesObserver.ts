@@ -1,6 +1,8 @@
 import { RundownPlaylistActivationId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { RundownPlaylists, ShowStyleBases, PieceInstances, PartInstances } from '../../collections'
+
+import { PartInstances, PieceInstances, RundownPlaylists, ShowStyleBases } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../../publications/lib/lib'
 import { rundownPlaylistFieldSpecifier } from './reactiveContentCache'
 import {
 	ContentCache,
@@ -8,7 +10,6 @@ import {
 	partInstanceFieldSpecifier,
 	pieceInstanceFieldSpecifier,
 } from './reactiveContentCacheForPieceInstances'
-import { waitForAllObserversReady } from '../../publications/lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 const REACTIVITY_DEBOUNCE = 20

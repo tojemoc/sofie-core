@@ -8,15 +8,17 @@ import {
 	ITranslatableMessage,
 	PieceLifespan,
 } from '@sofie-automation/blueprints-integration'
-import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { sortAdlibs } from '../adlibs.js'
-import { ReactivePlaylistActionContext } from './actionFactory.js'
 import { PartId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { IWrappedAdLibBase } from '@sofie-automation/shared-lib/dist/input-gateway/deviceTriggerPreviews'
-import { MountedAdLibTriggerType } from '../api/MountedTriggers.js'
+import { SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { assertNever, generateTranslation } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { IWrappedAdLibBase } from '@sofie-automation/shared-lib/dist/input-gateway/deviceTriggerPreviews'
+
+import { sortAdlibs } from '../adlibs.js'
+import { MountedAdLibTriggerType } from '../api/MountedTriggers.js'
 import { FindOptions } from '../collections/lib.js'
+import { ReactivePlaylistActionContext } from './actionFactory.js'
 import {
 	TriggersAdLibAction,
 	TriggersAdLibPiece,
@@ -25,7 +27,6 @@ import {
 	TriggersRundownBaselineAdLibItem,
 	TriggerTrackerComputation,
 } from './triggersContext.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 
 export type AdLibFilterChainLink = IRundownPlaylistFilterLink | IGUIContextFilterLink | IAdLibFilterLink
 
@@ -49,10 +50,7 @@ type CompiledAdLibFilter<T> = {
 }
 
 type SomeAdLib =
-	| TriggersRundownBaselineAdLibItem
-	| TriggersRundownBaselineAdLibAction
-	| TriggersAdLibPiece
-	| TriggersAdLibAction
+	TriggersRundownBaselineAdLibItem | TriggersRundownBaselineAdLibAction | TriggersAdLibPiece | TriggersAdLibAction
 
 interface IWrappedAdLibType<T extends SomeAdLib, typeName extends MountedAdLibTriggerType> extends IWrappedAdLibBase {
 	_id: T['_id']
@@ -662,7 +660,7 @@ export function compileAdLibFilter(
 								...adLibPieceTypeFilter.selector,
 								...currentNextOverride,
 								rundownId: currentRundownId,
-							} as MongoQuery<TriggersRundownBaselineAdLibItem>,
+							},
 							adLibPieceTypeFilter.options
 						)
 					).map((item) => wrapAdLibPiece(item, MountedAdLibTriggerType.rundownBaselineAdLibItem))
@@ -674,7 +672,7 @@ export function compileAdLibFilter(
 								...adLibPieceTypeFilter.selector,
 								...currentNextOverride,
 								rundownId: currentRundownId,
-							} as MongoQuery<TriggersAdLibPiece>,
+							},
 							adLibPieceTypeFilter.options
 						)
 					).map((item) => wrapAdLibPiece(item, MountedAdLibTriggerType.adLibPiece))
@@ -835,7 +833,7 @@ export function compileAdLibFilter(
 			}
 		}
 
-		let resultingAdLibs: IWrappedAdLib[] = []
+		let resultingAdLibs: IWrappedAdLib[]
 
 		{
 			resultingAdLibs = [

@@ -1,13 +1,11 @@
-import type { TTimerStatus, TTimerIndex } from '@sofie-automation/live-status-gateway-api'
-import {
-	type RundownTTimer,
-	isRundownTTimerIndex,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import { isRundownTTimerIndex } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+import type { TTimerStatus } from '@sofie-automation/live-status-gateway-api'
 
 function emptyTimer(index: number): TTimerStatus {
 	return {
-		index: index as TTimerIndex,
+		index: index,
 		label: '',
 		configured: false,
 		mode: null,
@@ -20,12 +18,12 @@ function emptyTimer(index: number): TTimerStatus {
 function toTTimer(timer: RundownTTimer): TTimerStatus {
 	const { index, label, mode, state, projectedState, anchorPartId } = timer
 	return {
-		index: index as TTimerIndex,
+		index: index,
 		label,
 		configured: !!(mode && state),
-		mode: mode as TTimerStatus['mode'],
-		state: state as TTimerStatus['state'],
-		projected: projectedState ? (projectedState as NonNullable<TTimerStatus['projected']>) : null,
+		mode: mode,
+		state: state,
+		projected: projectedState ? projectedState : null,
 		anchorPartId: anchorPartId ? unprotectString(anchorPartId) : null,
 	}
 }

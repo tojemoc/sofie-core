@@ -1,18 +1,22 @@
-import { useCallback, useContext, useState, type MouseEventHandler } from 'react'
+import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
+import { useCallback, useContext, useState } from 'react'
 import _ from 'underscore'
+import type { MouseEventHandler } from 'react'
+
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { getElementDocumentOffset, type OffsetPosition } from '../../../utils/positions.js'
+import type { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { contextMenuHoldToDisplayTime } from '../../../lib/lib.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { dragContext } from '../../RundownView/DragContext.js'
+import { SourceLayerItemContainer } from '../SourceLayerItemContainer.js'
+import { SegmentTimelinePartElementId } from './SegmentTimelinePart.js'
+import type { OffsetPosition } from '../../../utils/positions.js'
 import type { IContextMenuContext } from '../../RundownView.js'
 import type { IOutputLayerUi, ISourceLayerUi, PartUi, SegmentUi } from '../SegmentTimelineContainer.js'
-import { SegmentTimelinePartElementId } from './SegmentTimelinePart.js'
-import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { SourceLayerItemContainer } from '../SourceLayerItemContainer.js'
-import { contextMenuHoldToDisplayTime } from '../../../lib/lib.js'
-import type { PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { dragContext } from '../../RundownView/DragContext.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
 
 export interface ISourceLayerPropsBase {
 	key: string
@@ -95,7 +99,9 @@ export function SourceLayer(props: Readonly<ISourceLayerProps>): JSX.Element {
 
 	const pieces =
 		dragCtx?.piece && dragCtx.piece.sourceLayer?._id === props.layer._id
-			? (props.layer.pieces ?? []).filter((p) => p.instance._id !== dragCtx.piece?.instance._id).concat(dragCtx.piece)
+			? (props.layer.pieces ?? [])
+					.filter((p) => p.instance._id !== dragCtx.piece?.instance._id)
+					.concat(dragCtx.piece)
 			: props.layer.pieces
 
 	const onMouseEnter: MouseEventHandler<HTMLElement> = (e) => {

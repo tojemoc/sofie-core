@@ -1,17 +1,19 @@
-import { PartInstanceId, RundownId, RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { ReadonlyDeep } from 'type-fest'
+
+import { PartInstanceId, RundownId, RundownPlaylistActivationId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+
+import { PartInstances, PieceInstances } from '../../collections'
 import { logger } from '../../logging'
+import { waitForAllObserversReady } from '../lib/lib'
 import {
 	ContentCache,
 	partInstanceBrandingFieldSpecifier,
 	pieceInstanceFieldSpecifier,
 	pieceInstanceSimpleFieldSpecifier,
 } from './reactiveContentCache'
-import { PartInstances, PieceInstances } from '../../collections'
-import { waitForAllObserversReady } from '../lib/lib'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 export interface UIPieceInstancesArgs {

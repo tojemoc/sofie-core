@@ -1,8 +1,8 @@
-import * as React from 'react'
-import _ from 'underscore'
 import ClassNames from 'classnames'
-import { Manager, Reference, Popper } from 'react-popper'
+import * as React from 'react'
 import Form from 'react-bootstrap/esm/Form'
+import { Manager, Popper, Reference } from 'react-popper'
+import _ from 'underscore'
 
 export interface MultiSelectEvent {
 	selectedValues: Array<string>
@@ -129,16 +129,14 @@ export class MultiSelect extends React.Component<IProps, IState> {
 	}
 
 	private onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-		if (
-			!(
-				event.relatedTarget &&
-				event.relatedTarget instanceof HTMLElement &&
-				this._popperRef &&
-				(this._popperRef === event.relatedTarget ||
-					this._popperRef.contains(event.relatedTarget) ||
-					this._titleRef === event.relatedTarget)
-			)
-		) {
+		if (!(
+			event.relatedTarget &&
+			event.relatedTarget instanceof HTMLElement &&
+			this._popperRef &&
+			(this._popperRef === event.relatedTarget ||
+				this._popperRef.contains(event.relatedTarget) ||
+				this._titleRef === event.relatedTarget)
+		)) {
 			this.setState({
 				expanded: false,
 			})
@@ -266,7 +264,9 @@ export class MultiSelect extends React.Component<IProps, IState> {
 														<p className="expco-item" key={key}>
 															{key}
 														</p>
-														{value.value.map((v) => this.renderOption(v, v, value.className))}
+														{value.value.map((v) =>
+															this.renderOption(v, v, value.className)
+														)}
 													</React.Fragment>
 												) : (
 													this.renderOption(value.value, key, value.className)

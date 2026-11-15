@@ -1,13 +1,14 @@
 import { PeripheralDeviceId, RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { assertConnectionHasOneOfPermissions, RequestCredentials } from './auth'
-import { PeripheralDevices, RundownPlaylists, Rundowns } from '../collections'
 import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+
 import { MethodContext } from '../api/methodContext'
 import { profiler } from '../api/profiler'
+import { PeripheralDevices, RundownPlaylists, Rundowns } from '../collections'
 import { PublicationContext } from '../publications/lib/lib'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { assertConnectionHasOneOfPermissions, RequestCredentials } from './auth'
 
 /**
  * Check that the current user has write access to the specified playlist, and ensure that the playlist exists

@@ -1,18 +1,20 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
 import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { check } from '../lib/check'
-import { ReadonlyDeep } from 'type-fest'
-import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
 import { DeviceTriggerArguments, UIDeviceTriggerPreview } from '@sofie-automation/meteor-lib/dist/api/MountedTriggers'
-import { getCurrentTime } from '../lib/lib'
+import { CustomCollectionName, MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+
+import { PeripheralDevices } from '../collections'
+import { check } from '../lib/check'
 import { SetupObserversResult, setUpOptimizedObserverArray, TriggerUpdate } from '../lib/customPublication'
 import { CustomPublish } from '../lib/customPublication/publish'
-import { PeripheralDevices } from '../collections'
+import { getCurrentTime } from '../lib/lib'
 import { assertConnectionHasOneOfPermissions } from '../security/auth'
 import type { PublicationRegistry } from '../publicationRegistry'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 /** IDEA: This could potentially be a Capped Collection, thus enabling scaling Core horizontally:
  *  https://www.mongodb.com/docs/manual/core/capped-collections/ */

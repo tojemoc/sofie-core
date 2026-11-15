@@ -1,3 +1,6 @@
+import * as objectPath from 'object-path'
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintConfig,
 	ICommonContext,
@@ -5,9 +8,8 @@ import {
 	ITranslatableMessage,
 	JSONSchema,
 } from '@sofie-automation/blueprints-integration'
-import * as objectPath from 'object-path'
-import { ReadonlyDeep } from 'type-fest'
-import { literal, objectPathGet, objectPathSet, clone } from '../lib.js'
+
+import { clone, literal, objectPathGet, objectPathSet } from '../lib.js'
 import {
 	applyAndValidateOverrides,
 	filterOverrideOpsForPrefix,

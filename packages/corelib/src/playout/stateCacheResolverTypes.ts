@@ -1,3 +1,5 @@
+import { TimeDuration } from '@sofie-automation/shared-lib/dist/lib/lib'
+
 import {
 	PartId,
 	PieceId,
@@ -8,16 +10,15 @@ import {
 	ShowStyleBaseId,
 } from '../dataModel/Ids.js'
 import { DBPart, PartExtended } from '../dataModel/Part.js'
+import { PartInstance } from '../dataModel/PartInstance.js'
 import { Piece } from '../dataModel/Piece.js'
 import { PieceInstance } from '../dataModel/PieceInstance.js'
 import { Rundown } from '../dataModel/Rundown.js'
 import { DBRundownPlaylist } from '../dataModel/RundownPlaylist/RundownPlaylist.js'
 import { DBSegment, SegmentExtended } from '../dataModel/Segment.js'
-import { FindOneOptions, FindOptions, MongoQuery } from '../mongo.js'
-import { PartInstance } from '../dataModel/PartInstance.js'
 import { DBShowStyleBase, UIShowStyleBase } from '../dataModel/ShowStyleBase.js'
 import { UIStudio } from '../dataModel/Studio.js'
-import { TimeDuration } from '@sofie-automation/shared-lib/dist/lib/lib'
+import { FindOneOptions, FindOptions, MongoQuery } from '../mongo.js'
 
 export type SegmentsFindOne = (
 	selector: SegmentId | MongoQuery<DBSegment>,

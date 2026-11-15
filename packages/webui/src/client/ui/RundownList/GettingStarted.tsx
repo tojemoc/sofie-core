@@ -1,5 +1,6 @@
 import Tooltip from 'rc-tooltip'
 import { useTranslation } from 'react-i18next'
+
 import { ToolTipStep } from '../RundownList.js'
 
 export interface IGettingStartedProps {
@@ -15,8 +16,13 @@ export function GettingStarted({ step }: Readonly<IGettingStartedProps>): JSX.El
 			<div>
 				<ul>
 					<li>
-						{t('Start with giving this browser configuration permissions by adding this to the URL: ')}&nbsp;
-						<Tooltip overlay={t('Start Here!')} visible={step === ToolTipStep.TOOLTIP_START_HERE} placement="top">
+						{t('Start with giving this browser configuration permissions by adding this to the URL: ')}
+						&nbsp;
+						<Tooltip
+							overlay={t('Start Here!')}
+							visible={step === ToolTipStep.TOOLTIP_START_HERE}
+							placement="top"
+						>
 							<a href="?configure=1">?configure=1</a>
 						</Tooltip>
 					</li>

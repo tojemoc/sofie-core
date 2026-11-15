@@ -1,40 +1,39 @@
 import '../../__mocks__/_extendJest'
-import {
-	PeripheralDevice,
-	PeripheralDeviceCategory,
-	PeripheralDeviceType,
-} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { literal, getRandomId, getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
-import { protectString, ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../../lib/lib'
-import { waitUntil } from '../../__mocks__/helpers/jest'
-import { setupDefaultStudioEnvironment, DefaultEnvironment } from '../../__mocks__/helpers/database'
-import { setLogLevel } from '../../logging'
-import { IngestDeviceSecretSettings } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceSettings/ingestDevice'
-import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+
 import {
 	IBlueprintPieceType,
 	PieceLifespan,
 	PlaylistTimingType,
 	StatusCode,
 } from '@sofie-automation/blueprints-integration'
-import { CreateFakeResult, QueueStudioJobSpy } from '../../__mocks__/worker'
-import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
-
-jest.mock('../deviceTriggers/observer')
-
+import { RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import {
+	PeripheralDevice,
+	PeripheralDeviceCategory,
+	PeripheralDeviceType,
+} from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
+import { IngestDeviceSecretSettings } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceSettings/ingestDevice'
+import { EmptyPieceTimelineObjectsBlob } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { ProtectedString, protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { OnTimelineTriggerTimeProps, StudioJobFunc, StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { PeripheralDeviceAPIMethods } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
-import { ServerPeripheralDeviceAPIClass } from '../peripheralDevice'
+import { LogLevel } from '@sofie-automation/meteor-lib/dist/lib'
+import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
 import { PeripheralDeviceForDevice } from '@sofie-automation/shared-lib/dist/core/model/peripheralDevice'
+import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { PeripheralDeviceAPIMethods } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
 import {
 	PeripheralDeviceInitOptions,
 	PlayoutChangedType,
 	TimelineTriggerTimeResult,
 } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { RundownId, RundownPlaylistId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { DefaultEnvironment, setupDefaultStudioEnvironment } from '../../__mocks__/helpers/database'
+import { waitUntil } from '../../__mocks__/helpers/jest'
+import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { SupressLogMessages } from '../../__mocks__/suppressLogging'
+import { CreateFakeResult, QueueStudioJobSpy } from '../../__mocks__/worker'
 import {
 	MediaObjects,
 	Parts,
@@ -45,9 +44,11 @@ import {
 	Rundowns,
 	Segments,
 } from '../../collections'
-import { SupressLogMessages } from '../../__mocks__/suppressLogging'
-import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import { PeripheralDeviceCommand } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceCommand'
+import { getCurrentTime } from '../../lib/lib'
+import { setLogLevel } from '../../logging'
+import { ServerPeripheralDeviceAPIClass } from '../peripheralDevice'
+
+jest.mock('../deviceTriggers/observer')
 
 const MeteorCall = makeMeteorCallForTest({
 	methods: PeripheralDeviceAPIMethods,

@@ -1,4 +1,5 @@
 import { IncomingWebhookResult } from '@slack/webhook'
+
 import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 export async function sendSlackMessageToWebhook(message: string, _webhookURL: string): Promise<IncomingWebhookResult> {

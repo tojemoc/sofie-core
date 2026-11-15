@@ -1,10 +1,12 @@
 import { ReadonlyDeep } from 'type-fest'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
-import { SetupObserversResult, TriggerUpdate, setUpOptimizedObserverInner } from './optimizedObserverBase'
-import { CustomPublish, CustomPublishChanges } from './publish'
+
 import { diffObject } from '@sofie-automation/corelib/dist/diffObject'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { SetupObserversResult, setUpOptimizedObserverInner, TriggerUpdate } from './optimizedObserverBase'
+import { CustomPublish, CustomPublishChanges } from './publish'
 
 /**
  * This is an optimization to enable multiple listeners that observes (and manipulates) the same data, to only use one observer and manipulator,

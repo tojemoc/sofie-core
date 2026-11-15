@@ -11,27 +11,26 @@
  * without knowing what particular case you are trying to solve.
  */
 
-import type { PartId, PartInstanceId, SegmentId, SegmentPlayoutId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { CountdownType } from '@sofie-automation/blueprints-integration'
+import { QuickLoopMarkerType } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
 import {
-	type DBRundownPlaylist,
-	QuickLoopMarkerType,
-} from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { objectFromEntries } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { getCurrentTime } from './systemTime.js'
-import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { CountdownType } from '@sofie-automation/blueprints-integration'
-import { RundownUtils } from './rundown.js'
-import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance'
-import {
-	isLoopRunning,
-	isLoopDefined,
 	isEntirePlaylistLooping,
+	isLoopDefined,
+	isLoopRunning,
 } from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { objectFromEntries } from '@sofie-automation/shared-lib/dist/lib/lib'
+import type { PartId, PartInstanceId, SegmentId, SegmentPlayoutId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { DBPart, PartExtended } from '@sofie-automation/corelib/dist/dataModel/Part'
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import type { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import type { PartInstance } from '@sofie-automation/corelib/src/dataModel/PartInstance'
+
+import { RundownUtils } from './rundown.js'
+import { getCurrentTime } from './systemTime.js'
 
 // Minimum duration that a part can be assigned. Used by gap parts to allow them to "compress" to indicate time running out.
 const MINIMAL_NONZERO_DURATION = 1
@@ -214,10 +213,10 @@ export class RundownTimingCalculator {
 
 				const playOffset = partInstance.timings?.playOffset || 0
 
-				let partDuration = 0
-				let partExpectedDuration = 0
-				let partDisplayDuration = 0
-				let partDisplayDurationNoPlayback = 0
+				let partDuration: number
+				let partExpectedDuration: number
+				let partDisplayDuration: number
+				let partDisplayDurationNoPlayback: number
 
 				let displayDurationFromGroup = 0
 
@@ -423,7 +422,7 @@ export class RundownTimingCalculator {
 
 				// waitAccumulator is used to calculate the countdowns for Parts relative to the current Part
 				// always add the full duration, in case by some manual intervention this segment should play twice
-				let waitDuration = 0
+				let waitDuration: number
 				if (memberOfDisplayDurationGroup) {
 					waitDuration =
 						partInstance.timings?.duration ||
@@ -546,7 +545,7 @@ export class RundownTimingCalculator {
 
 				totalRundownDuration += segmentBudgetDuration
 
-				let valToAddToRundownAsPlayedDuration = 0
+				let valToAddToRundownAsPlayedDuration: number
 				let valToAddToRundownRemainingDuration = 0
 				if (liveSegmentIds && segment._id === liveSegmentIds.segmentId) {
 					const startedPlayback =
@@ -754,7 +753,7 @@ export function getPlaylistTimingDiff(
 		backAnchor = timing.expectedEnd
 	}
 
-	let diff = 0
+	let diff: number
 	if (PlaylistTiming.isPlaylistTimingNone(timing)) {
 		diff =
 			(timingContext.asPlayedPlaylistDuration || 0) -

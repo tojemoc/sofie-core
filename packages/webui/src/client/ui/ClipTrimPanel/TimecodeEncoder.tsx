@@ -1,9 +1,10 @@
-import * as React from 'react'
-import { Timecode } from '@sofie-automation/corelib/dist/index'
-import _ from 'underscore'
-import ClassNames from 'classnames'
-import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ClassNames from 'classnames'
+import * as React from 'react'
+import _ from 'underscore'
+
+import { Timecode } from '@sofie-automation/corelib/dist/index'
 
 export interface IProps {
 	value?: number
@@ -51,7 +52,11 @@ export class TimecodeEncoder extends React.Component<IProps, IState> {
 	}
 
 	private static secondsToTimecode(time: number, fps: number): string {
-		return Timecode.init({ framerate: fps.toString(), timecode: time, drop_frame: !Number.isInteger(fps) }).toString()
+		return Timecode.init({
+			framerate: fps.toString(),
+			timecode: time,
+			drop_frame: !Number.isInteger(fps),
+		}).toString()
 	}
 
 	private validate(): null | number {

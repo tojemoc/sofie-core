@@ -80,7 +80,7 @@
 		"xmlbuilder": "^15.1.1"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.29.7",
+		"@babel/preset-env": "^8.0.0",
 		"@testing-library/dom": "^10.4.1",
 		"@testing-library/jest-dom": "^7.0.0",
 		"@testing-library/react": "^16.3.2",
@@ -94,8 +94,8 @@
 		"@types/react-router-dom": "^5.3.3",
 		"@types/sha.js": "^2.4.4",
 		"@types/xml2js": "^0.4.14",
-		"@vitejs/plugin-react": "^5.2.0",
-		"@welldone-software/why-did-you-render": "^4.3.2",
+		"@vitejs/plugin-react": "^6.0.0",
+		"@welldone-software/why-did-you-render": "^10.0.0",
 		"@xmldom/xmldom": "^0.9.10",
 		"babel-jest": "^30.4.1",
 		"globals": "^17.7.0",

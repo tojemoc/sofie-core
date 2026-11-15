@@ -1,5 +1,6 @@
-import { UserEditingDefinition, UserEditingProperties } from '../userEditing.js'
 import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
+import { UserEditingDefinition, UserEditingProperties } from '../userEditing.js'
 
 export enum SegmentDisplayMode {
 	Timeline = 'timeline',

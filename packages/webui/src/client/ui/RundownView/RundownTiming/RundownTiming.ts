@@ -1,6 +1,6 @@
-import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 import { SegmentTimelinePartClass } from '../../SegmentTimeline/Parts/SegmentTimelinePart.js'
 import type { RundownTimingContext } from '../../../lib/rundownTiming.js'
+import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 
 export interface TimeEventArgs {
 	currentTime: number
@@ -24,13 +24,13 @@ export namespace RundownTiming {
 	 */
 	export enum Events {
 		/** Event is emitted once a second, to update displays in a synced manner */
-		'timeupdateSynced' = 'sofie:rundownTimeUpdateSynced',
+		timeupdateSynced = 'sofie:rundownTimeUpdateSynced',
 		/** Event is emitted every now-and-then, generally to be used for simple displays */
-		'timeupdateLowResolution' = 'sofie:rundownTimeUpdateLowResolution',
+		timeupdateLowResolution = 'sofie:rundownTimeUpdateLowResolution',
 		/** event is emitted with a very high frequency (60 Hz), to be used sparingly as
 		 * hooking up Components to it will cause a lot of renders
 		 */
-		'timeupdateHighResolution' = 'sofie:rundownTimeUpdateHighResolution',
+		timeupdateHighResolution = 'sofie:rundownTimeUpdateHighResolution',
 	}
 
 	/**

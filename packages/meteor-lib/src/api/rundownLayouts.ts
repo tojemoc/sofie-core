@@ -1,5 +1,6 @@
-import { RundownLayoutType } from '../collections/RundownLayouts.js'
 import { RundownLayoutId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
+import { RundownLayoutType } from '../collections/RundownLayouts.js'
 
 export interface NewRundownLayoutsAPI {
 	createRundownLayout(
@@ -12,6 +13,6 @@ export interface NewRundownLayoutsAPI {
 }
 
 export enum RundownLayoutsAPIMethods {
-	'removeRundownLayout' = 'rundownLayout.removeRundownLayout',
-	'createRundownLayout' = 'rundownLayout.createRundownLayout',
+	removeRundownLayout = 'rundownLayout.removeRundownLayout',
+	createRundownLayout = 'rundownLayout.createRundownLayout',
 }

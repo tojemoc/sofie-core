@@ -1,14 +1,17 @@
+import { MenuItem } from '@jstarpl/react-contextmenu'
+import { useTranslation } from 'react-i18next'
+
+import { JSONBlobParse, UserEditingType } from '@sofie-automation/blueprints-integration'
 import { assertNever, clone } from '@sofie-automation/corelib/dist/lib'
+import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type { UserOperationTarget } from '@sofie-automation/blueprints-integration'
 import type { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { CoreUserEditingDefinition } from '@sofie-automation/corelib/dist/dataModel/UserEditingDefinitions'
-import { JSONBlobParse, UserEditingType, type UserOperationTarget } from '@sofie-automation/blueprints-integration'
-import { translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { MenuItem } from '@jstarpl/react-contextmenu'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { SchemaFormInPlace } from '../../lib/forms/SchemaFormInPlace.js'
+
 import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { SchemaFormInPlace } from '../../lib/forms/SchemaFormInPlace.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
-import { useTranslation } from 'react-i18next'
+import { doModalDialog } from '../../lib/ModalDialog.js'
 
 interface UserEditOperationMenuItemsProps {
 	rundownId: RundownId
@@ -38,9 +41,15 @@ export function UserEditOperationMenuItems({
 								key={`${userEditOperation.id}_${i}`}
 								onClick={(e) => {
 									doUserAction(t, e, UserAction.EXECUTE_USER_OPERATION, (e, ts) =>
-										MeteorCall.userAction.executeUserChangeOperation(e, ts, rundownId, operationTarget, {
-											id: userEditOperation.id,
-										})
+										MeteorCall.userAction.executeUserChangeOperation(
+											e,
+											ts,
+											rundownId,
+											operationTarget,
+											{
+												id: userEditOperation.id,
+											}
+										)
 									)
 								}}
 							>
@@ -73,10 +82,16 @@ export function UserEditOperationMenuItems({
 										no: t('Cancel'),
 										onAccept: () => {
 											doUserAction(t, e, UserAction.EXECUTE_USER_OPERATION, (e, ts) =>
-												MeteorCall.userAction.executeUserChangeOperation(e, ts, rundownId, operationTarget, {
-													...values,
-													id: userEditOperation.id,
-												})
+												MeteorCall.userAction.executeUserChangeOperation(
+													e,
+													ts,
+													rundownId,
+													operationTarget,
+													{
+														...values,
+														id: userEditOperation.id,
+													}
+												)
 											)
 										},
 									})

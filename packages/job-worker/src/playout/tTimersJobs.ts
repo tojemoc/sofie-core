@@ -1,7 +1,8 @@
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
-	TTimerPropsBase,
 	TTimerClearProjectedProps,
 	TTimerPauseProps,
+	TTimerPropsBase,
 	TTimerRestartProps,
 	TTimerResumeProps,
 	TTimerSetProjectedAnchorPartProps,
@@ -10,12 +11,11 @@ import {
 	TTimerStartCountdownProps,
 	TTimerStartFreeRunProps,
 } from '@sofie-automation/corelib/dist/worker/studio'
-import { JobContext } from '../jobs/index.js'
-import { runWithPlayoutModel, runWithPlaylistLock } from './lock.js'
-import { recalculateTTimerProjections } from './tTimers.js'
-import { runJobWithPlayoutModel } from './lock.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { PlaylistTTimerImpl, TTimersService } from '../blueprints/context/services/TTimersService.js'
+import { JobContext } from '../jobs/index.js'
+import { runJobWithPlayoutModel, runWithPlaylistLock, runWithPlayoutModel } from './lock.js'
+import { recalculateTTimerProjections } from './tTimers.js'
 import type { PlayoutModel } from './model/PlayoutModel.js'
 
 async function runTTimerJob(

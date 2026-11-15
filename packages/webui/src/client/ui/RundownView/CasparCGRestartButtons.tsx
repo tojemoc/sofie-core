@@ -1,16 +1,18 @@
+import React, { memo, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { TSR } from '@sofie-automation/blueprints-integration'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import { isTranslatableMessage, translateMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import { DEFAULT_TSR_ACTION_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
 import { PeripheralDeviceType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import React, { memo, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
 import { PeripheralDevices } from '../../collections'
 import { callPeripheralDeviceAction } from '../../lib/clientAPI'
 import { doModalDialog } from '../../lib/ModalDialog'
-import { NotificationCenter, NoticeLevel, Notification } from '../../lib/notifications/notifications'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications'
 import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData'
 import { i18nTranslator } from '../i18n'
 
@@ -42,7 +44,12 @@ export const CasparCGRestartButtons = memo(function CasparCGRestartButtons({ stu
 				title: t('Restart CasparCG Server'),
 				message: t('Do you want to restart CasparCG Server "{{device}}"?', { device: device.name }),
 				onAccept: () => {
-					callPeripheralDeviceAction(e, device._id, DEFAULT_TSR_ACTION_TIMEOUT_TIME, TSR.CasparCGActions.RestartServer)
+					callPeripheralDeviceAction(
+						e,
+						device._id,
+						DEFAULT_TSR_ACTION_TIMEOUT_TIME,
+						TSR.CasparCGActions.RestartServer
+					)
 						.then((r) => {
 							if (r?.result === TSR.ActionExecutionResultCode.Error) {
 								throw new Error(

@@ -1,22 +1,24 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import {
-	SetNextPartProps,
 	MoveNextPartProps,
-	SetNextSegmentProps,
 	QueueNextSegmentProps,
 	QueueNextSegmentResult,
+	SetNextPartProps,
+	SetNextSegmentProps,
 } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { JobContext } from '../jobs/index.js'
 import { runJobWithPlayoutModel } from './lock.js'
-import { setNextPartFromPart, setNextSegment, queueNextSegment } from './setNext.js'
-import { selectNewPartWithOffsets } from './moveNextPart.js'
-import { updateTimeline } from './timeline/generate.js'
 import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
-import { ReadonlyDeep } from 'type-fest'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { selectNewPartWithOffsets } from './moveNextPart.js'
+import { queueNextSegment, setNextPartFromPart, setNextSegment } from './setNext.js'
+import { updateTimeline } from './timeline/generate.js'
 
 /**
  * Set the next Part to a specified id

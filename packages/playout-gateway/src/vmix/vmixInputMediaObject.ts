@@ -1,4 +1,5 @@
 import type { MediaObject } from 'timeline-state-resolver'
+
 import { VmixInputRecord } from './types.js'
 
 export function vmixInputCollectionId(deviceId: string): string {

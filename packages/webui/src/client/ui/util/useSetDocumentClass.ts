@@ -1,4 +1,4 @@
-import { useEffect, useRef, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 
 /**
  * Adds the provided classes to `document.body` upon mount, and removes them when unmounted

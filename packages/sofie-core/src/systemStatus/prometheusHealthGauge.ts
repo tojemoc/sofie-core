@@ -1,4 +1,5 @@
 import { MetricsGauge } from '@sofie-automation/corelib/dist/prometheus'
+
 import { getSystemStatus } from './systemStatus'
 
 export const healthGauge = new MetricsGauge({

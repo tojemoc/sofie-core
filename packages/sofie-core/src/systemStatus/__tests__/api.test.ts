@@ -1,16 +1,19 @@
 import '../../__mocks__/_extendJest'
-import { setupDefaultStudioEnvironment, DefaultEnvironment } from '../../__mocks__/helpers/database'
+
+import { StatusCode } from '@sofie-automation/blueprints-integration'
 import { literal } from '@sofie-automation/corelib/dist/lib'
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { sleepNoFakeTimers } from '../../__mocks__/time'
-import { status2ExternalStatus, setSystemStatus } from '../systemStatus'
-import { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { StatusCode } from '@sofie-automation/blueprints-integration'
-import { SystemStatusAPIMethods } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { callKoaRoute } from '../../__mocks__/koa-util'
-import { healthRouter, ServerSystemStatusAPI } from '../api'
+import { StatusResponse, SystemStatusAPIMethods } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
 import { UIBlueprintUpgradeStatus } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+
+import { DefaultEnvironment, setupDefaultStudioEnvironment } from '../../__mocks__/helpers/database'
 import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { callKoaRoute } from '../../__mocks__/koa-util'
+import { sleepNoFakeTimers } from '../../__mocks__/time'
+import { setupSystemStatusObservers } from '../../coreSystem'
+import * as getServerBlueprintUpgradeStatuses from '../../publications/blueprintUpgradeStatus/systemStatus'
+import { healthRouter, ServerSystemStatusAPI } from '../api'
+import { setSystemStatus, status2ExternalStatus } from '../systemStatus'
 
 // we don't want the deviceTriggers observer to start up at this time
 jest.mock('../../api/deviceTriggers/observer')
@@ -19,8 +22,6 @@ const MeteorCall = makeMeteorCallForTest({ methods: SystemStatusAPIMethods, clas
 require('../../coreSystem/index')
 const PackageInfo = require('../../../package.json')
 
-import * as getServerBlueprintUpgradeStatuses from '../../publications/blueprintUpgradeStatus/systemStatus'
-import { setupSystemStatusObservers } from '../../coreSystem'
 jest.spyOn(getServerBlueprintUpgradeStatuses, 'getServerBlueprintUpgradeStatuses').mockReturnValue(
 	Promise.resolve(literal<UIBlueprintUpgradeStatus[]>([]))
 )

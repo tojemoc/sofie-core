@@ -1,12 +1,14 @@
+import { TimelineEnable } from 'superfly-timeline'
+
+import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { TimelineObjType } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { getBestPieceInstanceId, LookaheadTimelineObject } from './findObjects.js'
 import { PartAndPieces, PieceInstanceWithObjectMap } from './util.js'
-import { TimelineEnable } from 'superfly-timeline'
-import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
-import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
 
 /**
  * Computes a full {@link LookaheadTimelineObject} for a given piece/object pair,

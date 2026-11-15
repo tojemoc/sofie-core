@@ -1,4 +1,5 @@
 import EJSON from 'ejson'
+
 import { ProtectedString } from './protectedString.js'
 
 /**

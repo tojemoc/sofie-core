@@ -1,21 +1,26 @@
-import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import {
-	MongoClient,
-	Filter,
-	FindOptions,
-	Collection as MongoCollection,
 	ChangeStreamDocument,
 	CountOptions,
+	Filter,
+	FindOptions,
+	MongoClient,
+	Collection as MongoCollection,
 } from 'mongodb'
-import { wrapMongoCollection } from './collection.js'
+import { ReadonlyDeep } from 'type-fest'
+import type { EventEmitter } from 'events'
+
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import { BucketAdLibAction } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibAction'
 import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
+import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItem } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
+import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
+import { MediaObjects } from '@sofie-automation/corelib/dist/dataModel/MediaObjects'
 import { NrcsIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
+import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
@@ -30,22 +35,19 @@ import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/Rund
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import { SofieIngestDataCacheObj } from '@sofie-automation/corelib/dist/dataModel/SofieIngestDataCache'
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { TimelineComplete } from '@sofie-automation/corelib/dist/dataModel/Timeline'
 import { DBTimelineDatastoreEntry } from '@sofie-automation/corelib/dist/dataModel/TimelineDatastore'
-import { ExpectedPackageDB } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
+import { literal } from '@sofie-automation/corelib/dist/lib'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
 import type {
 	MongoModifier as CorelibMongoModifier,
 	MongoBulkWriteOperation,
 } from '@sofie-automation/corelib/dist/mongo'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
-import { ExternalMessageQueueObj } from '@sofie-automation/corelib/dist/dataModel/ExternalMessageQueue'
-import { MediaObjects } from '@sofie-automation/corelib/dist/dataModel/MediaObjects'
-import type { DBNotificationObj } from '@sofie-automation/corelib/dist/dataModel/Notifications'
-import type { EventEmitter } from 'events'
+
+import { wrapMongoCollection } from './collection.js'
 
 export type MongoQuery<TDoc> = Filter<TDoc>
 // Aliased from corelib so the job-worker and meteor layers share a single modifier type that stays in

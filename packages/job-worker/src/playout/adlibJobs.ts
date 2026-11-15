@@ -1,10 +1,16 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { IBlueprintDirectPlayType, IBlueprintPieceType } from '@sofie-automation/blueprints-integration'
 import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
 import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
+import { PieceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
 import { assertNever, clone } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../logging.js'
-import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
+import { isValidForBranding } from '@sofie-automation/corelib/dist/playout/branding'
 import {
 	AdlibPieceStartProps,
 	DisableNextPieceProps,
@@ -12,25 +18,21 @@ import {
 	StopPiecesOnSourceLayersProps,
 	TakePieceAsAdlibNowProps,
 } from '@sofie-automation/corelib/dist/worker/studio'
+
+import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
+import { JobContext, ProcessedShowStyleCompound } from '../jobs/index.js'
+import { getCurrentTime } from '../lib/index.js'
+import { logger } from '../logging.js'
+import { executeActionInner } from './adlibAction.js'
+import { innerFindLastPieceOnLayer, innerStartOrQueueAdLibPiece, innerStopPieces } from './adlibUtils.js'
+import { syncPlayheadInfinitesForNextPartInstance } from './infinites.js'
+import { runJobWithPlayoutModel } from './lock.js'
 import { PlayoutModel } from './model/PlayoutModel.js'
 import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
-import { runJobWithPlayoutModel } from './lock.js'
-import { updateTimeline } from './timeline/generate.js'
-import { getCurrentTime } from '../lib/index.js'
+import { PlayoutPieceInstanceModel } from './model/PlayoutPieceInstanceModel.js'
 import { comparePieceStart, convertAdLibToGenericPiece, convertPieceToAdLibPiece } from './pieces.js'
 import { getResolvedPiecesForCurrentPartInstance } from './resolvedPieces.js'
-import { syncPlayheadInfinitesForNextPartInstance } from './infinites.js'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { PieceId, PieceInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { IBlueprintDirectPlayType, IBlueprintPieceType } from '@sofie-automation/blueprints-integration'
-import { ReadonlyDeep } from 'type-fest'
-import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
-import { innerFindLastPieceOnLayer, innerStartOrQueueAdLibPiece, innerStopPieces } from './adlibUtils.js'
-import { isValidForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import _ from 'underscore'
-import { executeActionInner } from './adlibAction.js'
-import { PlayoutPieceInstanceModel } from './model/PlayoutPieceInstanceModel.js'
+import { updateTimeline } from './timeline/generate.js'
 
 /**
  * Play an existing Piece in the Rundown as an AdLib
@@ -147,8 +149,7 @@ async function pieceTakeNowAsAdlib(
 	currentPartInstance: PlayoutPartInstanceModel,
 	pieceToCopy: PieceInstancePiece,
 	pieceInstanceToCopy:
-		| { partInstance: PlayoutPartInstanceModel; pieceInstance: PlayoutPieceInstanceModel }
-		| undefined
+		{ partInstance: PlayoutPartInstanceModel; pieceInstance: PlayoutPieceInstanceModel } | undefined
 ): Promise<void> {
 	const genericAdlibPiece = convertAdLibToGenericPiece(pieceToCopy, false)
 	/*const newPieceInstance = */ currentPartInstance.insertAdlibbedPiece(genericAdlibPiece, pieceToCopy._id)

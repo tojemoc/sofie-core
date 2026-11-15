@@ -1,5 +1,6 @@
-import { getSystemVersion } from './lib/index.js'
 import { initInfluxdb } from '@sofie-automation/corelib/dist/influxdb'
+
+import { getSystemVersion } from './lib/index.js'
 
 const config = {
 	host: process.env.INFLUX_HOST,

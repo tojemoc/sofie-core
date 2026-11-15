@@ -1,8 +1,10 @@
-import { IntInputControl } from './IntInput'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMemo } from 'react'
+
 import { getRandomString } from '@sofie-automation/corelib/dist/lib'
+
+import { IntInputControl } from './IntInput'
 
 interface IMultiLineIntInputControlProps {
 	disabled?: boolean

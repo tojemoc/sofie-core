@@ -1,21 +1,22 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
-	IngestRundown,
-	NrcsIngestChangeDetails,
-	IngestDefaultChangesOptions,
-	NrcsIngestRundownChangeDetails,
-	MutableIngestRundown,
-	NrcsIngestSegmentChangeDetails,
-	IngestSegment,
-	NrcsIngestSegmentChangeDetailsEnum,
-	MutableIngestSegment,
-	NrcsIngestSegmentChangeDetailsObject,
-	NrcsIngestPartChangeDetails,
-	IngestPart,
-	MutableIngestPart,
 	IngestChangeType,
+	IngestDefaultChangesOptions,
+	IngestPart,
+	IngestRundown,
+	IngestSegment,
+	MutableIngestPart,
+	MutableIngestRundown,
+	MutableIngestSegment,
+	NrcsIngestChangeDetails,
+	NrcsIngestPartChangeDetails,
+	NrcsIngestRundownChangeDetails,
+	NrcsIngestSegmentChangeDetails,
+	NrcsIngestSegmentChangeDetailsEnum,
+	NrcsIngestSegmentChangeDetailsObject,
 } from '@sofie-automation/blueprints-integration'
 import { assertNever, normalizeArrayToMap } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
 
 /**
  * Perform the default syncing of changes from the ingest data to the rundown.

@@ -1,15 +1,17 @@
 import { z } from 'zod'
-import { logger } from '../../logging'
+
+import { PeripheralDeviceId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+
 import { PartInstances, PieceInstances, RundownPlaylists } from '../../collections'
 import { check } from '../../lib/check'
-import { profiler } from '../profiler'
-import { QueueForceClearAllCaches, QueueStudioJob } from '../../worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import { fetchStudioIds } from '../../optimizations'
-import { PeripheralDeviceId, RundownPlaylistId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { insertInputDeviceTriggerIntoPreview } from '../../publications/deviceTriggersPreview'
+import { logger } from '../../logging'
 import { MeteorDebugMethod } from '../../methods'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { fetchStudioIds } from '../../optimizations'
+import { insertInputDeviceTriggerIntoPreview } from '../../publications/deviceTriggersPreview'
+import { QueueForceClearAllCaches, QueueStudioJob } from '../../worker/worker'
+import { profiler } from '../profiler'
 
 // These are temporary method to fill the rundown database with some sample data
 // for development

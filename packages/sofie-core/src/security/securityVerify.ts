@@ -1,9 +1,10 @@
-import { suppressExtraErrorLogging } from '../methods'
-import { disableChecks, enableChecks as restoreChecks } from '../lib/check'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import type { MethodRegistry } from '../methodRegistry'
-import { MethodContext } from '../api/methodContext'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { MethodContext } from '../api/methodContext'
+import { disableChecks, enableChecks as restoreChecks } from '../lib/check'
+import { suppressExtraErrorLogging } from '../methods'
+import type { MethodRegistry } from '../methodRegistry'
 
 /** These function are used to verify that all methods defined are using security functions */
 

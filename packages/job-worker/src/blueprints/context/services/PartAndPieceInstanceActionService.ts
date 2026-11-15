@@ -1,6 +1,6 @@
-import { JobContext, ProcessedShowStyleCompound } from '../../../jobs/index.js'
-import { PlayoutModel } from '../../../playout/model/PlayoutModel.js'
-import { PlayoutPartInstanceModel } from '../../../playout/model/PlayoutPartInstanceModel.js'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
@@ -17,38 +17,7 @@ import {
 	Time,
 	WithTimeline,
 } from '@sofie-automation/blueprints-integration'
-import {
-	IBlueprintPieceObjectsSampleKeys,
-	convertPartInstanceToBlueprints,
-	convertPartToBlueprints,
-	convertPartialBlueprintMutablePartToCore,
-	convertPartialBlueprintMutatablePartInstanceToCore,
-	convertPieceInstanceToBlueprints,
-	convertPieceToBlueprints,
-	convertResolvedPieceInstanceToBlueprints,
-	convertSegmentToBlueprints,
-	createBlueprintQuickLoopInfo,
-	getMediaObjectDuration,
-} from '../lib.js'
-import { getResolvedPiecesForCurrentPartInstance } from '../../../playout/resolvedPieces.js'
-import { ReadonlyDeep } from 'type-fest'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import {
-	innerFindLastPieceOnLayer,
-	innerFindLastScriptedPieceOnLayer,
-	innerStopPieces,
-	insertQueuedPartWithPieces,
-	resolveQueuedAdlibInsertTarget,
-	type QueuedAdlibInsertTarget,
-} from '../../../playout/adlibUtils.js'
-import { assertNever, getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
-import { logger } from '../../../logging.js'
-import {
-	Piece,
-	PieceTimelineObjectsBlob,
-	serializePieceTimelineObjectsBlob,
-} from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
 import {
 	PartId,
 	PartInstanceId,
@@ -56,20 +25,53 @@ import {
 	RundownId,
 	SegmentId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import {
+	Piece,
+	PieceTimelineObjectsBlob,
+	serializePieceTimelineObjectsBlob,
+} from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { assertNever, getRandomId, omit } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import {
 	protectString,
-	unprotectString,
 	protectStringArray,
+	unprotectString,
 	unprotectStringArray,
 } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobContext, ProcessedShowStyleCompound } from '../../../jobs/index.js'
+import { getCurrentTime } from '../../../lib/index.js'
+import { logger } from '../../../logging.js'
+import { validateAdlibTestingPartInstanceProperties } from '../../../playout/adlibTesting.js'
+import {
+	innerFindLastPieceOnLayer,
+	innerFindLastScriptedPieceOnLayer,
+	innerStopPieces,
+	insertQueuedPartWithPieces,
+	resolveQueuedAdlibInsertTarget,
+} from '../../../playout/adlibUtils.js'
+import { syncPlayheadInfinitesForNextPartInstance } from '../../../playout/infinites.js'
+import { PlayoutModel } from '../../../playout/model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from '../../../playout/model/PlayoutPartInstanceModel.js'
+import { getResolvedPiecesForCurrentPartInstance } from '../../../playout/resolvedPieces.js'
 import { postProcessPieces, postProcessTimelineObjects } from '../../postProcess.js'
 import { sanitisePartBrandingFromBlueprint, sanitisePieceBrandingFromBlueprint } from '../../postProcessBranding.js'
-import { getCurrentTime } from '../../../lib/index.js'
-import _ from 'underscore'
-import { syncPlayheadInfinitesForNextPartInstance } from '../../../playout/infinites.js'
-import { validateAdlibTestingPartInstanceProperties } from '../../../playout/adlibTesting.js'
-import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { BlueprintQuickLookInfo } from '@sofie-automation/blueprints-integration/dist/context/quickLoopInfo'
+import {
+	convertPartialBlueprintMutablePartToCore,
+	convertPartialBlueprintMutatablePartInstanceToCore,
+	convertPartInstanceToBlueprints,
+	convertPartToBlueprints,
+	convertPieceInstanceToBlueprints,
+	convertPieceToBlueprints,
+	convertResolvedPieceInstanceToBlueprints,
+	convertSegmentToBlueprints,
+	createBlueprintQuickLoopInfo,
+	getMediaObjectDuration,
+	IBlueprintPieceObjectsSampleKeys,
+} from '../lib.js'
+import type { QueuedAdlibInsertTarget } from '../../../playout/adlibUtils.js'
 
 export enum ActionPartChange {
 	NONE = 0,

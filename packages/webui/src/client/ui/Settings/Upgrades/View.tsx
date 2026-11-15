@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { Spinner } from '../../../lib/Spinner.js'
+
 import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { UIBlueprintUpgradeStatuses } from '../../Collections.js'
 import type { UIBlueprintUpgradeStatus } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { Spinner } from '../../../lib/Spinner.js'
+import { UIBlueprintUpgradeStatuses } from '../../Collections.js'
 import { getUpgradeStatusMessage, SystemUpgradeStatusButtons, UpgradeStatusButtons } from './Components.js'
 
 export function UpgradesView(): JSX.Element {

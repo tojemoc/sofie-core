@@ -1,4 +1,5 @@
 import { clone, objectPathSet } from '@sofie-automation/corelib/dist/lib'
+
 import type { OverrideOpHelperForItemContentsBatcher } from '../../../ui/Settings/util/OverrideOpHelper.js'
 
 /**

@@ -1,40 +1,42 @@
+import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
 import * as React from 'react'
 import _ from 'underscore'
-import { type Translated, translateWithTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import type { SegmentUi } from '../SegmentTimeline/SegmentTimelineContainer.js'
+
+import { PieceDisplayStyle } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { IBlueprintActionTriggerMode, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PartInstanceId, PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	OutputLayers,
 	SourceLayers,
 	UIShowStyleBase,
 } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import type { IBlueprintActionTriggerMode, ISourceLayer } from '@sofie-automation/blueprints-integration'
-import { ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { contextMenuHoldToDisplayTime, UserAgentPointer, USER_AGENT_POINTER_PROPERTY } from '../../lib/lib.js'
-import {
-	type DashboardLayoutFilter,
-	PieceDisplayStyle,
-	type RundownLayoutFilterBase,
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type {
+	DashboardLayoutFilter,
+	RundownLayoutFilterBase,
 } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
-import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
+
 import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { contextMenuHoldToDisplayTime, USER_AGENT_POINTER_PROPERTY, UserAgentPointer } from '../../lib/lib.js'
+import { memoizedIsolatedAutorun } from '../../lib/memoizedIsolatedAutorun.js'
 import { MeteorCall } from '../../lib/meteorApi.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { translateWithTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import {
-	type AdLibPieceUi,
-	type AdlibSegmentUi,
 	getNextPieceInstancesGrouped,
 	getUnfinishedPieceInstancesGrouped,
 	isAdLibNext,
 	isAdLibOnAir,
 } from '../../lib/shelf.js'
-import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { ContextType, setShelfContextMenuContext } from '../Shelf/ShelfContextMenu.js'
-import type { PartInstanceId, PieceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import { DashboardPieceButton } from '../Shelf/DashboardPieceButton/DashboardPieceButton.js'
+import { ContextType, setShelfContextMenuContext } from '../Shelf/ShelfContextMenu.js'
 import { RundownViewShelfAdlibSizeToggle } from './RundownViewShelfAdlibSizeToggle'
+import type { Translated } from '../../lib/ReactMeteorData/ReactMeteorData.js'
+import type { AdLibPieceUi, AdlibSegmentUi } from '../../lib/shelf.js'
+import type { SegmentUi } from '../SegmentTimeline/SegmentTimelineContainer.js'
 
 function resolveMiniShelfCompact(segment: SegmentUi, studio: UIStudio): boolean {
 	const displayMinishelf = segment.displayMinishelf
@@ -163,7 +165,9 @@ class RundownViewShelfInner extends React.Component<
 		const sourceLayer = this.props.sourceLayers[adlibPiece.sourceLayerId]
 
 		if (queue && sourceLayer && !sourceLayer.isQueueable) {
-			console.log(`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`)
+			console.log(
+				`Item "${adlibPiece._id}" is on sourceLayer "${adlibPiece.sourceLayerId}" that is not queueable.`
+			)
 			queue = false
 		}
 		if (this.props.playlist && this.props.playlist.currentPartInfo) {
@@ -171,16 +175,20 @@ class RundownViewShelfInner extends React.Component<
 			if (!this.isAdLibOnAir(adlibPiece) || !(sourceLayer && sourceLayer.isClearable)) {
 				if (adlibPiece.isAction && adlibPiece.adlibAction) {
 					const action = adlibPiece.adlibAction
-					doUserAction(t, e, adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB, (e, ts) =>
-						MeteorCall.userAction.executeAction(
-							e,
-							ts,
-							this.props.playlist._id,
-							action._id,
-							action.actionId,
-							action.userData,
-							mode?.data
-						)
+					doUserAction(
+						t,
+						e,
+						adlibPiece.isGlobal ? UserAction.START_GLOBAL_ADLIB : UserAction.START_ADLIB,
+						(e, ts) =>
+							MeteorCall.userAction.executeAction(
+								e,
+								ts,
+								this.props.playlist._id,
+								action._id,
+								action.actionId,
+								action.userData,
+								mode?.data
+							)
 					)
 				} else if (!adlibPiece.isGlobal && !adlibPiece.isAction) {
 					doUserAction(t, e, UserAction.START_ADLIB, (e, ts) =>

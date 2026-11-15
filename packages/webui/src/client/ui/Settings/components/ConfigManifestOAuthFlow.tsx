@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { withTranslation } from 'react-i18next'
+
 import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import type { Translated } from '../../../lib/ReactMeteorData/react-meteor-data.js'
 import type { IngestDeviceSecretSettingsStatus } from '@sofie-automation/corelib/dist/dataModel/PeripheralDeviceSettings/ingestDevice'
-import { NotificationCenter, Notification, NoticeLevel } from '../../../lib/notifications/notifications.js'
+
 import { fetchFrom } from '../../../lib/lib.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
 import { createPrivateApiPath } from '../../../url.js'
+import type { Translated } from '../../../lib/ReactMeteorData/react-meteor-data.js'
 
 interface IConfigManifestOAuthFlowComponentState {}
 interface IConfigManifestOAuthFlowComponentProps {
@@ -61,7 +63,9 @@ export const ConfigManifestOAuthFlowComponent: React.ComponentType<IConfigManife
 								new Notification(
 									undefined,
 									NoticeLevel.WARNING,
-									t('Failed to upload OAuth credentials: {{errorMessage}}', { errorMessage: err + '' }),
+									t('Failed to upload OAuth credentials: {{errorMessage}}', {
+										errorMessage: err + '',
+									}),
 									'ConfigManifestOAuthFlowComponent'
 								)
 							)
@@ -139,7 +143,10 @@ export const ConfigManifestOAuthFlowComponent: React.ComponentType<IConfigManife
 							// If this is set, we have completed the authentication procedure.
 							// A reset button is provided to begin the flow again if authorization is revoked by the user.
 							<div className="m-2">
-								<button className="btn btn-secondary btn-tight me-1" onClick={() => this.resetAppCredentials()}>
+								<button
+									className="btn btn-secondary btn-tight me-1"
+									onClick={() => this.resetAppCredentials()}
+								>
 									{t('Reset App Credentials')}
 								</button>
 
@@ -178,7 +185,12 @@ export const ConfigManifestOAuthFlowComponent: React.ComponentType<IConfigManife
 										<div>
 											<div className="my-2">
 												{device.accessTokenUrl ? (
-													<a className="btn btn-primary" href={device.accessTokenUrl} target="_blank" rel="noreferrer">
+													<a
+														className="btn btn-primary"
+														href={device.accessTokenUrl}
+														target="_blank"
+														rel="noreferrer"
+													>
 														{t('Authorize App Access')}
 													</a>
 												) : (
@@ -186,7 +198,10 @@ export const ConfigManifestOAuthFlowComponent: React.ComponentType<IConfigManife
 												)}
 											</div>
 											<div className="my-2">
-												<button className="btn btn-secondary btn-tight" onClick={() => this.resetAppCredentials()}>
+												<button
+													className="btn btn-secondary btn-tight"
+													onClick={() => this.resetAppCredentials()}
+												>
 													{t('Reset App Credentials')}
 												</button>
 											</div>

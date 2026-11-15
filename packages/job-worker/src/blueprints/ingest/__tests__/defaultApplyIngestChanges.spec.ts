@@ -1,19 +1,20 @@
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
-import { MutableIngestRundownImpl } from '../MutableIngestRundownImpl.js'
-import { defaultApplyIngestChanges } from '../defaultApplyIngestChanges.js'
 import {
-	NrcsIngestChangeDetails,
-	NrcsIngestPartChangeDetails,
-	NrcsIngestRundownChangeDetails,
-	NrcsIngestSegmentChangeDetailsEnum,
+	IngestChangeType,
 	IngestDefaultChangesOptions,
 	IngestRundown,
 	MutableIngestPart,
 	MutableIngestRundown,
 	MutableIngestSegment,
-	IngestChangeType,
+	NrcsIngestChangeDetails,
+	NrcsIngestPartChangeDetails,
+	NrcsIngestRundownChangeDetails,
+	NrcsIngestSegmentChangeDetailsEnum,
 } from '@sofie-automation/blueprints-integration'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
 import { clone } from '@sofie-automation/corelib/dist/lib'
+
+import { defaultApplyIngestChanges } from '../defaultApplyIngestChanges.js'
+import { MutableIngestRundownImpl } from '../MutableIngestRundownImpl.js'
 import { toSofieIngestRundown } from './util.js'
 
 describe('defaultApplyIngestChanges', () => {

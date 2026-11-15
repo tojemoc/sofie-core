@@ -1,7 +1,7 @@
-import { IngestPart, IngestSegment } from '@sofie-automation/blueprints-integration'
+import { IngestPart, IngestRundown, IngestSegment } from '@sofie-automation/blueprints-integration'
 import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { IngestRundown } from '@sofie-automation/blueprints-integration'
+
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 /* *************************************************************************

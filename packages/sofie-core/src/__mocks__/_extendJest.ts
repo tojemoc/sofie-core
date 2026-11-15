@@ -1,8 +1,9 @@
-import { UserError, UserErrorMessage, SofieError } from '@sofie-automation/corelib/dist/error'
-import { clone } from '@sofie-automation/corelib/dist/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import _ from 'underscore'
+
+import { SofieError, UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { clone } from '@sofie-automation/corelib/dist/lib'
 import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 // Include this file in to get access to the extended functions
 

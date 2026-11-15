@@ -1,11 +1,12 @@
 import { ExpectedPackageDBType } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
 import { PackageInfosUpdatedRundownProps } from '@sofie-automation/corelib/dist/worker/ingest'
-import { logger } from '../logging.js'
+
 import { JobContext } from '../jobs/index.js'
+import { logger } from '../logging.js'
 import { regenerateSegmentsFromIngestData } from './generationSegment.js'
 import { runCustomIngestUpdateOperation } from './runOperation.js'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
 
 /**
  * Some PackageInfos have been updated, regenerate any Parts which depend on these PackageInfos

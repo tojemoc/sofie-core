@@ -1,5 +1,6 @@
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { MongoBulkWriteOperation } from '@sofie-automation/corelib/dist/mongo'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { LazyInitialise } from '../../../lib/lazy.js'
 import { DocumentChanges, getDocumentChanges } from './utils.js'
 

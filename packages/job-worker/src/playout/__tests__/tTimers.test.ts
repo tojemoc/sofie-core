@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { RundownTTimer } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
+
 import { useFakeCurrentTime, useRealCurrentTime } from '../../__mocks__/time.js'
 import {
-	validateTTimerIndex,
-	pauseTTimer,
-	resumeTTimer,
-	restartTTimer,
+	calculateNextTimeOfDayTarget,
 	createCountdownTTimer,
 	createFreeRunTTimer,
-	calculateNextTimeOfDayTarget,
 	createTimeOfDayTTimer,
+	pauseTTimer,
+	restartTTimer,
+	resumeTTimer,
+	validateTTimerIndex,
 } from '../tTimers.js'
 
 describe('tTimers utils', () => {
@@ -436,7 +437,7 @@ describe('tTimers utils', () => {
 		})
 
 		it('should return null for null/undefined/empty input', () => {
-			expect(calculateNextTimeOfDayTarget('' as string)).toBeNull()
+			expect(calculateNextTimeOfDayTarget('')).toBeNull()
 			expect(calculateNextTimeOfDayTarget('   ')).toBeNull()
 		})
 

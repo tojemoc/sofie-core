@@ -1,19 +1,19 @@
+import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { BlueprintId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
+import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { DBRundown, Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
-import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
-import { RundownBaselineAdLibAction } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibAction'
-import { BlueprintId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 
 export interface SourceLayersDoc {
 	_id: ShowStyleBaseId
@@ -37,13 +37,7 @@ export const partFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<DBP
 })
 
 export type PieceFields =
-	| '_id'
-	| 'startPartId'
-	| 'startRundownId'
-	| 'name'
-	| 'sourceLayerId'
-	| 'content'
-	| 'expectedPackages'
+	'_id' | 'startPartId' | 'startRundownId' | 'name' | 'sourceLayerId' | 'content' | 'expectedPackages'
 export const pieceFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<Piece, PieceFields>>>({
 	_id: 1,
 	startPartId: 1,
@@ -76,13 +70,7 @@ export const pieceInstanceFieldSpecifier = literal<
 })
 
 export type AdLibPieceFields =
-	| '_id'
-	| 'partId'
-	| 'rundownId'
-	| 'name'
-	| 'sourceLayerId'
-	| 'content'
-	| 'expectedPackages'
+	'_id' | 'partId' | 'rundownId' | 'name' | 'sourceLayerId' | 'content' | 'expectedPackages'
 export const adLibPieceFieldSpecifier = literal<MongoFieldSpecifierOnesStrict<Pick<AdLibPiece, AdLibPieceFields>>>({
 	_id: 1,
 	partId: 1,

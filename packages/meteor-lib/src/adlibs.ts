@@ -1,5 +1,5 @@
-import type { ITranslatableMessage } from '@sofie-automation/blueprints-integration'
 import { isTranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import type { ITranslatableMessage } from '@sofie-automation/blueprints-integration'
 import type { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 
 function compareLabels(a: string | ITranslatableMessage, b: string | ITranslatableMessage) {

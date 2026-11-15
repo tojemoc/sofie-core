@@ -1,30 +1,35 @@
+import path from 'path'
+
+import PLazy from 'p-lazy'
+
+import { ICoreSystemSettings, TMP_TSR_VERSION } from '@sofie-automation/blueprints-integration'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
-	SYSTEM_ID,
 	GENESIS_SYSTEM_VERSION,
 	ICoreSystem,
+	SYSTEM_ID,
 } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { parseVersion } from '../systemStatus/semverUtils'
-import { getCurrentTime } from '../lib/lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import {
-	DEFAULT_MAXIMUM_DATA_AGE,
 	DEFAULT_CONFIRM_KEY_CODE,
+	DEFAULT_MAXIMUM_DATA_AGE,
 	DEFAULT_POISON_KEY,
 } from '@sofie-automation/shared-lib/dist/core/constants'
-import { prepareMigration, runMigrationFromTrusted } from '../migration/databaseMigration'
-import { Blueprints, CoreSystem } from '../collections'
-import { getEnvLogLevel, logger, LogLevel, setLogLevel } from '../logging'
-const PackageInfo = require('../../package.json')
-import { startAgent } from '../api/profiler/apm'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { profiler } from '../api/profiler'
-import { ICoreSystemSettings, TMP_TSR_VERSION } from '@sofie-automation/blueprints-integration'
+import { startAgent } from '../api/profiler/apm'
+import { Blueprints, CoreSystem } from '../collections'
 import { getDevDataPath, isInDevelopmentMode, isInTestMode } from '../lib'
-import path from 'path'
+import { getCurrentTime } from '../lib/lib'
+import { getEnvLogLevel, logger, LogLevel, setLogLevel } from '../logging'
+import { prepareMigration, runMigrationFromTrusted } from '../migration/databaseMigration'
+import { parseVersion } from '../systemStatus/semverUtils'
 import { checkDatabaseVersions } from './checkDatabaseVersions'
-import PLazy from 'p-lazy'
 import { getCoreSystemAsync } from './collection'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+
+const PackageInfo = require('../../package.json')
+
 const mosPkgJson = require('@mos-connection/helper/package.json')
 const superTimelinePkgJson = require('superfly-timeline/package.json')
 

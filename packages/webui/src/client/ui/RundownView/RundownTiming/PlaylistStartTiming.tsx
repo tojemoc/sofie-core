@@ -1,11 +1,13 @@
+import ClassNames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
+
+import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+
 import { RundownUtils } from '../../../lib/rundown.js'
 import { getCurrentTime } from '../../../lib/systemTime.js'
-import ClassNames from 'classnames'
-import { PlaylistTiming } from '@sofie-automation/corelib/dist/playout/rundownTiming'
 
 interface IStartTimingProps {
 	rundownPlaylist: DBRundownPlaylist
@@ -68,7 +70,14 @@ export function PlaylistStartTiming({
 								true,
 								true
 							)
-						: RundownUtils.formatDiffToTimecode(getCurrentTime() - expectedStart, true, false, true, true, true)}
+						: RundownUtils.formatDiffToTimecode(
+								getCurrentTime() - expectedStart,
+								true,
+								false,
+								true,
+								true,
+								true
+							)}
 				</span>
 			)}
 		</React.Fragment>

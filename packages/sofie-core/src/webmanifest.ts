@@ -1,23 +1,26 @@
 import os from 'os'
+
+import KoaRouter from '@koa/router'
+import Koa from 'koa'
+
+import { ITranslatableMessage } from '@sofie-automation/blueprints-integration'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+import { interpollateTranslation } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { bindKoaRouter } from './api/rest/koa'
+import { RundownPlaylists, Rundowns, Studios } from './collections'
+import { getCoreSystemAsync } from './coreSystem/collection'
+import { getLocale, getRootSubpath, Translations } from './lib'
+import { logger } from './logging'
 import type {
 	JSONSchemaForWebApplicationManifestFiles,
 	ManifestImageResource,
 	ShortcutItem,
 } from './typings/webmanifest'
-import { logger } from './logging'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { RundownPlaylists, Rundowns, Studios } from './collections'
-import { getLocale, getRootSubpath, Translations } from './lib'
-import { generateTranslation } from '@sofie-automation/corelib/dist/lib'
-import { ITranslatableMessage } from '@sofie-automation/blueprints-integration'
-import { interpollateTranslation } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { getCoreSystemAsync } from './coreSystem/collection'
-import Koa from 'koa'
-import KoaRouter from '@koa/router'
-import { bindKoaRouter } from './api/rest/koa'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 
 const appShortName = 'Sofie'
 

@@ -1,9 +1,10 @@
 // not really middlewares
 
-import { APIHandler } from './types'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+
 import idempotencyService from './idempotencyService'
 import rateLimitingService from './rateLimitingService'
+import { APIHandler } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 export function makeIdempotent<T, Params, Body, Response>(

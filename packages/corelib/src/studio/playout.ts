@@ -1,5 +1,6 @@
 import { ReadonlyDeep } from 'type-fest'
 import _ from 'underscore'
+
 import { PeripheralDevice } from '../dataModel/PeripheralDevice.js'
 
 /**

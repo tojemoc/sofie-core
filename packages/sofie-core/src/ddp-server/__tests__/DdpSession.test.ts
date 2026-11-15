@@ -1,11 +1,13 @@
 import { EventEmitter } from 'events'
+
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { ServerMessage } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
+
 import { MethodRegistry } from '../../methodRegistry'
 import { PublicationRegistry } from '../../publicationRegistry'
-import { DdpSession } from '../DdpSession'
 import { DdpConnectionRegistry } from '../ConnectionRegistry'
-import { ServerMessage } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
 import { makeDdpConnection } from '../DdpConnection'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { DdpSession } from '../DdpSession'
 
 /** A minimal stand-in for a `ws` WebSocket that records sent messages and lets tests inject frames. */
 class FakeSocket extends EventEmitter {

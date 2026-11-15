@@ -1,9 +1,10 @@
-jest.mock('../../findObjects')
-import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
 import { findLookaheadForLayer } from '../../findForLayer.js'
+import { findLookaheadObjectsForPart } from '../../findObjects.js'
 import { expectInstancesToMatch } from '../utils.js'
 import { findForLayerTestConstants } from './constants.js'
-import { findLookaheadObjectsForPart } from '../../findObjects.js'
+import { context, TfindLookaheadObjectsForPart } from './helpers/mockSetup.js'
+
+jest.mock('../../findObjects')
 
 const findLookaheadObjectsForPartMockBase = findLookaheadObjectsForPart as TfindLookaheadObjectsForPart
 const findLookaheadObjectsForPartMock = findLookaheadObjectsForPartMockBase.mockImplementation(() => []) // Default mock
@@ -22,8 +23,8 @@ const onAirPlayoutState = findForLayerTestConstants.playoutState.onAir
 describe('findLookaheadForLayer – search distance', () => {
 	test('searchDistance = 0 ignores future parts', () => {
 		findLookaheadObjectsForPartMock
-			.mockReturnValueOnce([] as any)
-			.mockReturnValueOnce([] as any)
+			.mockReturnValueOnce([])
+			.mockReturnValueOnce([])
 			.mockReturnValueOnce(['cur0', 'cur1'] as any)
 
 		const res = findLookaheadForLayer(

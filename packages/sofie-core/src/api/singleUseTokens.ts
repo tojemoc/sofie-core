@@ -1,8 +1,10 @@
 import { createHmac, randomBytes } from 'crypto'
+
 import { Time } from '@sofie-automation/blueprints-integration'
 import { getHash } from '@sofie-automation/corelib/dist/hash'
-import { getCurrentTime } from '../lib/lib'
 import { SINGLE_USE_TOKEN_SALT } from '@sofie-automation/meteor-lib/dist/api/userActions'
+
+import { getCurrentTime } from '../lib/lib'
 import { isInTestWrite } from '../security/securityVerify'
 
 // The following code is taken from an NPM pacakage called "@sunknudsen/totp", but copied here, instead

@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next'
+
 import {
 	ClientActions,
 	IAdlibPlayoutActionArguments,
@@ -8,14 +10,6 @@ import {
 	SomeAction,
 	Time,
 } from '@sofie-automation/blueprints-integration'
-import { TFunction } from 'i18next'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import RundownViewEventBus, { RundownViewEvents } from '../triggers/RundownViewEventBus.js'
-import { UserAction } from '../userAction.js'
-import { AdLibFilterChainLink, compileAdLibFilter, IWrappedAdLib } from './actionFilterChainCompilers.js'
-import { ClientAPI } from '../api/client.js'
 import {
 	PartId,
 	PartInstanceId,
@@ -23,12 +17,20 @@ import {
 	RundownPlaylistId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { DeviceActions } from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { DBShowStyleBase, SourceLayers } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
 import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { DeviceActions } from '@sofie-automation/shared-lib/dist/core/model/ShowStyle'
+
+import { ClientAPI } from '../api/client.js'
 import { MountedAdLibTriggerType } from '../api/MountedTriggers.js'
+import RundownViewEventBus, { RundownViewEvents } from '../triggers/RundownViewEventBus.js'
+import { UserAction } from '../userAction.js'
+import { AdLibFilterChainLink, compileAdLibFilter, IWrappedAdLib } from './actionFilterChainCompilers.js'
 import { DummyReactiveVar, TriggerReactiveVar } from './reactive-var.js'
 import { TriggersContext, TriggerTrackerComputation } from './triggersContext.js'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
 
 // as described in this issue: https://github.com/Microsoft/TypeScript/issues/14094
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
@@ -110,7 +112,7 @@ async function createRundownPlaylistContext(
 	if (filterChain.length < 1) {
 		return undefined
 	} else if (filterChain[0].object === 'view' && context.rundownPlaylistId) {
-		return context as ReactivePlaylistActionContext
+		return context
 	} else if (filterChain[0].object === 'view' && context.rundownPlaylist) {
 		const playlistContext = context as PlainPlaylistContext
 		return triggersContext.withComputation(computation, async () => {

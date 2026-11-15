@@ -1,3 +1,7 @@
+import { PrompterConfigMode } from '../../PrompterView.js'
+import { KeyboardController } from '../keyboard-device'
+import { KEYBOARD_VELOCITY_DEFAULTS, velocityStepToSpeed } from '../keyboard-velocity'
+
 /**
  * Integration-style tests for KeyboardController SPEED mode.
  * Uses jsdom's window + a minimal PrompterViewContent stub.
@@ -5,10 +9,6 @@
 jest.mock('../../PrompterView.js', () => ({
 	PrompterConfigMode: { KEYBOARD: 'keyboard' },
 }))
-
-import { KeyboardController } from '../keyboard-device'
-import { KEYBOARD_VELOCITY_DEFAULTS, velocityStepToSpeed } from '../keyboard-velocity'
-import { PrompterConfigMode } from '../../PrompterView.js'
 
 function makeView(controlMode?: string) {
 	return {

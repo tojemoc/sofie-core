@@ -1,19 +1,21 @@
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
-import { WebSocketTopicBase, WebSocketTopic } from '../wsHandler.js'
-import { CollectionHandlers } from '../liveStatusServer.js'
-import { toResolvedPlaylistStatus } from './helpers/resolvedPlaylistConversion/events/toResolvedPlaylistStatus.js'
-import type { ToResolvedPlaylistStatusProps } from './helpers/resolvedPlaylistConversion/context/conversionContext.js'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+
+import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance, PartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBSegment } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { PartInstancesInPlaylist } from '../collections/partInstancesInPlaylistHandler.js'
+
 import { ShowStyleBaseExt } from '../collections/showStyleBaseHandler.js'
-import { ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { CollectionHandlers } from '../liveStatusServer.js'
+import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
+import { toResolvedPlaylistStatus } from './helpers/resolvedPlaylistConversion/events/toResolvedPlaylistStatus.js'
+import type { PartInstancesInPlaylist } from '../collections/partInstancesInPlaylistHandler.js'
+import type { ToResolvedPlaylistStatusProps } from './helpers/resolvedPlaylistConversion/context/conversionContext.js'
 
 const THROTTLE_PERIOD_MS = 100
 

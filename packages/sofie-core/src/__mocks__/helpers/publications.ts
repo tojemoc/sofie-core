@@ -1,5 +1,5 @@
-import { PublicationRegistry } from '../../publicationRegistry'
 import { registerAllPublications } from '../../publicationRegistrations'
+import { PublicationRegistry } from '../../publicationRegistry'
 
 /**
  * Test helper: register all DDP publications on a fresh PublicationRegistry and apply them to the

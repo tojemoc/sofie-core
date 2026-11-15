@@ -1,32 +1,34 @@
+import { ReadonlyDeep } from 'type-fest'
 import { z } from 'zod'
+
+import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
 import { PartInstanceId, RundownPlaylistActivationId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
+import { resolvePartForBranding } from '@sofie-automation/corelib/dist/playout/branding'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { RundownPlaylists } from '../../collections'
 import { check } from '../../lib/check'
 import {
 	CustomPublishCollection,
+	setUpCollectionOptimizedObserver,
 	SetupObserversResult,
 	TriggerUpdate,
-	setUpCollectionOptimizedObserver,
 } from '../../lib/customPublication'
 import { logger } from '../../logging'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { CustomCollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import { ContentCache, PartInstanceOmitedFields, createReactiveContentCache } from './reactiveContentCache'
-import { ReadonlyDeep } from 'type-fest'
-import { RundownPlaylists } from '../../collections'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { RundownsObserver } from '../lib/rundownsObserver'
-import { RundownContentObserver } from './rundownContentObserver'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
 import {
 	extractRanks,
 	findMarkerPosition,
 	modifyPartInstanceForQuickLoop,
 	stringsToIndexLookup,
 } from '../lib/quickLoop'
-import { resolvePartForBranding } from '@sofie-automation/corelib/dist/playout/branding'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../../security/securityVerify'
+import { RundownsObserver } from '../lib/rundownsObserver'
+import { ContentCache, createReactiveContentCache, PartInstanceOmitedFields } from './reactiveContentCache'
+import { RundownContentObserver } from './rundownContentObserver'
 import type { PublicationRegistry } from '../../publicationRegistry'
 
 interface UIPartInstancesArgs {

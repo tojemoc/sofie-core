@@ -1,16 +1,17 @@
-import { Time, TimelinePersistentState, RundownPlaylistTiming } from '@sofie-automation/blueprints-integration'
+import { RundownPlaylistTiming, Time, TimelinePersistentState } from '@sofie-automation/blueprints-integration'
+import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+
 import {
 	PartId,
-	PieceInstanceInfiniteId,
 	PartInstanceId,
-	SegmentId,
+	PieceInstanceInfiniteId,
+	RundownId,
 	RundownPlaylistActivationId,
 	RundownPlaylistId,
+	SegmentId,
 	StudioId,
-	RundownId,
 } from '../Ids.js'
 import { RundownPlaylistNote } from '../Notes.js'
-import { ForceQuickLoopAutoNext } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
 import { RundownTTimer } from './TTimers.js'
 
 /** Details of an ab-session requested by the blueprints in onTimelineGenerate */
@@ -77,10 +78,7 @@ interface QuickLoopPlaylistMarker {
 }
 
 export type QuickLoopMarker =
-	| QuickLoopPartMarker
-	| QuickLoopSegmentMarker
-	| QuickLoopRundownMarker
-	| QuickLoopPlaylistMarker
+	QuickLoopPartMarker | QuickLoopSegmentMarker | QuickLoopRundownMarker | QuickLoopPlaylistMarker
 
 export interface QuickLoopProps {
 	/** The Start marker */

@@ -1,7 +1,9 @@
-import { ControllerAbstract } from './lib.js'
-import { PrompterConfigMode, type PrompterViewContent } from '../PrompterView.js'
 import Spline from 'cubic-spline'
+
 import { logger } from '../../../lib/logging.js'
+import { PrompterConfigMode } from '../PrompterView.js'
+import { ControllerAbstract } from './lib.js'
+import type { PrompterViewContent } from '../PrompterView.js'
 
 /**
  * This class handles control of the prompter using an Xbox controller

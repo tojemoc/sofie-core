@@ -1,8 +1,9 @@
-import { BrandingContentCache, createBrandingContentCache } from '../lib/branding'
-import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { MongoFieldSpecifierZeroes } from '@sofie-automation/corelib/dist/mongo'
 import { RundownBaselineAdLibItem } from '@sofie-automation/corelib/dist/dataModel/RundownBaselineAdLibPiece'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
+import { MongoFieldSpecifierZeroes } from '@sofie-automation/corelib/dist/mongo'
+
+import { BrandingContentCache, createBrandingContentCache } from '../lib/branding'
 
 export type RundownBaselineAdLibItemOmitedFields = 'privateData' | 'timelineObjectsString'
 export const rundownBaselineAdLibPieceFieldSpecifier = literal<MongoFieldSpecifierZeroes<RundownBaselineAdLibItem>>({

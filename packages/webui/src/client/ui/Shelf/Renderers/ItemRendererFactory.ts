@@ -1,14 +1,17 @@
 import * as React from 'react'
-import type { IAdLibListItem } from '../AdLibListItem.js'
-import { type ISourceLayer, type IOutputLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { DefaultListItemRenderer } from './DefaultListItemRenderer.js'
-import { VTListItemRenderer } from './VTListItemRenderer.js'
-import { L3rdListItemRenderer } from './L3rdListItemRenderer.js'
-import type { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import type { ReadonlyDeep } from 'type-fest'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type { IOutputLayer, ISourceLayer } from '@sofie-automation/blueprints-integration'
+import type { PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
+import { DefaultListItemRenderer } from './DefaultListItemRenderer.js'
+import { L3rdListItemRenderer } from './L3rdListItemRenderer.js'
+import { VTListItemRenderer } from './VTListItemRenderer.js'
+import type { IAdLibListItem } from '../AdLibListItem.js'
 
 export interface ILayerItemRendererProps {
 	adLibListItem: IAdLibListItem

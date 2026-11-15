@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { useFakeCurrentTime, useRealCurrentTime } from '../../../../__mocks__/time.js'
-import { TTimersService, PlaylistTTimerImpl } from '../TTimersService.js'
-import type { PlayoutModel } from '../../../../playout/model/PlayoutModel.js'
+import { mock, MockProxy } from 'jest-mock-extended'
+import type { ReadonlyDeep } from 'type-fest'
+
+import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import type {
 	RundownTTimer,
 	RundownTTimerIndex,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/TTimers'
-import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { mock, MockProxy } from 'jest-mock-extended'
-import type { ReadonlyDeep } from 'type-fest'
+
+import { useFakeCurrentTime, useRealCurrentTime } from '../../../../__mocks__/time.js'
+import { PlaylistTTimerImpl, TTimersService } from '../TTimersService.js'
 import type { JobContext } from '../../../../jobs/index.js'
+import type { PlayoutModel } from '../../../../playout/model/PlayoutModel.js'
 
 const FAKE_NOW = 1_750_000_000_000 // 2025-06-15 ~18:13 UTC
 

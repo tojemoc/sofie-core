@@ -1,95 +1,96 @@
-import { z } from 'zod'
-import { check, zAnyArray, zPlainObject } from '../lib/check'
+import KoaRouter from '@koa/router'
+import bodyParser from 'koa-bodyparser'
 import _ from 'underscore'
-import { PeripheralDeviceType, PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { z } from 'zod'
+
 import {
-	PeripheralDeviceCommands,
-	PeripheralDevices,
-	Rundowns,
-	Studios,
-	UserActionsLog,
-	Blueprints,
-} from '../collections'
-import { stringifyObjects, literal } from '@sofie-automation/corelib/dist/lib'
-import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { getCurrentTime } from '../lib/lib'
-import { logger } from '../logging'
-import { TimelineHash } from '@sofie-automation/corelib/dist/dataModel/Timeline'
-import { RundownInput } from './ingest/rundownInput'
-import {
-	IngestRundown,
-	IngestSegment,
+	ExpectedPackageStatusAPI,
 	IngestPart,
 	IngestPlaylist,
-	ExpectedPackageStatusAPI,
+	IngestRundown,
+	IngestSegment,
 	PackageInfo,
 	StatusCode,
+	StudioBlueprintManifest,
+	TSR,
 } from '@sofie-automation/blueprints-integration'
-import { MosIntegration } from './ingest/mosDevice/mosIntegration'
-import { MediaScannerIntegration } from './integration/media-scanner'
-import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
-import { MOS } from '@sofie-automation/corelib'
-import { determineDiffTime } from './systemTime/systemTime'
-import { getTimeDiff } from './systemTime/api'
-import { MethodContextAPI, MethodContext } from './methodContext'
-import { triggerWriteAccess, triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
-import { checkAccessAndGetPeripheralDevice } from '../security/check'
-import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
-import { PackageManagerIntegration } from './integration/expectedPackages'
-import { RundownContentStatusIntegration } from './integration/rundownContentStatus'
-import { RundownPlayoutStateIntegration } from './integration/rundownPlayoutState'
-import { RundownPartAutoNextIntegration } from './integration/rundownPartAutoNext'
-import { RundownPartSettingsIntegration } from './integration/rundownPartSettings'
-import type { RundownContentStatusResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownContentStatus'
-import type { RundownPlayoutStateResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPlayoutState'
-import type { RundownPartAutoNextResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartAutoNext'
-import type { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
-import { profiler } from './profiler'
-import { QueueStudioJob, QueueOrUpdateStudioJob } from '../worker/worker'
-import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
-import {
-	PlayoutChangedResults,
-	PeripheralDeviceInitOptions,
-	PeripheralDeviceStatusObject,
-	TimelineTriggerTimeResult,
-	DeviceStatusDetail,
-	DiffTimeResult,
-	TimeDiff,
-} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import type { PeripheralDeviceExternalEvent } from '@sofie-automation/shared-lib/dist/peripheralDevice/externalEvents'
-import { checkStudioExists } from '../optimizations'
+import { MOS, StatusMessageResolver } from '@sofie-automation/corelib'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
 import {
 	ExpectedPackageId,
 	ExpectedPackageWorkStatusId,
 	PeripheralDeviceCommandId,
 	PeripheralDeviceId,
+	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { NewPeripheralDeviceAPI } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
-import { PeripheralDeviceForDevice } from '@sofie-automation/shared-lib/dist/core/model/peripheralDevice'
-import { MediaObjectRevision } from '@sofie-automation/shared-lib/dist/peripheralDevice/mediaManager'
-import { insertInputDeviceTriggerIntoPreview } from '../publications/deviceTriggersPreview'
-import { receiveInputDeviceTrigger } from './deviceTriggers/observer'
-import { upsertBundles, generateTranslationBundleOriginId } from './translationsBundles'
-import { isTranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { PeripheralDevice, PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { TimelineHash } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { literal, stringifyObjects } from '@sofie-automation/corelib/dist/lib'
+import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	applyAndValidateOverrides,
 	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { convertPeripheralDeviceForGateway } from '../publications/peripheralDeviceForDevice'
-import { executePeripheralDeviceFunction } from './peripheralDevice/executeFunction'
-import KoaRouter from '@koa/router'
-import bodyParser from 'koa-bodyparser'
-import { assertConnectionHasOneOfPermissions } from '../security/auth'
-import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { interpollateTranslation, isTranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
+import { UserActionsLogItem } from '@sofie-automation/meteor-lib/dist/collections/UserActionsLog'
+import { MediaObject } from '@sofie-automation/shared-lib/dist/core/model/MediaObjects'
+import { PeripheralDeviceForDevice } from '@sofie-automation/shared-lib/dist/core/model/peripheralDevice'
+import { JSONBlobParse } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
+import { MediaObjectRevision } from '@sofie-automation/shared-lib/dist/peripheralDevice/mediaManager'
+import { NewPeripheralDeviceAPI } from '@sofie-automation/shared-lib/dist/peripheralDevice/methodsAPI'
+import {
+	DeviceStatusDetail,
+	DiffTimeResult,
+	PeripheralDeviceInitOptions,
+	PeripheralDeviceStatusObject,
+	PlayoutChangedResults,
+	TimeDiff,
+	TimelineTriggerTimeResult,
+} from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+import type { PeripheralDeviceExternalEvent } from '@sofie-automation/shared-lib/dist/peripheralDevice/externalEvents'
+import type { RundownContentStatusResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownContentStatus'
+import type { RundownPartAutoNextResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartAutoNext'
+import type { RundownPartSettingsResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPartSettings'
+import type { RundownPlayoutStateResponse } from '@sofie-automation/shared-lib/dist/peripheralDevice/rundownPlayoutState'
+
+import {
+	Blueprints,
+	PeripheralDeviceCommands,
+	PeripheralDevices,
+	Rundowns,
+	Studios,
+	UserActionsLog,
+} from '../collections'
 import { getRootSubpath } from '../lib'
+import { check, zAnyArray, zPlainObject } from '../lib/check'
+import { getCurrentTime } from '../lib/lib'
+import { logger } from '../logging'
+import { checkStudioExists } from '../optimizations'
+import { insertInputDeviceTriggerIntoPreview } from '../publications/deviceTriggersPreview'
+import { convertPeripheralDeviceForGateway } from '../publications/peripheralDeviceForDevice'
+import { assertConnectionHasOneOfPermissions } from '../security/auth'
+import { checkAccessAndGetPeripheralDevice } from '../security/check'
+import { triggerWriteAccess, triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
+import { QueueOrUpdateStudioJob, QueueStudioJob } from '../worker/worker'
 import { evalBlueprint } from './blueprints/cache'
-import { StudioBlueprintManifest, TSR } from '@sofie-automation/blueprints-integration'
-import { StatusMessageResolver } from '@sofie-automation/corelib'
-import { interpollateTranslation } from '@sofie-automation/corelib/dist/TranslatableMessage'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
-import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { receiveInputDeviceTrigger } from './deviceTriggers/observer'
+import { MosIntegration } from './ingest/mosDevice/mosIntegration'
+import { RundownInput } from './ingest/rundownInput'
+import { PackageManagerIntegration } from './integration/expectedPackages'
+import { MediaScannerIntegration } from './integration/media-scanner'
+import { RundownContentStatusIntegration } from './integration/rundownContentStatus'
+import { RundownPartAutoNextIntegration } from './integration/rundownPartAutoNext'
+import { RundownPartSettingsIntegration } from './integration/rundownPartSettings'
+import { RundownPlayoutStateIntegration } from './integration/rundownPlayoutState'
+import { MethodContext, MethodContextAPI } from './methodContext'
+import { executePeripheralDeviceFunction } from './peripheralDevice/executeFunction'
+import { profiler } from './profiler'
+import { getTimeDiff } from './systemTime/api'
+import { determineDiffTime } from './systemTime/systemTime'
+import { generateTranslationBundleOriginId, upsertBundles } from './translationsBundles'
 
 const apmNamespace = 'peripheralDevice'
 

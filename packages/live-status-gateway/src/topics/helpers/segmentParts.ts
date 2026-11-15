@@ -1,8 +1,9 @@
+import _ from 'underscore'
+
 import { PartInstanceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { unprotectString } from '@sofie-automation/server-core-integration'
-import _ from 'underscore'
 import type { CurrentSegmentPart } from '@sofie-automation/live-status-gateway-api'
 
 export function getCurrentSegmentParts(
@@ -26,15 +27,13 @@ export function getCurrentSegmentParts(
 		partInstancesByPartId
 	)
 		.sort((a, b) => a.part._rank - b.part._rank)
-		.map(
-			(partInstance): CurrentSegmentPart => ({
-				id: unprotectString(partInstance.part._id),
-				name: partInstance.part.title,
-				autoNext: partInstance.part.autoNext,
-				createdByAdLib: partInstance.orphaned === 'adlib-part',
-				timing: {
-					expectedDurationMs: partInstance.part.expectedDuration,
-				},
-			})
-		)
+		.map((partInstance): CurrentSegmentPart => ({
+			id: unprotectString(partInstance.part._id),
+			name: partInstance.part.title,
+			autoNext: partInstance.part.autoNext,
+			createdByAdLib: partInstance.orphaned === 'adlib-part',
+			timing: {
+				expectedDurationMs: partInstance.part.expectedDuration,
+			},
+		}))
 }

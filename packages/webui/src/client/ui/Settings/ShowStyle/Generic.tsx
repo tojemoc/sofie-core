@@ -1,13 +1,15 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useTranslation } from 'react-i18next'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { EditAttribute } from '../../../lib/EditAttribute.js'
-import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { Link } from 'react-router-dom'
+
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
+
 import { ShowStyleBases } from '../../../collections/index.js'
 import { LabelActual } from '../../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../../lib/EditAttribute.js'
 
 interface IShowStyleGenericPropertiesProps {
 	showStyleBase: DBShowStyleBase
@@ -27,7 +29,12 @@ export function ShowStyleGenericProperties({
 				<LabelActual label={t('Show Style Base Name')} />
 
 				<div className="field-content">
-					<EditAttribute attribute="name" obj={showStyleBase} type="text" collection={ShowStyleBases}></EditAttribute>
+					<EditAttribute
+						attribute="name"
+						obj={showStyleBase}
+						type="text"
+						collection={ShowStyleBases}
+					></EditAttribute>
 				</div>
 				<div></div>
 				<div>

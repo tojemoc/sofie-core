@@ -1,3 +1,7 @@
+import type { ReadonlyDeep } from 'type-fest'
+
+import type { ExpectedPackage } from '@sofie-automation/blueprints-integration'
+import type { ExpectedPlayoutItemStudio } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
 import type { RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import type { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
@@ -6,10 +10,8 @@ import type {
 	TimelineCompleteGenerationVersions,
 	TimelineObjGeneric,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+
 import type { BaseModel } from '../../modelBase.js'
-import type { ReadonlyDeep } from 'type-fest'
-import type { ExpectedPlayoutItemStudio } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
-import type { ExpectedPackage } from '@sofie-automation/blueprints-integration'
 
 export interface StudioPlayoutModelBaseReadonly {
 	/**

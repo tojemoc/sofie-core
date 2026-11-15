@@ -1,10 +1,14 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react'
-import ClassNames from 'classnames'
-import Form from 'react-bootstrap/esm/Form'
-import Button from 'react-bootstrap/esm/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ClassNames from 'classnames'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import Form from 'react-bootstrap/esm/Form'
 import { useTranslation } from 'react-i18next'
+
+import './BreadCrumbTextInput.scss'
+
+import { getAllAncestors } from '../lib'
 
 export function splitValueIntoLines(v: string | undefined): string[] {
 	if (v === undefined || v.length === 0) {
@@ -20,9 +24,6 @@ export function joinLines(v: string[] | undefined): string {
 		return v.join('\n')
 	}
 }
-
-import './BreadCrumbTextInput.scss'
-import { getAllAncestors } from '../lib'
 
 interface IBreadCrumbTextInputControlProps {
 	classNames?: string
@@ -228,7 +229,10 @@ export function BreadCrumbTextInput({
 				})
 				event.preventDefault()
 				delete event.currentTarget.dataset['backspace']
-			} else if (event.key === 'ArrowRight' && event.currentTarget.selectionEnd === event.currentTarget.value.length) {
+			} else if (
+				event.key === 'ArrowRight' &&
+				event.currentTarget.selectionEnd === event.currentTarget.value.length
+			) {
 				dispatch({
 					type: 'focus',
 					index: index + 1,
@@ -318,7 +322,12 @@ export function BreadCrumbTextInput({
 							disabled={disabled}
 						/>
 					</div>
-					<Button data-index={`${index}`} variant="outline-secondary" onClick={handleSegmentDelete} disabled={disabled}>
+					<Button
+						data-index={`${index}`}
+						variant="outline-secondary"
+						onClick={handleSegmentDelete}
+						disabled={disabled}
+					>
 						<FontAwesomeIcon icon={faXmark} />
 					</Button>
 				</React.Fragment>

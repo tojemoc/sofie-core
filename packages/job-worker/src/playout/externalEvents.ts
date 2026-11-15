@@ -1,18 +1,19 @@
+import { BlueprintExternalEvent } from '@sofie-automation/blueprints-integration'
+import { getRandomId } from '@sofie-automation/corelib/dist/lib'
 import { OnExternalEventsProps } from '@sofie-automation/corelib/dist/worker/studio'
 import { PeripheralDeviceExternalEvent } from '@sofie-automation/shared-lib/dist/peripheralDevice/externalEvents'
-import { logger } from '../logging.js'
-import { JobContext } from '../jobs/index.js'
-import { PlayoutModel } from './model/PlayoutModel.js'
-import { runJobWithPlayoutModel } from './lock.js'
-import { runJobWithStudioPlayoutModel } from '../studio/lock.js'
+
 import { ActionExecutionContext } from '../blueprints/context/adlibActions.js'
-import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
 import { PartAndPieceInstanceActionService } from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
 import { PersistentPlayoutStateStore } from '../blueprints/context/services/PersistantStateStore.js'
-import { applyAnyExecutionSideEffects, storeNotificationsForCategory } from './adlibAction.js'
+import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
+import { JobContext } from '../jobs/index.js'
 import { getCurrentTime } from '../lib/index.js'
-import { getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { BlueprintExternalEvent } from '@sofie-automation/blueprints-integration'
+import { logger } from '../logging.js'
+import { runJobWithStudioPlayoutModel } from '../studio/lock.js'
+import { applyAnyExecutionSideEffects, storeNotificationsForCategory } from './adlibAction.js'
+import { runJobWithPlayoutModel } from './lock.js'
+import { PlayoutModel } from './model/PlayoutModel.js'
 
 /**
  * Called by sofie-core when one or more external events have been received from a gateway.

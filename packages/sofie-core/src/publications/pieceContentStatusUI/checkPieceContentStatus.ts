@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
 	Accessor,
 	ExpectedPackage,
@@ -11,6 +14,7 @@ import {
 	SplitsContent,
 	VTContent,
 } from '@sofie-automation/blueprints-integration'
+import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
 import { getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import {
 	BucketId,
@@ -25,6 +29,7 @@ import {
 	PackageContainerPackageStatusDB,
 } from '@sofie-automation/corelib/dist/dataModel/PackageContainerPackageStatus'
 import { PieceGeneric, PieceStatusCode } from '@sofie-automation/corelib/dist/dataModel/Piece'
+import { PieceContentStatusObj, SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import {
 	IStudioSettings,
 	MappingExt,
@@ -33,16 +38,22 @@ import {
 	StudioPackageContainer,
 	StudioRouteSet,
 } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { literal, Complete, assertNever, omit } from '@sofie-automation/corelib/dist/lib'
-import { ReadonlyDeep } from 'type-fest'
-import _ from 'underscore'
+import { assertNever, Complete, ensureHasTrailingSlash, literal, omit } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	getExpectedPackageFileName,
 	getSideEffect,
 } from '@sofie-automation/meteor-lib/dist/collections/ExpectedPackages'
 import { getActiveRoutes, getRoutedMappings } from '@sofie-automation/meteor-lib/dist/collections/Studios'
-import { ensureHasTrailingSlash } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+import {
+	buildPublishedBoxPreviews,
+	getMediaIdFromSplitBox,
+	getMediaIdsFromSplitsContent,
+	normalizeSplitBoxMediaId,
+} from '@sofie-automation/shared-lib/dist/package-manager/splitBoxMedia'
+import { PackageStatusMessage } from '@sofie-automation/shared-lib/dist/packageStatusMessages'
+
 import { MediaObjects, PackageContainerPackageStatuses, PackageInfos } from '../../collections'
 import {
 	mediaObjectFieldSpecifier,
@@ -53,17 +64,7 @@ import {
 	PackageInfoLight,
 	PieceDependencies,
 } from './common'
-import { PieceContentStatusObj, SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import { PieceContentStatusMessageFactory, PieceContentStatusMessageRequiredArgs } from './messageFactory'
-import { PackageStatusMessage } from '@sofie-automation/shared-lib/dist/packageStatusMessages'
-import { BucketAdLib } from '@sofie-automation/corelib/dist/dataModel/BucketAdLibPiece'
-import { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
-import {
-	buildPublishedBoxPreviews,
-	getMediaIdFromSplitBox,
-	getMediaIdsFromSplitsContent,
-	normalizeSplitBoxMediaId,
-} from '@sofie-automation/shared-lib/dist/package-manager/splitBoxMedia'
 
 const DEFAULT_MESSAGE_FACTORY = new PieceContentStatusMessageFactory(undefined)
 

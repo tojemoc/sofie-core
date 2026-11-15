@@ -1,5 +1,14 @@
 import { z } from 'zod'
+
+import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+
+import { PeripheralDevices } from '../../../collections'
+import { check } from '../../../lib/check'
 import {
 	APIPeripheralDevice,
 	DevicesRestAPI,
@@ -7,16 +16,9 @@ import {
 	PeripheralDeviceActionType,
 } from '../../../lib/rest/v1'
 import { logger } from '../../../logging'
-import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
-import { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { check } from '../../../lib/check'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
-import { PeripheralDevices } from '../../../collections'
-import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { APIPeripheralDeviceFrom } from './typeConversion'
 import { executePeripheralDeviceFunction } from '../../peripheralDevice/executeFunction'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { APIPeripheralDeviceFrom } from './typeConversion'
+import { APIFactory, APIRegisterHook, ServerAPIContext } from './types'
 import type { DDPClientConnection } from '../../../ddp-server/types'
 
 class DevicesServerAPI implements DevicesRestAPI {

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer'
+
 import { getViewPortScrollingState } from './viewPort'
 
 interface IElementMeasurements {
@@ -394,11 +395,8 @@ function measureElement(wrapperEl: HTMLDivElement, placeholderHeight?: number): 
 	const el = wrapperEl.firstElementChild as HTMLElement
 	const style = window.getComputedStyle(el)
 
-	let segmentTimeline: Element | null = null
-	let dashboardPanel: Element | null = null
-
-	segmentTimeline = wrapperEl.querySelector('.segment-timeline')
-	dashboardPanel = wrapperEl.querySelector('.dashboard-panel')
+	const segmentTimeline = wrapperEl.querySelector('.segment-timeline')
+	const dashboardPanel = wrapperEl.querySelector('.dashboard-panel')
 
 	if (segmentTimeline) {
 		const segmentRect = segmentTimeline.getBoundingClientRect()
@@ -497,7 +495,7 @@ export class ElementObserverManager {
 			const targets = new Set<HTMLElement>()
 
 			mutations.forEach((mutation) => {
-				let element: HTMLElement | null = null
+				let element: HTMLElement | null
 				if (mutation.target instanceof HTMLElement) {
 					element = mutation.target
 				} else {

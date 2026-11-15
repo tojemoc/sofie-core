@@ -1,8 +1,9 @@
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { PartInstances } from '../../../collections'
+
 import { runAllTimers, waitUntil } from '../../../__mocks__/helpers/jest'
+import { PartInstances } from '../../../collections'
 import {
 	BrandingContentCache,
 	createBrandingContentCache,

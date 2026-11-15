@@ -1,13 +1,16 @@
 import ClassNames from 'classnames'
-import type { ScriptContent } from '@sofie-automation/blueprints-integration'
-import { CustomLayerItemRenderer, type ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
-import { withTranslation, type WithTranslation } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'underscore'
+import type { WithTranslation } from 'react-i18next'
 
-import { getElementWidth } from '../../../utils/dimensions.js'
 import { calculatePartInstanceExpectedDurationWithTransition } from '@sofie-automation/corelib/dist/playout/timings'
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { ScriptContent } from '@sofie-automation/blueprints-integration'
+
 import { logger } from '../../../lib/logging.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { CustomLayerItemRenderer } from './CustomLayerItemRenderer.js'
+import type { ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
 
 type IProps = ICustomLayerItemProps
 interface IState {}
@@ -101,7 +104,8 @@ export const MicSourceRenderer: React.ComponentType<IProps> = withTranslation()(
 
 						if (
 							!this._lineAtEnd &&
-							(positionByReadTime >= positionByPartEnd || Math.abs(positionByReadTime - positionByPartEnd) <= 4)
+							(positionByReadTime >= positionByPartEnd ||
+								Math.abs(positionByReadTime - positionByPartEnd) <= 4)
 						) {
 							// difference is less than a frame
 							this.addClassToLine('at-end')

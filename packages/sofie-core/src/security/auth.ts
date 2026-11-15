@@ -1,10 +1,12 @@
-import { parseUserPermissions, UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
 import Koa from 'koa'
-import { triggerWriteAccess } from './securityVerify'
-import { logger } from '../logging'
+
 import { CollectionName } from '@sofie-automation/corelib/dist/dataModel/Collections'
-import type { DDPClientConnection } from '../ddp-server/types'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { parseUserPermissions, UserPermissions } from '@sofie-automation/meteor-lib/dist/userPermissions'
+
+import { logger } from '../logging'
+import { triggerWriteAccess } from './securityVerify'
+import type { DDPClientConnection } from '../ddp-server/types'
 
 /**
  * The header to use for user permissions

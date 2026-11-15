@@ -1,5 +1,6 @@
 import { ITranslatableMessage } from '@sofie-automation/blueprints-integration'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
 import { interpollateTranslation, isTranslatableMessage, translateMessage } from './TranslatableMessage.js'
 
 // Mock 't' function for i18next to find the keys

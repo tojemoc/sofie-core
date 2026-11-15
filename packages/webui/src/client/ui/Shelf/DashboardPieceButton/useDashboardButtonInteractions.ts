@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import type { IPreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
 import type { ReadonlyDeep } from 'type-fest'
+
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import type { IDashboardButtonProps } from './types'
-import { usePreviewPopUpSession } from './usePreviewPopUpSession'
+
 import { isTouchDevice } from '../../../lib/lib.js'
 import { getPieceScrubDurationMs } from '../../../lib/ui/splitsPreviewVideo.js'
+import { usePreviewPopUpSession } from './usePreviewPopUpSession'
+import type { IPreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { IDashboardButtonProps } from './types'
 
 export function useDashboardButtonInteractions(args: {
 	piece: IDashboardButtonProps['piece']

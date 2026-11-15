@@ -1,13 +1,15 @@
-import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { useContext, useEffect, useState } from 'react'
+
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { PeripheralDeviceType } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { useState, useEffect, useContext } from 'react'
-import { MeteorCall } from '../../../lib/meteorApi.js'
+import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
 import { Studios } from '../../../collections/index.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
 import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
 import { UserPermissionsContext } from '../../UserPermissions.js'
 

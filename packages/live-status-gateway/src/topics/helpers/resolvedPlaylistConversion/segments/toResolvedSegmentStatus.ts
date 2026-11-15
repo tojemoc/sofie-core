@@ -1,11 +1,12 @@
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { getResolvedSegment } from '@sofie-automation/corelib/dist/playout/stateCacheResolver'
-import { ResolvedPlaylistConversionContext, getOrderedPartsInRundown } from '../context/conversionContext.js'
-import { toResolvedPartStatus } from '../parts/toResolvedPartStatus.js'
+import { literal } from '@sofie-automation/server-core-integration'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { DBSegment, SegmentExtended } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import type { ResolvedSegment, SourceLayer, OutputLayer } from '@sofie-automation/live-status-gateway-api'
-import { literal } from '@sofie-automation/server-core-integration'
+import type { OutputLayer, ResolvedSegment, SourceLayer } from '@sofie-automation/live-status-gateway-api'
+
+import { getOrderedPartsInRundown, ResolvedPlaylistConversionContext } from '../context/conversionContext.js'
+import { toResolvedPartStatus } from '../parts/toResolvedPartStatus.js'
 
 export function toResolvedSegmentStatus(
 	ctx: ResolvedPlaylistConversionContext,

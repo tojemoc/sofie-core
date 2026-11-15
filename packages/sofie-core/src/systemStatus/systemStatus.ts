@@ -1,32 +1,33 @@
-import { PeripheralDevice, PERIPHERAL_SUBTYPE_PROCESS } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { StatusCode } from '@sofie-automation/blueprints-integration'
+import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PERIPHERAL_SUBTYPE_PROCESS, PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
-import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { getCurrentTime } from '../lib/lib'
 import {
-	parseVersion,
-	parseCoreIntegrationCompatabilityRange,
-	stripVersion,
+	CheckError,
+	CheckObj,
+	Component,
+	ExternalStatus,
+	StatusResponse,
+	SystemInstanceId,
+} from '@sofie-automation/meteor-lib/dist/api/systemStatus'
+import type { Time } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { MethodContext } from '../api/methodContext'
+import { ServerPeripheralDeviceAPI } from '../api/peripheralDevice'
+import { PeripheralDevices, Workers, WorkerThreadStatuses } from '../collections'
+import { RelevantSystemVersions } from '../coreSystem'
+import { getCurrentTime } from '../lib/lib'
+import { assertConnectionHasOneOfPermissions, RequestCredentials } from '../security/auth'
+import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
+import { getUpgradeSystemStatusMessages } from './blueprintUpgradeStatus'
+import { getBlueprintVersions } from './blueprintVersions'
+import {
 	compareSemverVersions,
 	isPrerelease,
+	parseCoreIntegrationCompatabilityRange,
+	parseVersion,
+	stripVersion,
 } from './semverUtils'
-import {
-	StatusResponse,
-	CheckObj,
-	ExternalStatus,
-	CheckError,
-	SystemInstanceId,
-	Component,
-} from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { RelevantSystemVersions } from '../coreSystem'
-import { StatusCode } from '@sofie-automation/blueprints-integration'
-import { PeripheralDevices, Workers, WorkerThreadStatuses } from '../collections'
-import { PeripheralDeviceId, StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ServerPeripheralDeviceAPI } from '../api/peripheralDevice'
-import { MethodContext } from '../api/methodContext'
-import { getBlueprintVersions } from './blueprintVersions'
-import { getUpgradeSystemStatusMessages } from './blueprintUpgradeStatus'
-import { triggerWriteAccessBecauseNoCheckNecessary } from '../security/securityVerify'
-import { assertConnectionHasOneOfPermissions, RequestCredentials } from '../security/auth'
 
 const PackageInfo = require('../../package.json')
 const integrationVersionRange = parseCoreIntegrationCompatabilityRange(PackageInfo.version)
@@ -245,7 +246,7 @@ export async function getSystemStatus(_cred: RequestCredentials | null, studioId
 	statusObj.components.push(...blueprintUpgradeMessages)
 
 	// Check status of devices:
-	let devices: PeripheralDevice[] = []
+	let devices: PeripheralDevice[]
 	if (studioId) {
 		// Check status for a certain studio:
 

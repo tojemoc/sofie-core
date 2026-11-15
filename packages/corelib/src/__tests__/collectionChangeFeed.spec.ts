@@ -1,4 +1,4 @@
-import { CollectionChangeFeed, CHANGE_FEED_RESTART_BACKOFF_MS, ChangeStreamLike } from '../collectionChangeFeed.js'
+import { CHANGE_FEED_RESTART_BACKOFF_MS, ChangeStreamLike, CollectionChangeFeed } from '../collectionChangeFeed.js'
 
 class FakeStream implements ChangeStreamLike {
 	listeners: Record<string, Array<(arg?: any) => void>> = {}

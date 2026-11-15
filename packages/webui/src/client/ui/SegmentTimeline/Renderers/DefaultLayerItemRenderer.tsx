@@ -1,7 +1,9 @@
 import ClassNames from 'classnames'
-import { getElementWidth } from '../../../utils/dimensions.js'
 
-import { CustomLayerItemRenderer, type ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { CustomLayerItemRenderer } from './CustomLayerItemRenderer.js'
+import type { ICustomLayerItemProps } from './CustomLayerItemRenderer.js'
+
 type IProps = ICustomLayerItemProps
 interface IState {}
 

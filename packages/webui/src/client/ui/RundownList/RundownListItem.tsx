@@ -1,20 +1,23 @@
-import { useContext, useEffect } from 'react'
 import classNames from 'classnames'
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
-import { confirmDeleteRundown, confirmReSyncRundown, getShowStyleBaseLink } from './util.js'
+import { useContext, useEffect } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { type IRundownDragObject, type IRundownPlaylistUiAction, RundownListDragDropTypes } from './DragAndDropTypes.js'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import RundownListItemView from './RundownListItemView.js'
-import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
-import type { RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { ShowStyleBases, ShowStyleVariants } from '../../collections/index.js'
 import { useTranslation } from 'react-i18next'
+
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { RundownId, RundownPlaylistId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import type { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
+import type { RundownLayoutBase } from '@sofie-automation/meteor-lib/dist/collections/RundownLayouts'
+
+import { ShowStyleBases, ShowStyleVariants } from '../../collections/index.js'
+import { useTracker } from '../../lib/ReactMeteorData/ReactMeteorData.js'
 import { UserPermissionsContext } from '../UserPermissions.js'
+import { RundownListDragDropTypes } from './DragAndDropTypes.js'
+import RundownListItemView from './RundownListItemView.js'
+import { confirmDeleteRundown, confirmReSyncRundown, getShowStyleBaseLink } from './util.js'
+import type { IRundownDragObject, IRundownPlaylistUiAction } from './DragAndDropTypes.js'
 
 export const HTML_ID_PREFIX = 'rundown-'
 
@@ -41,19 +44,21 @@ export function RundownListItem({
 	const showStyleBase = useTracker(
 		() =>
 			ShowStyleBases.findOne(rundown.showStyleBaseId, { projection: { name: 1 } }) as
-				| Pick<DBShowStyleBase, 'name'>
-				| undefined,
+				Pick<DBShowStyleBase, 'name'> | undefined,
 		[rundown.showStyleBaseId]
 	)
 	const showStyleVariant = useTracker(
 		() =>
 			ShowStyleVariants.findOne(rundown.showStyleVariantId, { projection: { name: 1 } }) as
-				| Pick<DBShowStyleVariant, 'name'>
-				| undefined,
+				Pick<DBShowStyleVariant, 'name'> | undefined,
 		[rundown.showStyleVariantId]
 	)
 
-	const [dragState, connectDragSource, connectDragPreview] = useDrag<IRundownDragObject, void, { isDragging: boolean }>(
+	const [dragState, connectDragSource, connectDragPreview] = useDrag<
+		IRundownDragObject,
+		void,
+		{ isDragging: boolean }
+	>(
 		{
 			type: RundownListDragDropTypes.RUNDOWN,
 			collect: (monitor) => {
@@ -127,7 +132,9 @@ export function RundownListItem({
 					: undefined
 			}
 			confirmReSyncRundownHandler={
-				rundown.orphaned && userPermissions.studio ? () => confirmReSyncRundown(userPermissions, rundown, t) : undefined
+				rundown.orphaned && userPermissions.studio
+					? () => confirmReSyncRundown(userPermissions, rundown, t)
+					: undefined
 			}
 		/>
 	)

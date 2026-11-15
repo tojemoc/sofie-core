@@ -1,43 +1,45 @@
-import { assertNever, getRandomId, generateTranslation } from '@sofie-automation/corelib/dist/lib'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { JobContext } from '../jobs/index.js'
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
 import { PartId, PartInstanceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { PlayoutModel } from './model/PlayoutModel.js'
-import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
-import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
+import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
+import { assertNever, generateTranslation, getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+import { QueueNextSegmentResult } from '@sofie-automation/corelib/dist/worker/studio'
+import { PRESERVE_UNSYNCED_PLAYING_SEGMENT_CONTENTS } from '@sofie-automation/shared-lib/dist/core/constants'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { OnSetAsNextContext } from '../blueprints/context/index.js'
+import {
+	applyActionSideEffects,
+	PartAndPieceInstanceActionService,
+} from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
+import { PersistentPlayoutStateStore } from '../blueprints/context/services/PersistantStateStore.js'
+import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
+import { JobContext } from '../jobs/index.js'
+import { logger } from '../logging.js'
+import { convertNoteToNotification } from '../notifications/util.js'
 import {
 	fetchPiecesThatMayBeActiveForPart,
 	getBaselineInfinitesForPart,
 	getPieceInstancesForPart,
 	syncPlayheadInfinitesForNextPartInstance,
 } from './infinites.js'
-import { PRESERVE_UNSYNCED_PLAYING_SEGMENT_CONTENTS } from '@sofie-automation/shared-lib/dist/core/constants'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
-import _ from 'underscore'
 import { resetPartInstancesWithPieceInstances } from './lib.js'
-import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import { UserError, UserErrorMessage } from '@sofie-automation/corelib/dist/error'
-import { SelectNextPartResult } from './selectNextPart.js'
-import { ReadonlyDeep } from 'type-fest'
-import { QueueNextSegmentResult } from '@sofie-automation/corelib/dist/worker/studio'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { OnSetAsNextContext } from '../blueprints/context/index.js'
-import { logger } from '../logging.js'
-import { WatchedPackagesHelper } from '../blueprints/context/watchedPackages.js'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import {
-	PartAndPieceInstanceActionService,
-	applyActionSideEffects,
-} from '../blueprints/context/services/PartAndPieceInstanceActionService.js'
-import { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { convertNoteToNotification } from '../notifications/util.js'
-import { PersistentPlayoutStateStore } from '../blueprints/context/services/PersistantStateStore.js'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { PlayoutPartInstanceModelImpl } from './model/implementation/PlayoutPartInstanceModelImpl.js'
+import { PlayoutModel } from './model/PlayoutModel.js'
+import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
+import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
 import { QuickLoopService } from './model/services/QuickLoopService.js'
-import type { IngestModelReadonly } from '../ingest/model/IngestModel.js'
+import { SelectNextPartResult } from './selectNextPart.js'
 import { recalculateTTimerProjections } from './tTimers.js'
+import type { IngestModelReadonly } from '../ingest/model/IngestModel.js'
 
 /**
  * Set or clear the nexted part, from a given PartInstance, or SelectNextPartResult

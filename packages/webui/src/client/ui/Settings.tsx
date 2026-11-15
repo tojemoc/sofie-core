@@ -1,21 +1,21 @@
-import { useSubscription } from '../lib/ReactMeteorData/react-meteor-data.js'
-import { Route, Switch, Redirect } from 'react-router-dom'
-import { ErrorBoundary } from '../lib/ErrorBoundary.js'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/esm/Container'
+import Row from 'react-bootstrap/Row'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
-import StudioSettings from './Settings/StudioSettings.js'
-import DeviceSettings from './Settings/DeviceSettings.js'
-import ShowStyleSettings from './Settings/ShowStyleBaseSettings.js'
-import SnapshotsView from './Settings/SnapshotsView.js'
-import BlueprintSettings from './Settings/BlueprintSettings.js'
-import SystemManagement from './Settings/SystemManagement.js'
-
-import { MigrationView } from './Settings/Migration.js'
-import { SettingsMenu } from './Settings/SettingsMenu.js'
 import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import Container from 'react-bootstrap/esm/Container'
+
+import { ErrorBoundary } from '../lib/ErrorBoundary.js'
+import { useSubscription } from '../lib/ReactMeteorData/react-meteor-data.js'
+import BlueprintSettings from './Settings/BlueprintSettings.js'
+import DeviceSettings from './Settings/DeviceSettings.js'
+import { MigrationView } from './Settings/Migration.js'
+import { SettingsMenu } from './Settings/SettingsMenu.js'
+import ShowStyleSettings from './Settings/ShowStyleBaseSettings.js'
+import SnapshotsView from './Settings/SnapshotsView.js'
+import StudioSettings from './Settings/StudioSettings.js'
+import SystemManagement from './Settings/SystemManagement.js'
 
 export function Settings(): JSX.Element | null {
 	useSubscription(CorelibPubSub.peripheralDevices, null)
@@ -44,7 +44,9 @@ export function Settings(): JSX.Element | null {
 									path="/settings/blueprint/:blueprintId"
 									render={(props) => (
 										<BlueprintSettings
-											blueprintId={protectString(decodeURIComponent(props.match.params.blueprintId))}
+											blueprintId={protectString(
+												decodeURIComponent(props.match.params.blueprintId)
+											)}
 										/>
 									)}
 								/>

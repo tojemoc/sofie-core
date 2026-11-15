@@ -1,21 +1,27 @@
-import _ from 'underscore'
-import path from 'path'
-import os from 'os'
 import { promises as fsp } from 'fs'
-import { setupDefaultStudioEnvironment, packageBlueprint } from '../../../__mocks__/helpers/database'
-import { literal, getRandomId, getRandomString } from '@sofie-automation/corelib/dist/lib'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import os from 'os'
+import path from 'path'
+
+import _ from 'underscore'
+
 import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { SYSTEM_ID, ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { insertBlueprint, uploadBlueprint, uploadBlueprintAsset, ServerBlueprintAPI } from '../api'
+import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { getRandomId, getRandomString, literal } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { BlueprintAPIMethods } from '@sofie-automation/meteor-lib/dist/api/blueprint'
+import { ICoreSystem, SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { packageBlueprint, setupDefaultStudioEnvironment } from '../../../__mocks__/helpers/database'
+import { insertBlueprint, ServerBlueprintAPI, uploadBlueprint, uploadBlueprintAsset } from '../api'
+
 import '../../../__mocks__/_extendJest'
-import { Blueprints, CoreSystem } from '../../../collections'
-import { SupressLogMessages } from '../../../__mocks__/suppressLogging'
+
 import { JSONBlobStringify } from '@sofie-automation/shared-lib/dist/lib/JSONBlob'
-import * as CoreSystemAPI from '../../../coreSystem'
+
 import { makeMeteorCallForTest } from '../../../__mocks__/helpers/methods'
+import { SupressLogMessages } from '../../../__mocks__/suppressLogging'
+import { Blueprints, CoreSystem } from '../../../collections'
+import * as CoreSystemAPI from '../../../coreSystem'
 import { DDPClientConnection } from '../../../ddp-server/types'
 
 // we don't want the deviceTriggers observer to start up at this time

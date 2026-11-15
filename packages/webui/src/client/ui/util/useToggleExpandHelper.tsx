@@ -1,5 +1,7 @@
-import { type ProtectedString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import type { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 
 export type ToggleSetExpanded = (id: ProtectedString<any> | string | number, forceState?: boolean) => void
 export type ToggleIsExpanded = (id: ProtectedString<any> | string | number) => boolean

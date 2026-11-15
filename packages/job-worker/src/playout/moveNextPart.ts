@@ -1,11 +1,13 @@
-import { groupByToMap } from '@sofie-automation/corelib/dist/lib'
-import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { JobContext } from '../jobs/index.js'
-import { PlayoutModelReadonly } from './model/PlayoutModel.js'
-import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
-import { logger } from '../logging.js'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
 import { ReadonlyDeep } from 'type-fest'
+
+import { DBPart, isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { groupByToMap } from '@sofie-automation/corelib/dist/lib'
+import { sortPartsInSortedSegments } from '@sofie-automation/corelib/dist/playout/playlist'
+
+import { JobContext } from '../jobs/index.js'
+import { logger } from '../logging.js'
+import { PlayoutModelReadonly } from './model/PlayoutModel.js'
 
 export function selectNewPartWithOffsets(
 	_context: JobContext,

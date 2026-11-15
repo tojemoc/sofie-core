@@ -1,37 +1,36 @@
 import { faDownload, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getRandomString, joinObjectPathFragments, literal, objectPathGet } from '@sofie-automation/corelib/dist/lib'
+import Tooltip from 'rc-tooltip'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-	type WrappedOverridableItemNormal,
-	type OverrideOpHelperForItemContents,
-	getAllCurrentAndDeletedItemsFromOverrides,
-	type WrappedOverridableItem,
-} from '../../../ui/Settings/util/OverrideOpHelper.js'
-import { useToggleExpandHelper } from '../../../ui/util/useToggleExpandHelper.js'
-import { doModalDialog } from '../../ModalDialog.js'
-import {
-	getSchemaSummaryFieldsForObject,
-	type SchemaFormSofieEnumDefinition,
-	translateStringIfHasNamespaces,
-} from '../schemaFormUtil.js'
-import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { getRandomString, joinObjectPathFragments, literal, objectPathGet } from '@sofie-automation/corelib/dist/lib'
 import {
 	getSchemaDefaultValues,
 	getSchemaUIField,
 	SchemaFormUIField,
 } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaUtil'
-import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
-import { SchemaFormTableEditRow } from './TableEditRow.js'
-import { SchemaTableSummaryRow } from '../SchemaTableSummaryRow.js'
-import { OverrideOpHelperObjectTable } from './ObjectTableOpHelper.js'
-import { ObjectTableDeletedRow } from './ObjectTableDeletedRow.js'
-import { SchemaFormSectionHeader } from '../SchemaFormSectionHeader.js'
-import { UploadButton } from '../../uploadButton.js'
-import Tooltip from 'rc-tooltip'
-import { NoticeLevel, Notification, NotificationCenter } from '../../notifications/notifications.js'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+import type { SomeObjectOverrideOp } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { JSONSchema } from '@sofie-automation/shared-lib/dist/lib/JSONSchemaTypes'
+
+import { getAllCurrentAndDeletedItemsFromOverrides } from '../../../ui/Settings/util/OverrideOpHelper.js'
+import { useToggleExpandHelper } from '../../../ui/util/useToggleExpandHelper.js'
+import { doModalDialog } from '../../ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../notifications/notifications.js'
+import { UploadButton } from '../../uploadButton.js'
+import { SchemaFormSectionHeader } from '../SchemaFormSectionHeader.js'
+import { getSchemaSummaryFieldsForObject, translateStringIfHasNamespaces } from '../schemaFormUtil.js'
+import { SchemaTableSummaryRow } from '../SchemaTableSummaryRow.js'
+import { ObjectTableDeletedRow } from './ObjectTableDeletedRow.js'
+import { OverrideOpHelperObjectTable } from './ObjectTableOpHelper.js'
+import { SchemaFormTableEditRow } from './TableEditRow.js'
+import type {
+	OverrideOpHelperForItemContents,
+	WrappedOverridableItem,
+	WrappedOverridableItemNormal,
+} from '../../../ui/Settings/util/OverrideOpHelper.js'
+import type { SchemaFormSofieEnumDefinition } from '../schemaFormUtil.js'
 
 interface SchemaFormObjectTableProps {
 	/** Schema for each row in the table */
@@ -194,7 +193,11 @@ export const SchemaFormObjectTable = ({
 	const title = getSchemaUIField(schema, SchemaFormUIField.Title)
 	const description = getSchemaUIField(schema, SchemaFormUIField.Description)
 	const titleElement = title && (
-		<SchemaFormSectionHeader title={title} description={description} translationNamespaces={translationNamespaces} />
+		<SchemaFormSectionHeader
+			title={title}
+			description={description}
+			translationNamespaces={translationNamespaces}
+		/>
 	)
 
 	if (Object.keys(schema.properties || {}).length > 0) {
@@ -222,7 +225,11 @@ export const SchemaFormObjectTable = ({
 					<thead>
 						<tr className="hl">
 							{summaryFields.map((col) => {
-								return <th key={col.attr}>{translateStringIfHasNamespaces(col.name, translationNamespaces)}</th>
+								return (
+									<th key={col.attr}>
+										{translateStringIfHasNamespaces(col.name, translationNamespaces)}
+									</th>
+								)
 							})}
 							<th key="action">&nbsp;</th>
 						</tr>

@@ -1,27 +1,29 @@
 import '../../__mocks__/_extendJest'
-import { setupDefaultStudioEnvironment, DefaultEnvironment } from '../../__mocks__/helpers/database'
+
+import semver from 'semver'
+
+import { StatusCode } from '@sofie-automation/blueprints-integration'
 import { generateTranslation, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { sleepNoFakeTimers } from '../../__mocks__/time'
-import { status2ExternalStatus, setSystemStatus } from '../systemStatus'
-import { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { stripVersion } from '../semverUtils'
-import semver from 'semver'
-import { StatusCode } from '@sofie-automation/blueprints-integration'
-import { SystemStatusAPIMethods } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { ServerSystemStatusAPI } from '../api'
-import { PeripheralDeviceStatusObject } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { PeripheralDevices } from '../../collections'
+import { StatusResponse, SystemStatusAPIMethods } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
 import { UIBlueprintUpgradeStatus } from '@sofie-automation/meteor-lib/dist/api/upgradeStatus'
+import { PeripheralDeviceStatusObject } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+
+import { DefaultEnvironment, setupDefaultStudioEnvironment } from '../../__mocks__/helpers/database'
 import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { sleepNoFakeTimers } from '../../__mocks__/time'
+import { PeripheralDevices } from '../../collections'
+import { setupSystemStatusObservers } from '../../coreSystem'
+import * as getServerBlueprintUpgradeStatuses from '../../publications/blueprintUpgradeStatus/systemStatus'
+import { ServerSystemStatusAPI } from '../api'
+import { stripVersion } from '../semverUtils'
+import { setSystemStatus, status2ExternalStatus } from '../systemStatus'
 
 // we don't want the deviceTriggers observer to start up at this time
 jest.mock('../../api/deviceTriggers/observer')
 
 const PackageInfo = require('../../../package.json')
 
-import * as getServerBlueprintUpgradeStatuses from '../../publications/blueprintUpgradeStatus/systemStatus'
-import { setupSystemStatusObservers } from '../../coreSystem'
 const getServerBlueprintUpgradeStatusesMock = jest.spyOn(
 	getServerBlueprintUpgradeStatuses,
 	'getServerBlueprintUpgradeStatuses'

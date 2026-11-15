@@ -1,19 +1,15 @@
 import _ from 'underscore'
+
+import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
+import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { DBRundownPlaylist } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { literal } from '@sofie-automation/corelib/dist/lib'
 import { InMemoryMongoCollection } from '@sofie-automation/corelib/dist/memoryCollection'
 import { MongoFieldSpecifierOnesStrict } from '@sofie-automation/corelib/dist/mongo'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { PieceInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
-import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 
 export type RundownPlaylistFields =
-	| '_id'
-	| 'name'
-	| 'activationId'
-	| 'currentPartInfo'
-	| 'nextPartInfo'
-	| 'previousPartsInfo'
+	'_id' | 'name' | 'activationId' | 'currentPartInfo' | 'nextPartInfo' | 'previousPartsInfo'
 export const rundownPlaylistFieldSpecifier = literal<
 	MongoFieldSpecifierOnesStrict<Pick<DBRundownPlaylist, RundownPlaylistFields>>
 >({

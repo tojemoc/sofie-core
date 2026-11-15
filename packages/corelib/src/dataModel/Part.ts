@@ -1,11 +1,13 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import { IBlueprintPart, NoteSeverity } from '@sofie-automation/blueprints-integration'
+
 import { ITranslatableMessage } from '../TranslatableMessage.js'
 import { PartId, RundownId, SegmentId } from './Ids.js'
 import { PartNote } from './Notes.js'
-import { ReadonlyDeep } from 'type-fest'
-import { CoreUserEditingDefinition, CoreUserEditingProperties } from './UserEditingDefinitions.js'
 import { PartInstanceLimited } from './PartInstance.js'
 import { PieceExtended } from './Piece.js'
+import { CoreUserEditingDefinition, CoreUserEditingProperties } from './UserEditingDefinitions.js'
 
 export interface PartInvalidReason {
 	message: ITranslatableMessage

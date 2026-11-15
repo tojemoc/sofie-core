@@ -1,13 +1,15 @@
-import {
-	IRundownDataChangedEventContext,
-	IBlueprintExternalMessageQueueObj,
-} from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
-import { unprotectObjectArray } from '@sofie-automation/corelib/dist/protectedString'
-import { formatDateAsTimecode, formatDurationAsTimecode } from '@sofie-automation/corelib/dist/lib'
+
+import {
+	IBlueprintExternalMessageQueueObj,
+	IRundownDataChangedEventContext,
+} from '@sofie-automation/blueprints-integration'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { getCurrentTime } from '../../lib/index.js'
+import { formatDateAsTimecode, formatDurationAsTimecode } from '@sofie-automation/corelib/dist/lib'
+import { unprotectObjectArray } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobContext, ProcessedShowStyleCompound } from '../../jobs/index.js'
+import { getCurrentTime } from '../../lib/index.js'
 import { ContextInfo } from './CommonContext.js'
 import { RundownContext } from './RundownContext.js'
 

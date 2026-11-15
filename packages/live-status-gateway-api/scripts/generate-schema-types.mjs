@@ -1,7 +1,8 @@
-import { TypeScriptGenerator } from '@asyncapi/modelina'
-import { fromFile, Parser } from '@asyncapi/parser'
 import fs from 'fs/promises'
 import * as path from 'path'
+
+import { TypeScriptGenerator } from '@asyncapi/modelina'
+import { fromFile, Parser } from '@asyncapi/parser'
 import * as prettier from 'prettier'
 
 const BANNER =

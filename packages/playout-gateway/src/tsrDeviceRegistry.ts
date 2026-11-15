@@ -1,6 +1,7 @@
-import { stringifyError } from '@sofie-automation/server-core-integration'
 import { DevicesRegistry } from 'timeline-state-resolver'
 import type * as Winston from 'winston'
+
+import { stringifyError } from '@sofie-automation/server-core-integration'
 
 export const TSRDeviceRegistry = new DevicesRegistry()
 

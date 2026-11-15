@@ -1,23 +1,24 @@
-import { useImperativeHandle, useContext, useEffect, useRef, useState, type RefObject } from 'react'
-import { type ISourceLayer, SourceLayerType } from '@sofie-automation/blueprints-integration'
-import { DefaultRenderer } from './Renderers/DefaultRenderer.js'
+import { useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import type { RefObject } from 'react'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
 import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { ScriptRenderer } from './Renderers/ScriptRenderer.js'
-import { getElementDocumentOffset } from '../../../utils/positions.js'
-import { getElementWidth } from '../../../utils/dimensions.js'
-import { GraphicsRenderer } from './Renderers/GraphicsRenderer.js'
-import { SplitsRenderer } from './Renderers/SplitsRenderer.js'
-import { PieceElement } from '../../SegmentContainer/PieceElement.js'
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { PartId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
-import {
-	convertSourceLayerItemToPreview,
-	type IPreviewPopUpSession,
-	PreviewPopUpContext,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
 import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+
 import { RundownUtils } from '../../../lib/rundown.js'
+import { getElementWidth } from '../../../utils/dimensions.js'
+import { getElementDocumentOffset } from '../../../utils/positions.js'
+import { convertSourceLayerItemToPreview, PreviewPopUpContext } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import { PieceElement } from '../../SegmentContainer/PieceElement.js'
+import { useContentStatusForPieceInstance } from '../../SegmentTimeline/withMediaObjectStatus.js'
+import { DefaultRenderer } from './Renderers/DefaultRenderer.js'
+import { GraphicsRenderer } from './Renderers/GraphicsRenderer.js'
+import { ScriptRenderer } from './Renderers/ScriptRenderer.js'
+import { SplitsRenderer } from './Renderers/SplitsRenderer.js'
+import type { IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
 
 interface IProps {
 	layer: ISourceLayer

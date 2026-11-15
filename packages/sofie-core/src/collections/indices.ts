@@ -1,7 +1,8 @@
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { IndexSpecifier } from '@sofie-automation/meteor-lib/dist/collections/lib'
+
 import { AsyncOnlyReadOnlyMongoCollection } from './collection'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
 
 interface CollectionsIndexes {
 	[collectionName: string]: CollectionIndexes<any>

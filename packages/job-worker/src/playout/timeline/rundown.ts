@@ -1,3 +1,6 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import {
 	IBlueprintPieceType,
 	PieceLifespan,
@@ -12,24 +15,23 @@ import {
 	RundownHoldState,
 } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
 import {
+	OnGenerateTimelineObjExt,
 	TimelineObjGroupPart,
 	TimelineObjRundown,
-	OnGenerateTimelineObjExt,
 	TimelineObjType,
 } from '@sofie-automation/corelib/dist/dataModel/Timeline'
+import { literal } from '@sofie-automation/corelib/dist/lib'
 import { getPartGroupId } from '@sofie-automation/corelib/dist/playout/ids'
 import { PieceInstanceWithTimings } from '@sofie-automation/corelib/dist/playout/processAndPrune'
 import { PartCalculatedTimings } from '@sofie-automation/corelib/dist/playout/timings'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 import { JobContext } from '../../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
+import { getCurrentTime } from '../../lib/index.js'
+import { logger } from '../../logging.js'
 import { SelectedPartInstancesTimelineInfo, SelectedPartInstanceTimelineInfo } from './generate.js'
 import { createPartGroup, createPartGroupFirstObject, PartEnable, transformPartIntoTimeline } from './part.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { getCurrentTime } from '../../lib/index.js'
-import _ from 'underscore'
 import { getPieceEnableInsidePart, transformPieceGroupAndObjects } from './piece.js'
-import { logger } from '../../logging.js'
 
 /**
  * Some additional data used by the timeline generation process

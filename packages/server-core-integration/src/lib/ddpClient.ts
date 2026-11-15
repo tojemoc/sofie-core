@@ -80,7 +80,6 @@ import type {
 	ConnectedMessage,
 	FailedMessage,
 	PingMessage,
-	PongMessage,
 	NoSubMessage,
 	AddedMessage,
 	ChangedMessage,
@@ -390,7 +389,7 @@ export class DDPClient extends EventEmitter<DDPClientEvents> {
 	}
 
 	private ping(data: PingMessage): void {
-		this.send((data.id && ({ msg: 'pong', id: data.id } as PongMessage)) || ({ msg: 'pong' } as PongMessage))
+		this.send((data.id && ({ msg: 'pong', id: data.id })) || ({ msg: 'pong' }))
 	}
 
 	private messageWork: { [name in ServerClient]: (data: any) => void } = {

@@ -1,20 +1,21 @@
 import {
-	ExpectedPackageDBType,
 	ExpectedPackageDB,
+	ExpectedPackageDBType,
 	ExpectedPackageIngestSourceBucket,
 } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
-import { ExpectedPackages, Rundowns } from '../../collections'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
-import { lazyIgnore } from '../../lib/lib'
-import { logger } from '../../logging'
-import { runIngestOperation } from './lib'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
 import { ExpectedPackageId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PackageInfoDB } from '@sofie-automation/corelib/dist/dataModel/PackageInfos'
 import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { QueueStudioJob } from '../../worker/worker'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
 import { StudioJobs } from '@sofie-automation/corelib/dist/worker/studio'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { ExpectedPackages, Rundowns } from '../../collections'
+import { lazyIgnore } from '../../lib/lib'
+import { logger } from '../../logging'
+import { QueueStudioJob } from '../../worker/worker'
+import { runIngestOperation } from './lib'
 
 export async function onUpdatedPackageInfo(packageId: ExpectedPackageId, _doc: PackageInfoDB | null): Promise<void> {
 	logger.info(`PackageInfo updated "${packageId}"`)

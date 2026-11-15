@@ -1,12 +1,14 @@
-import { createBrandingObservers, getBrandingRundownIdsForPart } from '../lib/branding'
-import { PartId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
-import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
 import { ReadonlyDeep } from 'type-fest'
-import { logger } from '../../logging'
-import { ContentCache, adLibPieceFieldSpecifier } from './reactiveContentCache'
+
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { PartId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { MongoQuery } from '@sofie-automation/corelib/dist/mongo'
+
 import { AdLibPieces } from '../../collections'
+import { logger } from '../../logging'
+import { createBrandingObservers, getBrandingRundownIdsForPart } from '../lib/branding'
 import { waitForAllObserversReady } from '../lib/lib'
+import { adLibPieceFieldSpecifier, ContentCache } from './reactiveContentCache'
 import type { LiveQueryHandleSync } from '../../lib/lib'
 
 /**

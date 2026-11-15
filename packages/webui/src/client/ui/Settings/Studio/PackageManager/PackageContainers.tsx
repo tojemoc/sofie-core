@@ -1,33 +1,35 @@
+import { faPencilAlt, faPlus, faSync, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ClassNames from 'classnames'
 import * as React from 'react'
-import type { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { doModalDialog } from '../../../../lib/ModalDialog.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next'
-import { Studios } from '../../../../collections/index.js'
-import {
-	type ObjectOverrideSetOp,
-	type SomeObjectOverrideOp,
-	applyAndValidateOverrides,
+
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import type { DBStudio, StudioPackageContainer } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import type {
+	ObjectOverrideSetOp,
+	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { Studios } from '../../../../collections/index.js'
 import {
 	LabelActual,
 	LabelAndOverrides,
 	LabelAndOverridesForMultiSelect,
 } from '../../../../lib/Components/LabelAndOverrides.js'
-import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { TextInputControl } from '../../../../lib/Components/TextInput.js'
-import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
 import { MultiSelectInputControl } from '../../../../lib/Components/MultiSelectInput.js'
-import {
-	type OverrideOpHelper,
-	type WrappedOverridableItem,
-	type WrappedOverridableItemNormal,
-	useOverrideOpHelper,
-} from '../../util/OverrideOpHelper.js'
+import { TextInputControl } from '../../../../lib/Components/TextInput.js'
+import { doModalDialog } from '../../../../lib/ModalDialog.js'
+import { useToggleExpandHelper } from '../../../util/useToggleExpandHelper.js'
+import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
 import { AccessorsTable } from './AccessorTable.js'
+import type { DropdownInputOption } from '../../../../lib/Components/DropdownInput.js'
+import type {
+	OverrideOpHelper,
+	WrappedOverridableItem,
+	WrappedOverridableItemNormal,
+} from '../../util/OverrideOpHelper.js'
 
 interface PackageContainersTableProps {
 	studio: DBStudio
@@ -184,7 +186,9 @@ function PackageContainerDeletedRow({ packageContainer, overrideHelper }: Readon
 
 	return (
 		<tr>
-			<th className="settings-studio-device__name c3 notifications-s notifications-text">{packageContainer.id}</th>
+			<th className="settings-studio-device__name c3 notifications-s notifications-text">
+				{packageContainer.id}
+			</th>
 			<td className="settings-studio-device__id c2 deleted">{packageContainer.defaults?.container.label}</td>
 			<td className="settings-studio-device__id c2 deleted">{packageContainer.id}</td>
 			<td className="settings-studio-output-table__actions table-item-actions c3">
@@ -218,7 +222,9 @@ function PackageContainerRow({
 	const { t } = useTranslation()
 
 	const availablePlayoutDevicesOptions: DropdownInputOption<string>[] = React.useMemo(() => {
-		const playoutDevicesFromOverrrides = applyAndValidateOverrides(studio.peripheralDeviceSettings.playoutDevices).obj
+		const playoutDevicesFromOverrrides = applyAndValidateOverrides(
+			studio.peripheralDeviceSettings.playoutDevices
+		).obj
 
 		const devices: DropdownInputOption<string>[] = []
 
@@ -248,7 +254,9 @@ function PackageContainerRow({
 				})}
 			>
 				<th className="settings-studio-package-container__id c2">{packageContainer.id}</th>
-				<td className="settings-studio-package-container__name c2">{packageContainer.computed.container.label}</td>
+				<td className="settings-studio-package-container__name c2">
+					{packageContainer.computed.container.label}
+				</td>
 
 				<td className="settings-studio-package-container__actions table-item-actions c3">
 					{packageContainer.defaults && packageContainer.overrideOps.length > 0 && (
@@ -287,7 +295,9 @@ function PackageContainerRow({
 								itemKey={'container.label'}
 								overrideHelper={overrideHelper}
 							>
-								{(value, handleUpdate) => <TextInputControl value={value} handleUpdate={handleUpdate} />}
+								{(value, handleUpdate) => (
+									<TextInputControl value={value} handleUpdate={handleUpdate} />
+								)}
 							</LabelAndOverrides>
 							<LabelAndOverridesForMultiSelect
 								label={t('Playout devices which uses this package container')}
@@ -298,7 +308,11 @@ function PackageContainerRow({
 								options={availablePlayoutDevicesOptions}
 							>
 								{(value, handleUpdate, options) => (
-									<MultiSelectInputControl options={options} value={value} handleUpdate={handleUpdate} />
+									<MultiSelectInputControl
+										options={options}
+										value={value}
+										handleUpdate={handleUpdate}
+									/>
 								)}
 							</LabelAndOverridesForMultiSelect>
 						</div>

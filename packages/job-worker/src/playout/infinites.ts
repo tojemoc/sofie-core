@@ -1,33 +1,35 @@
+import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
 import { PartInstanceId, RundownId, ShowStyleBaseId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { DBPartInstance } from '@sofie-automation/corelib/dist/dataModel/PartInstance'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
 import { PieceInstance, wrapPieceToInstance } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
+import { clone, flatten, getRandomId } from '@sofie-automation/corelib/dist/lib'
+import { mongoWhere } from '@sofie-automation/corelib/dist/mongo'
 import {
+	buildPastInfinitePiecesForThisPartQuery,
+	buildPiecesStartingInThisPartQuery,
 	getPieceInstancesForPart as libgetPieceInstancesForPart,
 	getPlayheadTrackingInfinitesForPart as libgetPlayheadTrackingInfinitesForPart,
-	buildPiecesStartingInThisPartQuery,
-	buildPastInfinitePiecesForThisPartQuery,
 } from '@sofie-automation/corelib/dist/playout/infinites'
+import { sortRundownIDsInPlaylist } from '@sofie-automation/corelib/dist/playout/playlist'
 import {
 	createPartCurrentTimes,
 	processAndPrunePieceInstanceTimings,
 } from '@sofie-automation/corelib/dist/playout/processAndPrune'
+
+import { IngestModelReadonly } from '../ingest/model/IngestModel.js'
 import { JobContext } from '../jobs/index.js'
-import { ReadonlyDeep } from 'type-fest'
+import { getCurrentTime } from '../lib/index.js'
+import { logger } from '../logging.js'
+import { filterPieceInstancesForBranding } from './branding.js'
 import { PlayoutModel } from './model/PlayoutModel.js'
 import { PlayoutPartInstanceModel } from './model/PlayoutPartInstanceModel.js'
-import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
-import { getCurrentTime } from '../lib/index.js'
-import { filterPieceInstancesForBranding } from './branding.js'
-import { clone, flatten, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import _ from 'underscore'
-import { IngestModelReadonly } from '../ingest/model/IngestModel.js'
-import { SegmentOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Segment'
-import { sortRundownIDsInPlaylist } from '@sofie-automation/corelib/dist/playout/playlist'
-import { mongoWhere } from '@sofie-automation/corelib/dist/mongo'
 import { PlayoutRundownModel } from './model/PlayoutRundownModel.js'
-import { logger } from '../logging.js'
+import { PlayoutSegmentModel } from './model/PlayoutSegmentModel.js'
 
 /** When we crop a piece, set the piece as "it has definitely ended" this far into the future. */
 export const DEFINITELY_ENDED_FUTURE_DURATION = 1 * 1000

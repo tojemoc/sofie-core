@@ -1,52 +1,54 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { NoteSeverity } from '@sofie-automation/blueprints-integration'
-import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
-import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
-import type { IContextMenuContext } from '../RundownView.js'
-import type { IOutputLayerUi, PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 import { ContextMenuTrigger } from '@jstarpl/react-contextmenu'
-import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
-import { SegmentDuration } from '../RundownView/RundownTiming/SegmentDuration.js'
-import { PartCountdown } from '../RundownView/RundownTiming/PartCountdown.js'
-import { contextMenuHoldToDisplayTime, useCombinedRefs, useRundownViewEventBusListener } from '../../lib/lib.js'
-import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
-import { useTranslation } from 'react-i18next'
-import { UIStateStorage } from '../../lib/UIStateStorage.js'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { lockPointer, scrollToPart, unlockPointer } from '../../lib/viewPort.js'
-import { StoryboardPart } from './StoryboardPart.js'
 import classNames from 'classnames'
-import {
-	type GoToPartEvent,
-	type GoToPartInstanceEvent,
-	type HighlightEvent,
-	RundownViewEvents,
-} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
-import { getElementWidth } from '../../utils/dimensions.js'
 import { Meteor } from 'meteor/meteor'
+import { motion } from 'motion/react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { NoteSeverity } from '@sofie-automation/blueprints-integration'
+import { isPartPlayable } from '@sofie-automation/corelib/dist/dataModel/Part'
+import { RundownHoldState } from '@sofie-automation/corelib/dist/dataModel/RundownPlaylist/RundownPlaylist'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import {
+	isEndOfLoopingShow as getIsEndOfLoopingShow,
+	isEntirePlaylistLooping as getIsEntirePlaylistLooping,
+	isLoopRunning as getIsLoopRunning,
+	isQuickLoopEnd as getIsQuickLoopEnd,
+	isQuickLoopStart as getIsQuickLoopStart,
+} from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
+import { RundownViewEvents } from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
+import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
+import type {
+	GoToPartEvent,
+	GoToPartInstanceEvent,
+	HighlightEvent,
+} from '@sofie-automation/meteor-lib/dist/triggers/RundownViewEventBus'
+
+import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
+import { contextMenuHoldToDisplayTime, useCombinedRefs, useRundownViewEventBusListener } from '../../lib/lib.js'
+import { logger } from '../../lib/logging.js'
 import { hidePointerLockCursor, showPointerLockCursor } from '../../lib/PointerLockCursor.js'
+import { CriticalIconSmall, WarningIconSmall } from '../../lib/ui/icons/notifications.js'
+import { UIStateStorage } from '../../lib/UIStateStorage.js'
+import { lockPointer, scrollToPart, unlockPointer } from '../../lib/viewPort.js'
+import { getElementWidth } from '../../utils/dimensions.js'
+import { PartCountdown } from '../RundownView/RundownTiming/PartCountdown.js'
+import { SegmentDuration } from '../RundownView/RundownTiming/SegmentDuration.js'
+import { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
+import { SwitchViewModeButton } from '../SegmentContainer/SwitchViewModeButton.js'
+import { HOVER_TIMEOUT } from '../Shelf/DashboardPieceButton/types.js'
 import { SegmentScrollbar } from './SegmentScrollbar.js'
+import { StoryboardPart } from './StoryboardPart.js'
 import {
 	filterSecondaryOutputLayers,
 	filterSecondarySourceLayers,
 } from './StoryboardPartSecondaryPieces/StoryboardPartSecondaryPieces.js'
-import { motion } from 'motion/react'
-import { SegmentViewMode } from '../SegmentContainer/SegmentViewModes.js'
-import { ErrorBoundary } from '../../lib/ErrorBoundary.js'
-import { SwitchViewModeButton } from '../SegmentContainer/SwitchViewModeButton.js'
-import type { PartId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { logger } from '../../lib/logging.js'
-import type { UIStudio } from '@sofie-automation/corelib/src/dataModel/Studio.js'
-import type { PieceUi } from '@sofie-automation/corelib/src/dataModel/Piece.js'
-import {
-	isLoopRunning as getIsLoopRunning,
-	isEndOfLoopingShow as getIsEndOfLoopingShow,
-	isQuickLoopStart as getIsQuickLoopStart,
-	isQuickLoopEnd as getIsQuickLoopEnd,
-	isEntirePlaylistLooping as getIsEntirePlaylistLooping,
-} from '@sofie-automation/corelib/src/playout/stateCacheResolver.js'
-import { HOVER_TIMEOUT } from '../Shelf/DashboardPieceButton/types.js'
+import type { RundownViewPlaylist } from '../../lib/rundownPlaylistProjection.js'
+import type { IContextMenuContext } from '../RundownView.js'
+import type { IOutputLayerUi, PartUi, SegmentNoteCounts, SegmentUi } from '../SegmentContainer/withResolvedSegment.js'
 
 interface IProps {
 	id: string
@@ -166,9 +168,11 @@ export const SegmentStoryboard = React.memo(
 		}
 
 		const onClickPartIdent = (partId: PartId) => {
-			scrollToPart(partId, props.studio.settings.followOnAirSegmentsHistory ?? 0, false, true, true).catch((error) => {
-				if (!error.toString().match(/another scroll/)) logger.error('scrollToPart', error)
-			})
+			scrollToPart(partId, props.studio.settings.followOnAirSegmentsHistory ?? 0, false, true, true).catch(
+				(error) => {
+					if (!error.toString().match(/another scroll/)) logger.error('scrollToPart', error)
+				}
+			)
 		}
 
 		let nextPartIndex = -1
@@ -651,22 +655,35 @@ export const SegmentStoryboard = React.memo(
 
 				<div className="segment-timeline__mos-id">{props.segment.externalId}</div>
 				<div className="segment-timeline__source-layers" role="tree" aria-label={t('Sources')}>
-					{filterSecondaryOutputLayers(Object.values<IOutputLayerUi>(props.segment.outputLayers)).map((outputGroup) => (
-						<div className="segment-timeline__output-group" key={outputGroup._id}>
-							{filterSecondarySourceLayers(outputGroup.sourceLayers).map((sourceLayer) =>
-								sourceLayer.pieces.length > 0 ? (
-									<div className="segment-timeline__source-layer" key={sourceLayer._id} role="treeitem">
-										{sourceLayer.name}
-									</div>
-								) : null
-							)}
-						</div>
-					))}
+					{filterSecondaryOutputLayers(Object.values<IOutputLayerUi>(props.segment.outputLayers)).map(
+						(outputGroup) => (
+							<div className="segment-timeline__output-group" key={outputGroup._id}>
+								{filterSecondarySourceLayers(outputGroup.sourceLayers).map((sourceLayer) =>
+									sourceLayer.pieces.length > 0 ? (
+										<div
+											className="segment-timeline__source-layer"
+											key={sourceLayer._id}
+											role="treeitem"
+										>
+											{sourceLayer.name}
+										</div>
+									) : null
+								)}
+							</div>
+						)
+					)}
 				</div>
 				<ErrorBoundary>
-					<SwitchViewModeButton currentMode={SegmentViewMode.Storyboard} onSwitchViewMode={props.onSwitchViewMode} />
+					<SwitchViewModeButton
+						currentMode={SegmentViewMode.Storyboard}
+						onSwitchViewMode={props.onSwitchViewMode}
+					/>
 				</ErrorBoundary>
-				<div className="segment-storyboard__part-list__container" ref={listRef} onPointerDown={onListPointerDown}>
+				<div
+					className="segment-storyboard__part-list__container"
+					ref={listRef}
+					onPointerDown={onListPointerDown}
+				>
 					<motion.div
 						className={classNames('segment-storyboard__part-list', {
 							loading: !props.subscriptionsReady,
@@ -678,9 +695,13 @@ export const SegmentStoryboard = React.memo(
 					>
 						{parts}
 						<div
-							className={classNames('segment-storyboard__part-list', 'segment-storyboard__part-list--squished-parts', {
-								hover: squishedHover !== null,
-							})}
+							className={classNames(
+								'segment-storyboard__part-list',
+								'segment-storyboard__part-list--squished-parts',
+								{
+									hover: squishedHover !== null,
+								}
+							)}
 							style={{
 								minWidth: `${spaceLeft}px`,
 							}}

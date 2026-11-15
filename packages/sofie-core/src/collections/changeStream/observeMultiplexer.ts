@@ -1,17 +1,19 @@
-import type { ChangeStreamDocument, Timestamp } from 'mongodb'
+import EJSON from 'ejson'
 import clone from 'fast-clone'
-import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
+import type { ChangeStreamDocument, Timestamp } from 'mongodb'
+
+import { fieldsFor, ObserveView, ObserveViewShape } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
 import {
-	MongoQuery,
 	MongoFieldSpecifier,
+	MongoQuery,
 	ObserveCallbacks,
 	ObserveChangesCallbacks,
 } from '@sofie-automation/corelib/dist/mongo'
-import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
+import { ProtectedString } from '@sofie-automation/corelib/dist/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import EJSON from 'ejson'
+import { PromisifyCallbacks } from '@sofie-automation/shared-lib/dist/lib/types'
+
 import { logger } from '../../logging'
-import { ObserveView, ObserveViewShape, fieldsFor } from '@sofie-automation/corelib/dist/memoryCollection/observeView'
 import { CollectionFeedHandle } from './collectionChangeFeed'
 
 type Doc = { _id: ProtectedString<any> }

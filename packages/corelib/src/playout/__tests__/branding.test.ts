@@ -1,4 +1,5 @@
 import type { IBlueprintPartBranding, IBlueprintPieceBranding } from '@sofie-automation/blueprints-integration'
+
 import { resolveAdLibActionForBranding, resolvePartForBranding, resolvePieceForBranding } from '../branding.js'
 
 /** A document which declares the branding properties, but does not use them */

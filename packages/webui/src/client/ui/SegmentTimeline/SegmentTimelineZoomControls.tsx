@@ -1,8 +1,9 @@
 import * as React from 'react'
+
+import { offElementResize, onElementResize } from '../../lib/resizeObserver.js'
+import { LeftArrow, RightArrow } from '../../lib/ui/icons/segment.js'
 import { getElementWidth } from '../../utils/dimensions.js'
 import { getElementDocumentOffset } from '../../utils/positions.js'
-import { onElementResize, offElementResize } from '../../lib/resizeObserver.js'
-import { LeftArrow, RightArrow } from '../../lib/ui/icons/segment.js'
 import { LIVELINE_HISTORY_SIZE } from './Constants.js'
 
 interface IPropsHeader {
@@ -81,7 +82,7 @@ export class SegmentTimelineZoomControls extends React.Component<IPropsHeader, I
 	}
 
 	private zoomAreaMove = (e: MouseEvent | TouchEvent) => {
-		let delta = 0
+		let delta: number
 
 		const maxScrollLeft = this.props.segmentDuration - LIVELINE_HISTORY_SIZE / this.props.timeScale
 
@@ -125,10 +126,13 @@ export class SegmentTimelineZoomControls extends React.Component<IPropsHeader, I
 		this.checkSmallMode()
 	}
 
-	private zoomAreaBeginMove(e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, isTouch?: boolean) {
+	private zoomAreaBeginMove(
+		e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+		isTouch?: boolean
+	) {
 		this._isTouch = !!isTouch
-		let clientX = 0
-		let clientY = 0
+		let clientX: number
+		let clientY: number
 
 		if (!this._isTouch) {
 			document.addEventListener('mousemove', this.zoomAreaMove)

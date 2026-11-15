@@ -9,9 +9,8 @@ import {
 	StatusCode,
 	StudioBlueprintManifest,
 } from '@sofie-automation/blueprints-integration'
-import { PeripheralDevice, PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import type { IBranding } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
 import { Blueprint } from '@sofie-automation/corelib/dist/dataModel/Blueprint'
+import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
 import {
 	BlueprintId,
 	BucketId,
@@ -19,17 +18,30 @@ import {
 	ShowStyleVariantId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { PeripheralDevice, PeripheralDeviceType } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
 import { DBStudio, IStudioSettings } from '@sofie-automation/corelib/dist/dataModel/Studio'
+import { SofieError } from '@sofie-automation/corelib/dist/error'
 import { assertNever, Complete, getRandomId, literal } from '@sofie-automation/corelib/dist/lib'
 import { protectString, unprotectString } from '@sofie-automation/corelib/dist/protectedString'
 import {
 	applyAndValidateOverrides,
-	ObjectOverrideSetOp,
-	wrapDefaultObject,
-	updateOverrides,
 	convertObjectIntoOverrides,
+	ObjectOverrideSetOp,
 	ObjectWithOverrides,
+	updateOverrides,
+	wrapDefaultObject,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { PlaylistSnapshotOptions, SystemSnapshotOptions } from '@sofie-automation/meteor-lib/dist/api/shapshot'
+import {
+	DEFAULT_FALLBACK_PART_DURATION,
+	DEFAULT_MINIMUM_TAKE_SPAN,
+} from '@sofie-automation/shared-lib/dist/core/constants'
+import { ForceQuickLoopAutoNext, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
+import type { IBranding } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
+
+import { Blueprints, ShowStyleBases, Studios } from '../../../collections'
 import {
 	APIBlueprint,
 	APIBranding,
@@ -37,28 +49,17 @@ import {
 	APIBucketComplete,
 	APIOutputLayer,
 	APIPeripheralDevice,
+	APIPlaylistSnapshotOptions,
 	APIShowStyleBase,
 	APIShowStyleVariant,
 	APISourceLayer,
 	APIStudio,
 	APIStudioSettings,
-	APIPlaylistSnapshotOptions,
 	APISystemSnapshotOptions,
 } from '../../../lib/rest/v1'
-import { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase'
-import { DBShowStyleVariant } from '@sofie-automation/corelib/dist/dataModel/ShowStyleVariant'
-import { Blueprints, ShowStyleBases, Studios } from '../../../collections'
-import { evalBlueprint } from '../../blueprints/cache'
-import { CommonContext } from '../../../migration/upgrades/context'
 import { logger } from '../../../logging'
-import {
-	DEFAULT_MINIMUM_TAKE_SPAN,
-	DEFAULT_FALLBACK_PART_DURATION,
-} from '@sofie-automation/shared-lib/dist/core/constants'
-import { Bucket } from '@sofie-automation/corelib/dist/dataModel/Bucket'
-import { ForceQuickLoopAutoNext, ShelfButtonSize } from '@sofie-automation/shared-lib/dist/core/model/StudioSettings'
-import { PlaylistSnapshotOptions, SystemSnapshotOptions } from '@sofie-automation/meteor-lib/dist/api/shapshot'
-import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { CommonContext } from '../../../migration/upgrades/context'
+import { evalBlueprint } from '../../blueprints/cache'
 
 /*
 This file contains functions that convert between the internal Sofie-Core types and types exposed to the external API.

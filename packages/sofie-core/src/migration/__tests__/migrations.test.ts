@@ -1,19 +1,25 @@
+import fs from 'fs'
+
 import _ from 'underscore'
-import { setupEmptyEnvironment, setupMockStudio } from '../../__mocks__/helpers/database'
-import { ICoreSystem, GENESIS_SYSTEM_VERSION } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { clearMigrationSteps, addMigrationSteps, prepareMigration, PreparedMigration } from '../databaseMigration'
-import { CURRENT_SYSTEM_VERSION } from '../currentSystemVersion'
-import { RunMigrationResult, GetMigrationStatusResult } from '@sofie-automation/meteor-lib/dist/api/migration'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
+
 import { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio'
-import { MigrationAPIMethods } from '@sofie-automation/meteor-lib/dist/api/migration'
-import { ServerMigrationAPI } from '../api'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
 import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import {
+	GetMigrationStatusResult,
+	MigrationAPIMethods,
+	RunMigrationResult,
+} from '@sofie-automation/meteor-lib/dist/api/migration'
+import { GENESIS_SYSTEM_VERSION, ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
+
+import { setupEmptyEnvironment, setupMockStudio } from '../../__mocks__/helpers/database'
+import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
 import { ShowStyleBases, ShowStyleVariants, Studios } from '../../collections'
 import { getCoreSystemAsync } from '../../coreSystem/collection'
-import fs from 'fs'
-import { makeMeteorCallForTest } from '../../__mocks__/helpers/methods'
+import { ServerMigrationAPI } from '../api'
+import { CURRENT_SYSTEM_VERSION } from '../currentSystemVersion'
+import { addMigrationSteps, clearMigrationSteps, PreparedMigration, prepareMigration } from '../databaseMigration'
 
 const MeteorCall = makeMeteorCallForTest({ methods: MigrationAPIMethods, class: ServerMigrationAPI })
 

@@ -1,7 +1,9 @@
-import type { PreviewContent } from '@sofie-automation/blueprints-integration'
-import { RundownUtils } from '../../../lib/rundown.js'
-import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import type { PreviewContent } from '@sofie-automation/blueprints-integration'
+
+import { RundownUtils } from '../../../lib/rundown.js'
 
 type layerInfoContent = Extract<PreviewContent, { type: 'layerInfo' }>
 
@@ -12,7 +14,9 @@ export function LayerInfoPreview(content: layerInfoContent): React.ReactElement 
 
 	return (
 		<div className="preview-popUp__element-with-time-info">
-			<div className={classNames('preview-popUp__element-with-time-info__layer-color', sourceLayerClassName)}> </div>
+			<div className={classNames('preview-popUp__element-with-time-info__layer-color', sourceLayerClassName)}>
+				{' '}
+			</div>
 			<div>
 				{content.text.map((line, index) => (
 					<div key={index} className="preview-popUp__element-with-time-info__text">

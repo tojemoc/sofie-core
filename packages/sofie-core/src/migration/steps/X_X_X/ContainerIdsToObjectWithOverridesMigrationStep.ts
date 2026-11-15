@@ -1,7 +1,8 @@
-import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
-import { Studios } from '../../../collections'
 import { flatObjectToOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { MigrationStepCore } from '@sofie-automation/meteor-lib/dist/migrations'
 import { StudioPackageContainerSettings } from '@sofie-automation/shared-lib/dist/core/model/PackageContainer'
+
+import { Studios } from '../../../collections'
 
 export class ContainerIdsToObjectWithOverridesMigrationStep implements Omit<MigrationStepCore, 'version'> {
 	public readonly id = `convert previewContainerIds to ObjectWithOverrides`

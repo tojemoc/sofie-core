@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next'
-import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
-import { DeviceItem } from '../../Status/SystemStatus/DeviceItem.js'
-import { ConfigManifestOAuthFlowComponent } from './ConfigManifestOAuthFlow.js'
+
 import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { useDebugStatesForPlayoutDevice } from './useDebugStatesForPlayoutDevice.js'
+import type { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+
 import { PeripheralDevices } from '../../../collections/index.js'
 import { useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { DeviceItem } from '../../Status/SystemStatus/DeviceItem.js'
+import { ConfigManifestOAuthFlowComponent } from './ConfigManifestOAuthFlow.js'
+import { useDebugStatesForPlayoutDevice } from './useDebugStatesForPlayoutDevice.js'
 
 interface IGenericDeviceSettingsComponentProps {
 	device: PeripheralDevice
@@ -49,7 +51,11 @@ export function GenericAttachedSubDeviceSettingsComponent({
 }: Readonly<GenericAttachedSubDeviceSettingsComponentProps>): JSX.Element {
 	const { t } = useTranslation()
 
-	const subDevices = useTracker(() => PeripheralDevices.find({ parentDeviceId: device._id }).fetch(), [device._id], [])
+	const subDevices = useTracker(
+		() => PeripheralDevices.find({ parentDeviceId: device._id }).fetch(),
+		[device._id],
+		[]
+	)
 
 	const debugStates = useDebugStatesForPlayoutDevice(device)
 

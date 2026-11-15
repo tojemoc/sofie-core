@@ -1,3 +1,5 @@
+import { ReadonlyDeep } from 'type-fest'
+
 import {
 	IBlueprintMutatablePart,
 	IBlueprintMutatablePartInstance,
@@ -13,9 +15,8 @@ import {
 } from '../index.js'
 import { ITriggerIngestChangeContext } from './executeTsrActionContext.js'
 import { BlueprintQuickLookInfo } from './quickLoopInfo.js'
-import { ReadonlyDeep } from 'type-fest'
-import type { ITTimersContext } from './tTimersContext.js'
 import type { IBrandingReadMethods } from './brandingContext.js'
+import type { ITTimersContext } from './tTimersContext.js'
 
 /**
  * Context in which 'current' is the part currently on air, and 'next' is the partInstance being set as Next

@@ -1,16 +1,18 @@
-import { TSRHandler, TSRConfig } from './tsrHandler.js'
-import { CoreHandler, CoreConfig } from './coreHandler.js'
 import { Logger } from 'winston'
-import { InfluxConfig } from './influxdb.js'
+
 import {
 	CertificatesConfig,
-	PeripheralDeviceId,
-	loadDDPTLSOptions,
-	stringifyError,
 	HealthConfig,
 	HealthEndpoints,
 	IConnector,
+	loadDDPTLSOptions,
+	PeripheralDeviceId,
+	stringifyError,
 } from '@sofie-automation/server-core-integration'
+
+import { CoreConfig, CoreHandler } from './coreHandler.js'
+import { InfluxConfig } from './influxdb.js'
+import { TSRConfig, TSRHandler } from './tsrHandler.js'
 
 export interface Config {
 	certificates: CertificatesConfig

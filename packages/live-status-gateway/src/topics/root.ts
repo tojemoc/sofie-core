@@ -1,15 +1,17 @@
 import { Logger } from 'winston'
 import { WebSocket } from 'ws'
-import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
-import { WebSocketTopicBase, WebSocketTopic } from '../wsHandler.js'
+
 import {
 	PongEvent,
-	SubscriptionStatusSuccess,
-	SubscriptionStatusError,
 	SubscriptionDetails,
-	SubscriptionStatus,
 	SubscriptionName,
+	SubscriptionStatus,
+	SubscriptionStatusError,
+	SubscriptionStatusSuccess,
 } from '@sofie-automation/live-status-gateway-api'
+import { literal } from '@sofie-automation/shared-lib/dist/lib/lib'
+
+import { WebSocketTopic, WebSocketTopicBase } from '../wsHandler.js'
 import { activeSubscriptionsGauge, subscriptionSubscribersGauge } from '../wsMetrics.js'
 
 enum PublishMsg {

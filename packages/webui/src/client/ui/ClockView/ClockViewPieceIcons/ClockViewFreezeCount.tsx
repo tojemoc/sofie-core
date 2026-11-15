@@ -1,16 +1,18 @@
-import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
-import { SourceLayerType, type VTContent } from '@sofie-automation/blueprints-integration'
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
 import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import { findPieceInstanceToShow } from './utils.js'
-import { Timediff } from '../Timediff.js'
-import { getCurrentTime } from '../../../lib/systemTime.js'
+import type { VTContent } from '@sofie-automation/blueprints-integration'
 import type {
 	PartInstanceId,
 	RundownId,
 	RundownPlaylistActivationId,
 	ShowStyleBaseId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+
+import { useSubscription, useTracker } from '../../../lib/ReactMeteorData/ReactMeteorData.js'
+import { getCurrentTime } from '../../../lib/systemTime.js'
+import { Timediff } from '../Timediff.js'
+import { findPieceInstanceToShow } from './utils.js'
 
 export interface IPropsHeader {
 	partInstanceId: PartInstanceId

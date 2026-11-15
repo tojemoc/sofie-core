@@ -1,15 +1,14 @@
 import { Meteor } from 'meteor/meteor'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import {
-	convertSourceLayerItemToPreview,
-	type IPreviewPopUpContext,
-	type IPreviewPopUpSession,
-} from '../../PreviewPopUp/PreviewPopUpContext.js'
-import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
-import type { IAdLibListItem } from '../AdLibListItem.js'
 import type { ReadonlyDeep } from 'type-fest'
+
+import type { ISourceLayer } from '@sofie-automation/blueprints-integration'
 import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
+
+import { convertSourceLayerItemToPreview } from '../../PreviewPopUp/PreviewPopUpContext.js'
 import { HOVER_TIMEOUT } from './types'
+import type { IPreviewPopUpContext, IPreviewPopUpSession } from '../../PreviewPopUp/PreviewPopUpContext.js'
+import type { IAdLibListItem } from '../AdLibListItem.js'
 
 export function usePreviewPopUpSession(args: {
 	previewContext: IPreviewPopUpContext

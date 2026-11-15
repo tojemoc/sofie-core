@@ -1,9 +1,10 @@
 import { PieceLifespan } from '@sofie-automation/shared-lib/dist/core/model/Rundown'
-import type { UserEditingDefinition, UserEditingProperties } from '../userEditing.js'
+
 import type { PieceAbSessionInfo } from '../abPlayback.js'
 import type { ActionUserData } from '../action.js'
 import type { SomeContent, WithTimeline } from '../content.js'
 import type { ExpectedPackage } from '../package.js'
+import type { UserEditingDefinition, UserEditingProperties } from '../userEditing.js'
 import type { ExpectedPlayoutItemGeneric } from './expectedPlayoutItem.js'
 
 export { PieceLifespan }

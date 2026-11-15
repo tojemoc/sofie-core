@@ -1,11 +1,13 @@
-import type { IBlueprintHotkeyTrigger } from '@sofie-automation/blueprints-integration'
 import classNames from 'classnames'
-import { useContext, useState, useLayoutEffect, useEffect } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import Form from 'react-bootstrap/esm/Form'
 import { useTranslation } from 'react-i18next'
+
+import type { IBlueprintHotkeyTrigger } from '@sofie-automation/blueprints-integration'
+
+import { ToggleSwitchControl } from '../../../../../lib/Components/ToggleSwitch.js'
 import { SorensenContext } from '../../../../../lib/SorensenContext.js'
 import { codesToKeyLabels } from '../../../../../lib/triggers/codesToKeyLabels.js'
-import { ToggleSwitchControl } from '../../../../../lib/Components/ToggleSwitch.js'
-import Form from 'react-bootstrap/esm/Form'
 
 interface IProps {
 	trigger: IBlueprintHotkeyTrigger

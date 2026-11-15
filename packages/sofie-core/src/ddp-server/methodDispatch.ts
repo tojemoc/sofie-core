@@ -1,9 +1,10 @@
-import { logger } from '../logging'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
-import { MethodContext } from '../api/methodContext'
-import { MethodRegistry } from '../methodRegistry'
 import { DDPError, MethodMessage } from '@sofie-automation/shared-lib/dist/ddp/messageTypes'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { MethodContext } from '../api/methodContext'
+import { logger } from '../logging'
+import { MethodRegistry } from '../methodRegistry'
 import type { DdpSession } from './DdpSession'
 
 /**

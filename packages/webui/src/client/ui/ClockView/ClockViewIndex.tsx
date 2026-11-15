@@ -1,13 +1,15 @@
-import { useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import Container from 'react-bootstrap/esm/Container'
+import { useCallback, useState } from 'react'
 import Accordion from 'react-bootstrap/esm/Accordion'
-import { PresenterConfigForm } from './PresenterConfigForm'
+import Container from 'react-bootstrap/esm/Container'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+
 import { CameraConfigForm } from './CameraConfigForm'
-import { PrompterConfigForm } from './PrompterConfigForm'
 import { FullscreenLink } from './FullscreenLink'
+import { PresenterConfigForm } from './PresenterConfigForm'
+import { PrompterConfigForm } from './PrompterConfigForm'
 
 type AccordionKey = 'presenter' | 'camera' | 'prompter'
 
@@ -71,7 +73,9 @@ export function ClockViewIndex({ studioId }: Readonly<{ studioId: StudioId }>): 
 						</Accordion.Item>
 						<Accordion.Item eventKey="camera">
 							<Accordion.Header>{t('Camera Screen')}</Accordion.Header>
-							<Accordion.Body>{openedPanels.has('camera') && <CameraConfigForm studioId={studioId} />}</Accordion.Body>
+							<Accordion.Body>
+								{openedPanels.has('camera') && <CameraConfigForm studioId={studioId} />}
+							</Accordion.Body>
 						</Accordion.Item>
 						<Accordion.Item eventKey="prompter">
 							<Accordion.Header>{t('Prompter')}</Accordion.Header>

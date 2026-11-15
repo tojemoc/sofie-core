@@ -1,10 +1,6 @@
-import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
-import { MeteorCall } from '../../lib/meteorApi.js'
 import type { TFunction } from 'i18next'
-import { handleRundownReloadResponse } from '../RundownView/RundownHeader/RundownReloadResponse.js'
+
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import type {
 	RundownId,
 	RundownLayoutId,
@@ -12,6 +8,12 @@ import type {
 	ShowStyleBaseId,
 	StudioId,
 } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
+import { doUserAction, UserAction } from '../../lib/clientUserAction.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { handleRundownReloadResponse } from '../RundownView/RundownHeader/RundownReloadResponse.js'
 import type { UserPermissions } from '../UserPermissions.js'
 
 export function getRundownPlaylistLink(rundownPlaylistId: RundownPlaylistId): string {

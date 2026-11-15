@@ -1,12 +1,15 @@
 import { ReadonlyDeep } from 'type-fest'
-import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import _ from 'underscore'
-import { IngestPartModel } from '../IngestPartModel.js'
-import { AdLibActionId, PieceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+
 import { AdLibAction } from '@sofie-automation/corelib/dist/dataModel/AdlibAction'
+import { AdLibPiece } from '@sofie-automation/corelib/dist/dataModel/AdLibPiece'
+import { ExpectedPackageIngestSourcePart } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 import { ExpectedPlayoutItemRundown } from '@sofie-automation/corelib/dist/dataModel/ExpectedPlayoutItem'
+import { AdLibActionId, PieceId, RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { DBPart } from '@sofie-automation/corelib/dist/dataModel/Part'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
+
+import { IngestPartModel } from '../IngestPartModel.js'
 import { ExpectedPackagesStore } from './ExpectedPackagesStore.js'
 import {
 	addManyToSet,
@@ -16,7 +19,6 @@ import {
 	setValuesAndTrackChanges,
 } from './utils.js'
 import type { IngestExpectedPackage } from '../IngestExpectedPackage.js'
-import { ExpectedPackageIngestSourcePart } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
 
 export class IngestPartModelImpl implements IngestPartModel {
 	readonly partImpl: DBPart

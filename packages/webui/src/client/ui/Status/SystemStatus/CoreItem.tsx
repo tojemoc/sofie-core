@@ -1,18 +1,20 @@
-import { useContext } from 'react'
-import { useTranslation } from 'react-i18next'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { doModalDialog } from '../../../lib/ModalDialog.js'
-import { NotificationCenter, NoticeLevel, Notification } from '../../../lib/notifications/notifications.js'
 import ClassNames from 'classnames'
-import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import type { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
-import { doUserAction, UserAction } from '../../../lib/clientUserAction.js'
-import { MeteorCall } from '../../../lib/meteorApi.js'
-import { hashSingleUseToken } from '../../../lib/lib.js'
-import { UserPermissionsContext } from '../../UserPermissions.js'
-import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { useContext } from 'react'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+
 import { UserError } from '@sofie-automation/corelib/dist/error'
+import { ClientAPI } from '@sofie-automation/meteor-lib/dist/api/client'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
+import type { StatusResponse } from '@sofie-automation/meteor-lib/dist/api/systemStatus'
+import type { ICoreSystem } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { doUserAction, UserAction } from '../../../lib/clientUserAction.js'
+import { hashSingleUseToken } from '../../../lib/lib.js'
+import { MeteorCall } from '../../../lib/meteorApi.js'
+import { doModalDialog } from '../../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../../lib/notifications/notifications.js'
+import { UserPermissionsContext } from '../../UserPermissions.js'
 
 interface ICoreItemProps {
 	systemStatus: StatusResponse | undefined
@@ -82,9 +84,12 @@ export function CoreItem({ systemStatus, coreSystem }: ICoreItemProps): JSX.Elem
 									no: t('Cancel'),
 									message: (
 										<p>
-											{t('Are you sure you want to restart this Sofie Automation Server Core: {{name}}?', {
-												name: coreSystem.name || 'unnamed',
-											})}
+											{t(
+												'Are you sure you want to restart this Sofie Automation Server Core: {{name}}?',
+												{
+													name: coreSystem.name || 'unnamed',
+												}
+											)}
 										</p>
 									),
 									onAccept: (e) => {
@@ -96,8 +101,13 @@ export function CoreItem({ systemStatus, coreSystem }: ICoreItemProps): JSX.Elem
 												MeteorCall.system.generateSingleUseToken().then((tokenResponse) => {
 													if (ClientAPI.isClientResponseError(tokenResponse))
 														throw UserError.fromSerialized(tokenResponse.error)
-													if (!tokenResponse.result) throw new Error('Failed to generate token')
-													return MeteorCall.userAction.restartCore(e, ts, hashSingleUseToken(tokenResponse.result))
+													if (!tokenResponse.result)
+														throw new Error('Failed to generate token')
+													return MeteorCall.userAction.restartCore(
+														e,
+														ts,
+														hashSingleUseToken(tokenResponse.result)
+													)
 												}),
 											(err, restartMessage) => {
 												if (err || !restartMessage) {
@@ -120,7 +130,9 @@ export function CoreItem({ systemStatus, coreSystem }: ICoreItemProps): JSX.Elem
 													new Notification(
 														undefined,
 														NoticeLevel.WARNING,
-														t('Sofie Automation Server Core will restart in {{time}}s...', { time }),
+														t('Sofie Automation Server Core will restart in {{time}}s...', {
+															time,
+														}),
 														'SystemStatus'
 													)
 												)

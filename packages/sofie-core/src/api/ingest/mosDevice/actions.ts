@@ -1,18 +1,20 @@
-import { logger } from '../../../logging'
-import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import _ from 'underscore'
+
+import { IngestPart } from '@sofie-automation/blueprints-integration'
 import { PeripheralDevice } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
 import { Piece } from '@sofie-automation/corelib/dist/dataModel/Piece'
-import { IngestPart } from '@sofie-automation/blueprints-integration'
-import { parseMosString } from './lib'
-import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import _ from 'underscore'
-import { TriggerReloadDataResponse } from '@sofie-automation/meteor-lib/dist/api/userActions'
-import { generateRundownSource, getPeripheralDeviceFromRundown, runIngestOperation } from '../lib'
-import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
-import { DEFAULT_MOS_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
-import { executePeripheralDeviceFunctionWithCustomTimeout } from '../../peripheralDevice/executeFunction'
-import { MOS } from '@sofie-automation/meteor-lib/dist/mos'
+import { Rundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+import { IngestJobs } from '@sofie-automation/corelib/dist/worker/ingest'
+import { TriggerReloadDataResponse } from '@sofie-automation/meteor-lib/dist/api/userActions'
+import { MOS } from '@sofie-automation/meteor-lib/dist/mos'
+import { DEFAULT_MOS_TIMEOUT_TIME } from '@sofie-automation/shared-lib/dist/core/constants'
+import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
+
+import { logger } from '../../../logging'
+import { executePeripheralDeviceFunctionWithCustomTimeout } from '../../peripheralDevice/executeFunction'
+import { generateRundownSource, getPeripheralDeviceFromRundown, runIngestOperation } from '../lib'
+import { parseMosString } from './lib'
 
 export namespace MOSDeviceActions {
 	export async function reloadRundown(

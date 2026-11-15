@@ -1,13 +1,15 @@
-import { ExpectedPackageId, PieceInstanceInfiniteId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { ReadonlyDeep } from 'type-fest'
+import _ from 'underscore'
+
+import { ExpectedPackage, PieceLifespan, Time } from '@sofie-automation/blueprints-integration'
+import { getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
+import { ExpectedPackageId, PieceInstanceInfiniteId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { PieceInstance, PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
 import { clone, getRandomId } from '@sofie-automation/corelib/dist/lib'
-import { ExpectedPackage, Time, PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { PlayoutPieceInstanceModel } from '../PlayoutPieceInstanceModel.js'
-import _ from 'underscore'
-import { getExpectedPackageId } from '@sofie-automation/corelib/dist/dataModel/ExpectedPackages'
-import { setupPieceInstanceInfiniteProperties } from '../../pieces.js'
+
 import { getCurrentTime } from '../../../lib/time.js'
+import { setupPieceInstanceInfiniteProperties } from '../../pieces.js'
+import { PlayoutPieceInstanceModel } from '../PlayoutPieceInstanceModel.js'
 
 export class PlayoutPieceInstanceModelImpl implements PlayoutPieceInstanceModel {
 	/**

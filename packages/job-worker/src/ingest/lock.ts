@@ -1,6 +1,7 @@
-import { SegmentId, RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { JobContext } from '../jobs/index.js'
+import { RundownId, SegmentId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import { DBRundown } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+
+import { JobContext } from '../jobs/index.js'
 import { RundownLock } from '../jobs/lock.js'
 
 /**

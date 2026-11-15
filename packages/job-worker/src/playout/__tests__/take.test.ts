@@ -1,27 +1,29 @@
 import { PieceLifespan } from '@sofie-automation/blueprints-integration'
-import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import {
+	PERIPHERAL_SUBTYPE_PROCESS,
 	PeripheralDeviceCategory,
 	PeripheralDeviceType,
-	PERIPHERAL_SUBTYPE_PROCESS,
 } from '@sofie-automation/corelib/dist/dataModel/PeripheralDevice'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { wrapDefaultObject } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
 import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import {
 	setupDefaultRundownPlaylist,
 	setupMockPeripheralDevice,
 	setupMockShowStyleCompound,
 } from '../../__mocks__/presetCollections.js'
-import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
-import { performTakeToNextedPart, handleTakeNextPart } from '../take.js'
-import { runJobWithPlayoutModel } from '../lock.js'
-import { PartAndPieceInstanceActionService } from '../../blueprints/context/services/PartAndPieceInstanceActionService.js'
 import { OnTakeContext } from '../../blueprints/context/OnTakeContext.js'
+import { PartAndPieceInstanceActionService } from '../../blueprints/context/services/PartAndPieceInstanceActionService.js'
 import { WatchedPackagesHelper } from '../../blueprints/context/watchedPackages.js'
+import { postProcessPieces } from '../../blueprints/postProcess.js'
 import { getCurrentTime } from '../../lib/index.js'
+import { handleActivateRundownPlaylist } from '../activePlaylistJobs.js'
+import { runJobWithPlayoutModel } from '../lock.js'
+import { handleTakeNextPart, performTakeToNextedPart } from '../take.js'
 
 jest.mock('../../blueprints/postProcess')
-import { postProcessPieces } from '../../blueprints/postProcess.js'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
 const { postProcessPieces: postProcessPiecesOrig } = jest.requireActual('../../blueprints/postProcess')
 ;(postProcessPieces as jest.Mock).mockImplementation(postProcessPiecesOrig)
 

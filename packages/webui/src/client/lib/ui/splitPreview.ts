@@ -1,12 +1,13 @@
-import {
-	SourceLayerType,
-	type SplitsContentBoxContent,
-	type SplitsContentBoxProperties,
-	type VTContent,
+import type { ReadonlyDeep } from 'type-fest'
+
+import { SourceLayerType } from '@sofie-automation/blueprints-integration'
+import { literal } from '@sofie-automation/corelib/dist/lib'
+import type {
+	SplitsContentBoxContent,
+	SplitsContentBoxProperties,
+	VTContent,
 } from '@sofie-automation/blueprints-integration'
 import type { SplitBoxPreviewUrls } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import { literal } from '@sofie-automation/corelib/dist/lib'
-import type { ReadonlyDeep } from 'type-fest'
 
 const DEFAULT_POSITIONS = [
 	{

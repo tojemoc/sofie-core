@@ -1,28 +1,30 @@
-import * as React from 'react'
-import { EditAttribute } from '../../lib/EditAttribute.js'
-import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
-import { Spinner } from '../../lib/Spinner.js'
-import { doModalDialog } from '../../lib/ModalDialog.js'
-import Moment from 'react-moment'
-import { Link } from 'react-router-dom'
-import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
-import { NotificationCenter, Notification, NoticeLevel } from '../../lib/notifications/notifications.js'
-import { catchError, fetchFrom } from '../../lib/lib.js'
-import { UploadButton } from '../../lib/uploadButton.js'
+import { faExclamationTriangle, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
-import { MeteorCall } from '../../lib/meteorApi.js'
-import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { Blueprints, CoreSystem, ShowStyleBases, Studios } from '../../collections/index.js'
-import { LabelActual } from '../../lib/Components/LabelAndOverrides.js'
+import * as React from 'react'
 import Button from 'react-bootstrap/esm/Button'
 import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
+import { Link } from 'react-router-dom'
+
+import { BlueprintManifestType } from '@sofie-automation/blueprints-integration'
+import { assertNever } from '@sofie-automation/corelib/dist/lib'
+import { unprotectString } from '@sofie-automation/shared-lib/dist/lib/protectedString'
 import { stringifyError } from '@sofie-automation/shared-lib/dist/lib/stringifyError'
-import { createPrivateApiPath } from '../../url.js'
+import type { BlueprintId } from '@sofie-automation/corelib/dist/dataModel/Ids'
 import type { DBShowStyleBase } from '@sofie-automation/corelib/dist/dataModel/ShowStyleBase.js'
 import type { DBStudio } from '@sofie-automation/corelib/dist/dataModel/Studio.js'
-import { assertNever } from '@sofie-automation/corelib/dist/lib'
+
+import { Blueprints, CoreSystem, ShowStyleBases, Studios } from '../../collections/index.js'
+import { LabelActual } from '../../lib/Components/LabelAndOverrides.js'
+import { EditAttribute } from '../../lib/EditAttribute.js'
+import { catchError, fetchFrom } from '../../lib/lib.js'
+import { MeteorCall } from '../../lib/meteorApi.js'
+import { doModalDialog } from '../../lib/ModalDialog.js'
+import { NoticeLevel, Notification, NotificationCenter } from '../../lib/notifications/notifications.js'
+import { useTracker } from '../../lib/ReactMeteorData/react-meteor-data.js'
+import { Spinner } from '../../lib/Spinner.js'
+import { UploadButton } from '../../lib/uploadButton.js'
+import { createPrivateApiPath } from '../../url.js'
 
 interface IProps {
 	blueprintId: BlueprintId
@@ -306,9 +308,12 @@ function ImportConfigButton({ blueprintId }: { blueprintId: BlueprintId }) {
 									message: (
 										<React.Fragment>
 											<p>
-												{t('Are you sure you want to replace the blueprints with the file "{{fileName}}"?', {
-													fileName: file.name,
-												})}
+												{t(
+													'Are you sure you want to replace the blueprints with the file "{{fileName}}"?',
+													{
+														fileName: file.name,
+													}
+												)}
 											</p>
 											<p>{t('Please note: This action is irreversible!')}</p>
 										</React.Fragment>
@@ -337,7 +342,9 @@ function ImportConfigButton({ blueprintId }: { blueprintId: BlueprintId }) {
 													new Notification(
 														undefined,
 														NoticeLevel.WARNING,
-														t('Failed to update blueprints: {{errorMessage}}', { errorMessage: err + '' }),
+														t('Failed to update blueprints: {{errorMessage}}', {
+															errorMessage: err + '',
+														}),
 														'BlueprintSettings'
 													)
 												)

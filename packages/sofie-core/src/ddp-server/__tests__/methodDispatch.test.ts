@@ -1,7 +1,8 @@
 import { SofieError } from '@sofie-automation/corelib/dist/error'
+
+import { logger } from '../../logging'
 import { wrapError } from '../methodDispatch'
 import { encodeMessage } from '../wireCodec'
-import { logger } from '../../logging'
 
 describe('wrapError', () => {
 	test('maps a SofieError to the DDP error shape', () => {

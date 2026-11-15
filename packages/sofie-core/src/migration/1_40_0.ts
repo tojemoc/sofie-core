@@ -1,5 +1,5 @@
-import { addMigrationSteps } from './databaseMigration'
 import { Studios } from '../collections'
+import { addMigrationSteps } from './databaseMigration'
 
 // Release 40 (Skipped)
 

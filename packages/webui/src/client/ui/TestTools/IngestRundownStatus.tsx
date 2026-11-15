@@ -1,17 +1,19 @@
-import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
-import { makeTableOfObject } from '../../lib/utilComponents'
-import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useTranslation } from 'react-i18next'
-import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
-import { PeripheralDevices } from '../../collections'
-import { Link } from 'react-router-dom'
-import { PeripheralDeviceCategory } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
-import { IngestRundownStatuses } from './collections'
-import type { IngestPartStatus, IngestRundownStatus } from '@sofie-automation/shared-lib/dist/ingest/rundownStatus'
-import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+import { CorelibPubSub } from '@sofie-automation/corelib/dist/pubsub'
+import { MeteorPubSub } from '@sofie-automation/meteor-lib/dist/api/pubsub'
+import { PeripheralDeviceCategory } from '@sofie-automation/shared-lib/dist/peripheralDevice/peripheralDeviceAPI'
+import type { PeripheralDeviceId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import type { IngestPartStatus, IngestRundownStatus } from '@sofie-automation/shared-lib/dist/ingest/rundownStatus'
+
+import { PeripheralDevices } from '../../collections'
+import { useSubscription, useTracker } from '../../lib/ReactMeteorData/react-meteor-data'
+import { makeTableOfObject } from '../../lib/utilComponents'
+import { IngestRundownStatuses } from './collections'
 
 interface IMappingsViewProps {
 	match?: {
@@ -75,7 +77,11 @@ function StatusesForRundown({ rundown }: { rundown: IngestRundownStatus }): JSX.
 						</tr>
 						{rundown.segments.flatMap((segment) =>
 							segment.parts.map((part) => (
-								<StatusesForSegmentRow key={segment.externalId} part={part} segmentId={segment.externalId} />
+								<StatusesForSegmentRow
+									key={segment.externalId}
+									part={part}
+									segmentId={segment.externalId}
+								/>
 							))
 						)}
 					</tbody>

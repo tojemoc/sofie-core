@@ -1,11 +1,13 @@
-import { IStudioContext, BlueprintMappings } from '@sofie-automation/blueprints-integration'
 import { ReadonlyDeep } from 'type-fest'
-import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { BlueprintMappings, IStudioContext } from '@sofie-automation/blueprints-integration'
 import { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { unprotectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { JobStudio } from '../../jobs/index.js'
 import { ProcessedStudioConfig } from '../config.js'
 import { getStudioConfigRef } from '../configRefs.js'
 import { CommonContext, ContextInfo } from './CommonContext.js'
-import { JobStudio } from '../../jobs/index.js'
 
 /** Studio */
 

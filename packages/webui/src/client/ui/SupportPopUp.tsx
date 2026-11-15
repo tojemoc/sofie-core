@@ -1,12 +1,14 @@
-import * as React from 'react'
 import ClassNames from 'classnames'
+import * as React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
+
+import { CoreSystem } from '../collections/index.js'
+import { getHelpMode } from '../lib/localStorage.js'
 import { useTracker } from '../lib/ReactMeteorData/ReactMeteorData.js'
 import { SupportIcon } from '../lib/ui/icons/supportIcon.js'
-import { useTranslation } from 'react-i18next'
-import { getHelpMode } from '../lib/localStorage.js'
-import { CoreSystem } from '../collections/index.js'
-import { SYSTEM_ID } from '@sofie-automation/meteor-lib/dist/collections/CoreSystem'
-import { applyAndValidateOverrides } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
 import { PopUpPanel } from './RundownView/PopUpPanel.js'
 import { RundownRightHandButton } from './RundownView/RundownRightHandButton.js'
 
@@ -88,7 +90,9 @@ export function DocumentationLink(): JSX.Element {
 			)}
 			<p>
 				{t('More documentation available at:')}&nbsp;
-				<a href="https://sofie-automation.github.io/sofie-core/">https://sofie-automation.github.io/sofie-core/</a>
+				<a href="https://sofie-automation.github.io/sofie-core/">
+					https://sofie-automation.github.io/sofie-core/
+				</a>
 			</p>
 		</div>
 	)

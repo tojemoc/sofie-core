@@ -1,35 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { PreviewPopUp, type PreviewPopUpHandle } from './PreviewPopUp.js'
-import Escape from '../../lib/Escape.js'
-import type { Padding, Placement } from '@popperjs/core'
-import { PreviewPopUpContent } from './PreviewPopUpContent.js'
-import {
-	JSONBlobParse,
-	type NoraPayload,
-	type PieceLifespan,
-	type PreviewContent,
-	PreviewType,
-	type ScriptContent,
-	SourceLayerType,
-	type SplitsContent,
-	type SplitsContentBoxContent,
-	type SplitsContentBoxProperties,
-	type TransitionContent,
-	type VTContent,
-} from '@sofie-automation/blueprints-integration'
-import type { ReadonlyDeep, ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
-import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
-import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
 import _ from 'underscore'
-import type { IAdLibListItem } from '../Shelf/AdLibListItem.js'
+import type { Padding, Placement } from '@popperjs/core'
+import type { ReadonlyDeep, ReadonlyObjectDeep } from 'type-fest/source/readonly-deep'
+
+import { JSONBlobParse, PreviewType, SourceLayerType } from '@sofie-automation/blueprints-integration'
+import type {
+	NoraPayload,
+	PieceLifespan,
+	PreviewContent,
+	ScriptContent,
+	SplitsContent,
+	SplitsContentBoxContent,
+	SplitsContentBoxProperties,
+	TransitionContent,
+	VTContent,
+} from '@sofie-automation/blueprints-integration'
+import type { PieceContentStatusObj } from '@sofie-automation/corelib/dist/dataModel/PieceContentStatus'
 import type { PieceInstancePiece } from '@sofie-automation/corelib/dist/dataModel/PieceInstance'
+import type { ITranslatableMessage } from '@sofie-automation/corelib/dist/TranslatableMessage'
+
+import Escape from '../../lib/Escape.js'
+import { getPieceScrubDurationMs, getSplitsBoxLayoutScrubSettings } from '../../lib/ui/splitsPreviewVideo.js'
 import { createPrivateApiPath } from '../../url.js'
-import {
-	getPieceScrubDurationMs,
-	getSplitsBoxLayoutScrubSettings,
-	type PreviewVideoContentUI,
-	type SplitsBoxLayoutScrubSettings,
-} from '../../lib/ui/splitsPreviewVideo.js'
+import { PreviewPopUp } from './PreviewPopUp.js'
+import { PreviewPopUpContent } from './PreviewPopUpContent.js'
+import type { PreviewVideoContentUI, SplitsBoxLayoutScrubSettings } from '../../lib/ui/splitsPreviewVideo.js'
+import type { IAdLibListItem } from '../Shelf/AdLibListItem.js'
+import type { PreviewPopUpHandle } from './PreviewPopUp.js'
 
 type VirtualElement = {
 	getBoundingClientRect: () => DOMRect
@@ -144,7 +141,9 @@ export function convertSourceLayerItemToPreview(
 		}
 
 		if (popupPreview.warnings) {
-			contents.push(...popupPreview.warnings.map((w): PreviewContentUI => ({ type: 'warning', content: w.reason })))
+			contents.push(
+				...popupPreview.warnings.map((w): PreviewContentUI => ({ type: 'warning', content: w.reason }))
+			)
 		}
 
 		return { contents, options }
@@ -566,7 +565,9 @@ export function PreviewPopUpContextProvider({ children }: React.PropsWithChildre
 						trackMouse={previewSession.trackMouse}
 					>
 						{previewContent &&
-							previewContent.map((content, i) => <PreviewPopUpContent key={i} time={t} content={content} />)}
+							previewContent.map((content, i) => (
+								<PreviewPopUpContent key={i} time={t} content={content} />
+							))}
 					</PreviewPopUp>
 				</Escape>
 			)}

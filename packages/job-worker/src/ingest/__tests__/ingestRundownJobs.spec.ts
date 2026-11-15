@@ -1,7 +1,11 @@
-import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
-import { clone } from '@sofie-automation/corelib/dist/lib'
 import { IngestChangeType, NrcsIngestRundownChangeDetails } from '@sofie-automation/blueprints-integration'
-import { ComputedIngestChangeAction, UpdateIngestRundownChange } from '../runOperation.js'
+import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
+import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { DBRundown, RundownOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Rundown'
+import { clone } from '@sofie-automation/corelib/dist/lib'
+import { protectString } from '@sofie-automation/corelib/dist/protectedString'
+
+import { MockJobContext, setupDefaultJobEnvironment } from '../../__mocks__/context.js'
 import {
 	handleRegenerateRundown,
 	handleRemovedRundown,
@@ -9,10 +13,7 @@ import {
 	handleUpdatedRundownMetaData,
 	handleUserUnsyncRundown,
 } from '../ingestRundownJobs.js'
-import { RundownId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { protectString } from '@sofie-automation/corelib/dist/protectedString'
-import { DBRundown, RundownOrphanedReason } from '@sofie-automation/corelib/dist/dataModel/Rundown'
-import { IngestRundownWithSource } from '@sofie-automation/corelib/dist/dataModel/NrcsIngestDataCache'
+import { ComputedIngestChangeAction, UpdateIngestRundownChange } from '../runOperation.js'
 
 function getDefaultIngestRundown(): IngestRundownWithSource {
 	return {

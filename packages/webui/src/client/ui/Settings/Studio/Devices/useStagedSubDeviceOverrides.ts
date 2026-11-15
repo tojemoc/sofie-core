@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
-import { Studios } from '../../../../collections/index.js'
+
 import type { StudioId } from '@sofie-automation/corelib/dist/dataModel/Ids'
-import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
 import type {
 	ObjectWithOverrides,
 	SomeObjectOverrideOp,
 } from '@sofie-automation/corelib/dist/settings/objectWithOverrides'
+
+import { Studios } from '../../../../collections/index.js'
+import { useOverrideOpHelper } from '../../util/OverrideOpHelper.js'
 
 type RelatedItemsMode = 'direct' | 'transitive'
 
