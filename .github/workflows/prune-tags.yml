@@ -22,11 +22,11 @@ jobs:
     if: ${{ github.repository_owner == 'Sofie-Automation' }}
 
     name: Prune tags
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 15
     steps:
       - name: Checkout repo with all tags
-        uses: actions/checkout@v7
+        uses: useblacksmith/checkout@v1
         with:
           fetch-depth: 0
 
