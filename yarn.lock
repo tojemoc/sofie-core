@@ -6527,7 +6527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mongodb-js/saslprep@npm:^1.5.0":
+"@mongodb-js/saslprep@npm:^1.4.11":
   version: 1.6.1
   resolution: "@mongodb-js/saslprep@npm:1.6.1"
   dependencies:
@@ -13274,10 +13274,10 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
-"bson@npm:^7.3.2":
-  version: 7.3.3
-  resolution: "bson@npm:7.3.3"
-  checksum: 10/27f90714578b84999cd79dd53aede2fd09118371af453f2a0b47ed07e50ab9514c1b2d5acd3d85e805172c32b963f3c3a457a34dd6ff7d0eb0d9e20910735f8f
+"bson@npm:^7.2.0":
+  version: 7.3.4
+  resolution: "bson@npm:7.3.4"
+  checksum: 10/f0df76350601fa45ac65845fa93cf2803287de69aaa66ec124c10e53b58a9c7a288ceeef2df3d5c25d64ea2780603ddfb10e65500e462da6cc2061d5727c568c
   languageName: node
   linkType: hard
 
@@ -24674,7 +24674,7 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
-"mongodb-connection-string-url@npm:^7.0.2":
+"mongodb-connection-string-url@npm:^7.0.1":
   version: 7.0.2
   resolution: "mongodb-connection-string-url@npm:7.0.2"
   dependencies:
@@ -24714,6 +24714,40 @@ asn1@evs-broadcast/node-asn1:
   languageName: node
   linkType: hard
 
+"mongodb@npm:7.5.0":
+  version: 7.5.0
+  resolution: "mongodb@npm:7.5.0"
+  dependencies:
+    "@mongodb-js/saslprep": "npm:^1.4.11"
+    bson: "npm:^7.2.0"
+    mongodb-connection-string-url: "npm:^7.0.1"
+  peerDependencies:
+    "@aws-sdk/credential-providers": ^3.806.0
+    "@mongodb-js/zstd": ^7.0.0
+    gcp-metadata: ^7.0.1
+    kerberos: ^7.0.0
+    mongodb-client-encryption: ^7.2.0
+    snappy: ^7.3.2
+    socks: ^2.8.6
+  peerDependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/zstd":
+      optional: true
+    gcp-metadata:
+      optional: true
+    kerberos:
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    snappy:
+      optional: true
+    socks:
+      optional: true
+  checksum: 10/7cd86a9d5c7cd8a525082920101de54155470ad1dcd0575a2aefb8d3a7f9b68f7d82f851ddeb6e6f49d915e876d9e8fcc120a1f74c55de68c07257e19eb84423
+  languageName: node
+  linkType: hard
+
 "mongodb@npm:^6.9.0":
   version: 6.22.0
   resolution: "mongodb@npm:6.22.0"
@@ -24745,40 +24779,6 @@ asn1@evs-broadcast/node-asn1:
     socks:
       optional: true
   checksum: 10/0966acf12d794a053c12839d791cd15c019d610810ee40e2c8067b8a07c7dd68a3f141de13bfe3d6f245d3c53569d777369a34d445c2056f6003ebe16e9c0f60
-  languageName: node
-  linkType: hard
-
-"mongodb@npm:^7.1.1":
-  version: 7.8.0
-  resolution: "mongodb@npm:7.8.0"
-  dependencies:
-    "@mongodb-js/saslprep": "npm:^1.5.0"
-    bson: "npm:^7.3.2"
-    mongodb-connection-string-url: "npm:^7.0.2"
-  peerDependencies:
-    "@aws-sdk/credential-providers": ^3.806.0
-    "@mongodb-js/zstd": ^7.0.0
-    gcp-metadata: ^7.0.1
-    kerberos: ^7.0.0
-    mongodb-client-encryption: ^7.2.0
-    snappy: ^7.3.2
-    socks: ^2.8.6
-  peerDependenciesMeta:
-    "@aws-sdk/credential-providers":
-      optional: true
-    "@mongodb-js/zstd":
-      optional: true
-    gcp-metadata:
-      optional: true
-    kerberos:
-      optional: true
-    mongodb-client-encryption:
-      optional: true
-    snappy:
-      optional: true
-    socks:
-      optional: true
-  checksum: 10/adf0577d07a0dfc588a2103010ddbbdee840df5b2f6866890825005540f500224a4a7ea2f793879c66288997dceb64b2f2be68ee3c0ea664da29593711e47359
   languageName: node
   linkType: hard
 
