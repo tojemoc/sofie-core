@@ -95,7 +95,7 @@
 		"@types/sha.js": "^2.4.4",
 		"@types/xml2js": "^0.4.14",
 		"@vitejs/plugin-react": "^5.2.0",
-		"@welldone-software/why-did-you-render": "^4.3.2",
+		"@welldone-software/why-did-you-render": "^10.0.0",
 		"@xmldom/xmldom": "^0.9.10",
 		"babel-jest": "^30.4.1",
 		"globals": "^17.7.0",
