@@ -63,6 +63,12 @@ export default defineConfig(({ command }) => ({
 		chunkSizeWarningLimit: 10000,
 	},
 
+	legacy: {
+		// Restores pre-Vite-8 default-import interop for CJS deps (react-moment puts its component on
+		// exports.default). Deprecated; remove once those imports are migrated.
+		inconsistentCjsInterop: true,
+	},
+
 	resolve: {
 		mainFields: [], // the presence of this is a weird fix for react-moment
 		alias: {
