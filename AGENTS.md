@@ -74,3 +74,20 @@ Use a **tmux session** for `yarn dev` — it is long-running and starts multiple
   PlayDecklink/LoadbgDecklink to emit `DECKLINK DEVICE <n>` (upstream omitted `DEVICE`).
   Covered by `playout-gateway` `decklinkAmcp.spec.ts`. Rebuild/restart playout-gateway after
   pulling; blueprint re-upload alone does not apply this fix.
+
+### Fork delta vs upstream (`Sofie-Automation/sofie-core`)
+
+`main` carries ~29 local commits over upstream `ddf17f57e`. The load-bearing additions:
+
+| Area | What |
+|------|------|
+| Peripheral API — content status | `peripheralDevice.packageManager.getContentStatusForRundown` → `packages/sofie-core/src/api/integration/rundownContentStatus.ts`. Studio-scoped; per-piece status is evaluated sequentially (slow on big rundowns). |
+| Peripheral API — playout state | `peripheralDevice.ingest.getRundownPlayoutState` → `api/integration/rundownPlayoutState.ts`. Drives the Rundown Editor on-air System locks. |
+| Peripheral API — part settings | `getRundownPartSettings` + `getRundownPartAutoNext` → `api/integration/rundownPartSettings.ts` / `rundownPartAutoNext.ts`. Two near-identical methods; the second is the one the RE uses. |
+| vMix input polling | `packages/playout-gateway/src/vmix/VmixInputPoller.ts` — polls vMix XML API every 5 s into Core mediaObjects. No fetch timeout; change detection keys on `{key,title,type}` only. |
+| Caspar patches | `.yarn/patches/` — casparcg-connection `DECKLINK DEVICE` (above) + casparcg-state `STING OVERLAY=` emission. |
+| Ingest/playout fixes | `insertPiece` pieces marked `dynamicallyInserted`; timeline regenerated after ingest part changes (`job-worker/src/ingest/syncChangesToPartInstance.ts`). |
+| WebUI fixes | Null `tTimers`/missing studio-settings crash, `withTiming` import cycle, `react-router-bootstrap` removal (`useNavigate` crash). |
+
+Megarepo README "Changes from upstream" has the full merged-PR catalogue.
+
