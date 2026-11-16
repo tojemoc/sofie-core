@@ -4,8 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import { useTranslation } from 'react-i18next'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import { CoreSystem } from '../collections/index.js'
 import { ErrorBoundary } from '../lib/ErrorBoundary.js'
@@ -94,21 +93,21 @@ export default function Header({ allowConfigure, allowTesting }: IPropsHeader): 
 						</Link>
 					</Navbar.Brand>
 					<Nav className="justify-content-end">
-						<LinkContainer to="/rundowns" activeClassName="active">
-							<Nav.Link>{t('Rundowns')}</Nav.Link>
-						</LinkContainer>
+						<Nav.Link as={NavLink} to="/rundowns" activeClassName="active">
+							{t('Rundowns')}
+						</Nav.Link>
 						{allowTesting && (
-							<LinkContainer to="/testTools" activeClassName="active">
-								<Nav.Link> {t('Test Tools')}</Nav.Link>
-							</LinkContainer>
+							<Nav.Link as={NavLink} to="/testTools" activeClassName="active">
+								{t('Test Tools')}
+							</Nav.Link>
 						)}
-						<LinkContainer to="/status" activeClassName="active">
-							<Nav.Link> {t('Status')}</Nav.Link>
-						</LinkContainer>
+						<Nav.Link as={NavLink} to="/status" activeClassName="active">
+							{t('Status')}
+						</Nav.Link>
 						{allowConfigure && (
-							<LinkContainer to="/settings" activeClassName="active">
-								<Nav.Link> {t('Settings')}</Nav.Link>
-							</LinkContainer>
+							<Nav.Link as={NavLink} to="/settings" activeClassName="active">
+								{t('Settings')}
+							</Nav.Link>
 						)}
 					</Nav>
 				</Container>

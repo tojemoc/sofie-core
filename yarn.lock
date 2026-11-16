@@ -8869,7 +8869,6 @@ __metadata:
     "@types/react": "npm:^18.3.31"
     "@types/react-dom": "npm:^18.3.7"
     "@types/react-router": "npm:^5.1.20"
-    "@types/react-router-bootstrap": "npm:^0.26.8"
     "@types/react-router-dom": "npm:^5.3.3"
     "@types/sha.js": "npm:^2.4.4"
     "@types/xml2js": "npm:^0.4.14"
@@ -8905,7 +8904,6 @@ __metadata:
     react-intersection-observer: "npm:^9.16.0"
     react-moment: "npm:^1.2.3"
     react-popper: "npm:^2.3.0"
-    react-router-bootstrap: "npm:^0.26.0"
     react-router-dom: "npm:^5.3.4"
     sass-embedded: "npm:^1.100.0"
     semver: "npm:^7.8.5"
@@ -10753,15 +10751,6 @@ __metadata:
   peerDependencies:
     "@types/react": ^18.0.0
   checksum: 10/317569219366d487a3103ba1e5e47154e95a002915fdcf73a44162c48fe49c3a57fcf7f57fc6979e70d447112681e6b13c6c3c1df289db8b544df4aab2d318f3
-  languageName: node
-  linkType: hard
-
-"@types/react-router-bootstrap@npm:^0.26.8":
-  version: 0.26.8
-  resolution: "@types/react-router-bootstrap@npm:0.26.8"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/a67c804ab0abb4972785be59f13293ecc6dd25661cd624298ccb989a17559e0af656bbf98859c5483cc69e912c00bac5ec79651e5892d488acd06443f1b249c9
   languageName: node
   linkType: hard
 
@@ -29030,18 +29019,6 @@ asn1@evs-broadcast/node-asn1:
     react: ^16.8.0 || ^17 || ^18
     react-dom: ^16.8.0 || ^17 || ^18
   checksum: 10/2afc495479ae4b9e67f9a1642debd7121947fe71a00c5b326301adb8288a18dca53ebd836fe9c3b7a4e2feb838df0abe8e044eb278e89b1c5d50978b0b93d0ac
-  languageName: node
-  linkType: hard
-
-"react-router-bootstrap@npm:^0.26.0":
-  version: 0.26.3
-  resolution: "react-router-bootstrap@npm:0.26.3"
-  dependencies:
-    prop-types: "npm:^15.7.2"
-  peerDependencies:
-    react: ">=16.13.1"
-    react-router-dom: ">=6.0.0"
-  checksum: 10/8ed506caa670d96b99599f238d04db842a71fb1b18442e2fa374ddad81e6111b36892db335734beacf60ae7523dc07d3bd2ccb2f33a0833b52ab074fa9c5ab0f
   languageName: node
   linkType: hard
 
