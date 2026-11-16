@@ -1,6 +1,4 @@
-import { SegmentTimelinePartClass } from '../../SegmentTimeline/Parts/SegmentTimelinePart.js'
 import type { RundownTimingContext } from '../../../lib/rundownTiming.js'
-import type { PartUi } from '../../SegmentTimeline/SegmentTimelineContainer.js'
 
 export interface TimeEventArgs {
 	currentTime: number
@@ -43,9 +41,7 @@ export namespace RundownTiming {
 	}
 }
 
-export function computeSegmentDisplayDuration(timingDurations: RundownTimingContext, parts: PartUi[]): number {
-	return parts.reduce(
-		(memo, part) => memo + SegmentTimelinePartClass.getPartDisplayDuration(part, timingDurations),
-		0
-	)
-}
+// Note: keep this file free of runtime imports from the SegmentTimeline UI modules.
+// withTiming.tsx imports this file, and SegmentTimelinePart.tsx imports withTiming.tsx —
+// a runtime edge back into SegmentTimelinePart creates a cycle that leaves
+// RundownTimingProviderContext uninitialised (this.context = {}) in withTiming'd components.
