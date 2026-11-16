@@ -70,10 +70,13 @@ Use a **tmux session** for `yarn dev` — it is long-running and starts multiple
 - `NODE_ENV` must **not** be `production` during install.
 - `yarn dev --ui-only` reduces CPU/memory if you only edit WebUI/Meteor code.
 - Pre-commit hook runs `yarn lint-staged` (via husky).
-- **DeckLink AMCP `DEVICE`:** `packages/.yarn/patches/casparcg-connection-*.patch` forces
-  PlayDecklink/LoadbgDecklink to emit `DECKLINK DEVICE <n>` (upstream omitted `DEVICE`).
-  Covered by `playout-gateway` `decklinkAmcp.spec.ts`. Rebuild/restart playout-gateway after
-  pulling; blueprint re-upload alone does not apply this fix.
+- **Caspar AMCP patches are dormant:** `.yarn/patches/` (repo root) ships
+  `casparcg-connection-*.patch` (emits `DECKLINK DEVICE <n>` for PlayDecklink/LoadbgDecklink)
+  and `casparcg-state-*.patch` (`STING OVERLAY=`), but **neither is registered in
+  `resolutions`/`patchedDependencies`** — `yarn.lock` resolves plain `npm:7.0.0`/`npm:4.0.0`
+  and the patch files target nightly versions. The fixes are NOT applied to a fresh install;
+  `playout-gateway` `decklinkAmcp.spec.ts` covers the intended serialization. To activate,
+  re-target the patches at the locked versions and add `patch:` resolutions.
 
 ### Fork delta vs upstream (`Sofie-Automation/sofie-core`)
 
@@ -85,9 +88,10 @@ Use a **tmux session** for `yarn dev` — it is long-running and starts multiple
 | Peripheral API — playout state | `peripheralDevice.ingest.getRundownPlayoutState` → `api/integration/rundownPlayoutState.ts`. Drives the Rundown Editor on-air System locks. |
 | Peripheral API — part settings | `getRundownPartSettings` + `getRundownPartAutoNext` → `api/integration/rundownPartSettings.ts` / `rundownPartAutoNext.ts`. Two near-identical methods; the second is the one the RE uses. |
 | vMix input polling | `packages/playout-gateway/src/vmix/VmixInputPoller.ts` — polls vMix XML API every 5 s into Core mediaObjects. No fetch timeout; change detection keys on `{key,title,type}` only. |
-| Caspar patches | `.yarn/patches/` — casparcg-connection `DECKLINK DEVICE` (above) + casparcg-state `STING OVERLAY=` emission. |
+| Caspar patches | `.yarn/patches/` — casparcg-connection `DECKLINK DEVICE` + casparcg-state `STING OVERLAY=` patch files **present but not applied** (not in `resolutions`; see gotcha above). |
 | Ingest/playout fixes | `insertPiece` pieces marked `dynamicallyInserted`; timeline regenerated after ingest part changes (`job-worker/src/ingest/syncChangesToPartInstance.ts`). |
 | WebUI fixes | Null `tTimers`/missing studio-settings crash, `withTiming` import cycle, `react-router-bootstrap` removal (`useNavigate` crash). |
 
-Megarepo README "Changes from upstream" has the full merged-PR catalogue.
+[Megarepo README → Changes from upstream](../README.md#changes-from-upstream) has the full
+merged-PR catalogue.
 
