@@ -907,6 +907,13 @@ export class SegmentTimelinePartClass extends React.Component<Translated<WithTim
 	}
 }
 
+export function computeSegmentDisplayDuration(timingDurations: RundownTimingContext, parts: PartUi[]): number {
+	return parts.reduce(
+		(memo, part) => memo + SegmentTimelinePartClass.getPartDisplayDuration(part, timingDurations),
+		0
+	)
+}
+
 export const SegmentTimelinePart: React.ComponentType<IProps> = withTranslation()(
 	withTiming<IProps & WithTranslation, IState>((props: IProps) => {
 		return {

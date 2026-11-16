@@ -22,7 +22,7 @@ import { UIStateStorage } from '../../lib/UIStateStorage.js'
 import { getHeaderHeight, isMaintainingFocus, scrollToSegment } from '../../lib/viewPort.js'
 import { getElementWidth } from '../../utils/dimensions.js'
 import { UIPartInstances, UIParts } from '../Collections.js'
-import { computeSegmentDisplayDuration, RundownTiming } from '../RundownView/RundownTiming/RundownTiming.js'
+import { RundownTiming } from '../RundownView/RundownTiming/RundownTiming.js'
 import { RundownTimingProviderContext } from '../RundownView/RundownTiming/withTiming.js'
 import { RundownViewShelf } from '../RundownView/RundownViewShelf.js'
 import { withResolvedSegment } from '../SegmentContainer/withResolvedSegment.js'
@@ -33,7 +33,7 @@ import {
 	SIMULATED_PLAYBACK_HARD_MARGIN,
 	TIMELINE_RIGHT_PADDING,
 } from './Constants.js'
-import { SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
+import { computeSegmentDisplayDuration, SegmentTimelinePartClass } from './Parts/SegmentTimelinePart.js'
 import { SegmentTimeline } from './SegmentTimeline.js'
 import type { TimingEvent } from '../RundownView/RundownTiming/RundownTiming.js'
 import type {
